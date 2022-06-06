@@ -1,0 +1,119 @@
+import React from "react";
+import { useState, useEffect } from "react";
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import ListGroup from 'react-bootstrap/ListGroup';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { ConanListFilter, ConanSearchBar } from "../components/searchbar";
+import ConanHeader from '../components/header';
+import ConanFooter from '../components/footer';
+import useSWR from 'swr';
+
+export async function getServerSideProps(context) {
+  const res_popular = await fetch(`${encodeURI(process.env.conanioServer)}/popular`);
+  const res_updated = await fetch(`${encodeURI(process.env.conanioServer)}/updated`);
+  const res_new = await fetch(`${encodeURI(process.env.conanioServer)}/new`);
+  const popular = await res_popular.json();
+  const updated = await res_updated.json();
+  const new_packages = await res_new.json();
+
+  const popular_list = [];
+  const new_list = [];
+  const updated_list = [];
+  Object.keys(popular).forEach(function(key) {popular_list.push(popular[key]);});
+  Object.keys(new_packages).forEach(function(key) {new_list.push(new_packages[key]);});
+  Object.keys(updated).forEach(function(key) {updated_list.push(updated[key]);});
+  return {
+    props: {
+      data: {
+        popular: popular_list,
+        updated: updated_list,
+        new: new_list,
+      },
+    },
+  }
+}
+
+function CenterSearchBar(props) {
+
+  let router = useRouter();
+  const [value, setValue] = useState('');
+  const [filters, setFilters] = useState([]);
+  const [allFilters, setAllFilters] = useState(null);
+
+  const handleChange = (e) => {
+    setValue(e);
+    console.log(filters);
+  }
+
+  const handleFilter = (filter, check) => {
+    let newFilters = filters
+    if(check && !newFilters.includes(filter)){newFilters.push(filter)}
+    if(!check && newFilters.includes(filter)){newFilters.splice(newFilters.indexOf(filter), 1)}
+    setFilters(newFilters)
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    router.push(
+      {
+        pathname: '/search',
+        query: { defaultValue: value, defaultFilters: filters }
+      },
+      '/search'
+    );
+    //window.location.reload(false);
+  }
+
+  return (
+    <Form onSubmit={e => handleSubmit(e)}>
+      <Row>
+        <Col>
+          <ConanSearchBar value={value} handleChange={handleChange} searchButton={props.button}/>
+        </Col>
+        <Col xs lg="4">
+          <Row>
+            <ConanListFilter api="filters" handleFilter={handleFilter}/>
+          </Row>
+        </Col>
+      </Row>
+    </Form>
+  );
+}
+
+function CenterList(props) {
+  return (
+    <div className="text-center">
+      <h2>{props.name}</h2>
+      <ListGroup>
+        {props.data.map((info) => (<ListGroup.Item key={info.name}><Link href={"/center/" + info.name}><a>{info.name}/{info.version}</a></Link></ListGroup.Item>))}
+      </ListGroup>
+    </div>
+  )
+}
+
+function  Center(props) {
+  return (
+    <React.StrictMode>
+      <ConanHeader/>
+        <Container>
+          <Container><h1 className="text-center">Conan Center</h1></Container>
+          <Row>
+            <CenterSearchBar/>
+          </Row>
+          <Row>
+            <Col><CenterList data={props.data.popular} name="Popular Package"/></Col>
+            <Col><CenterList data={props.data.updated} name="Just Updated"/></Col>
+            <Col><CenterList data={props.data.new} name="New Version"/></Col>
+          </Row>
+        </Container>
+      <ConanFooter/>
+    </React.StrictMode>
+  )
+}
+
+export default Center;
