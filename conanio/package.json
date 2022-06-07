@@ -1,0 +1,25 @@
+{
+  "name": "conanio",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "install": "^0.13.0",
+    "next": "12.1.6",
+    "npm": "^8.12.0",
+    "react": "18.1.0",
+    "react-bootstrap": "^2.4.0",
+    "react-dom": "18.1.0",
+    "react-markdown": "^8.0.3",
+    "swr": "^1.3.0"
+  },
+  "devDependencies": {
+    "eslint": "8.16.0",
+    "eslint-config-next": "12.1.6"
+  }
+}
