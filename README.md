@@ -29,15 +29,38 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 [API routes](https://nextjs.org/docs/api-routes/introduction): the `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
+**Docker**
+
+```bash
+cd server
+docker build -t conanio-server .
+docker run -p 5000:5000 conanio-server
+cd ..
+cd conanio
+docker build -t conanio-web .
+docker run -p 3000:3000 conanio-web
+```
+
+**Kubernetes (minikube)**
+
+```bash
+minikube start
+eval $(minikube docker-env)
+
+cd server
+docker build -t conanio-server .
+
+cd ..
+cd conanio
+docker build -t conanio-web .
+
+cd ..
+cd chart/conanio
+helm upgrade --install conanio .
+kubectl port-forward service/conanio-web 3000:3000
+```
+
 ## Learn More
 
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-**Docker**
-
-```bash
-cd conanio
-docker build -t conanio-docker .
-docker run -p 3000:3000 conanio-docker
-```

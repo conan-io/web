@@ -11,7 +11,38 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Link from 'next/link';
 import ConanHeader from '../components/header';
 import ConanFooter from '../components/footer';
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
+
+
+export async function getServerSideProps(context) {
+  const { defaultValue, defaultFilters } = context.query;
+  let value = defaultValue || 'all';
+  const res_licenses = await fetch(`${encodeURI(process.env.conanioServer)}/licenses`);
+  const res_filters = await fetch(`${encodeURI(process.env.conanioServer)}/filters`);
+  const res_packages = await fetch(`${encodeURI(process.env.conanioServer)}/search/${encodeURIComponent(value.toLowerCase())}`);
+  const licenses = await res_licenses.json();
+  const filters = await res_filters.json();
+  const packages = await res_packages.json();
+
+  const licenses_list = [];
+  const filters_list = [];
+  const packages_list = [];
+  Object.keys(licenses).forEach(function(key) {licenses_list.push(licenses[key]);});
+  Object.keys(filters).forEach(function(key) {filters_list.push(filters[key]);});
+  Object.keys(packages).forEach(function(key) {packages_list.push(packages[key]);});
+
+  return {
+    props: {
+      data: {
+        licenses: licenses_list,
+        filters: filters_list,
+        defaultValue: defaultValue || '',
+        defaultFilters: defaultFilters || [],
+        packages: packages_list,
+      },
+    },
+  }
+}
 
 function SearchList(props) {
 
@@ -31,20 +62,19 @@ function SearchList(props) {
   )
 }
 
-function ConanSearch(props) {
+export default function ConanSearch(props) {
   const router = useRouter();
-  const { defaultValue, defaultFilters } = router.query;
-  const [value, setValue] = useState(() => (defaultValue || ''));
-  const [filters, setFilters] = useState(() => (defaultFilters || []));
+  const [value, setValue] = useState(props.data.defaultValue);
+  const [filters, setFilters] = useState(props.data.defaultFilters);
   const [allFilters, setAllFilters] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [data, setData] = useState(null);
+  const [data, setData] = useState(props.data.packages);
 
   const getData = async (value) => {
     try {
-      if (value == ''){value = 'all'}
-      const response = await fetch(`${encodeURI(process.env.conanioServer)}/search/${encodeURIComponent(value.toLowerCase())}`);
+      value = value || 'all';
+      const response = await fetch(`/api/search/${encodeURIComponent((value).toLowerCase())}`);
       if (!response.ok) {
         throw new Error(
           `This is an HTTP error: The status is ${response.status}`
@@ -65,25 +95,20 @@ function ConanSearch(props) {
     }
   }
 
-  useEffect(() => {getData(value)}, []);
-
   const handleChange = (e) => {
     setValue(e);
-    console.log(filters);
   }
 
   const handleFilter = (filter, check) => {
     let newFilters = filters
     if(check && !newFilters.includes(filter)){newFilters.push(filter)}
     if(!check && newFilters.includes(filter)){newFilters.splice(newFilters.indexOf(filter), 1)}
-    setFilters(newFilters)
+    setFilters(newFilters);
     getData(value);
   }
 
   const handleSubmit = (event) => {
-    console.log(value, filters);
     getData(value);
-    console.log(data);
     event.preventDefault();
   }
 
@@ -98,14 +123,14 @@ function ConanSearch(props) {
             <Row>
               <Col xs lg="1">
               <h4>Licenses</h4>
-              <Row><ConanListFilter api="licenses" handleFilter={handleFilter}/></Row>
+              <Row><ConanListFilter filters={props.data.licenses} handleFilter={handleFilter}/></Row>
               </Col>
               <Col xs lg="10">
               <Row><SearchList data={data} name="Packages"/></Row>
               </Col>
               <Col xs lg="1">
               <h4>Filters</h4>
-              <Row><ConanListFilter api="filters" handleFilter={handleFilter}/></Row>
+              <Row><ConanListFilter filters={props.data.filters} handleFilter={handleFilter}/></Row>
               </Col>
             </Row>
           </Form>
@@ -115,6 +140,3 @@ function ConanSearch(props) {
 
   );
 }
-
-
-export default (ConanSearch);

@@ -17,22 +17,28 @@ export async function getServerSideProps(context) {
   const res_popular = await fetch(`${encodeURI(process.env.conanioServer)}/popular`);
   const res_updated = await fetch(`${encodeURI(process.env.conanioServer)}/updated`);
   const res_new = await fetch(`${encodeURI(process.env.conanioServer)}/new`);
+  const res_filters = await fetch(`${encodeURI(process.env.conanioServer)}/filters`);
   const popular = await res_popular.json();
   const updated = await res_updated.json();
   const new_packages = await res_new.json();
+  const filters = await res_filters.json();
 
   const popular_list = [];
   const new_list = [];
   const updated_list = [];
+  const filters_list = [];
   Object.keys(popular).forEach(function(key) {popular_list.push(popular[key]);});
   Object.keys(new_packages).forEach(function(key) {new_list.push(new_packages[key]);});
   Object.keys(updated).forEach(function(key) {updated_list.push(updated[key]);});
+  Object.keys(filters).forEach(function(key) {filters_list.push(filters[key]);});
+
   return {
     props: {
       data: {
         popular: popular_list,
         updated: updated_list,
         new: new_list,
+        filters: filters_list,
       },
     },
   }
@@ -47,7 +53,6 @@ function CenterSearchBar(props) {
 
   const handleChange = (e) => {
     setValue(e);
-    console.log(filters);
   }
 
   const handleFilter = (filter, check) => {
@@ -77,7 +82,7 @@ function CenterSearchBar(props) {
         </Col>
         <Col xs lg="4">
           <Row>
-            <ConanListFilter api="filters" handleFilter={handleFilter}/>
+            <ConanListFilter filters={props.filters} handleFilter={handleFilter}/>
           </Row>
         </Col>
       </Row>
@@ -96,14 +101,14 @@ function CenterList(props) {
   )
 }
 
-function  Center(props) {
+export default function Center(props) {
   return (
     <React.StrictMode>
       <ConanHeader/>
         <Container>
           <Container><h1 className="text-center">Conan Center</h1></Container>
           <Row>
-            <CenterSearchBar/>
+            <CenterSearchBar filters={props.data.filters}/>
           </Row>
           <Row>
             <Col><CenterList data={props.data.popular} name="Popular Package"/></Col>
@@ -115,5 +120,3 @@ function  Center(props) {
     </React.StrictMode>
   )
 }
-
-export default Center;
