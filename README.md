@@ -1,10 +1,11 @@
 # web
 Conan website, including home and ConanCenter
 
+## Test server
 
-**1. Run server**
+**server folder:** Flask test server.
 
-Run thee server:
+Run server:
 
 ```bash
 cd server
@@ -14,7 +15,9 @@ pip isntall -r requirements.txt
 python server.py
 ```
 
-**2. Run the web app**
+## Webapp
+
+**conanio folder:** NexJS web app source.
 
 Run the development webserver with [yarn](https://yarnpkg.com/):
 
@@ -29,19 +32,9 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 [API routes](https://nextjs.org/docs/api-routes/introduction): the `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
-**Docker**
+##Kubernetes
 
-```bash
-cd server
-docker build -t conanio-server .
-docker run -p 5000:5000 conanio-server
-cd ..
-cd conanio
-docker build -t conanio-web .
-docker run -p 3000:3000 conanio-web
-```
-
-**Kubernetes (minikube)**
+**chart folder:** helm chart package for kubernetes *(minikube only)*.
 
 ```bash
 minikube start
