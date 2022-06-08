@@ -25,10 +25,6 @@ function ConanFilter(props) {
 }
 
 export function ConanListFilter(props) {
-  const [value, setValue] = useState('');
-  const [filters, setFilters] = useState([]);
-  const [allFilters, setAllFilters] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [checked, setChecked] = useState(false);
   const handleChange = () => {
@@ -36,36 +32,9 @@ export function ConanListFilter(props) {
     setChecked(!checked)
   }
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await fetch(`${encodeURI(process.env.conanioServer)}/${encodeURIComponent(props.api)}`);
-        if (!response.ok) {
-          console.log(response.status)
-          throw new Error(
-            `This is an HTTP error: The status is ${response.status}`
-          );
-        }
-        let actualData = await response.json();
-        var filters = [];
-        Object.keys(actualData).forEach(function(key) {
-          filters.push(actualData[key]);
-        });
-        setAllFilters(filters);
-        setError(null);
-      } catch(err) {
-        setError(err.message);
-        setAllFilters(null);
-      } finally {
-        setLoading(false);
-      }
-    }
-    getData()
-  }, []);
-
   return(
     <div key="custom-inline-checkbox" className="mb-3">
-    {allFilters && allFilters.map((info) => (<ConanFilter key={info} filter={info} handleFilter={props.handleFilter}/>))}
+    {props.filters && props.filters.map((info) => (<ConanFilter key={info} filter={info} handleFilter={props.handleFilter}/>))}
     </div>
     )
 }

@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: conanio-env-local
+data:
+  .env: |-
+    CONANIO_SERVER=http://{{ include "conanio.fullname" . }}-server:{{ .Values.server.service.port }}

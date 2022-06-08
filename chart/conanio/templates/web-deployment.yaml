@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "conanio.fullname" . }}-web
+  labels:
+    app: {{ include "conanio.name" . }}-web
+    {{- include "conanio.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.web.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "conanio.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "conanio.name" . }}-web
+        {{- include "conanio.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.web.image.repository }}:{{ .Values.web.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.web.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          volumeMounts:
+          - mountPath: /app/.env.local
+            name: conanio-env-local
+            readOnly: true
+            subPath: .env.local
+      volumes:
+        - name: conanio-env-local
+          configMap:
+            name: conanio-env-local
+            items:
+            - key: .env
+              path: .env.local
