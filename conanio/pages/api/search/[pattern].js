@@ -1,5 +1,10 @@
-export default async ({ query: { pattern } }, res) => {
-  const response = await fetch(`${encodeURI(process.env.conanioServer)}/search/${encodeURIComponent((pattern).toLowerCase())}`);
+export default async (req, res) => {
+  let filters = req.query.filters || ''
+  const getFilters = () => {
+    if (filters) {return `?filters=${encodeURIComponent(filters.split(','))}`}
+    return ''
+  }
+  const response = await fetch(`${encodeURI(process.env.conanioServer)}/search/${encodeURIComponent((req.query.pattern).toLowerCase())}${getFilters()}`);
   if (!response.ok) {
     res.status(404).json({})
   }

@@ -6,7 +6,7 @@ import FormCheck from 'react-bootstrap/FormCheck';
 import Button from 'react-bootstrap/Button';
 
 function ConanFilter(props) {
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(props.checked);
 
   const handleChange = () => {
     props.handleFilter(props.filter, !checked)
@@ -19,22 +19,16 @@ function ConanFilter(props) {
       label={props.filter}
       type="checkbox"
       id={"custom-inline-checkbox-" + props.filter}
+      checked={checked}
       onChange={handleChange}
     />
   )
 }
 
 export function ConanListFilter(props) {
-  const [error, setError] = useState(null);
-  const [checked, setChecked] = useState(false);
-  const handleChange = () => {
-    props.handleFilter(props.filter, !checked)
-    setChecked(!checked)
-  }
-
   return(
     <div key="custom-inline-checkbox" className="mb-3">
-    {props.filters && props.filters.map((info) => (<ConanFilter key={info} filter={info} handleFilter={props.handleFilter}/>))}
+    {props.filters && props.filters.map((info) => (<ConanFilter key={info.filter} filter={info.filter} checked={info.checked} handleFilter={props.handleFilter}/>))}
     </div>
     )
 }

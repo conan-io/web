@@ -15,11 +15,12 @@ import { useRouter } from 'next/router';
 
 
 export async function getServerSideProps(context) {
-  const { defaultValue, defaultFilters } = context.query;
+  let { defaultValue, defaultFilters } = context.query;
+  defaultFilters = defaultFilters || [];
   let value = defaultValue || 'all';
   const res_licenses = await fetch(`${encodeURI(process.env.conanioServer)}/licenses`);
   const res_filters = await fetch(`${encodeURI(process.env.conanioServer)}/filters`);
-  const res_packages = await fetch(`${encodeURI(process.env.conanioServer)}/search/${encodeURIComponent(value.toLowerCase())}`);
+  const res_packages = await fetch(`${encodeURI(process.env.conanioServer)}/search/${encodeURIComponent(value.toLowerCase())}?filters=${encodeURIComponent(defaultFilters)}`);
   const licenses = await res_licenses.json();
   const filters = await res_filters.json();
   const packages = await res_packages.json();
@@ -27,8 +28,8 @@ export async function getServerSideProps(context) {
   const licenses_list = [];
   const filters_list = [];
   const packages_list = [];
-  Object.keys(licenses).forEach(function(key) {licenses_list.push(licenses[key]);});
-  Object.keys(filters).forEach(function(key) {filters_list.push(filters[key]);});
+  Object.keys(licenses).forEach(function(key) {licenses_list.push({filter: licenses[key], checked: false});});
+  Object.keys(filters).forEach(function(key) {filters_list.push({filter: filters[key], checked: defaultFilters.includes(filters[key])});});
   Object.keys(packages).forEach(function(key) {packages_list.push(packages[key]);});
 
   return {
@@ -44,16 +45,43 @@ export async function getServerSideProps(context) {
   }
 }
 
+function PackageInfo(props) {
+  return (
+    <div>
+      <Row>
+        <Col xs lg="3">
+          <Row>
+            <Col xs lg><Link href={"/center/" + props.data.name}><a><h3>{props.data.name}</h3></a></Link></Col>
+          </Row>
+          <Row>
+            <Col xs lg md={{ span: 1, offset: 2 }}><b>last versiond:</b> {props.data.info.version}</Col>
+          </Row>
+        </Col>
+        <Col xs lg="5"><b>Licenses:</b> {props.data.info.licenses.join(", ")}</Col>
+        <Col xs lg="3"><b>Downloads:</b> {props.data.info.downloads}</Col>
+      </Row>
+      <br/>
+      <Row>
+        <Col xs lg><b>Description:</b> {props.data.info.description}</Col>
+      </Row>
+      <br/>
+      <Row>
+        <Col xs lg><b>Labels:</b> {props.data.info.labels.join(", ")}</Col>
+      </Row>
+    </div>
+  )
+}
+
 function SearchList(props) {
 
   return (
-    <div className="text-center">
-      <h4>{props.name}</h4>
+    <div>
+      <h2 className="text-center">packages</h2>
       <ListGroup>
       {props.data && props.data.map(
         (info) => (
           <ListGroup.Item key={info.name}>
-            <Link href={"/center/" + info.name}><a>{info.name}/{info.version}</a></Link>
+            <PackageInfo data={info}/>
           </ListGroup.Item>)
         )
       }
@@ -70,11 +98,10 @@ export default function ConanSearch(props) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [data, setData] = useState(props.data.packages);
-
-  const getData = async (value) => {
+  const getData = async (value, filterlist) => {
     try {
       value = value || 'all';
-      const response = await fetch(`/api/search/${encodeURIComponent((value).toLowerCase())}`);
+      const response = await fetch(`/api/search/${encodeURIComponent((value).toLowerCase())}?filters=${encodeURIComponent(filterlist)}`);
       if (!response.ok) {
         throw new Error(
           `This is an HTTP error: The status is ${response.status}`
@@ -104,37 +131,41 @@ export default function ConanSearch(props) {
     if(check && !newFilters.includes(filter)){newFilters.push(filter)}
     if(!check && newFilters.includes(filter)){newFilters.splice(newFilters.indexOf(filter), 1)}
     setFilters(newFilters);
-    getData(value);
+    getData(value, filters);
   }
 
   const handleSubmit = (event) => {
-    getData(value);
+    getData(value, filters);
     event.preventDefault();
   }
 
   return (
     <React.StrictMode>
       <ConanHeader/>
+        <br/>
         <Container>
+          <Container><h1 className="text-center">Conan Center Search</h1></Container>
           <Form onSubmit={e => handleSubmit(e)}>
             <Row>
               <Col><ConanSearchBar value={value} handleChange={handleChange} searchButton={props.button}/></Col>
             </Row>
+            <br/>
             <Row>
               <Col xs lg="1">
-              <h4>Licenses</h4>
+              <h2>Licenses</h2>
               <Row><ConanListFilter filters={props.data.licenses} handleFilter={handleFilter}/></Row>
               </Col>
               <Col xs lg="10">
-              <Row><SearchList data={data} name="Packages"/></Row>
+              <Row><SearchList data={data}/></Row>
               </Col>
               <Col xs lg="1">
-              <h4>Filters</h4>
+              <h2>Filters</h2>
               <Row><ConanListFilter filters={props.data.filters} handleFilter={handleFilter}/></Row>
               </Col>
             </Row>
           </Form>
         </Container>
+        <br/>
       <ConanFooter/>
     </React.StrictMode>
 

@@ -2,14 +2,41 @@ import json
 from flask import Flask
 from flask import abort
 from flask import jsonify
+from flask import request
 
 
 app = Flask(__name__)
 
-packages = {'openssl': 'v3.0.3',
-            'zlib': 'v1.21.2',
-            'boost': 'v1.79.0',
-            'opengl': 'system'}
+packages = {
+    'openssl': {
+        'version': 'v3.0.3',
+        'licenses': ['license_1', 'license_2', 'license_3'],
+        'labels': ['filter_1', 'filter_2', 'filter_3'],
+        'downloads': 146,
+        'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam nibh est, suscipit vel convallis eget, euismod a leo. Vivamus sagittis mi non dui iaculis tincidunt. Aliquam metus risus, maximus sed tristique sed, vehicula at neque. Nam nunc metus, vestibulum id iaculis in, sodales et arcu. Nulla lorem enim, hendrerit sit.'
+    },
+    'zlib': {
+        'version': 'v1.21.2',
+        'licenses': ['license_1', 'license_3', 'license_4'],
+        'labels': ['filter_1', 'filter_3', 'filter_4'],
+        'downloads': 1064,
+        'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam nibh est, suscipit vel convallis eget, euismod a leo. Vivamus sagittis mi non dui iaculis tincidunt. Aliquam metus risus, maximus sed tristique sed, vehicula at neque. Nam nunc metus, vestibulum id iaculis in, sodales et arcu. Nulla lorem enim, hendrerit sit.'
+    },
+    'boost': {
+        'version': 'v1.79.0',
+        'licenses': ['license_1', 'license_4', 'license_5'],
+        'labels': ['filter_1', 'filter_4', 'filter_5'],
+        'downloads': 100854,
+        'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam nibh est, suscipit vel convallis eget, euismod a leo. Vivamus sagittis mi non dui iaculis tincidunt. Aliquam metus risus, maximus sed tristique sed, vehicula at neque. Nam nunc metus, vestibulum id iaculis in, sodales et arcu. Nulla lorem enim, hendrerit sit.'
+    },
+    'opengl': {
+        'version': 'system',
+        'licenses': ['license_1', 'license_5', 'license_6'],
+        'labels': ['filter_1', 'filter_5', 'filter_6'],
+        'downloads': 14,
+        'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam nibh est, suscipit vel convallis eget, euismod a leo. Vivamus sagittis mi non dui iaculis tincidunt. Aliquam metus risus, maximus sed tristique sed, vehicula at neque. Nam nunc metus, vestibulum id iaculis in, sodales et arcu. Nulla lorem enim, hendrerit sit.'
+    }
+}
 
 shields_io_md = '''
 # shields.io badges
@@ -167,23 +194,24 @@ def new():
 
 @app.route('/search/<query>')
 def seacrh(query=''):
-    result = {
-        str(i): {
-            'name': k, 'version': packages.get(k)
-            }
-        for i, k in enumerate([name for name in packages.keys() if query in name])
-    }
-    if query == 'all':
-        result = {
-            str(i): {'name': k, 'version': packages.get(k)}
-            for i, k in enumerate([name for name in packages.keys()])
-        }
+    filters = request.args.get('filters','').split(',')
+    result = {}
+
+    for name in packages.keys():
+        element = {'name': name, 'info': packages.get(name)}
+        if (query != 'all') and not(query in name):
+            element = None
+        if filters and filters!=[''] and not all(item in (packages.get(name).get('labels') + packages.get(name).get('licenses')) for item in filters):
+            element = None
+        if element:
+            result[str(len(result))] = element
+
     return cors_response(result)
 
 @app.route('/package/<name>')
 def package(name=''):
     if name in packages.keys():
-        return cors_response({'name':name,'version':packages.get(name)})
+        return cors_response({'name':name, 'info': packages.get(name)})
     else:
         return abort(404)
 
