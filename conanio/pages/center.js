@@ -30,7 +30,7 @@ export async function getServerSideProps(context) {
   Object.keys(popular).forEach(function(key) {popular_list.push(popular[key]);});
   Object.keys(new_packages).forEach(function(key) {new_list.push(new_packages[key]);});
   Object.keys(updated).forEach(function(key) {updated_list.push(updated[key]);});
-  Object.keys(filters).forEach(function(key) {filters_list.push(filters[key]);});
+  Object.keys(filters).forEach(function(key) {filters_list.push({filter: filters[key], checked: false});});
 
   return {
     props: {
@@ -105,6 +105,7 @@ export default function Center(props) {
   return (
     <React.StrictMode>
       <ConanHeader/>
+        <br/>
         <Container>
           <Container><h1 className="text-center">Conan Center</h1></Container>
           <Row>
@@ -116,6 +117,7 @@ export default function Center(props) {
             <Col><CenterList data={props.data.new} name="New Version"/></Col>
           </Row>
         </Container>
+        <br/>
       <ConanFooter/>
     </React.StrictMode>
   )
