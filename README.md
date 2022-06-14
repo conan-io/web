@@ -24,6 +24,7 @@ Run the development webserver with [yarn](https://yarnpkg.com/):
 ```bash
 cd conanio
 yarn install
+yarn test:ci
 yarn dev
 ```
 
