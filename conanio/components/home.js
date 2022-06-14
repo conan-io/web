@@ -24,7 +24,7 @@ function ConanHomeHero() {
                         </div>
                         <div className="training row justify-content-center">
                             <div id="ytPlayer" className="training-video"></div>
-                            <a className="training-text white text-left ml-3" href="https://academy.jfrog.com/path/conan" alt="JFrog Academy" target="_blank">
+                            <a className="training-text white text-left ml-3" href="https://academy.jfrog.com/path/conan" alt="JFrog Academy" rel="noreferrer" target="_blank">
                                 <span>Learn Conan C / C++ </span>
                                 <br/>
                                 <span>Package Management</span>
@@ -186,7 +186,7 @@ function ConanHomeLearnMore() {
                                 platforms and build systems.
                             </p>
                             <a href="https://docs.conan.io/en/latest/introduction.html" className="big-btn bg-blue white" rel="noopener">
-                                Learn More >
+                                Learn More {'>'}
                             </a>
                         </div>
                     </div>
@@ -206,7 +206,7 @@ function ConanHomeLearnMore() {
                             </p>
                             <a href="https://docs.conan.io/en/latest/uploading_packages/artifactory/artifactory_ce.html"
                                className="big-btn bg-blue white" rel="noopener">
-                                Learn More >
+                                Learn More {'>'}
                             </a>
                         </div>
                     </div>
@@ -227,7 +227,7 @@ function ConanHomeLearnMore() {
                                 UI.
                             </p>
                             <a href="https://conan.io/center/" className="big-btn bg-blue white" rel="noopener">
-                                Learn More >
+                                Learn More {'>'}
                             </a>
                         </div>
                     </div>
@@ -254,15 +254,6 @@ function ConanHomeSignUp() {
                                                             className="position-absolute letter lazy"/></div>
                         <span>SIGN ME UP FOR RELEASE UPDATES</span>
                     </div>
-                    <div className="mktoFormWrapper">
-                        <script src="https://leap.jfrog.com/js/forms2/js/forms2.min.js"></script>
-                        <div className="d-flex justify-content-center pt-3">
-                            <form id="mktoForm_1479" className="text-center">
-                            </form>
-
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </div>
