@@ -5,6 +5,7 @@ WORKDIR /python-docker
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
 
+COPY model.py model.py
 COPY app.py app.py
 
 CMD [ "uvicorn", "app:app", "--reload", "--port", "5000"]
