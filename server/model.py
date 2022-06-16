@@ -1,4 +1,4 @@
-packages = {
+packages_list = {
     'openssl': {
         'version': 'v3.0.3',
         'licenses': ['license_1', 'license_2', 'license_3'],
@@ -180,39 +180,98 @@ def seacrh(query='', filters=''):
     filters = filters.split(',')
     result = {}
 
-    for name in packages.keys():
-        element = {'name': name, 'info': packages.get(name)}
+    for name in packages_list.keys():
+        element = {'name': name, 'info': packages_list.get(name)}
         if (query != 'all') and not(query in name):
             element = None
-        if filters and filters!=[''] and not all(item in (packages.get(name).get('labels') + packages.get(name).get('licenses')) for item in filters):
+        if filters and filters!=[''] and not all(item in (packages_list.get(name).get('labels') + packages_list.get(name).get('licenses')) for item in filters):
             element = None
         if element:
             result[str(len(result))] = element
     return result
 
 def package(name=''):
-    if name in packages.keys():
-        return {'name':name, 'info': packages.get(name)}
-    return None
+    if name in packages_list.keys():
+        return {'name':name, 'info': packages_list.get(name)}
 
 def md(name=''):
-    if name in packages.keys():
+    if name in packages_list.keys():
         return {'md': md_use_it}
-    return None
 
 def example(name=''):
-    if name in packages.keys():
+    if name in packages_list.keys():
         return {'md': md_example}
-    return None
 
 def shields_io(name=''):
-    if name in packages.keys():
+    if name in packages_list.keys():
         return {'md': shields_io_md.format(package=name)}
-    return None
 
+def options(name=''):
+    if name in packages_list.keys():
+        return {'md': '''
+# Options
+
+    {
+        'generators': ['cmake', 'cmake_find_package_multi'],
+        'settings': ['os', 'arch', 'compiler', 'build_type'],
+        'options': {
+            'shared': [True, False],
+            'fPIC': [True, False],
+            'cmd': [True, False],
+            'wav': [True, False],
+            'flac': [True, False],
+            'mpg123': [True, False],
+            'mad': [True, False],
+            'ogg': [True, False],
+            'opus': [True, False],
+            'mikmod': [True, False],
+            'modplug': [True, False],
+            'fluidsynth': [True, False],
+            'nativemidi': [True, False],
+            'tinymidi': [True, False]
+        },
+        'default_options': {
+            'shared': False,
+            'fPIC': True,
+            'cmd': False,
+            'wav': True,
+            'flac': True,
+            'mpg123': True,
+            'mad': True,
+            'ogg': True,
+            'opus': True,
+            'mikmod': True,
+            'modplug': True,
+            'fluidsynth': False,
+            'nativemidi': True,
+            'tinymidi': True
+        },
+    }
+        '''}
+
+def packages(name=''):
+    if name in packages_list.keys():
+        return {'md': '''
+# Packages
+
+    {
+        'windows': {
+            'x86_64': ['Visual Studio', 'clang'],
+        },
+        'mac': {
+            'x86_64': ['clang', 'apple-clang'],
+            'x86': ['clang', 'apple-clang']
+        },
+        'linux': {
+            'x86_64': ['gcc', 'clang',],
+            'x86': ['gcc', 'clang',],
+            'arm': ['gcc', 'clang',],
+        },
+    }
+        '''}
 
 def downloads(name=''):
-    if name in packages.keys():
+    if name in packages_list.keys():
         return {
             'downloads': [
               { 'date': '01/22', 'downloads': 156},
