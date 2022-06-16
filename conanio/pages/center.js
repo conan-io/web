@@ -18,11 +18,13 @@ export async function getServerSideProps(context) {
   const res_updated = await fetch(`${encodeURI(process.env.conanioServer)}/updated`);
   const res_new = await fetch(`${encodeURI(process.env.conanioServer)}/new`);
   const res_filters = await fetch(`${encodeURI(process.env.conanioServer)}/filters`);
+  const res_reference_num = await fetch(`${encodeURI(process.env.conanioServer)}/reference/num`);
+
   const popular = await res_popular.json();
   const updated = await res_updated.json();
   const new_packages = await res_new.json();
   const filters = await res_filters.json();
-
+  const reference_num = await res_reference_num.json();
   const popular_list = [];
   const new_list = [];
   const updated_list = [];
@@ -39,6 +41,7 @@ export async function getServerSideProps(context) {
         updated: updated_list,
         new: new_list,
         filters: filters_list,
+        reference_num: reference_num.references,
       },
     },
   }
@@ -78,7 +81,7 @@ function CenterSearchBar(props) {
     <Form onSubmit={e => handleSubmit(e)}>
       <Row>
         <Col>
-          <ConanSearchBar value={value} handleChange={handleChange} searchButton={props.button}/>
+          <ConanSearchBar value={value} handleChange={handleChange} searchButton={props.button} data_to_show={props.data_to_show}/>
         </Col>
         <Col xs lg="4">
           <Row>
@@ -95,13 +98,14 @@ function CenterList(props) {
     <div className="text-center">
       <h2>{props.name}</h2>
       <ListGroup>
-        {props.data.map((info) => (<ListGroup.Item key={info.name}><Link href={"/center/" + info.name}><a>{info.name}/{info.version}</a></Link></ListGroup.Item>))}
+        {props.data.map((info) => (<ListGroup.Item key={info.name}><Link href={"/center/" + info.name}><a>{info.name}{props.full_name && "/"+info.version}</a></Link></ListGroup.Item>))}
       </ListGroup>
     </div>
   )
 }
 
 export default function Center(props) {
+  console.log(props)
   return (
     <React.StrictMode>
       <ConanHeader/>
@@ -109,12 +113,12 @@ export default function Center(props) {
         <Container>
           <Container><h1 className="text-center">Conan Center</h1></Container>
           <Row>
-            <CenterSearchBar filters={props.data.filters}/>
+            <CenterSearchBar filters={props.data.filters} data_to_show={"Number of references: "+props.data.reference_num}/>
           </Row>
           <Row>
-            <Col><CenterList data={props.data.popular} name="Popular Package"/></Col>
-            <Col><CenterList data={props.data.updated} name="Just Updated"/></Col>
-            <Col><CenterList data={props.data.new} name="New Version"/></Col>
+            <Col><CenterList data={props.data.popular} name="Popular Package" full_name={true}/></Col>
+            <Col><CenterList data={props.data.updated} name="Just Updated" full_name={false}/></Col>
+            <Col><CenterList data={props.data.new} name="New Version" full_name={true}/></Col>
           </Row>
         </Container>
         <br/>

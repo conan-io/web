@@ -37,6 +37,7 @@ export function ConanSearchBar(props) {
   return (
     <div>
       <Row><Form.Control type="text" value={props.value} onChange={(e) => props.handleChange(e.target.value)}/></Row>
+      {props.data_to_show && <Row lg="4">{props.data_to_show}</Row>}
       {props.searchButton && <Row lg="4"><Button variant="primary" type="submit">Search</Button></Row>}
     </div>
   )

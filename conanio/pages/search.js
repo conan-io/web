@@ -147,7 +147,7 @@ export default function ConanSearch(props) {
           <Container><h1 className="text-center">Conan Center Search</h1></Container>
           <Form onSubmit={e => handleSubmit(e)}>
             <Row>
-              <Col><ConanSearchBar value={value} handleChange={handleChange} searchButton={props.button}/></Col>
+              <Col><ConanSearchBar value={value} handleChange={handleChange} searchButton={props.button} data_to_show={"Number of references: "+data.length}/></Col>
             </Row>
             <br/>
             <Row>
