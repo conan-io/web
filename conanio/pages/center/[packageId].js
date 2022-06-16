@@ -12,27 +12,19 @@ import ReactMarkdown from 'react-markdown';
 import ConanHeader from '../../components/header';
 import ConanFooter from '../../components/footer';
 import {LineChart, XAxis, Tooltip, CartesianGrid, Line} from 'recharts';
+import {get_from_server} from '../../components/utils';
 
 export async function getServerSideProps(context) {
-  const res = await fetch(`${encodeURI(process.env.conanioServer)}/package/${encodeURIComponent(context.params.packageId.toLowerCase())}`);
-  const res_md = await fetch(`${encodeURI(process.env.conanioServer)}/package/${encodeURIComponent(context.params.packageId.toLowerCase())}/md`);
-  const res_example = await fetch(`${encodeURI(process.env.conanioServer)}/package/${encodeURIComponent(context.params.packageId.toLowerCase())}/example`);
-  const res_shields_io = await fetch(`${encodeURI(process.env.conanioServer)}/package/${encodeURIComponent(context.params.packageId.toLowerCase())}/shields_io`);
-  const res_downloads = await fetch(`${encodeURI(process.env.conanioServer)}/package/${encodeURIComponent(context.params.packageId.toLowerCase())}/downloads`);
-  const data = await res.json();
-  const md = await res_md.json();
-  const example = await res_example.json();
-  const shields_io = await res_shields_io.json();
-  const downloads = await res_downloads.json();
-
   return {
     props: {
-      data: data,
-      downloads: downloads.downloads,
+      data: await get_from_server(`package/${encodeURIComponent(context.params.packageId.toLowerCase())}`),
+      downloads: await get_from_server(`package/${encodeURIComponent(context.params.packageId.toLowerCase())}/downloads`),
       tabs: {
-        md: md,
-        example: example,
-        shields_io: shields_io,
+        md: await get_from_server(`package/${encodeURIComponent(context.params.packageId.toLowerCase())}/md`),
+        example: await get_from_server(`package/${encodeURIComponent(context.params.packageId.toLowerCase())}/example`),
+        options: await get_from_server(`package/${encodeURIComponent(context.params.packageId.toLowerCase())}/options`),
+        packages: await get_from_server(`package/${encodeURIComponent(context.params.packageId.toLowerCase())}/packages`),
+        shields_io: await get_from_server(`package/${encodeURIComponent(context.params.packageId.toLowerCase())}/shields_io`),
       },
       packageId: context.params.packageId,
     },
@@ -67,7 +59,7 @@ export default function ConanPackage(props) {
         </Row>
         </Col>
         <Col xs lg="4">
-          <LineChart width={400} height={200} data={props.downloads} margin={{ top: 20, right: 20, left: 20, bottom: 20 }}>
+          <LineChart width={400} height={200} data={props.downloads.downloads} margin={{ top: 20, right: 20, left: 20, bottom: 20 }}>
             <XAxis dataKey="date" />
             <Tooltip />
             <CartesianGrid stroke="#f5f5f5" />
@@ -78,9 +70,9 @@ export default function ConanPackage(props) {
         <Row>
           <Tabs defaultActiveKey="use-it" id="uncontrolled">
             <Tab eventKey="use-it" title="Use it"><br/><ReactMarkdown>{props.tabs.md.md}</ReactMarkdown></Tab>
-            <Tab eventKey="packages" title="Packages"><br/></Tab>
+            <Tab eventKey="packages" title="Packages"><br/><ReactMarkdown>{props.tabs.packages.md}</ReactMarkdown></Tab>
             <Tab eventKey="examples" title="Examples"><br/><ReactMarkdown>{props.tabs.example.md}</ReactMarkdown></Tab>
-            <Tab eventKey="options" title="Options"><br/></Tab>
+            <Tab eventKey="options" title="Options"><br/><ReactMarkdown>{props.tabs.options.md}</ReactMarkdown></Tab>
             <Tab eventKey="badges" title="Badges"><br/><ReactMarkdown>{props.tabs.shields_io.md}</ReactMarkdown></Tab>
           </Tabs>
         </Row>

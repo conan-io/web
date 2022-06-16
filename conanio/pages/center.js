@@ -12,35 +12,19 @@ import { ConanListFilter, ConanSearchBar } from "../components/searchbar";
 import ConanHeader from '../components/header';
 import ConanFooter from '../components/footer';
 import useSWR from 'swr';
+import {get_from_server, get_from_server_list} from '../components/utils';
 
 export async function getServerSideProps(context) {
-  const res_popular = await fetch(`${encodeURI(process.env.conanioServer)}/popular`);
-  const res_updated = await fetch(`${encodeURI(process.env.conanioServer)}/updated`);
-  const res_new = await fetch(`${encodeURI(process.env.conanioServer)}/new`);
-  const res_filters = await fetch(`${encodeURI(process.env.conanioServer)}/filters`);
-  const res_reference_num = await fetch(`${encodeURI(process.env.conanioServer)}/reference/num`);
-
-  const popular = await res_popular.json();
-  const updated = await res_updated.json();
-  const new_packages = await res_new.json();
-  const filters = await res_filters.json();
-  const reference_num = await res_reference_num.json();
-  const popular_list = [];
-  const new_list = [];
-  const updated_list = [];
-  const filters_list = [];
-  Object.keys(popular).forEach(function(key) {popular_list.push(popular[key]);});
-  Object.keys(new_packages).forEach(function(key) {new_list.push(new_packages[key]);});
-  Object.keys(updated).forEach(function(key) {updated_list.push(updated[key]);});
-  Object.keys(filters).forEach(function(key) {filters_list.push({filter: filters[key], checked: false});});
+  const reference_num = await get_from_server('reference/num');
+  const filters_list = await get_from_server_list('filters');
 
   return {
     props: {
       data: {
-        popular: popular_list,
-        updated: updated_list,
-        new: new_list,
-        filters: filters_list,
+        popular: await get_from_server_list('popular'),
+        updated: await get_from_server_list('updated'),
+        new: await get_from_server_list('new'),
+        filters: filters_list.map(elem => {return {filter: elem, checked: false};}),
         reference_num: reference_num.references,
       },
     },
@@ -105,7 +89,6 @@ function CenterList(props) {
 }
 
 export default function Center(props) {
-  console.log(props)
   return (
     <React.StrictMode>
       <ConanHeader/>

@@ -11,6 +11,8 @@ from model import (
     md,
     example,
     shields_io,
+    options,
+    packages,
     downloads,
     reference_num,
 )
@@ -84,6 +86,19 @@ async def get_shields_io(name=''):
         return result
     raise HTTPException(status_code=404, detail="Item not found")
 
+@app.get('/package/{name}/options')
+async def get_options(name=''):
+    result = options(name)
+    if result:
+        return result
+    raise HTTPException(status_code=404, detail="Item not found")
+
+@app.get('/package/{name}/packages')
+async def get_packages(name=''):
+        result = packages(name)
+        if result:
+            return result
+        raise HTTPException(status_code=404, detail="Item not found")
 
 @app.get('/package/{name}/downloads')
 async def get_downloads(name=''):

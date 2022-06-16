@@ -12,34 +12,27 @@ import Link from 'next/link';
 import ConanHeader from '../components/header';
 import ConanFooter from '../components/footer';
 import { useRouter } from 'next/router';
+import {get_from_server_list, get_from_local_list} from '../components/utils';
 
 
 export async function getServerSideProps(context) {
   let { defaultValue, defaultFilters } = context.query;
-  defaultFilters = defaultFilters || [];
-  let value = defaultValue || 'all';
-  const res_licenses = await fetch(`${encodeURI(process.env.conanioServer)}/licenses`);
-  const res_filters = await fetch(`${encodeURI(process.env.conanioServer)}/filters`);
-  const res_packages = await fetch(`${encodeURI(process.env.conanioServer)}/search/${encodeURIComponent(value.toLowerCase())}?filters=${encodeURIComponent(defaultFilters)}`);
-  const licenses = await res_licenses.json();
-  const filters = await res_filters.json();
-  const packages = await res_packages.json();
 
-  const licenses_list = [];
-  const filters_list = [];
-  const packages_list = [];
-  Object.keys(licenses).forEach(function(key) {licenses_list.push({filter: licenses[key], checked: false});});
-  Object.keys(filters).forEach(function(key) {filters_list.push({filter: filters[key], checked: defaultFilters.includes(filters[key])});});
-  Object.keys(packages).forEach(function(key) {packages_list.push(packages[key]);});
+  let value = defaultValue || 'all';
+  defaultFilters = defaultFilters || [];
+  defaultValue = defaultValue || '';
+
+  const filters_list = await get_from_server_list('filters');
+  const licenses_list = await get_from_server_list('licenses');
 
   return {
     props: {
       data: {
-        licenses: licenses_list,
-        filters: filters_list,
-        defaultValue: defaultValue || '',
-        defaultFilters: defaultFilters || [],
-        packages: packages_list,
+        licenses: licenses_list.map(elem => {return {filter: elem, checked: false};}),
+        filters: filters_list.map(elem => {return {filter: elem, checked: defaultFilters.includes(elem)};}),
+        defaultValue: defaultValue,
+        defaultFilters: defaultFilters,
+        packages: await get_from_server_list(`search/${encodeURIComponent(value.toLowerCase())}?filters=${encodeURIComponent(defaultFilters)}`),
       },
     },
   }
@@ -101,19 +94,8 @@ export default function ConanSearch(props) {
   const getData = async (value, filterlist) => {
     try {
       value = value || 'all';
-      const response = await fetch(`/api/search/${encodeURIComponent((value).toLowerCase())}?filters=${encodeURIComponent(filterlist)}`);
-      if (!response.ok) {
-        throw new Error(
-          `This is an HTTP error: The status is ${response.status}`
-        );
-      }
-      let actualData = await response.json();
-      var packages = [];
-      Object.keys(actualData).forEach(function(key) {
-        packages.push(actualData[key]);
-      });
+      const packages = await get_from_local_list(`search/${encodeURIComponent(value.toLowerCase())}?filters=${encodeURIComponent(filterlist)}`);
       setData(packages);
-      setError(null);
     } catch(err) {
       setError(err.message);
       setData(null);
@@ -138,7 +120,7 @@ export default function ConanSearch(props) {
     getData(value, filters);
     event.preventDefault();
   }
-
+  console.log(data)
   return (
     <React.StrictMode>
       <ConanHeader/>
