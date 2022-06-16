@@ -1,11 +1,21 @@
-import json
-from flask import Flask
-from flask import abort
-from flask import jsonify
-from flask import request
+from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 
 
-app = Flask(__name__)
+ENABLE_CORS = False
+
+app = FastAPI()
+
+if ENABLE_CORS:
+    origins = ["*"]
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+)
+
 
 packages = {
     'openssl': {
@@ -155,46 +165,44 @@ cum est, laborant? Per Thesea nectare ille signaque conligit fata [Aeolon
 quinque](http://votagestum.io/illa-novissima) Maeandri siderea rogata.
 '''
 
-def cors_response(response):
-    response = jsonify(response)
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    return response
+@app.get('/licenses')
+async def licenses():
+    return {'1':'license_1',
+            '2':'license_2',
+            '3':'license_3',
+            '4':'license_4',
+            '5':'license_5',
+            '6':'license_6'}
 
-@app.route('/licenses')
-def licenses():
-    return cors_response({'1':'license_1',
-                          '2':'license_2',
-                          '3':'license_3',
-                          '4':'license_4',
-                          '5':'license_5',
-                          '6':'license_6'})
+@app.get('/filters')
+async def filters():
+    return {'1':'filter_1',
+            '2':'filter_2',
+            '3':'filter_3',
+            '4':'filter_4',
+            '5':'filter_5',
+            '6':'filter_6'}
 
-@app.route('/filters')
-def filters():
-    return cors_response({'1':'filter_1',
-                          '2':'filter_2',
-                          '3':'filter_3',
-                          '4':'filter_4',
-                          '5':'filter_5',
-                          '6':'filter_6'})
-@app.route('/popular')
-def popular():
-    return cors_response({'0':{'name':'openSSL','version':'v3.0.3'},
-                          '1':{'name':'zlib','version':'v1.21.2'},
-                          '2':{'name':'boost','version':'v1.79.0'},
-                          '3':{'name':'OpenGL','version':'system'}})
-@app.route('/updated')
-def updated():
-    return cors_response({'0':{'name':'openSSL','version':'v3.0.3'},
-                          '1':{'name':'zlib','version':'v1.21.2'}})
-@app.route('/new')
-def new():
-    return cors_response({'1':{'name':'boost','version':'v1.79.0'},
-                          '2':{'name':'OpenGL','version':'system'}})
+@app.get('/popular')
+async def popular():
+    return {'0':{'name':'openSSL','version':'v3.0.3'},
+            '1':{'name':'zlib','version':'v1.21.2'},
+            '2':{'name':'boost','version':'v1.79.0'},
+            '3':{'name':'OpenGL','version':'system'}}
 
-@app.route('/search/<query>')
-def seacrh(query=''):
-    filters = request.args.get('filters','').split(',')
+@app.get('/updated')
+async def updated():
+    return {'0':{'name':'openSSL','version':'v3.0.3'},
+            '1':{'name':'zlib','version':'v1.21.2'}}
+
+@app.get('/new')
+async def new():
+    return {'1':{'name':'boost','version':'v1.79.0'},
+            '2':{'name':'OpenGL','version':'system'}}
+
+@app.get('/search/{query}')
+async def seacrh(query='', filters=''):
+    filters = filters.split(',')
     result = {}
 
     for name in packages.keys():
@@ -206,36 +214,36 @@ def seacrh(query=''):
         if element:
             result[str(len(result))] = element
 
-    return cors_response(result)
+    return result
 
-@app.route('/package/<name>')
-def package(name=''):
+@app.get('/package/{name}')
+async def package(name=''):
     if name in packages.keys():
-        return cors_response({'name':name, 'info': packages.get(name)})
+        return {'name':name, 'info': packages.get(name)}
     else:
-        return abort(404)
+        raise HTTPException(status_code=404, detail="Item not found")
 
-@app.route('/package/<name>/md')
-def md(name=''):
+@app.get('/package/{name}/md')
+async def md(name=''):
     if name in packages.keys():
-        return cors_response({'md': md_use_it})
+        return {'md': md_use_it}
     else:
-        return abort(404)
+        raise HTTPException(status_code=404, detail="Item not found")
 
-@app.route('/package/<name>/example')
-def example(name=''):
+@app.get('/package/{name}/example')
+async def example(name=''):
     if name in packages.keys():
-        return cors_response({'md': md_example})
+        return {'md': md_example}
     else:
-        return abort(404)
+        raise HTTPException(status_code=404, detail="Item not found")
 
-@app.route('/package/<name>/shields_io')
-def shields_io(name=''):
+@app.get('/package/{name}/shields_io')
+async def shields_io(name=''):
     if name in packages.keys():
-        return cors_response({'md': shields_io_md.format(package=name)})
+        return {'md': shields_io_md.format(package=name)}
     else:
-        return abort(404)
+        raise HTTPException(status_code=404, detail="Item not found")
 
-
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', port='5000')
+@app.get("/")
+async def root():
+    return {}
