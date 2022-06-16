@@ -3,7 +3,7 @@ Conan website, including home and ConanCenter
 
 ## Test server
 
-**server folder:** Flask test server.
+**server folder:** FastAPI server.
 
 Run server:
 
@@ -12,7 +12,7 @@ cd server
 python3 -m venv venv
 source venv/bin/activate
 pip isntall -r requirements.txt
-python server.py
+uvicorn app:app --reload --port 5000
 ```
 
 ## Webapp
