@@ -244,6 +244,26 @@ async def shields_io(name=''):
     else:
         raise HTTPException(status_code=404, detail="Item not found")
 
+
+@app.get('/package/{name}/downloads')
+async def downloads(name=''):
+    if name in packages.keys():
+        return {
+            'downloads': [
+              { 'date': '01/22', 'downloads': 156},
+              { 'date': '02/22', 'downloads': 56},
+              { 'date': '03/22', 'downloads': 84},
+              { 'date': '04/22', 'downloads': 298},
+              { 'date': '05/22', 'downloads': 568},
+              { 'date': '06/22', 'downloads': 146},
+            ]
+        }
+
+@app.get('/reference/num')
+async def reference_num(name=''):
+    return {'references': 10958}
+
+
 @app.get("/")
 async def root():
     return {}
