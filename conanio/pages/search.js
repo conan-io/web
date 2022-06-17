@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from "react";
+import { SSRProvider } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -122,32 +123,34 @@ export default function ConanSearch(props) {
   }
   return (
     <React.StrictMode>
-      <ConanHeader/>
-        <br/>
-        <Container>
-          <Container><h1 className="text-center">Conan Center Search</h1></Container>
-          <Form onSubmit={e => handleSubmit(e)}>
-            <Row>
-              <Col><ConanSearchBar value={value} handleChange={handleChange} searchButton={props.button} data_to_show={"Number of references: "+data.length}/></Col>
-            </Row>
-            <br/>
-            <Row>
-              <Col xs lg="1">
-              <h2>Licenses</h2>
-              <Row><ConanListFilter filters={props.data.licenses} handleFilter={handleFilter}/></Row>
-              </Col>
-              <Col xs lg="10">
-              <Row><SearchList data={data}/></Row>
-              </Col>
-              <Col xs lg="1">
-              <h2>Filters</h2>
-              <Row><ConanListFilter filters={props.data.filters} handleFilter={handleFilter}/></Row>
-              </Col>
-            </Row>
-          </Form>
-        </Container>
-        <br/>
-      <ConanFooter/>
+      <SSRProvider>
+        <ConanHeader/>
+          <br/>
+          <Container>
+            <Container><h1 className="text-center">Conan Center Search</h1></Container>
+            <Form onSubmit={e => handleSubmit(e)}>
+              <Row>
+                <Col><ConanSearchBar value={value} handleChange={handleChange} searchButton={props.button} data_to_show={"Number of references: "+data.length}/></Col>
+              </Row>
+              <br/>
+              <Row>
+                <Col xs lg="1">
+                <h2>Licenses</h2>
+                <Row><ConanListFilter filters={props.data.licenses} handleFilter={handleFilter}/></Row>
+                </Col>
+                <Col xs lg="10">
+                <Row><SearchList data={data}/></Row>
+                </Col>
+                <Col xs lg="1">
+                <h2>Filters</h2>
+                <Row><ConanListFilter filters={props.data.filters} handleFilter={handleFilter}/></Row>
+                </Col>
+              </Row>
+            </Form>
+          </Container>
+          <br/>
+        <ConanFooter/>
+      </SSRProvider>
     </React.StrictMode>
 
   );
