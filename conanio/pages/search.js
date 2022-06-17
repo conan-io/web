@@ -11,8 +11,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Link from 'next/link';
 import ConanHeader from '../components/header';
 import ConanFooter from '../components/footer';
-import { useRouter } from 'next/router';
-import {get_from_server_list, get_from_local_list} from '../components/utils';
+import {get_json_list, get_urls} from '../service/service';
 
 
 export async function getServerSideProps(context) {
@@ -21,9 +20,9 @@ export async function getServerSideProps(context) {
   let value = defaultValue || 'all';
   defaultFilters = defaultFilters || [];
   defaultValue = defaultValue || '';
-
-  const filters_list = await get_from_server_list('filters');
-  const licenses_list = await get_from_server_list('licenses');
+  let urls = get_urls({search: value, filters: defaultFilters})
+  const filters_list = await get_json_list(urls.filters, urls.api.private);
+  const licenses_list = await get_json_list(urls.licenses, urls.api.private);
 
   return {
     props: {
@@ -32,7 +31,7 @@ export async function getServerSideProps(context) {
         filters: filters_list.map(elem => {return {filter: elem, checked: defaultFilters.includes(elem)};}),
         defaultValue: defaultValue,
         defaultFilters: defaultFilters,
-        packages: await get_from_server_list(`search/${encodeURIComponent(value.toLowerCase())}?filters=${encodeURIComponent(defaultFilters)}`),
+        packages: await get_json_list(urls.search.package, urls.api.private),
       },
     },
   }
@@ -84,7 +83,6 @@ function SearchList(props) {
 }
 
 export default function ConanSearch(props) {
-  const router = useRouter();
   const [value, setValue] = useState(props.data.defaultValue);
   const [filters, setFilters] = useState(props.data.defaultFilters);
   const [allFilters, setAllFilters] = useState(null);
@@ -94,7 +92,9 @@ export default function ConanSearch(props) {
   const getData = async (value, filterlist) => {
     try {
       value = value || 'all';
-      const packages = await get_from_local_list(`search/${encodeURIComponent(value.toLowerCase())}?filters=${encodeURIComponent(filterlist)}`);
+      let urls = get_urls({search: value, filters: filterlist})
+      console.log(urls)
+      const packages = await get_json_list(urls.search.package, urls.api.public);
       setData(packages);
     } catch(err) {
       setError(err.message);
@@ -120,7 +120,6 @@ export default function ConanSearch(props) {
     getData(value, filters);
     event.preventDefault();
   }
-  console.log(data)
   return (
     <React.StrictMode>
       <ConanHeader/>
