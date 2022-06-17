@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { SSRProvider } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -92,21 +93,23 @@ function CenterList(props) {
 export default function Center(props) {
   return (
     <React.StrictMode>
-      <ConanHeader/>
-        <br/>
-        <Container>
-          <Container><h1 className="text-center">Conan Center</h1></Container>
-          <Row>
-            <CenterSearchBar filters={props.data.filters} data_to_show={"Number of references: "+props.data.reference_num}/>
-          </Row>
-          <Row>
-            <Col><CenterList data={props.data.popular} name="Popular Package" full_name={true}/></Col>
-            <Col><CenterList data={props.data.updated} name="Just Updated" full_name={false}/></Col>
-            <Col><CenterList data={props.data.new} name="New Version" full_name={true}/></Col>
-          </Row>
-        </Container>
-        <br/>
-      <ConanFooter/>
+      <SSRProvider>
+        <ConanHeader/>
+          <br/>
+          <Container>
+            <Container><h1 className="text-center">Conan Center</h1></Container>
+            <Row>
+              <CenterSearchBar filters={props.data.filters} data_to_show={"Number of references: "+props.data.reference_num}/>
+            </Row>
+            <Row>
+              <Col><CenterList data={props.data.popular} name="Popular Package" full_name={true}/></Col>
+              <Col><CenterList data={props.data.updated} name="Just Updated" full_name={false}/></Col>
+              <Col><CenterList data={props.data.new} name="New Version" full_name={true}/></Col>
+            </Row>
+          </Container>
+          <br/>
+        <ConanFooter/>
+      </SSRProvider>
     </React.StrictMode>
   )
 }
