@@ -176,7 +176,8 @@ def new():
     return {'1':{'name':'boost','version':'v1.79.0'},
             '2':{'name':'OpenGL','version':'system'}}
 
-def seacrh(query='', filters=''):
+def search(query='', filters=''):
+    print(filters)
     filters = filters.split(',')
     result = {}
 

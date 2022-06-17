@@ -12,19 +12,20 @@ import ReactMarkdown from 'react-markdown';
 import ConanHeader from '../../components/header';
 import ConanFooter from '../../components/footer';
 import {LineChart, XAxis, Tooltip, CartesianGrid, Line} from 'recharts';
-import {get_from_server} from '../../components/utils';
+import {get_json, get_urls} from '../../service/service';
 
 export async function getServerSideProps(context) {
+  let urls = get_urls({packageId: context.params.packageId})
   return {
     props: {
-      data: await get_from_server(`package/${encodeURIComponent(context.params.packageId.toLowerCase())}`),
-      downloads: await get_from_server(`package/${encodeURIComponent(context.params.packageId.toLowerCase())}/downloads`),
+      data: await get_json(urls.package.info, urls.api.private),
+      downloads: await get_json(urls.package.downloads, urls.api.private),
       tabs: {
-        md: await get_from_server(`package/${encodeURIComponent(context.params.packageId.toLowerCase())}/md`),
-        example: await get_from_server(`package/${encodeURIComponent(context.params.packageId.toLowerCase())}/example`),
-        options: await get_from_server(`package/${encodeURIComponent(context.params.packageId.toLowerCase())}/options`),
-        packages: await get_from_server(`package/${encodeURIComponent(context.params.packageId.toLowerCase())}/packages`),
-        shields_io: await get_from_server(`package/${encodeURIComponent(context.params.packageId.toLowerCase())}/shields_io`),
+        md: await get_json(urls.package.md, urls.api.private),
+        example: await get_json(urls.package.example, urls.api.private),
+        options: await get_json(urls.package.options, urls.api.private),
+        packages: await get_json(urls.package.packages, urls.api.private),
+        shields_io: await get_json(urls.package.shields_io, urls.api.private),
       },
       packageId: context.params.packageId,
     },
@@ -32,7 +33,6 @@ export async function getServerSideProps(context) {
 }
 
 export default function ConanPackage(props) {
-  console.log(props)
   if (!props.data) return <div>Loading...</div>
   return (
     <React.StrictMode>

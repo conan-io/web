@@ -1,12 +1,13 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from urllib.parse import unquote
 from model import (
     licenses,
     filters,
     popular,
     updated,
     new,
-    seacrh,
+    search,
     package,
     md,
     example,
@@ -55,8 +56,8 @@ async def get_new():
     return new()
 
 @app.get('/search/{query}')
-async def get_seacrh(query='', filters=''):
-    return seacrh(query, filters)
+async def get_search(query='', filters=''):
+    return search(query, unquote(filters))
 
 @app.get('/package/{name}')
 async def get_package(name=''):

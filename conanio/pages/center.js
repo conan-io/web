@@ -12,18 +12,19 @@ import { ConanListFilter, ConanSearchBar } from "../components/searchbar";
 import ConanHeader from '../components/header';
 import ConanFooter from '../components/footer';
 import useSWR from 'swr';
-import {get_from_server, get_from_server_list} from '../components/utils';
+import {get_json, get_json_list, get_urls} from '../service/service';
 
 export async function getServerSideProps(context) {
-  const reference_num = await get_from_server('reference/num');
-  const filters_list = await get_from_server_list('filters');
+  let urls = get_urls()
+  const reference_num = await get_json(urls.reference.num, urls.api.private);
+  const filters_list = await get_json_list(urls.filters, urls.api.private);
 
   return {
     props: {
       data: {
-        popular: await get_from_server_list('popular'),
-        updated: await get_from_server_list('updated'),
-        new: await get_from_server_list('new'),
+        popular: await get_json_list(urls.popular, urls.api.private),
+        updated: await get_json_list(urls.updated, urls.api.private),
+        new: await get_json_list(urls.new, urls.api.private),
         filters: filters_list.map(elem => {return {filter: elem, checked: false};}),
         reference_num: reference_num.references,
       },
