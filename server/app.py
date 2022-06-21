@@ -21,7 +21,9 @@ from model import (
 
 ENABLE_CORS = False
 
+
 app = FastAPI()
+
 
 if ENABLE_CORS:
     origins = ["*"]
@@ -32,6 +34,7 @@ if ENABLE_CORS:
         allow_methods=["*"],
         allow_headers=["*"],
 )
+
 
 @app.get('/licenses')
 async def get_licenses():
@@ -47,17 +50,21 @@ async def get_filters():
 async def get_popular():
     return popular()
 
+
 @app.get('/updated')
 async def get_updated():
     return updated()
+
 
 @app.get('/new')
 async def get_new():
     return new()
 
+
 @app.get('/search/{query}')
 async def get_search(query='', filters=''):
     return search(query, unquote(filters))
+
 
 @app.get('/package/{name}')
 async def get_package(name=''):
@@ -66,12 +73,14 @@ async def get_package(name=''):
         return result
     raise HTTPException(status_code=404, detail="Item not found")
 
+
 @app.get('/package/{name}/md')
 async def get_md(name=''):
     result = md(name)
     if result:
         return result
     raise HTTPException(status_code=404, detail="Item not found")
+
 
 @app.get('/package/{name}/example')
 async def get_example(name=''):
@@ -80,12 +89,14 @@ async def get_example(name=''):
         return result
     raise HTTPException(status_code=404, detail="Item not found")
 
+
 @app.get('/package/{name}/shields_io')
 async def get_shields_io(name=''):
     result = shields_io(name)
     if result:
         return result
     raise HTTPException(status_code=404, detail="Item not found")
+
 
 @app.get('/package/{name}/options')
 async def get_options(name=''):
@@ -94,12 +105,14 @@ async def get_options(name=''):
         return result
     raise HTTPException(status_code=404, detail="Item not found")
 
+
 @app.get('/package/{name}/packages')
 async def get_packages(name=''):
         result = packages(name)
         if result:
             return result
         raise HTTPException(status_code=404, detail="Item not found")
+
 
 @app.get('/package/{name}/downloads')
 async def get_downloads(name=''):
@@ -108,9 +121,10 @@ async def get_downloads(name=''):
             return result
         raise HTTPException(status_code=404, detail="Item not found")
 
+
 @app.get('/reference/num')
 async def get_reference_num(name=''):
-    return {'references': 10958}
+    return reference_num()
 
 
 @app.get("/")
