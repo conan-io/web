@@ -1,33 +1,257 @@
-packages_list = {
-    'openssl': {
-        'version': 'v3.0.3',
-        'licenses': ['license_1', 'license_2', 'license_3'],
-        'labels': ['filter_1', 'filter_2', 'filter_3'],
-        'downloads': 146,
-        'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam nibh est, suscipit vel convallis eget, euismod a leo. Vivamus sagittis mi non dui iaculis tincidunt. Aliquam metus risus, maximus sed tristique sed, vehicula at neque. Nam nunc metus, vestibulum id iaculis in, sodales et arcu. Nulla lorem enim, hendrerit sit.'
+import traceback
+from db import SessionLocal
+from db import manager
+
+
+def licenses():
+    try:
+        session = SessionLocal()
+        result = manager.get_licenses(session)
+        return {str(i): license for i, license in enumerate(result)}
+    except:
+        traceback.print_exc()
+    finally:
+        session.close()
+
+
+def filters():
+    try:
+        session = SessionLocal()
+        result = manager.get_topics(session)
+        return {str(i): topic for i, topic in enumerate(result)}
+    except:
+        traceback.print_exc()
+    finally:
+        session.close()
+
+
+def popular():
+    try:
+        session = SessionLocal()
+        result = manager.get_popular_conan_references(session, limit=10)
+        return {str(i): {'name': reference.name, 'version': reference.version} for i, reference in enumerate(result)}
+    except:
+        traceback.print_exc()
+    finally:
+        session.close()
+
+
+def updated():
+    try:
+        session = SessionLocal()
+        result = manager.get_last_updated_conan_references(session, limit=10)
+        return {str(i): {'name': reference.name, 'version': reference.version} for i, reference in enumerate(result)}
+    except:
+        traceback.print_exc()
+    finally:
+        session.close()
+
+
+def new():
+    try:
+        session = SessionLocal()
+        result = manager.get_last_created_conan_references(session, limit=10)
+        return {str(i): {'name': reference.name, 'version': reference.version} for i, reference in enumerate(result)}
+    except:
+        traceback.print_exc()
+    finally:
+        session.close()
+
+
+def search(query=None, filters=''):
+    try:
+        session = SessionLocal()
+        filters = filters.split(',')
+
+        query = None if query=='all' else query
+        filters = None if filters==[''] else filters
+
+        result = manager.get_conan_references_filtered(session, query, filters, filters)
+
+        return {
+            str(i): {
+                'name': reference.name,
+                'info':{
+                    'version': reference.version,
+                    'licenses': manager.get_licenses(session, ids=[l.license_id for l in reference.licenses]),
+                    'labels': manager.get_topics(session, ids=[t.topic_id for t in reference.topics]),
+                    'downloads': reference.downloadcounts[0].count,
+                    'description': reference.reciperevisions[0].description,
+                }
+            } for i, reference in enumerate(result)
+        }
+    except:
+        traceback.print_exc()
+    finally:
+        session.close()
+
+
+def package(name=''):
+    try:
+        session = SessionLocal()
+        result = manager.get_conan_reference_by_name(session, name)
+
+        return {
+            'name': result.name,
+            'info':{
+                'version': result.version,
+                'licenses': manager.get_licenses(session, ids=[l.license_id for l in result.licenses]),
+                'labels': manager.get_topics(session, ids=[t.topic_id for t in result.topics]),
+                'downloads': result.downloadcounts[0].count,
+                'description': result.reciperevisions[0].description,
+                }
+        }
+    except:
+        traceback.print_exc()
+    finally:
+        session.close()
+
+
+def md(name=''):
+    try:
+        session = SessionLocal()
+        if manager.get_conan_reference_by_name(session, name):
+            return {'md': md_use_it}
+    except:
+        traceback.print_exc()
+    finally:
+        session.close()
+
+
+def example(name=''):
+    try:
+        session = SessionLocal()
+        if manager.get_conan_reference_by_name(session, name):
+            return {'md': md_example}
+    except:
+        traceback.print_exc()
+    finally:
+        session.close()
+
+
+def shields_io(name=''):
+    try:
+        session = SessionLocal()
+        if manager.get_conan_reference_by_name(session, name):
+            return {'md': shields_io_md.format(package=name)}
+    except:
+        traceback.print_exc()
+    finally:
+        session.close()
+
+
+def options(name=''):
+    try:
+        session = SessionLocal()
+        if manager.get_conan_reference_by_name(session, name):
+            return {'md': options_md}
+    except:
+        traceback.print_exc()
+    finally:
+        session.close()
+
+
+def packages(name=''):
+    try:
+        session = SessionLocal()
+        if manager.get_conan_reference_by_name(session, name):
+            return {'md': packages_md}
+    except:
+        traceback.print_exc()
+    finally:
+        session.close()
+
+
+def downloads(name=''):
+    try:
+        session = SessionLocal()
+        result = manager.get_conan_reference_by_name(session, name)
+        if result:
+            return {
+                'downloads': [{'date': d.date, 'downloads': d.count} for d in reversed(result.downloadcounts)]
+            }
+    except:
+        traceback.print_exc()
+    finally:
+        session.close()
+
+
+def reference_num(query=None, filters=''):
+    try:
+        session = SessionLocal()
+        filters = filters.split(',')
+
+        query = None if query=='all' else query
+        filters = None if filters==[''] else filters
+        result = len(manager.get_conan_references_filtered(session, query, filters, filters))
+
+        return {'references': result}
+    except:
+        traceback.print_exc()
+    finally:
+        session.close()
+
+
+options_md = '''
+# Options
+
+{
+'generators': ['cmake', 'cmake_find_package_multi'],
+'settings': ['os', 'arch', 'compiler', 'build_type'],
+'options': {
+        'shared': [True, False],
+        'fPIC': [True, False],
+        'cmd': [True, False],
+        'wav': [True, False],
+        'flac': [True, False],
+        'mpg123': [True, False],
+        'mad': [True, False],
+        'ogg': [True, False],
+        'opus': [True, False],
+        'mikmod': [True, False],
+        'modplug': [True, False],
+        'fluidsynth': [True, False],
+        'nativemidi': [True, False],
+        'tinymidi': [True, False]
     },
-    'zlib': {
-        'version': 'v1.21.2',
-        'licenses': ['license_1', 'license_3', 'license_4'],
-        'labels': ['filter_1', 'filter_3', 'filter_4'],
-        'downloads': 1064,
-        'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam nibh est, suscipit vel convallis eget, euismod a leo. Vivamus sagittis mi non dui iaculis tincidunt. Aliquam metus risus, maximus sed tristique sed, vehicula at neque. Nam nunc metus, vestibulum id iaculis in, sodales et arcu. Nulla lorem enim, hendrerit sit.'
+    'default_options': {
+        'shared': False,
+        'fPIC': True,
+        'cmd': False,
+        'wav': True,
+        'flac': True,
+        'mpg123': True,
+        'mad': True,
+        'ogg': True,
+        'opus': True,
+        'mikmod': True,
+        'modplug': True,
+        'fluidsynth': False,
+        'nativemidi': True,
+        'tinymidi': True
     },
-    'boost': {
-        'version': 'v1.79.0',
-        'licenses': ['license_1', 'license_4', 'license_5'],
-        'labels': ['filter_1', 'filter_4', 'filter_5'],
-        'downloads': 100854,
-        'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam nibh est, suscipit vel convallis eget, euismod a leo. Vivamus sagittis mi non dui iaculis tincidunt. Aliquam metus risus, maximus sed tristique sed, vehicula at neque. Nam nunc metus, vestibulum id iaculis in, sodales et arcu. Nulla lorem enim, hendrerit sit.'
-    },
-    'opengl': {
-        'version': 'system',
-        'licenses': ['license_1', 'license_5', 'license_6'],
-        'labels': ['filter_1', 'filter_5', 'filter_6'],
-        'downloads': 14,
-        'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam nibh est, suscipit vel convallis eget, euismod a leo. Vivamus sagittis mi non dui iaculis tincidunt. Aliquam metus risus, maximus sed tristique sed, vehicula at neque. Nam nunc metus, vestibulum id iaculis in, sodales et arcu. Nulla lorem enim, hendrerit sit.'
-    }
 }
+'''
+
+
+packages_md = '''
+# Packages
+
+{
+'windows': {
+    'x86_64': ['Visual Studio', 'clang'],
+},
+'mac': {
+    'x86_64': ['clang', 'apple-clang'],
+    'x86': ['clang', 'apple-clang']
+},
+'linux': {
+    'x86_64': ['gcc', 'clang',],
+    'x86': ['gcc', 'clang',],
+    'arm': ['gcc', 'clang',],
+},
+}
+'''
 
 shields_io_md = '''
 # shields.io badges
@@ -42,6 +266,7 @@ shields_io_md = '''
 
 **copy HTML** `<img alt="Conan Center" src="https://img.shields.io/conan/v/{package}">`
 '''
+
 
 md_example = '''
     #include <iostream>
@@ -64,6 +289,7 @@ md_example = '''
         return 0;
     }
 '''
+
 
 md_use_it = '''
 # Iam iuvit ulciscitur cava tempora non niveisque
@@ -145,144 +371,3 @@ castris sui, curvavit petis cum antiquo. Matura Flentibus *quid finibus* sed,
 cum est, laborant? Per Thesea nectare ille signaque conligit fata [Aeolon
 quinque](http://votagestum.io/illa-novissima) Maeandri siderea rogata.
 '''
-
-def licenses():
-    return {'1':'license_1',
-            '2':'license_2',
-            '3':'license_3',
-            '4':'license_4',
-            '5':'license_5',
-            '6':'license_6'}
-
-def filters():
-    return {'1':'filter_1',
-            '2':'filter_2',
-            '3':'filter_3',
-            '4':'filter_4',
-            '5':'filter_5',
-            '6':'filter_6'}
-
-def popular():
-    return {'0':{'name':'openSSL','version':'v3.0.3'},
-            '1':{'name':'zlib','version':'v1.21.2'},
-            '2':{'name':'boost','version':'v1.79.0'},
-            '3':{'name':'OpenGL','version':'system'}}
-
-def updated():
-    return {'0':{'name':'openSSL','version':'v3.0.3'},
-            '1':{'name':'zlib','version':'v1.21.2'}}
-
-def new():
-    return {'1':{'name':'boost','version':'v1.79.0'},
-            '2':{'name':'OpenGL','version':'system'}}
-
-def search(query='', filters=''):
-    print(filters)
-    filters = filters.split(',')
-    result = {}
-
-    for name in packages_list.keys():
-        element = {'name': name, 'info': packages_list.get(name)}
-        if (query != 'all') and not(query in name):
-            element = None
-        if filters and filters!=[''] and not all(item in (packages_list.get(name).get('labels') + packages_list.get(name).get('licenses')) for item in filters):
-            element = None
-        if element:
-            result[str(len(result))] = element
-    return result
-
-def package(name=''):
-    if name in packages_list.keys():
-        return {'name':name, 'info': packages_list.get(name)}
-
-def md(name=''):
-    if name in packages_list.keys():
-        return {'md': md_use_it}
-
-def example(name=''):
-    if name in packages_list.keys():
-        return {'md': md_example}
-
-def shields_io(name=''):
-    if name in packages_list.keys():
-        return {'md': shields_io_md.format(package=name)}
-
-def options(name=''):
-    if name in packages_list.keys():
-        return {'md': '''
-# Options
-
-    {
-        'generators': ['cmake', 'cmake_find_package_multi'],
-        'settings': ['os', 'arch', 'compiler', 'build_type'],
-        'options': {
-            'shared': [True, False],
-            'fPIC': [True, False],
-            'cmd': [True, False],
-            'wav': [True, False],
-            'flac': [True, False],
-            'mpg123': [True, False],
-            'mad': [True, False],
-            'ogg': [True, False],
-            'opus': [True, False],
-            'mikmod': [True, False],
-            'modplug': [True, False],
-            'fluidsynth': [True, False],
-            'nativemidi': [True, False],
-            'tinymidi': [True, False]
-        },
-        'default_options': {
-            'shared': False,
-            'fPIC': True,
-            'cmd': False,
-            'wav': True,
-            'flac': True,
-            'mpg123': True,
-            'mad': True,
-            'ogg': True,
-            'opus': True,
-            'mikmod': True,
-            'modplug': True,
-            'fluidsynth': False,
-            'nativemidi': True,
-            'tinymidi': True
-        },
-    }
-        '''}
-
-def packages(name=''):
-    if name in packages_list.keys():
-        return {'md': '''
-# Packages
-
-    {
-        'windows': {
-            'x86_64': ['Visual Studio', 'clang'],
-        },
-        'mac': {
-            'x86_64': ['clang', 'apple-clang'],
-            'x86': ['clang', 'apple-clang']
-        },
-        'linux': {
-            'x86_64': ['gcc', 'clang',],
-            'x86': ['gcc', 'clang',],
-            'arm': ['gcc', 'clang',],
-        },
-    }
-        '''}
-
-def downloads(name=''):
-    if name in packages_list.keys():
-        return {
-            'downloads': [
-              { 'date': '01/22', 'downloads': 156},
-              { 'date': '02/22', 'downloads': 56},
-              { 'date': '03/22', 'downloads': 84},
-              { 'date': '04/22', 'downloads': 298},
-              { 'date': '05/22', 'downloads': 568},
-              { 'date': '06/22', 'downloads': 146},
-            ]
-        }
-
-def reference_num(name=''):
-    return {'references': 10958}

@@ -72,9 +72,9 @@ export default function ConanPackage(props) {
           <Row>
             <Tabs defaultActiveKey="use-it" id="uncontrolled">
               <Tab eventKey="use-it" title="Use it"><br/><ReactMarkdown>{props.tabs.md.md}</ReactMarkdown></Tab>
-              <Tab eventKey="packages" title="Packages"><br/><ReactMarkdown>{props.tabs.packages.md}</ReactMarkdown></Tab>
+              {false && (<Tab eventKey="packages" title="Packages"><br/><ReactMarkdown>{props.tabs.packages.md}</ReactMarkdown></Tab>)}
               <Tab eventKey="examples" title="Examples"><br/><ReactMarkdown>{props.tabs.example.md}</ReactMarkdown></Tab>
-              <Tab eventKey="options" title="Options"><br/><ReactMarkdown>{props.tabs.options.md}</ReactMarkdown></Tab>
+              {false && (<Tab eventKey="options" title="Options"><br/><ReactMarkdown>{props.tabs.options.md}</ReactMarkdown></Tab>)}
               <Tab eventKey="badges" title="Badges"><br/><ReactMarkdown>{props.tabs.shields_io.md}</ReactMarkdown></Tab>
             </Tabs>
           </Row>
