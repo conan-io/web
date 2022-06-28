@@ -193,7 +193,9 @@ def test_data_model():
 
         result = manager.get_popular_conan_references(session, limit=10)
         # print('\n')
-        # print("get_popular_conan_references ----->   ", [r.name for r in result])
+        # print("get_popular_conan_references ----->   ")
+        # for r in result:
+        #     print(r.name)
 
         result = manager.get_recipe_revision_count(session, 'o', ['license_1'], ['topic_2'])
         # print('\n')
