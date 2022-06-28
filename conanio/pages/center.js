@@ -13,12 +13,12 @@ import { ConanListFilter, ConanSearchBar } from "../components/searchbar";
 import ConanHeader from '../components/header';
 import ConanFooter from '../components/footer';
 import useSWR from 'swr';
-import {get_json, get_json_list, get_urls} from '../service/service';
+import {get_json, get_json_list, get_urls, get_json_list_with_id} from '../service/service';
 
 export async function getServerSideProps(context) {
   let urls = get_urls()
   const reference_num = await get_json(urls.reference.num, urls.api.private);
-  const filters_list = await get_json_list(urls.filters, urls.api.private);
+  const filters_list = await get_json_list_with_id(urls.filters, urls.api.private);
 
   return {
     props: {
@@ -26,7 +26,7 @@ export async function getServerSideProps(context) {
         popular: await get_json_list(urls.popular, urls.api.private),
         updated: await get_json_list(urls.updated, urls.api.private),
         new: await get_json_list(urls.new, urls.api.private),
-        filters: filters_list.map(elem => {return {filter: elem, checked: false};}),
+        filters: filters_list.map(elem => {return {filter: elem.value, id: elem.id, checked: false};}),
         reference_num: reference_num.references,
       },
     },
@@ -44,10 +44,10 @@ function CenterSearchBar(props) {
     setValue(e);
   }
 
-  const handleFilter = (filter, check) => {
+  const handleFilter = (filter, filter_id, check) => {
     let newFilters = filters
-    if(check && !newFilters.includes(filter)){newFilters.push(filter)}
-    if(!check && newFilters.includes(filter)){newFilters.splice(newFilters.indexOf(filter), 1)}
+    if(check && !newFilters.includes(filter_id)){newFilters.push(filter_id)}
+    if(!check && newFilters.includes(filter_id)){newFilters.splice(newFilters.indexOf(filter_id), 1)}
     setFilters(newFilters)
   }
 

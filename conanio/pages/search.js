@@ -12,24 +12,28 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Link from 'next/link';
 import ConanHeader from '../components/header';
 import ConanFooter from '../components/footer';
-import {get_json_list, get_urls} from '../service/service';
+import {get_json_list, get_urls, get_json_list_with_id} from '../service/service';
 
 
 export async function getServerSideProps(context) {
   let { defaultValue, defaultFilters } = context.query;
 
   let value = defaultValue || 'all';
+
   defaultFilters = defaultFilters || [];
+  if (typeof defaultFilters === "string"){
+    defaultFilters = [defaultFilters]
+  }
   defaultValue = defaultValue || '';
   let urls = get_urls({search: value, filters: defaultFilters})
-  const filters_list = await get_json_list(urls.filters, urls.api.private);
-  const licenses_list = await get_json_list(urls.licenses, urls.api.private);
+  const filters_list = await get_json_list_with_id(urls.filters, urls.api.private);
+  const licenses_list = await get_json_list_with_id(urls.licenses, urls.api.private);
 
   return {
     props: {
       data: {
-        licenses: licenses_list.map(elem => {return {filter: elem, checked: false};}),
-        filters: filters_list.map(elem => {return {filter: elem, checked: defaultFilters.includes(elem)};}),
+        licenses: licenses_list.map(elem => {return {filter: elem.value, id: elem.id, checked: false};}),
+        filters: filters_list.map(elem => {return {filter: elem.value, id: elem.id, checked: defaultFilters.includes(elem.id)};}),
         defaultValue: defaultValue,
         defaultFilters: defaultFilters,
         packages: await get_json_list(urls.search.package, urls.api.private),
@@ -86,15 +90,17 @@ function SearchList(props) {
 export default function ConanSearch(props) {
   const [value, setValue] = useState(props.data.defaultValue);
   const [filters, setFilters] = useState(props.data.defaultFilters);
+  const [licenses, setLicense] = useState(null);
   const [allFilters, setAllFilters] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [data, setData] = useState(props.data.packages);
-  const getData = async (value, filterlist) => {
+
+
+  const getData = async (value, filterlist, licenseList) => {
     try {
       value = value || 'all';
-      let urls = get_urls({search: value, filters: filterlist})
-      console.log(urls)
+      let urls = get_urls({search: value, filters: filterlist, licenses: licenseList})
       const packages = await get_json_list(urls.search.package, urls.api.public);
       setData(packages);
     } catch(err) {
@@ -109,16 +115,24 @@ export default function ConanSearch(props) {
     setValue(e);
   }
 
-  const handleFilter = (filter, check) => {
+  const handleFilter = (filter, filter_id, check) => {
     let newFilters = filters
-    if(check && !newFilters.includes(filter)){newFilters.push(filter)}
-    if(!check && newFilters.includes(filter)){newFilters.splice(newFilters.indexOf(filter), 1)}
+    if(check && !newFilters.includes(filter_id)){newFilters.push(filter_id)}
+    if(!check && newFilters.includes(filter_id)){newFilters.splice(newFilters.indexOf(filter_id), 1)}
     setFilters(newFilters);
-    getData(value, filters);
+    getData(value, filters, licenses);
+  }
+
+  const handleLicense = (license, license_id, check) => {
+    let newLicenses = licenses
+    if(check && !newLicenses.includes(license_id)){newLicenses.push(license_id)}
+    if(!check && newLicenses.includes(license_id)){newLicenses.splice(newLicenses.indexOf(license_id), 1)}
+    setLicenses(newLicenses);
+    getData(value, filters, licenses);
   }
 
   const handleSubmit = (event) => {
-    getData(value, filters);
+    getData(value, filters, licenses);
     event.preventDefault();
   }
   return (
