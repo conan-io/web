@@ -60,8 +60,8 @@ async def get_new():
 
 
 @app.get('/search/{query}')
-async def get_search(query='', filters=''):
-    return search(query, unquote(filters))
+async def get_search(query='', filters='', licenses=''):
+    return search(query, unquote(filters), unquote(licenses))
 
 
 @app.get('/package/{name}')
@@ -121,8 +121,8 @@ async def get_downloads(name=''):
 
 
 @app.get('/reference/num')
-async def get_reference_num(name=''):
-    return reference_num()
+async def get_reference_num(query='', filters='', licenses=''):
+    return reference_num(query, unquote(filters), unquote(licenses))
 
 
 @app.get("/")

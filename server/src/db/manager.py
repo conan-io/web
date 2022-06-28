@@ -40,23 +40,19 @@ def _get_query_conan_references_filtered(session, reference_name_pattern, licens
         result = result.filter(
                 ConanReference.name.like('%{}%'.format(reference_name_pattern))
             )
-    # TODO: Use IDs instead of NAMEs and split licenses and topics
-    # if licenses:
-    #     result = result.join(M2MLicensesConanreferences).filter(M2MLicensesConanreferences.license_id.in_(licenses))
-    #
-    # if topics:
-    #     result = result.join(M2MTopicsConanreferences).filter(M2MTopicsConanreferences.topic_id.in_(topics))
+    joins, filters = [], []
+    # TODO: Filter all_in_ instead of any_in_
+    if licenses:
+        joins.append(M2MLicensesConanreferences)
+        filters.append(M2MLicensesConanreferences.license_id.in_(licenses))
 
-    if licenses or topics:
-        licenses = session.query(License.license_id).filter(License.name.in_(licenses)).subquery()
-        topics = session.query(Topic.topic_id).filter(Topic.name.in_(topics)).subquery()
+    if topics:
+        joins.append(M2MTopicsConanreferences)
+        filters.append(M2MTopicsConanreferences.topic_id.in_(topics))
 
-        result = result.join(
-                M2MLicensesConanreferences,
-                M2MTopicsConanreferences
-            ).filter(
-                M2MLicensesConanreferences.license_id.in_(licenses) | M2MTopicsConanreferences.topic_id.in_(topics)
-            )
+    if joins and filters:
+        result = result.join(*joins).filter(and_(*filters))
+
     return result
 
 
@@ -134,9 +130,7 @@ def get_licenses(session, ids=None, names=None):
         result = result.filter(License.name.in_(names))
 
     licenses = result.all()
-    # TODO: return [{'id': 'name'}]
-    # return [{l.license_id: l.name} for l in licenses]
-    return [l.name for l in licenses]
+    return {l.license_id: l.name for l in licenses}
 
 
 def get_topics(session, ids=None, names=None):
@@ -146,9 +140,7 @@ def get_topics(session, ids=None, names=None):
     if names:
         result = result.filter(Topic.name.in_(names))
     topics = result.all()
-    # TODO: return [{'id': 'name'}]
-    # return [{t.topic_id: t.name} for t in topics]
-    return [t.name for t in topics]
+    return {t.topic_id: t.name for t in topics}
 
 
 # if __name__ == '__main__':

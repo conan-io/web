@@ -6,8 +6,7 @@ from db import manager
 def licenses():
     try:
         session = SessionLocal()
-        result = manager.get_licenses(session)
-        return {str(i): license for i, license in enumerate(result)}
+        return manager.get_licenses(session)
     except:
         traceback.print_exc()
     finally:
@@ -17,8 +16,7 @@ def licenses():
 def filters():
     try:
         session = SessionLocal()
-        result = manager.get_topics(session)
-        return {str(i): topic for i, topic in enumerate(result)}
+        return manager.get_topics(session)
     except:
         traceback.print_exc()
     finally:
@@ -58,23 +56,25 @@ def new():
         session.close()
 
 
-def search(query=None, filters=''):
+def search(query=None, filters='', licenses=''):
     try:
         session = SessionLocal()
         filters = filters.split(',')
+        licenses = licenses.split(',')
 
         query = None if query=='all' else query
         filters = None if filters==[''] else filters
+        licenses = None if licenses==[''] else licenses
 
-        result = manager.get_conan_references_filtered(session, query, filters, filters)
+        result = manager.get_conan_references_filtered(session, query, filters, licenses)
 
         return {
             str(i): {
                 'name': reference.name,
                 'info':{
                     'version': reference.version,
-                    'licenses': manager.get_licenses(session, ids=[l.license_id for l in reference.licenses]),
-                    'labels': manager.get_topics(session, ids=[t.topic_id for t in reference.topics]),
+                    'licenses': [l for l in manager.get_licenses(session, ids=[l.license_id for l in reference.licenses]).values()],
+                    'labels': [l for l in manager.get_topics(session, ids=[t.topic_id for t in reference.topics]).values()],
                     'downloads': reference.downloadcounts[0].count,
                     'description': reference.reciperevisions[0].description,
                 }
@@ -95,8 +95,8 @@ def package(name=''):
             'name': result.name,
             'info':{
                 'version': result.version,
-                'licenses': manager.get_licenses(session, ids=[l.license_id for l in result.licenses]),
-                'labels': manager.get_topics(session, ids=[t.topic_id for t in result.topics]),
+                'licenses': [l for l in manager.get_licenses(session, ids=[l.license_id for l in result.licenses])],
+                'labels': [l for l in manager.get_topics(session, ids=[t.topic_id for t in result.topics])],
                 'downloads': result.downloadcounts[0].count,
                 'description': result.reciperevisions[0].description,
                 }
@@ -176,14 +176,16 @@ def downloads(name=''):
         session.close()
 
 
-def reference_num(query=None, filters=''):
+def reference_num(query=None, filters='', licenses=''):
     try:
         session = SessionLocal()
         filters = filters.split(',')
+        licenses = licenses.split(',')
 
         query = None if query=='all' else query
         filters = None if filters==[''] else filters
-        result = len(manager.get_conan_references_filtered(session, query, filters, filters))
+        licenses = None if licenses==[''] else licenses
+        result = len(manager.get_conan_references_filtered(session, query, filters, licenses))
 
         return {'references': result}
     except:
