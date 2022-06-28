@@ -175,7 +175,7 @@ def test_data_model():
         # print(result.downloadcounts[0].count)
         # print(result.reciperevisions[0].description)
 
-        result = manager.get_conan_references_filtered(session, 'o', ['license_1'], ['topic_2'])
+        result = manager.get_conan_references_filtered(session, 'o', ['1'], ['3'])
         # print('\n')
         # print("get_conan_references_filtered ----->   ", [r.name for r in result])
 
@@ -197,7 +197,7 @@ def test_data_model():
         # for r in result:
         #     print(r.name)
 
-        result = manager.get_recipe_revision_count(session, 'o', ['license_1'], ['topic_2'])
+        result = manager.get_recipe_revision_count(session, 'o', ['2'], ['1'])
         # print('\n')
         # print("get_recipe_revision_count ----->   ", result)
 
@@ -237,9 +237,9 @@ def test_response_model():
     # print('\n')
     # print('new ------------>', result)
 
-    result = model.search(query='op', filters='license_2')
-    # print('\n')
-    # print('search ------------>', result)
+    result = model.search(query='op', licenses='2')
+    print('\n')
+    print('search ------------>', result)
 
     result = model.package(name='zlib')
     # print('\n')
@@ -269,7 +269,7 @@ def test_response_model():
     # print('\n')
     # print('downloads ------------>', result)
 
-    result = model.reference_num(query='o', filters='license_1,topic_2')
+    result = model.reference_num(query='o', filters='2', licenses='1')
     # print('\n')
     # print('reference_num ------------>', result)
 

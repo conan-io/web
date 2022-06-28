@@ -9,7 +9,7 @@ function ConanFilter(props) {
   const [checked, setChecked] = useState(props.checked);
 
   const handleChange = () => {
-    props.handleFilter(props.filter, !checked)
+    props.handleFilter(props.filter, props.filter_id, !checked)
     setChecked(!checked)
   }
 
@@ -28,7 +28,7 @@ function ConanFilter(props) {
 export function ConanListFilter(props) {
   return(
     <div key="custom-inline-checkbox" className="mb-3">
-    {props.filters && props.filters.map((info) => (<ConanFilter key={info.filter} filter={info.filter} checked={info.checked} handleFilter={props.handleFilter}/>))}
+    {props.filters && props.filters.map((info) => (<ConanFilter key={info.id} filter_id={info.id} filter={info.filter} checked={info.checked} handleFilter={props.handleFilter}/>))}
     </div>
     )
 }
