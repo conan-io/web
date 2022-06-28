@@ -17,15 +17,13 @@ from model import (
     downloads,
     reference_num,
 )
-
-
-ENABLE_CORS = False
+from config import settings
 
 
 app = FastAPI()
 
 
-if ENABLE_CORS:
+if settings.enable_cors:
     origins = ["*"]
     app.add_middleware(
         CORSMiddleware,
