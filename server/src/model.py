@@ -1,197 +1,105 @@
 import traceback
-from db import SessionLocal
 from db import manager
 
 
-def licenses():
-    try:
-        session = SessionLocal()
-        return manager.get_licenses(session)
-    except:
-        traceback.print_exc()
-    finally:
-        session.close()
-
-
-def filters():
-    try:
-        session = SessionLocal()
-        return manager.get_topics(session)
-    except:
-        traceback.print_exc()
-    finally:
-        session.close()
-
-
-def popular():
-    try:
-        session = SessionLocal()
-        result = manager.get_popular_conan_references(session, limit=10)
-        return {str(i): {'name': reference.name, 'version': reference.version} for i, reference in enumerate(result)}
-    except:
-        traceback.print_exc()
-    finally:
-        session.close()
-
-
-def updated():
-    try:
-        session = SessionLocal()
-        result = manager.get_last_updated_conan_references(session, limit=10)
-        return {str(i): {'name': reference.name, 'version': reference.version} for i, reference in enumerate(result)}
-    except:
-        traceback.print_exc()
-    finally:
-        session.close()
-
-
-def new():
-    try:
-        session = SessionLocal()
-        result = manager.get_last_created_conan_references(session, limit=10)
-        return {str(i): {'name': reference.name, 'version': reference.version} for i, reference in enumerate(result)}
-    except:
-        traceback.print_exc()
-    finally:
-        session.close()
-
-
-def search(query=None, filters='', licenses=''):
-    try:
-        session = SessionLocal()
-        filters = filters.split(',')
-        licenses = licenses.split(',')
-
-        query = None if query=='all' else query
-        filters = None if filters==[''] else filters
-        licenses = None if licenses==[''] else licenses
-
-        result = manager.get_conan_references_filtered(session, query, filters, licenses)
-
-        return {
-            str(i): {
-                'name': reference.name,
-                'info':{
-                    'version': reference.version,
-                    'licenses': [l for l in manager.get_licenses(session, ids=[l.license_id for l in reference.licenses]).values()],
-                    'labels': [l for l in manager.get_topics(session, ids=[t.topic_id for t in reference.topics]).values()],
-                    'downloads': reference.downloadcounts[0].count,
-                    'description': reference.reciperevisions[0].description,
-                }
-            } for i, reference in enumerate(result)
+def _parse_package_reference(db, reference):
+    return {
+        'name': reference.name,
+        'info':{
+            'version': reference.version,
+            'licenses': [l for l in manager.get_licenses(db, ids=[l.license_id for l in reference.licenses]).values()],
+            'labels': [l for l in manager.get_topics(db, ids=[t.topic_id for t in reference.topics]).values()],
+            'downloads': reference.downloadcounts[0].count,
+            'description': reference.reciperevisions[0].description,
         }
-    except:
-        traceback.print_exc()
-    finally:
-        session.close()
+    }
 
 
-def package(name=''):
-    try:
-        session = SessionLocal()
-        result = manager.get_conan_reference_by_name(session, name)
+def licenses(db):
+    return manager.get_licenses(db)
 
+
+def filters(db):
+    return manager.get_topics(db)
+
+
+def popular(db):
+    result = manager.get_popular_conan_references(db, limit=10)
+    return {str(i): {'name': reference.name, 'version': reference.version} for i, reference in enumerate(result)}
+
+
+def updated(db):
+    result = manager.get_last_updated_conan_references(db, limit=10)
+    return {str(i): {'name': reference.name, 'version': reference.version} for i, reference in enumerate(result)}
+
+
+def new(db):
+    result = manager.get_last_created_conan_references(db, limit=10)
+    return {str(i): {'name': reference.name, 'version': reference.version} for i, reference in enumerate(result)}
+
+
+def search(db, query=None, filters='', licenses=''):
+    filters = filters.split(',')
+    licenses = licenses.split(',')
+
+    query = None if query=='all' else query
+    filters = None if filters==[''] else filters
+    licenses = None if licenses==[''] else licenses
+
+    result = manager.get_conan_references_filtered(db, query, filters, licenses)
+
+    return {str(i): _parse_package_reference(db, reference) for i, reference in enumerate(result)}
+
+
+def package(db, name=''):
+    result = manager.get_conan_reference_by_name(db, name)
+
+    return _parse_package_reference(db, result)
+
+
+def md(db, name=''):
+    if manager.get_conan_reference_by_name(db, name):
+        return {'md': md_use_it}
+
+
+def example(db, name=''):
+    if manager.get_conan_reference_by_name(db, name):
+        return {'md': md_example}
+
+
+def shields_io(db, name=''):
+    if manager.get_conan_reference_by_name(db, name):
+        return {'md': shields_io_md.format(package=name)}
+
+
+def options(db, name=''):
+    if manager.get_conan_reference_by_name(db, name):
+        return {'md': options_md}
+
+
+def packages(db, name=''):
+    if manager.get_conan_reference_by_name(db, name):
+        return {'md': packages_md}
+
+
+def downloads(db, name=''):
+    result = manager.get_conan_reference_by_name(db, name)
+    if result:
         return {
-            'name': result.name,
-            'info':{
-                'version': result.version,
-                'licenses': [l for l in manager.get_licenses(session, ids=[l.license_id for l in result.licenses])],
-                'labels': [l for l in manager.get_topics(session, ids=[t.topic_id for t in result.topics])],
-                'downloads': result.downloadcounts[0].count,
-                'description': result.reciperevisions[0].description,
-                }
+            'downloads': [{'date': d.date, 'downloads': d.count} for d in reversed(result.downloadcounts)]
         }
-    except:
-        traceback.print_exc()
-    finally:
-        session.close()
 
 
-def md(name=''):
-    try:
-        session = SessionLocal()
-        if manager.get_conan_reference_by_name(session, name):
-            return {'md': md_use_it}
-    except:
-        traceback.print_exc()
-    finally:
-        session.close()
+def reference_num(db, query=None, filters='', licenses=''):
+    filters = filters.split(',')
+    licenses = licenses.split(',')
 
+    query = None if query=='all' else query
+    filters = None if filters==[''] else filters
+    licenses = None if licenses==[''] else licenses
+    result = len(manager.get_conan_references_filtered(db, query, filters, licenses))
 
-def example(name=''):
-    try:
-        session = SessionLocal()
-        if manager.get_conan_reference_by_name(session, name):
-            return {'md': md_example}
-    except:
-        traceback.print_exc()
-    finally:
-        session.close()
-
-
-def shields_io(name=''):
-    try:
-        session = SessionLocal()
-        if manager.get_conan_reference_by_name(session, name):
-            return {'md': shields_io_md.format(package=name)}
-    except:
-        traceback.print_exc()
-    finally:
-        session.close()
-
-
-def options(name=''):
-    try:
-        session = SessionLocal()
-        if manager.get_conan_reference_by_name(session, name):
-            return {'md': options_md}
-    except:
-        traceback.print_exc()
-    finally:
-        session.close()
-
-
-def packages(name=''):
-    try:
-        session = SessionLocal()
-        if manager.get_conan_reference_by_name(session, name):
-            return {'md': packages_md}
-    except:
-        traceback.print_exc()
-    finally:
-        session.close()
-
-
-def downloads(name=''):
-    try:
-        session = SessionLocal()
-        result = manager.get_conan_reference_by_name(session, name)
-        if result:
-            return {
-                'downloads': [{'date': d.date, 'downloads': d.count} for d in reversed(result.downloadcounts)]
-            }
-    except:
-        traceback.print_exc()
-    finally:
-        session.close()
-
-
-def reference_num(query=None, filters='', licenses=''):
-    try:
-        session = SessionLocal()
-        filters = filters.split(',')
-        licenses = licenses.split(',')
-
-        query = None if query=='all' else query
-        filters = None if filters==[''] else filters
-        licenses = None if licenses==[''] else licenses
-        result = len(manager.get_conan_references_filtered(session, query, filters, licenses))
-
-        return {'references': result}
-    except:
-        traceback.print_exc()
-    finally:
-        session.close()
+    return {'references': result}
 
 
 options_md = '''
