@@ -81,20 +81,20 @@ describe('ConanFooter Elements', () => {
     defaultValue: '',
     defaultFilters: [],
     filters: [
-      {filter: "filter_1", checked: false},
-      {filter: "filter_2", checked: false},
-      {filter: "filter_3", checked: false},
-      {filter: "filter_4", checked: false},
-      {filter: "filter_5", checked: false},
-      {filter: "filter_6", checked: false},
+      {id: 1, filter: "filter_1", checked: false},
+      {id: 2, filter: "filter_2", checked: false},
+      {id: 3, filter: "filter_3", checked: false},
+      {id: 4, filter: "filter_4", checked: false},
+      {id: 5, filter: "filter_5", checked: false},
+      {id: 6, filter: "filter_6", checked: false},
     ],
     licenses: [
-      {filter: "license_1", checked: false},
-      {filter: "license_2", checked: false},
-      {filter: "license_3", checked: false},
-      {filter: "license_4", checked: false},
-      {filter: "license_5", checked: false},
-      {filter: "license_6", checked: false},
+      {id: 1, filter: "license_1", checked: false},
+      {id: 2, filter: "license_2", checked: false},
+      {id: 3, filter: "license_3", checked: false},
+      {id: 4, filter: "license_4", checked: false},
+      {id: 5, filter: "license_5", checked: false},
+      {id: 6, filter: "license_6", checked: false},
     ]
   }
 
