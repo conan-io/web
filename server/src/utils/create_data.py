@@ -1,8 +1,7 @@
 import traceback
-from db import SessionLocal, engine
+from db import SessionLocal, engine, clean_db, init_db
 from sqlalchemy import func
 from db.models import (
-    Base,
     M2MLicensesConanreferences,
     M2MTopicsConanreferences,
     ConanReference,
@@ -17,14 +16,6 @@ from db.models import (
     PullRequestComment,
 )
 from datetime import datetime, date, timedelta
-
-
-def delete_all_data():
-    for tbl in reversed(Base.metadata.sorted_tables):
-        try:
-            engine.execute(tbl.delete())
-        except:
-            pass
 
 
 def create_intance(db, intance, fields):
@@ -153,10 +144,11 @@ def create_test_data():
 
             create_intance(db, MarkDownFiles, {'id': i, 'conan_version': '2.0.0', 'reference_id': reference.reference_id, 'recipe_revision_id': recipe_revision_id, 'storage_path': 'http://127.0.0.0:5000/md/{}'.format(commit), 'timestamp': datetime.now(),})
             create_intance(db, PackageCount,  { 'recipe_revision_id': recipe_revision_id, 'unique_package_id_count': 7, 'total_package_count': 5, 'total_bytes': 3214,})
+
     except:
         traceback.print_exc()
     finally:
-        db.close()
+        session.close()
 
 
 def test_data_model():
@@ -238,8 +230,8 @@ def test_response_model():
     # print('new ------------>', result)
 
     result = model.search(query='op', licenses='2')
-    print('\n')
-    print('search ------------>', result)
+    # print('\n')
+    # print('search ------------>', result)
 
     result = model.package(name='zlib')
     # print('\n')
@@ -275,8 +267,8 @@ def test_response_model():
 
 
 if __name__ == '__main__':
-    delete_all_data()
-    Base.metadata.create_all(bind=engine)
+    clean_db()
+    init_db()
     create_test_data()
     test_data_model()
     test_response_model()

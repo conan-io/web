@@ -17,18 +17,6 @@ from db.models import (
 )
 
 
-def init_db():
-    Base.metadata.create_all(bind=engine)
-
-
-def clean_db():
-    for tbl in reversed(Base.metadata.sorted_tables):
-        try:
-            engine.execute(tbl.delete())
-        except:
-            pass
-
-
 def get_conan_reference_by_name(session, name):
     return session.query(ConanReference).filter(ConanReference.name==name).first()
 
