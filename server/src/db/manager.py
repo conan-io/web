@@ -61,53 +61,35 @@ def get_last_created_conan_references(session, limit=10):
 
 
 def get_last_updated_conan_references(session, limit=10):
-    subq = session.query(
-            RecipeRevision.reference_id,
-            func.max(RecipeRevision.timestamp).label('maxdate')
-        ).group_by(RecipeRevision.reference_id).subquery()
 
     references = session.query(
-            ConanReference
+            ConanReference,
+            func.max(RecipeRevision.timestamp)
         ).join(
             RecipeRevision
-        ).join(
-            subq,
-            and_(
-                RecipeRevision.reference_id == subq.c.reference_id,
-                RecipeRevision.timestamp == subq.c.maxdate
-            )
+        ).group_by(
+            ConanReference.reference_id
         ).order_by(
             RecipeRevision.timestamp.desc()
-        ).filter(
-            ConanReference.reference_id == RecipeRevision.reference_id
         ).limit(limit).all()
 
-    return references
+    return [r[0] for r in references]
 
 
 def get_popular_conan_references(session, limit=10):
-    subq = session.query(
-            DownloadCount.reference_id,
-            func.max(DownloadCount.date).label('maxdate')
-        ).group_by(DownloadCount.reference_id).subquery()
 
     references = session.query(
-            ConanReference
+            ConanReference,
+            func.max(DownloadCount.date)
         ).join(
             DownloadCount
-        ).join(
-            subq,
-            and_(
-                DownloadCount.reference_id == subq.c.reference_id,
-                DownloadCount.date == subq.c.maxdate
-            )
+        ).group_by(
+            ConanReference.reference_id
         ).order_by(
             DownloadCount.count.desc()
-        ).filter(
-            ConanReference.reference_id == DownloadCount.reference_id
         ).limit(limit).all()
 
-    return references
+    return [r[0] for r in references]
 
 
 def get_licenses(session, ids=None, names=None):
