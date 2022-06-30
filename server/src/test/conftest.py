@@ -57,26 +57,26 @@ def create_test_data():
     conan_reference_4 = create_intance(db, ConanReference, {'reference_id': 4, 'name': 'opengl', 'version': 'system', 'username': 'user', 'channel': 'testing'})
 
 
-    create_intance(db, DownloadCount,{'id': 1, 'reference_id': 1, 'date': date.today(), 'count': 146})
-    create_intance(db, DownloadCount,{'id': 2, 'reference_id': 1, 'date': date.today() - timedelta(days=1), 'count': 345})
-    create_intance(db, DownloadCount,{'id': 3, 'reference_id': 1, 'date': date.today() - timedelta(days=2), 'count': 456})
-    create_intance(db, DownloadCount,{'id': 4, 'reference_id': 1, 'date': date.today() - timedelta(days=3), 'count': 567})
+    create_intance(db, DownloadCount,{'id': 1, 'reference_id': 1, 'date': date(2022, 6, 29), 'count': 146})
+    create_intance(db, DownloadCount,{'id': 2, 'reference_id': 1, 'date': date(2022, 6, 29) - timedelta(days=1), 'count': 345})
+    create_intance(db, DownloadCount,{'id': 3, 'reference_id': 1, 'date': date(2022, 6, 29) - timedelta(days=2), 'count': 456})
+    create_intance(db, DownloadCount,{'id': 4, 'reference_id': 1, 'date': date(2022, 6, 29) - timedelta(days=3), 'count': 567})
 
 
-    create_intance(db, DownloadCount,{'id': 5, 'reference_id': 2, 'date': date.today(), 'count': 1064})
-    create_intance(db, DownloadCount,{'id': 6, 'reference_id': 2, 'date': date.today() - timedelta(days=1), 'count': 3453})
-    create_intance(db, DownloadCount,{'id': 7, 'reference_id': 2, 'date': date.today() - timedelta(days=2), 'count': 4342})
-    create_intance(db, DownloadCount,{'id': 8, 'reference_id': 2, 'date': date.today() - timedelta(days=3), 'count': 1567})
+    create_intance(db, DownloadCount,{'id': 5, 'reference_id': 2, 'date': date(2022, 6, 29), 'count': 1064})
+    create_intance(db, DownloadCount,{'id': 6, 'reference_id': 2, 'date': date(2022, 6, 29) - timedelta(days=1), 'count': 3453})
+    create_intance(db, DownloadCount,{'id': 7, 'reference_id': 2, 'date': date(2022, 6, 29) - timedelta(days=2), 'count': 4342})
+    create_intance(db, DownloadCount,{'id': 8, 'reference_id': 2, 'date': date(2022, 6, 29) - timedelta(days=3), 'count': 1567})
 
-    create_intance(db, DownloadCount,{'id': 9, 'reference_id': 3, 'date': date.today(), 'count': 100854})
-    create_intance(db, DownloadCount,{'id': 10, 'reference_id': 3, 'date': date.today() - timedelta(days=1), 'count': 142345})
-    create_intance(db, DownloadCount,{'id': 11, 'reference_id': 3, 'date': date.today() - timedelta(days=2), 'count': 345456})
-    create_intance(db, DownloadCount,{'id': 12, 'reference_id': 3, 'date': date.today() - timedelta(days=3), 'count': 109567})
+    create_intance(db, DownloadCount,{'id': 9, 'reference_id': 3, 'date': date(2022, 6, 29), 'count': 100854})
+    create_intance(db, DownloadCount,{'id': 10, 'reference_id': 3, 'date': date(2022, 6, 29) - timedelta(days=1), 'count': 142345})
+    create_intance(db, DownloadCount,{'id': 11, 'reference_id': 3, 'date': date(2022, 6, 29) - timedelta(days=2), 'count': 345456})
+    create_intance(db, DownloadCount,{'id': 12, 'reference_id': 3, 'date': date(2022, 6, 29) - timedelta(days=3), 'count': 109567})
 
-    create_intance(db, DownloadCount,{'id': 13, 'reference_id': 4, 'date': date.today(), 'count': 14})
-    create_intance(db, DownloadCount,{'id': 14, 'reference_id': 4, 'date': date.today() - timedelta(days=1), 'count': 35})
-    create_intance(db, DownloadCount,{'id': 15, 'reference_id': 4, 'date': date.today() - timedelta(days=2), 'count': 46})
-    create_intance(db, DownloadCount,{'id': 16, 'reference_id': 4, 'date': date.today() - timedelta(days=3), 'count': 7})
+    create_intance(db, DownloadCount,{'id': 13, 'reference_id': 4, 'date': date(2022, 6, 29), 'count': 14})
+    create_intance(db, DownloadCount,{'id': 14, 'reference_id': 4, 'date': date(2022, 6, 29) - timedelta(days=1), 'count': 35})
+    create_intance(db, DownloadCount,{'id': 15, 'reference_id': 4, 'date': date(2022, 6, 29) - timedelta(days=2), 'count': 46})
+    create_intance(db, DownloadCount,{'id': 16, 'reference_id': 4, 'date': date(2022, 6, 29) - timedelta(days=3), 'count': 7})
 
     recipe_revision_id = 0
     for i, reference in enumerate(db.query(ConanReference).all()):
