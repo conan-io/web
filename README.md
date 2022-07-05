@@ -3,7 +3,7 @@ Conan website, including home and ConanCenter
 
 ## Test server
 
-**server folder:** FastAPI server.
+**server folder:** FastAPI server. [WIP]
 
 Run server:
 
@@ -30,29 +30,7 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-
 [API routes](https://nextjs.org/docs/api-routes/introduction): the `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-##Kubernetes
-
-**chart folder:** helm chart package for kubernetes *(minikube only)*.
-
-```bash
-minikube start
-eval $(minikube docker-env)
-
-cd server
-docker build -t conanio-server .
-
-cd ..
-cd conanio
-docker build -t conanio-web .
-
-cd ..
-cd chart/conanio
-helm upgrade --install conanio .
-kubectl port-forward service/conanio-web 3000:3000
-```
 
 ## Learn More
 

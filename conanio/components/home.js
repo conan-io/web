@@ -23,7 +23,15 @@ function ConanHomeHero() {
                             </div>
                         </div>
                         <div className="training row justify-content-center">
-                            <div id="ytPlayer" className="training-video"></div>
+                            <iframe
+                              src="https://www.youtube.com/embed/MJw7F5HeuiI"
+                              frameBorder="0"
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                              allowFullScreen
+                              title="Free Conan Training Series on JFrog Academy now available!"
+                              className="training-video"
+                            />
+                            <p/>
                             <a className="training-text white text-left ml-3" href="https://academy.jfrog.com/path/conan" alt="JFrog Academy" rel="noreferrer" target="_blank">
                                 <span>Learn Conan C / C++ </span>
                                 <br/>
@@ -261,6 +269,103 @@ function ConanHomeSignUp() {
   )
 }
 
+function ConanHomeUserStoriesHomeSection() {
+  return (
+    <section
+    id="userStoriesHomeSection"
+    className="py-5 bg-blue text-white position-relative">
+      <img
+      className="position-absolute dots-background"
+      alt="decoration"
+      src="/user-stories/section-background-dots.svg"></img>
+      <div className="container py-5 text-center position-relative">
+        <div className="content mx-auto">
+          <h2 className="pb-2 text-uppercase">
+          User Stories
+          </h2>
+          <p className="mx-auto pb-4">
+          There are hundreds of companies using Conan successfully to build their products. Read&nbsp;more about some of the problem they are solving, and how Conan is helping them.
+          </p>
+          <a href="/user-stories.html" className="big-btn bg-dark-blue white" rel="noopener">
+          Read More
+          </a>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+
+function ConanHomeUsersHomeSection() {
+  return (
+    <section className="users my-4 py-2 py-md-5" id="users">
+        <div className="container">
+
+            <div className="users-image-stock d-none" id="usersStock">
+                <img src="brands/company_40.png" alt="Bose"></img>
+                <img src="brands/company_41.png" alt="TomTom"></img>
+                <img src="brands/company_42.png" alt="NNG"></img>
+            </div>
+
+            <div className="row">
+                <div className="col-12">
+                    <div className="h2 text-center py-2 mb-4 mb-md-5">OUR USERS</div>
+                </div>
+            </div>
+
+            <div className="users-flex d-flex">
+                <div className="user-box inner">
+                    <img className="" src="brands/company_29.png" alt="Poco" ></img>
+                </div>
+                <div className="user-box inner">
+                    <img className="" src="brands/company_27.png" alt="Huawei" ></img>
+                </div>
+                <div className="user-box inner">
+                    <img className="" src="brands/company_28.png" alt="Pix4D" ></img>
+                </div>
+                <div className="user-box inner">
+                    <img className="" src="brands/company_26.png" alt="Keysight" ></img>
+                </div>
+                <div className="user-box inner">
+                    <img className="" src="brands/company_25.png" alt="Microblink" ></img>
+                </div>
+                <div className="user-box inner">
+                    <img className="" src="brands/company_32.png" alt="Mercedes Benz" ></img>
+                </div>
+                <div className="user-box inner">
+                    <img className="" src="brands/company_33.png" alt="Melexis" ></img>
+                </div>
+                <div className="user-box inner">
+                    <img className="" src="brands/company_34.png" alt="OpenROV" ></img>
+                </div>
+                <div className="user-box inner">
+                    <img className="" src="brands/company_30.png" alt="Arxan" ></img>
+                </div>
+                <div className="user-box inner">
+                    <img className="" src="brands/company_31.png" alt="Plex" ></img>
+                </div>
+                <div className="user-box inner">
+                    <img className="" src="brands/company_39.png" alt="Rheinmetall" ></img>
+                </div>
+                <div className="user-box inner">
+                    <img className="" src="brands/company_38.png" alt="Bitprim" ></img>
+                </div>
+                <div className="user-box inner">
+                    <img className="" src="brands/company_36.png" alt="Khomp" ></img>
+                </div>
+                <div className="user-box inner">
+                    <img className="" src="brands/company_37.png" alt="Tanker" ></img>
+                </div>
+                <div className="user-box inner">
+                    <img className="" src="brands/company_35.png" alt="Electrolux" ></img>
+                </div>
+            </div>
+        </div>
+    </section>
+
+  )
+}
+
 function ConanHomeMeetTheTribe() {
   return (
     <section className="meet-the-tribe bg-mid-blue py-5 white" id="meetTheTribe">
@@ -290,6 +395,8 @@ export default function ConanHome() {
       <ConanHomeAdvantages/>
       <ConanHomeLearnMore/>
       <ConanHomeSignUp/>
+      <ConanHomeUserStoriesHomeSection/>
+      <ConanHomeUsersHomeSection/>
       <ConanHomeMeetTheTribe/>
     </div>
   )
