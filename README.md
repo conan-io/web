@@ -11,7 +11,7 @@ Run server:
 cd test-server
 python3 -m venv venv
 source venv/bin/activate
-pip isntall -r requirements.txt
+pip install -r requirements.txt
 uvicorn app:app --reload --port 5000
 ```
 
