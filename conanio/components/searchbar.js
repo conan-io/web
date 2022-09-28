@@ -28,7 +28,7 @@ function ConanFilter(props) {
 export function ConanListFilter(props) {
   return(
     <div key="custom-inline-checkbox" className="mb-3">
-    {props.filters && props.filters.map((info) => (<ConanFilter key={info.id} filter_id={info.id} filter={info.filter} checked={info.checked} handleFilter={props.handleFilter}/>))}
+    {props.filters && props.filters.map((info) => (<Row><ConanFilter key={info.id} filter_id={info.id} filter={info.filter} checked={info.checked} handleFilter={props.handleFilter}/></Row>))}
     </div>
     )
 }

@@ -46,12 +46,12 @@ function PackageInfo(props) {
   return (
     <div>
       <Row>
-        <Col xs lg="3">
+        <Col xs lg="4">
           <Row>
             <Col xs lg><Link href={"/center/" + props.data.name}><a><h3>{props.data.name}</h3></a></Link></Col>
           </Row>
           <Row>
-            <Col xs lg md={{ span: 1, offset: 2 }}><b>last versiond:</b> {props.data.info.version}</Col>
+            <Col xs lg md={{ span: 1, offset: 2 }}><b>last version:</b> {props.data.info.version}</Col>
           </Row>
         </Col>
         <Col xs lg="5"><b>Licenses:</b> {props.data.info.licenses.join(", ")}</Col>
@@ -148,14 +148,14 @@ export default function ConanSearch(props) {
               </Row>
               <br/>
               <Row>
-                <Col xs lg="1">
+                <Col xs lg="2">
                 <h2>Licenses</h2>
                 <Row><ConanListFilter filters={props.data.licenses} handleFilter={handleFilter}/></Row>
                 </Col>
-                <Col xs lg="10">
+                <Col xs lg="8">
                 <Row><SearchList data={data}/></Row>
                 </Col>
-                <Col xs lg="1">
+                <Col xs lg="2">
                 <h2>Filters</h2>
                 <Row><ConanListFilter filters={props.data.filters} handleFilter={handleFilter}/></Row>
                 </Col>
