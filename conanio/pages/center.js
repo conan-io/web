@@ -69,11 +69,11 @@ function CenterSearchBar(props) {
         <Col>
           <ConanSearchBar value={value} handleChange={handleChange} searchButton={props.button} data_to_show={props.data_to_show}/>
         </Col>
-        <Col xs lg="4">
+        {false && (<Col xs lg="4">
           <Row>
             <ConanListFilter filters={props.filters} handleFilter={handleFilter}/>
           </Row>
-        </Col>
+        </Col>)}
       </Row>
     </Form>
   );
