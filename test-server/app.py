@@ -98,20 +98,150 @@ async def get_search(query='', filters='', licenses=''):
 @app.get('/package/{name}')
 async def get_package(name=''):
     return {
-        'info': {
-            'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing '
-                            'elit. Etiam nibh est, suscipit vel convallis eget, '
-                            'euismod a leo. Vivamus sagittis mi non dui iaculis '
-                            'tincidunt. Aliquam metus risus, maximus sed '
-                            'tristique sed, vehicula at neque. Nam nunc metus, '
-                            'vestibulum id iaculis in, sodales et arcu. Nulla '
-                            'lorem enim, hendrerit sit.',
-            'downloads': 14,
-            'labels': ['topic_1', 'topic_5', 'topic_6'],
-            'licenses': ['license_1', 'license_5', 'license_6'],
-            'version': 'system'
-        },
-        'name': 'opengl',
+       "3.0.5":{
+          "name":"openssl",
+          "info":{
+             "version":"3.0.5",
+             "licenses":[
+                "Apache-2.0"
+             ],
+             "labels":[
+                "tls",
+                "ssl",
+                "security",
+                "encryption",
+                "openssl"
+             ],
+             "downloads":0,
+             "description":"A toolkit for the Transport Layer Security (TLS) and Secure Sockets Layer (SSL) protocols"
+          }
+       },
+       "3.0.4":{
+          "name":"openssl",
+          "info":{
+             "version":"3.0.4",
+             "licenses":[
+                "Apache-2.0"
+             ],
+             "labels":[
+                "tls",
+                "ssl",
+                "security",
+                "encryption",
+                "openssl"
+             ],
+             "downloads":0,
+             "description":"A toolkit for the Transport Layer Security (TLS) and Secure Sockets Layer (SSL) protocols"
+          }
+       },
+       "3.0.3":{
+          "name":"openssl",
+          "info":{
+             "version":"3.0.3",
+             "licenses":[
+                "Apache-2.0"
+             ],
+             "labels":[
+                "tls",
+                "ssl",
+                "security",
+                "encryption",
+                "openssl"
+             ],
+             "downloads":0,
+             "description":"A toolkit for the Transport Layer Security (TLS) and Secure Sockets Layer (SSL) protocols"
+          }
+       },
+       "1.1.1q":{
+          "name":"openssl",
+          "info":{
+             "version":"1.1.1q",
+             "licenses":[
+                "OpenSSL"
+             ],
+             "labels":[
+                "tls",
+                "ssl",
+                "security",
+                "encryption",
+                "openssl"
+             ],
+             "downloads":0,
+             "description":"A toolkit for the Transport Layer Security (TLS) and Secure Sockets Layer (SSL) protocols"
+          }
+       },
+       "1.1.1p":{
+          "name":"openssl",
+          "info":{
+             "version":"1.1.1p",
+             "licenses":[
+                "OpenSSL"
+             ],
+             "labels":[
+                "tls",
+                "ssl",
+                "security",
+                "encryption",
+                "openssl"
+             ],
+             "downloads":0,
+             "description":"A toolkit for the Transport Layer Security (TLS) and Secure Sockets Layer (SSL) protocols"
+          }
+       },
+       "1.1.1o":{
+          "name":"openssl",
+          "info":{
+             "version":"1.1.1o",
+             "licenses":[
+                "OpenSSL"
+             ],
+             "labels":[
+                "tls",
+                "ssl",
+                "security",
+                "encryption",
+                "openssl"
+             ],
+             "downloads":0,
+             "description":"A toolkit for the Transport Layer Security (TLS) and Secure Sockets Layer (SSL) protocols"
+          }
+       },
+       "1.1.0l":{
+          "name":"openssl",
+          "info":{
+             "version":"1.1.0l",
+             "licenses":[
+                "OpenSSL"
+             ],
+             "labels":[
+                "tls",
+                "ssl",
+                "security",
+                "encryption",
+                "openssl"
+             ],
+             "downloads":0,
+             "description":"A toolkit for the Transport Layer Security (TLS) and Secure Sockets Layer (SSL) protocols"
+          }
+       },
+       "1.0.2u":{
+          "name":"openssl",
+          "info":{
+             "version":"1.0.2u",
+             "licenses":[
+                "OpenSSL"
+             ],
+             "labels":[
+                "tls",
+                "ssl",
+                "security",
+                "encryption",
+                "openssl"
+             ],
+             "downloads":0,
+             "description":"A toolkit for the Transport Layer Security (TLS) and Secure Sockets Layer (SSL) protocols"
+          }
+       }
     }
 
 

@@ -17,9 +17,10 @@ import {get_json, get_urls} from '../../service/service';
 
 export async function getServerSideProps(context) {
   let urls = get_urls({packageId: context.params.packageId})
+  let data = await get_json(urls.package.info, urls.api.private)
   return {
     props: {
-      data: await get_json(urls.package.info, urls.api.private),
+      data: data,
       downloads: await get_json(urls.package.downloads, urls.api.private),
       tabs: {
         md: await get_json(urls.package.md, urls.api.private),
@@ -33,7 +34,13 @@ export async function getServerSideProps(context) {
   }
 }
 
+
 export default function ConanPackage(props) {
+  const [selectedVersion, setSelectedVersion] = useState(Object.keys(props.data)[0]);
+  const handleChange = (e) => {
+    setSelectedVersion(e.target.value)
+  }
+
   if (!props.data) return <div>Loading...</div>
   return (
     <React.StrictMode>
@@ -46,15 +53,26 @@ export default function ConanPackage(props) {
           <Row>
           <Col xs lg="8">
           <Row>
-            <Col xs lg="4"><h3>{props.data.name}/{props.data.info.version}</h3></Col>
-            <Col xs lg="5"><p><b>Licenses:</b> {props.data.info.licenses.join(", ")}</p></Col>
-            <Col xs lg="3"><p><b>Downloads:</b> {props.data.info.downloads}</p></Col>
+            <Col>
+              <h3>
+                {props.data[selectedVersion].name}
+              </h3>
+            </Col>
           </Row>
           <Row>
-            <Col xs lg><p><b>Description:</b> {props.data.info.description}</p></Col>
+            <Col xs lg="4">
+               <Form.Select size="sm" value={selectedVersion} onChange={handleChange}>
+                  {Object.keys(props.data).map((version) => (<option key={version} value={version}>Version: {version}</option>))}
+                </Form.Select>
+            </Col>
+            <Col xs lg="5"><p><b>Licenses:</b> {props.data[selectedVersion].info.licenses.join(", ")}</p></Col>
+            <Col xs lg="3"><p><b>Downloads:</b> {props.data[selectedVersion].info.downloads}</p></Col>
           </Row>
           <Row>
-            <Col xs lg><p><b>Labels:</b> {props.data.info.labels.map((item) => (<Badge key={item}>{item}</Badge>))}</p></Col>
+            <Col xs lg><p><b>Description:</b> {props.data[selectedVersion].info.description}</p></Col>
+          </Row>
+          <Row>
+            <Col xs lg><p><b>Labels:</b> {props.data[selectedVersion].info.labels.map((item) => (<Badge key={item}>{item}</Badge>))}</p></Col>
           </Row>
           <Row>
             <Link href={"https://github.com/conan-io/conan-center-index/tree/master/recipes/" + props.data.name}><a><p>{props.data.name} recipe</p></a></Link>
@@ -71,11 +89,11 @@ export default function ConanPackage(props) {
           </Row>
           <Row>
             <Tabs defaultActiveKey="use-it" id="uncontrolled">
-              <Tab eventKey="use-it" title="Use it"><br/><ReactMarkdown>{props.tabs.md.md}</ReactMarkdown></Tab>
-              {false && (<Tab eventKey="packages" title="Packages"><br/><ReactMarkdown>{props.tabs.packages.md}</ReactMarkdown></Tab>)}
-              <Tab eventKey="examples" title="Examples"><br/><ReactMarkdown>{props.tabs.example.md}</ReactMarkdown></Tab>
-              {false && (<Tab eventKey="options" title="Options"><br/><ReactMarkdown>{props.tabs.options.md}</ReactMarkdown></Tab>)}
-              <Tab eventKey="badges" title="Badges"><br/><ReactMarkdown>{props.tabs.shields_io.md}</ReactMarkdown></Tab>
+              <Tab eventKey="use-it" title="Use it"><br/><ReactMarkdown>{props.tabs.md[selectedVersion].md}</ReactMarkdown></Tab>
+              {false && (<Tab eventKey="packages" title="Packages"><br/><ReactMarkdown>{props.tabs.packages[selectedVersion].md}</ReactMarkdown></Tab>)}
+              {false && (<Tab eventKey="examples" title="Examples"><br/><ReactMarkdown>{props.tabs.example[selectedVersion].md}</ReactMarkdown></Tab>)}
+              {false && (<Tab eventKey="options" title="Options"><br/><ReactMarkdown>{props.tabs.options[selectedVersion].md}</ReactMarkdown></Tab>)}
+              <Tab eventKey="badges" title="Badges"><br/><ReactMarkdown>{props.tabs.shields_io[selectedVersion].md}</ReactMarkdown></Tab>
             </Tabs>
           </Row>
         </Container>
