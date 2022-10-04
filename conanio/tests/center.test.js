@@ -29,17 +29,19 @@ describe('ConanFooter Elements', () => {
   }
 
    const test_elements = {
-     checkbox: ["filter_1", "filter_2", "filter_3", "filter_4", "filter_5", "filter_6"],
+     link: ["openSSL/v3.0.3", "zlib/v1.21.2", "boost/v1.79.0", "OpenGL/system", "openSSL", "zlib", "boost/v1.79.0", "OpenGL/system"],
    }
+
+
 
    for (const key in test_elements){
      for (const element of test_elements[key]) {
        it(key + ' to:' + element, () => {
          render(<Center data={get_server_side_props_data}/>);
-         const expected = screen.getByRole(key, {
+         const expected = screen.getAllByRole(key, {
            name: element,
          })
-         expect(expected).toBeInTheDocument()
+         for (const expt of expected) { expect(expt).toBeInTheDocument() }
        })
      }
    }
