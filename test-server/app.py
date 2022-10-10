@@ -248,33 +248,145 @@ async def get_package(name=''):
 
 @app.get('/package/{name}/md')
 async def get_md(name=''):
-    return {'md': md_use_it}
+    return {
+        '3.0.5': {'md': md_use_it},
+        '3.0.4': {'md': md_use_it},
+        '3.0.3': {'md': md_use_it},
+        '1.1.1q': {'md': md_use_it},
+        '1.1.1p': {'md': md_use_it},
+        '1.1.1o': {'md': md_use_it},
+        '1.1.0l': {'md': md_use_it},
+        '1.0.2u': {'md': md_use_it}
+    }
 
 
 @app.get('/package/{name}/example')
 async def get_example(name=''):
-    return {'md': md_example}
+    return {
+        '3.0.5': {'md': md_example},
+        '3.0.4': {'md': md_example},
+        '3.0.3': {'md': md_example},
+        '1.1.1q': {'md': md_example},
+        '1.1.1p': {'md': md_example},
+        '1.1.1o': {'md': md_example},
+        '1.1.0l': {'md': md_example},
+        '1.0.2u': {'md': md_example}
+    }
 
 
 @app.get('/package/{name}/shields_io')
 async def get_shields_io(name=''):
-    return {'md': shields_io_md}
+    return {
+        '3.0.5': {'md': shields_io_md},
+        '3.0.4': {'md': shields_io_md},
+        '3.0.3': {'md': shields_io_md},
+        '1.1.1q': {'md': shields_io_md},
+        '1.1.1p': {'md': shields_io_md},
+        '1.1.1o': {'md': shields_io_md},
+        '1.1.0l': {'md': shields_io_md},
+        '1.0.2u': {'md': shields_io_md}
+    }
 
 
 
 @app.get('/package/{name}/options')
 async def get_options(name=''):
-    return {'md': options_md}
+    return {
+        '3.0.5': {'md': options_md},
+        '3.0.4': {'md': options_md},
+        '3.0.3': {'md': options_md},
+        '1.1.1q': {'md': options_md},
+        '1.1.1p': {'md': options_md},
+        '1.1.1o': {'md': options_md},
+        '1.1.0l': {'md': options_md},
+        '1.0.2u': {'md': options_md}
+    }
 
 
 @app.get('/package/{name}/packages')
 async def get_packages(name=''):
-    return {'md': packages_md}
+    return {
+        '3.0.5': {'md': packages_md},
+        '3.0.4': {'md': packages_md},
+        '3.0.3': {'md': packages_md},
+        '1.1.1q': {'md': packages_md},
+        '1.1.1p': {'md': packages_md},
+        '1.1.1o': {'md': packages_md},
+        '1.1.0l': {'md': packages_md},
+        '1.0.2u': {'md': packages_md}
+    }
 
 
 @app.get('/package/{name}/downloads')
 async def get_downloads(name=''):
     return {
+        '3.0.5': {
+        'downloads': [
+                {'date': '2022-06-26', 'downloads': 7},
+                {'date': '2022-06-27', 'downloads': 46},
+                {'date': '2022-06-28', 'downloads': 35},
+                {'date': '2022-06-29', 'downloads': 14}
+            ]
+        },
+        '3.0.4': {
+        'downloads': [
+                {'date': '2022-06-26', 'downloads': 7},
+                {'date': '2022-06-27', 'downloads': 46},
+                {'date': '2022-06-28', 'downloads': 35},
+                {'date': '2022-06-29', 'downloads': 14}
+            ]
+        },
+        '3.0.3': {
+        'downloads': [
+                {'date': '2022-06-26', 'downloads': 7},
+                {'date': '2022-06-27', 'downloads': 46},
+                {'date': '2022-06-28', 'downloads': 35},
+                {'date': '2022-06-29', 'downloads': 14}
+            ]
+        },
+        '1.1.1q': {
+        'downloads': [
+                {'date': '2022-06-26', 'downloads': 7},
+                {'date': '2022-06-27', 'downloads': 46},
+                {'date': '2022-06-28', 'downloads': 35},
+                {'date': '2022-06-29', 'downloads': 14}
+            ]
+        },
+        '1.1.1p': {
+        'downloads': [
+                {'date': '2022-06-26', 'downloads': 7},
+                {'date': '2022-06-27', 'downloads': 46},
+                {'date': '2022-06-28', 'downloads': 35},
+                {'date': '2022-06-29', 'downloads': 14}
+            ]
+        },
+        '1.1.1o': {
+        'downloads': [
+                {'date': '2022-06-26', 'downloads': 7},
+                {'date': '2022-06-27', 'downloads': 46},
+                {'date': '2022-06-28', 'downloads': 35},
+                {'date': '2022-06-29', 'downloads': 14}
+            ]
+        },
+        '1.1.0l': {
+        'downloads': [
+                {'date': '2022-06-26', 'downloads': 7},
+                {'date': '2022-06-27', 'downloads': 46},
+                {'date': '2022-06-28', 'downloads': 35},
+                {'date': '2022-06-29', 'downloads': 14}
+            ]
+        },
+        '1.0.2u': {
+        'downloads': [
+                {'date': '2022-06-26', 'downloads': 7},
+                {'date': '2022-06-27', 'downloads': 46},
+                {'date': '2022-06-28', 'downloads': 35},
+                {'date': '2022-06-29', 'downloads': 14}
+            ]
+        }
+    }
+
+    {
         'downloads': [
             {'date': '2022-06-26', 'downloads': 7},
             {'date': '2022-06-27', 'downloads': 46},

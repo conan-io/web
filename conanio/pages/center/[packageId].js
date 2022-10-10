@@ -79,7 +79,7 @@ export default function ConanPackage(props) {
           </Row>
           </Col>
           <Col xs lg="4">
-            <LineChart width={400} height={200} data={props.downloads.downloads} margin={{ top: 20, right: 20, left: 20, bottom: 20 }}>
+            <LineChart width={400} height={200} data={props.downloads[selectedVersion].downloads} margin={{ top: 20, right: 20, left: 20, bottom: 20 }}>
               <XAxis dataKey="date" />
               <Tooltip />
               <CartesianGrid stroke="#f5f5f5" />
