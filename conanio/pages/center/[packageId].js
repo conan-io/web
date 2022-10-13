@@ -75,7 +75,7 @@ export default function ConanPackage(props) {
             <Col xs lg><p><b>Labels:</b> {props.data[selectedVersion].info.labels.map((item) => (<Badge key={item}>{item}</Badge>))}</p></Col>
           </Row>
           <Row>
-            <Link href={"https://github.com/conan-io/conan-center-index/tree/master/recipes/" + props.data.name}><a><p>{props.data.name} recipe</p></a></Link>
+            <Link href={"https://github.com/conan-io/conan-center-index/tree/master/recipes/" + props.data[selectedVersion].name}><a><p>{props.data[selectedVersion].name} recipe</p></a></Link>
           </Row>
           </Col>
           <Col xs lg="4">
