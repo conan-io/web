@@ -30,6 +30,7 @@ export async function getServerSideProps(context) {
   const licenses_list = await get_json_list_with_id(urls.licenses, urls.api.private);
 
   return {
+    notFound: process.env.NODE_ENV === 'production',
     props: {
       data: {
         licenses: licenses_list.map(elem => {return {filter: elem.value, id: elem.id, checked: false};}),

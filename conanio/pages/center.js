@@ -21,6 +21,7 @@ export async function getServerSideProps(context) {
   const filters_list = await get_json_list_with_id(urls.filters, urls.api.private);
 
   return {
+    notFound: process.env.NODE_ENV === 'production',
     props: {
       data: {
         popular: await get_json_list(urls.popular, urls.api.private),

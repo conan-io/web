@@ -19,6 +19,7 @@ export async function getServerSideProps(context) {
   let urls = get_urls({packageId: context.params.packageId})
   let data = await get_json(urls.package.info, urls.api.private)
   return {
+    notFound: process.env.NODE_ENV === 'production',
     props: {
       data: data,
       downloads: await get_json(urls.package.downloads, urls.api.private),
