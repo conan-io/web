@@ -99,7 +99,7 @@ export default function Center(props) {
           <Container>
             <Container><h1 className="text-center">Conan Center</h1></Container>
             <Row>
-              <CenterSearchBar filters={props.data.filters} data_to_show={"Number of references: "+props.data.reference_num}/>
+              <Col><CenterSearchBar filters={props.data.filters} data_to_show={"Number of references: "+props.data.reference_num}/></Col>
             </Row>
             <Row>
               <Col><CenterList data={props.data.popular} name="Popular Package" full_name={true}/></Col>

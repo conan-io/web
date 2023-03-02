@@ -1,22 +1,20 @@
 import React from 'react';
 import { SSRProvider } from 'react-bootstrap';
 import ConanHeader from '../components/header';
-import ConanHome from '../components/home';
 import ConanFooter from '../components/footer';
 
-function HomePage() {
+function TermsConditionPage() {
     return (
     <React.StrictMode>
       <SSRProvider>
-        <div>
-          <div className="header-bg position-absolute"><img src="/kitchen-bg.svg" width="100%"></img></div>
-          <ConanHeader/>
-        </div>
-        <ConanHome/>
+        <ConanHeader/>
+        <br/>
+        <h1 className="text-center">Work in progress ...</h1>
+        <br/>
         <ConanFooter/>
       </SSRProvider>
     </React.StrictMode>
   );
 }
 
-export default HomePage
+export default TermsConditionPage

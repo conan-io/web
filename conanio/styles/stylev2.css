@@ -1,0 +1,683 @@
+@charset "UTF-8";
+#onetrust-banner-sdk {
+  display: none !important;
+}
+
+h4, .h4 {
+  font-size: 1.111rem;
+  font-weight: 700;
+}
+
+#masthead .btn {
+  height: 3vh;
+  font-size: 0.888rem;
+  min-width: 77px;
+}
+
+.btn {
+  min-width: 97px;
+  text-align: center;
+  line-height: 22px;
+  min-height: 2rem;
+  /* 36/18 */
+  font-size: 1.05rem;
+  /* 19/18 */
+  transition: all 0.32s ease;
+  border-radius: 50px;
+  box-sizing: border-box;
+  height: 51px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+.btn.bg-blue:hover {
+  color: #fff;
+  background-color: #2F6799;
+}
+.btn.bg-dark-blue {
+  background-color: #2F6799;
+  font-size: 20px;
+  color: #fff;
+  transition: all 0.32s ease;
+}
+.btn.bg-dark-blue:hover {
+  opacity: 0.9;
+}
+.btn.bg-bright-gray:hover {
+  background-color: #DEE7F9;
+}
+.btn.conan-blue-gradient-bg, .btn.conan-blue-to-dark-gradient-bg, .btn.artifactory-green-gradient-bg {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: white;
+  text-align: center;
+}
+
+.conan-blue-gradient-bg {
+  background: linear-gradient(92.17deg, #0086FD 6.81%, #21AFFF 83.22%);
+  border-radius: 50px;
+}
+
+.conan-blue-to-dark-gradient-bg {
+  background: linear-gradient(272.14deg, #000000 -21.83%, #0086FD 50.03%, #21AFFF 93.6%);
+}
+
+.conan-blue-bg {
+  background-color: #21AFFF;
+}
+
+.conan-blue-border {
+  border: 2px solid #21AFFF;
+  border-radius: 50px;
+}
+
+.conan-white-border {
+  border: 2px solid white;
+  border-radius: 50px;
+}
+
+.artifactory-green-gradient-bg {
+  background: linear-gradient(92.17deg, #40BE46 6.81%, #62DA68 83.22%);
+}
+
+.hero-bg, .contact-bg {
+  max-width: 300px;
+}
+
+body#hero h1, body#heroFaq h1 {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 45px;
+  line-height: 56px;
+}
+body#hero h2, body#heroFaq h2 {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 159.68%;
+}
+
+section#faqQuestions {
+  background: linear-gradient(0deg, rgba(216, 240, 255, 0) 0%, rgba(232, 246, 255, 0.14) 29.69%, #FBFDFF 100%);
+}
+
+.hero-bg {
+  top: 422px;
+  left: 0;
+}
+.hero-bg.downloads-hero-bg {
+  top: 150px;
+}
+@media screen and (max-width: 480px) {
+  .hero-bg .homepage-hero-paragraph {
+    font-size: 1rem;
+  }
+}
+
+.artifactory-buttons {
+  gap: 5px;
+}
+
+section#hero, section#heroFaq {
+  background: linear-gradient(180deg, rgba(216, 240, 255, 0) 0%, rgba(232, 246, 255, 0.14) 29.69%, #FBFDFF 90.16%);
+}
+section#hero .hero-content, section#heroFaq .hero-content {
+  margin-left: auto;
+  margin-right: auto;
+}
+section#hero .hero-content h2, section#heroFaq .hero-content h2 {
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 27px;
+  /* 20/18 */
+}
+@media screen and (max-width: 480px) {
+  section#hero .hero-content h2, section#heroFaq .hero-content h2 {
+    font-size: 1rem;
+  }
+}
+
+.faq-questions .container {
+  border-bottom: 1px solid #E6E6E6;
+}
+@media screen and (max-width: 480px) {
+  .faq-questions .container {
+    border-bottom: 0;
+  }
+}
+.faq-questions li.faq-anchor {
+  list-style: none;
+  padding-bottom: 15px;
+  padding-right: 15px;
+}
+.faq-questions li.faq-anchor a {
+  color: #3a74ae;
+}
+
+section.advantages .advantage {
+  margin-left: auto;
+  margin-right: auto;
+  background: white;
+}
+section.advantages .advantage .img {
+  min-height: 101px;
+  display: -webkit-flex;
+  display: -ms-flex;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+section.advantages .advantage h4 {
+  margin-top: 10%;
+  margin-right: 10%;
+  margin-left: 10%;
+}
+section.advantages .advantage p {
+  margin-top: 10%;
+  margin-right: 10%;
+  margin-left: 10%;
+  font-size: 0.88rem;
+  font-weight: 400;
+  line-height: 23.95px;
+  /* 15/18 */
+}
+section.advantages .advantage p strong {
+  font-weight: 700;
+}
+section.advantages .advantage .read-more-wrapper .read-more-content {
+  display: none;
+}
+section.advantages .advantage .read-more span {
+  display: inline-block;
+  position: relative;
+  left: 3px;
+  top: 2px;
+  transform: rotate(90deg);
+}
+section.advantages .advantage .read-more:hover {
+  color: #fff;
+}
+
+section.places {
+  background: linear-gradient(180deg, #D5EFFF 0%, rgba(235, 247, 255, 0) 100%);
+}
+section.places p {
+  font-weight: 400;
+  font-size: 0.888rem;
+  line-height: 23.95px;
+}
+
+.home-tribe {
+  background: #D3EDFF;
+}
+@media screen and (max-width: 768px) {
+  .home-tribe {
+    background-size: 1920px 100%;
+  }
+}
+.home-tribe p {
+  font-weight: 400;
+  font-size: 1.11rem;
+  max-width: 100%;
+}
+
+.header-bg {
+  background: linear-gradient(180deg, #D5EFFF 0%, rgba(235, 247, 255, 0) 100%);
+  width: 100%;
+  z-index: -2;
+}
+
+.conan-card {
+  height: 100%;
+  border-top: 9px solid #1FACFF;
+  box-shadow: 0px 9px 29px rgba(0, 0, 0, 0.07), 0px 1.12694px 3.63125px rgba(0, 0, 0, 0.035);
+}
+
+.customer-success {
+  background: linear-gradient(183.92deg, #FFFFFF 3.21%, #CBEBFF 113.24%, #A9DCFC 158.55%);
+}
+.customer-success .success-stories h5 {
+  font-size: 18px;
+  line-height: 139%;
+}
+.customer-success .success-stories p.text {
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 139%;
+}
+
+.users-voice-bg {
+  background: linear-gradient(0deg, #D5EFFF 0%, rgba(235, 247, 255, 0) 100%);
+}
+
+section.testis {
+  overflow: hidden;
+}
+section.testis h2 {
+  font-weight: 300;
+}
+section.testis p.text {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+}
+section.testis .testi-cartousel-wrapper {
+  position: relative;
+  max-width: 646px;
+  margin-left: auto;
+  margin-right: auto;
+}
+section.testis .testi-cartousel-wrapper .testi {
+  font-weight: 300;
+}
+section.testis .testi-cartousel-wrapper .testi .quote span.line {
+  background: #fff;
+  height: 1px;
+  width: 95px;
+}
+section.testis .testi-cartousel-wrapper .slick-track {
+  display: -webkit-flex;
+  display: -ms-flex;
+  display: flex;
+  align-items: center;
+}
+section.testis .testi-cartousel-wrapper .cs-slick-nav {
+  position: absolute;
+  background-color: transparent;
+  border: 0;
+  margin-top: auto;
+  margin-bottom: auto;
+  top: 0;
+  bottom: 0;
+  outline: 0 !important;
+}
+section.testis .testi-cartousel-wrapper .cs-slick-nav.cs-slick-right {
+  transform: rotate(180deg);
+  right: -80px;
+}
+section.testis .testi-cartousel-wrapper .cs-slick-nav.cs-slick-left {
+  left: -80px;
+}
+section.testis .company-logo img {
+  width: 100px;
+  height: 100%;
+  object-fit: contain;
+  object-position: 50% 50%;
+}
+section.testis .company-logo.logo-squared img {
+  width: 50px !important;
+}
+section.testis .company-quote {
+  width: 70%;
+}
+
+footer#siteFooter {
+  background-color: #0C0C0C;
+  background-size: 24vw;
+}
+@media screen and (max-width: 991px) {
+  footer#siteFooter {
+    background-image: none;
+  }
+}
+footer#siteFooter .footer-left {
+  border-top: 1px solid rgba(139, 139, 139, 0.5);
+  padding-top: 30px;
+  margin-top: 20px;
+}
+footer#siteFooter .footer-left .footer-menu {
+  font-size: 15px;
+}
+footer#siteFooter .footer-left .footer-menu h4 {
+  font-size: 16px;
+}
+footer#siteFooter .footer-left .footer-menu ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 0;
+}
+footer#siteFooter .footer-left .footer-menu ul li a {
+  color: #000;
+  transition: all 0.32s ease;
+  font-weight: 400;
+}
+footer#siteFooter .footer-left .footer-menu ul li a:hover {
+  color: #2c4257;
+}
+footer#siteFooter ul.socials a {
+  transition: all 0.32s ease;
+}
+footer#siteFooter ul.socials a:hover {
+  opacity: 0.5;
+}
+
+@media screen and (max-width: 768px) {
+  section.sign-up img.letter {
+    display: none !important;
+  }
+}
+section.sign-up img.letter {
+  max-width: 200px;
+  bottom: -10px;
+  left: -130px;
+}
+@media screen and (max-width: 480px) {
+  section.sign-up img.letter {
+    bottom: 50px;
+    left: -80px;
+  }
+}
+section.sign-up form#mktoForm_1479 {
+  padding: 0;
+  max-width: 100%;
+  display: -webkit-flex;
+  display: -ms-flex;
+  display: flex;
+  flex-wrap: wrap;
+}
+@media screen and (max-width: 480px) {
+  section.sign-up form#mktoForm_1479 {
+    justify-content: center;
+  }
+}
+@media screen and (min-width: 768px) {
+  section.sign-up form#mktoForm_1479 {
+    width: 535px !important;
+  }
+}
+section.sign-up form#mktoForm_1479 h2 {
+  font-weight: 200;
+}
+section.sign-up form#mktoForm_1479 .mktoFormRow:nth-child(2) {
+  order: -1;
+}
+section.sign-up form#mktoForm_1479 .mktoFormRow:nth-child(2) .mktoError {
+  right: unset !important;
+  bottom: -69px !important;
+}
+section.sign-up form#mktoForm_1479 .mktoFormRow:nth-child(2) label[for=Email], section.sign-up form#mktoForm_1479 .mktoFormRow:nth-child(2) .mktoOffset, section.sign-up form#mktoForm_1479 .mktoFormRow:nth-child(2) .mktoClear, section.sign-up form#mktoForm_1479 .mktoFormRow:nth-child(2) .mktoGutter.mktoHasWidth {
+  display: none;
+}
+section.sign-up form#mktoForm_1479 .mktoFormRow:nth-child(2) input {
+  width: 100%;
+  border-right: 2px;
+  border: 1px solid #8b8b8b;
+  height: 48px;
+  padding-left: 15px;
+  padding-right: 15px;
+  font-size: 18px;
+}
+section.sign-up form#mktoForm_1479 .mktoFormRow:nth-child(2) input#Email {
+  max-width: 100%;
+  width: 332px !important;
+}
+section.sign-up form#mktoForm_1479 .mktoButtonRow {
+  order: -1;
+}
+section.sign-up form#mktoForm_1479 .mktoButtonRow span.mktoButtonWrap.mktoNative {
+  margin-left: 10px !important;
+}
+section.sign-up form#mktoForm_1479 .mktoButtonRow span.mktoButtonWrap.mktoNative button.mktoButton {
+  height: 48px;
+  border: 0;
+  background: linear-gradient(92.17deg, #0086FD 6.81%, #21AFFF 83.22%);
+  width: 190px;
+  color: #fff;
+  font-size: 19px;
+  padding-left: 17px;
+  padding-right: 17px;
+  transition: all 0.32s ease;
+  border-radius: 50px;
+}
+section.sign-up form#mktoForm_1479 .mktoButtonRow span.mktoButtonWrap.mktoNative button.mktoButton:hover {
+  opacity: 0.8;
+}
+section.sign-up form#mktoForm_1479 .mktoFormRow:nth-child(3) {
+  width: 525px;
+  max-width: 100%;
+  margin-top: 10px;
+  display: -webkit-flex;
+  display: -ms-flex;
+  display: flex;
+  justify-content: center;
+}
+section.sign-up form#mktoForm_1479 .mktoFormRow:nth-child(3) .mktoAsterix, section.sign-up form#mktoForm_1479 .mktoFormRow:nth-child(3) .mktoGutter.mktoHasWidth, section.sign-up form#mktoForm_1479 .mktoFormRow:nth-child(3) .mktoLogicalField.mktoCheckboxList.mktoHasWidth.mktoRequired.mktoValid label {
+  display: none;
+}
+section.sign-up form#mktoForm_1479 .mktoFormRow:nth-child(3) .mktoFieldDescriptor.mktoFormCol .mktoOffset {
+  display: none;
+}
+section.sign-up form#mktoForm_1479 .mktoFormRow:nth-child(3) .mktoFieldDescriptor.mktoFormCol .mktoFieldWrap.mktoRequiredField {
+  display: -webkit-flex;
+  display: -ms-flex;
+  display: flex;
+  flex-direction: row-reverse;
+  padding-top: 5px;
+  justify-content: center;
+}
+section.sign-up form#mktoForm_1479 .mktoFormRow:nth-child(3) .mktoFieldDescriptor.mktoFormCol .mktoFieldWrap.mktoRequiredField label.mktoLabel.mktoHasWidth {
+  color: #fff;
+  text-align: center;
+  font-weight: 300 !important;
+}
+section.sign-up form#mktoForm_1479 .mktoFormRow:nth-child(3) .mktoFieldDescriptor.mktoFormCol .mktoFieldWrap.mktoRequiredField label.mktoLabel.mktoHasWidth a {
+  font-weight: 600 !important;
+  color: #fff !important;
+  text-decoration: underline;
+}
+section.sign-up form#mktoForm_1479 .mktoFormRow:nth-child(3) .mktoFieldDescriptor.mktoFormCol .mktoFieldWrap.mktoRequiredField .mktoLogicalField.mktoCheckboxList.mktoHasWidth.mktoRequired {
+  width: 25px !important;
+  padding-left: 0;
+  padding-top: 2.9px;
+}
+section.sign-up form#mktoForm_1479 .mktoFormRow:nth-child(3) .mktoFieldDescriptor.mktoFormCol .mktoFieldWrap.mktoRequiredField .mktoLogicalField.mktoCheckboxList.mktoHasWidth.mktoRequired [type=checkbox] {
+  opacity: 0;
+}
+section.sign-up form#mktoForm_1479 .mktoFormRow:nth-child(3) .mktoFieldDescriptor.mktoFormCol .mktoFieldWrap.mktoRequiredField .mktoLogicalField.mktoCheckboxList.mktoHasWidth.mktoRequired [type=checkbox] + label {
+  display: block !important;
+  box-sizing: border-box;
+  border-radius: 2px;
+  width: 18px;
+  height: 19px;
+  background: #fff;
+  border: 1px solid #8b8b8b;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+section.sign-up form#mktoForm_1479 .mktoFormRow:nth-child(3) .mktoFieldDescriptor.mktoFormCol .mktoFieldWrap.mktoRequiredField .mktoLogicalField.mktoCheckboxList.mktoHasWidth.mktoRequired [type=checkbox]:checked + label:before {
+  content: "✔";
+  position: absolute;
+  top: 9px;
+  left: 4px;
+  z-index: 2;
+  font-size: 14px;
+  color: #40be46;
+}
+@media screen and (max-width: 600px) {
+  section.sign-up form#mktoForm_1479 .mktoFormRow:nth-child(3) {
+    width: 100%;
+    justify-content: center;
+  }
+  section.sign-up form#mktoForm_1479 .mktoFormRow:nth-child(2) input#Email {
+    width: 210px !important;
+    font-size: 15px;
+  }
+  section.sign-up form#mktoForm_1479 .mktoButtonRow span.mktoButtonWrap.mktoNative button.mktoButton {
+    width: 110px !important;
+    font-size: 15px;
+  }
+}
+section.sign-up form.footer-form h3 {
+  font-size: 20px;
+}
+section.sign-up form.footer-form label {
+  display: none;
+}
+section.sign-up form.footer-form label.show-label {
+  display: inline-block;
+}
+section.sign-up form.footer-form input:not([type=checkbox]) {
+  height: 48px;
+  border-radius: 2px;
+}
+section.sign-up form.footer-form input:not([type=checkbox])#footerEmail {
+  width: 261px;
+  border: 1px solid gray;
+  background: white;
+  padding-left: 15px;
+}
+section.sign-up form.footer-form input:not([type=checkbox])[type=submit] {
+  padding: 10px 15px;
+}
+section.sign-up form.footer-form .form-checkbox {
+  position: relative;
+}
+section.sign-up form.footer-form .form-checkbox abbr {
+  display: none;
+}
+section.sign-up form.footer-form .form-checkbox input {
+  opacity: 0;
+  position: relative;
+  left: 3px;
+  bottom: -7px;
+  z-index: 3;
+}
+section.sign-up form.footer-form .form-checkbox span {
+  height: 19px;
+  width: 18px;
+  border: 1px solid black;
+  display: inline-block;
+  position: relative;
+  top: 3px;
+  left: -13px;
+  transition: all 0.12s ease;
+}
+section.sign-up form.footer-form .form-checkbox [type=checkbox]:checked + span {
+  background: #40be46;
+  border: 1px solid #40be46;
+}
+section.sign-up form.footer-form .form-checkbox [type=checkbox]:checked + span:before {
+  content: "✔";
+  position: absolute;
+  top: -3px;
+  left: 2px;
+  z-index: 2;
+  font-size: 14px;
+  color: #fff;
+}
+
+.footer-links {
+  gap: 15px;
+}
+.footer-links a {
+  color: white;
+}
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+.conan-center-icon {
+  filter: invert(37%) sepia(52%) saturate(5711%) hue-rotate(195deg) brightness(106%) contrast(105%);
+}
+
+section.users .users-flex {
+  flex-wrap: wrap;
+  gap: 40px 1%;
+  justify-content: center;
+}
+section.users .users-flex .user-box {
+  padding: 20px;
+  height: 150px;
+  width: 14vw;
+  padding: 20px;
+}
+section.users .users-flex .user-box img {
+  object-fit: contain;
+}
+@media screen and (max-width: 575.98px) {
+  section.users .users-flex .user-box {
+    width: 33.3%;
+    height: calc((100vw - 30px) / 3);
+    padding: 10px;
+  }
+}
+
+.learn-more-link {
+  color: black;
+  text-decoration: underline;
+}
+
+.get-involved-btn {
+  color: white;
+  right: 0;
+  z-index: 2;
+  transform: translateX(25%) rotate(-90deg);
+  border-radius: 20px 20px 0px 0px;
+  padding-bottom: 50px;
+  padding-top: 20px;
+  background: linear-gradient(180deg, #0086FD 40.81%, #21AFFF 83.22%);
+}
+
+.learn-more-ce-link {
+  font-weight: 700;
+  font-size: 1.05rem;
+  text-decoration: underline;
+}
+
+.success-icon-bg {
+  box-shadow: 4px 4px 9px rgba(0, 0, 0, 0.25);
+}
+
+#faqAccordion li.faq-element {
+  border-bottom: 1px solid #E6E6E6;
+  padding: 15px;
+}
+#faqAccordion li.faq-element .top {
+  cursor: pointer;
+}
+#faqAccordion li.faq-element .question {
+  font-size: 0.88rem;
+  line-height: 1.2;
+  font-weight: 700;
+  transition: all 0.32s ease;
+  max-width: 900px;
+}
+@media screen and (min-width: 480px) {
+  #faqAccordion li.faq-element .question {
+    font-size: 20px;
+  }
+}
+@media screen and (max-width: 480px) {
+  #faqAccordion li.faq-element .question {
+    margin-bottom: 15px;
+  }
+}
+#faqAccordion li.faq-element .answer {
+  font-size: 0.808rem;
+  color: #757575;
+  max-width: 900px;
+  font-weight: 300;
+}
+#faqAccordion li.faq-element .answer a {
+  color: #2F6799;
+  text-decoration: underline;
+}
+@media screen and (min-width: 480px) {
+  #faqAccordion li.faq-element .answer {
+    font-size: 16px;
+  }
+}
+@media screen and (max-width: 480px) {
+  #faqAccordion li.faq-element .answer {
+    color: black;
+  }
+}
+#faqAccordion li.faq-element path, #faqAccordion li.faq-element svg {
+  transition: all 0.32s ease;
+}
+#faqAccordion li.faq-element:nth-child(even) {
+  background-color: rgba(235, 247, 255, 0.1);
+}
