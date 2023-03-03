@@ -59,7 +59,6 @@ function ConanFooter() {
           <div className="col-md-2 pr-0">
             <ul className="socials d-flex mt-1 mb-0 pt-2 pl-0 justify-content-center list-unstyled">
               <li><a className="mr-2" href="https://twitter.com/conan_io"><img alt="twitter" className="lazy" src="/social/twitter.svg"></img></a></li>
-              <li><a className="mr-2" href="https://facebook.com/conan.io"><img alt="facebook" className="lazy" src="/social/facebook.svg"></img></a></li>
               <li><a className="mr-2" href="https://cpplang.​slack.​com/?id=conan"><img alt="slack" className="lazy" src="/social/slack.svg"></img></a></li>
               <li><a className="mr-2" href="https://github.com/conan-io"><img alt="github" className="lazy" src="/social/github.svg" style={{filter: 'invert(100%)'}}></img></a></li>
             </ul>

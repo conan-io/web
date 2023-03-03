@@ -10,7 +10,7 @@ import Tabs from 'react-bootstrap/Tabs';
 import Badge from 'react-bootstrap/Badge';
 import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
-import ConanHeader from '../../components/header';
+import { ConanHeader } from '../../components/header';
 import ConanFooter from '../../components/footer';
 import {LineChart, XAxis, Tooltip, CartesianGrid, Line} from 'recharts';
 import {get_json, get_urls} from '../../service/service';

@@ -10,7 +10,7 @@ import Button from 'react-bootstrap/Button';
 import { ConanListFilter, ConanSearchBar } from "../components/searchbar";
 import ListGroup from 'react-bootstrap/ListGroup';
 import Link from 'next/link';
-import ConanHeader from '../components/header';
+import { ConanHeader } from '../components/header';
 import ConanFooter from '../components/footer';
 import {get_json_list, get_urls, get_json_list_with_id} from '../service/service';
 

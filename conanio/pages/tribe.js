@@ -1,13 +1,13 @@
 import React from 'react';
 import { SSRProvider } from 'react-bootstrap';
-import ConanHeader from '../components/header';
+import { ConanKitchenHeader } from '../components/header';
 import ConanFooter from '../components/footer';
 
 function TribePage() {
-    return (
+  return (
     <React.StrictMode>
       <SSRProvider>
-        <ConanHeader/>
+        <ConanKitchenHeader/>
         <br/>
         <h1 className="text-center">Work in progress ...</h1>
         <br/>

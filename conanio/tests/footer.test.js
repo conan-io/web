@@ -6,8 +6,8 @@ describe('ConanFooter Elements', () => {
   const test_elements = {
     contentinfo: [""],
     list: [""],
-    link: ["twitter", "facebook", "slack", "github", "Download", "Conan-Center", "GitHub", "Docs", "Blog", "Privacy Policy", "Terms", "", "Github", "Twitter", "Facebook", "Slack #conan"],
-    img: ["twitter", "facebook", "slack", "github"],
+    link: ["twitter", "slack", "github", "Download", "Conan-Center", "GitHub", "Docs", "Blog", "Privacy Policy", "Terms", "", "Github", "Twitter", "Slack #conan"],
+    img: ["twitter", "slack", "github"],
     heading: ["GET", "Resources", "Legal", "Social"],
   }
 
