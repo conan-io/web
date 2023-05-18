@@ -6,7 +6,7 @@ export function ConanHeader() {
     <header id="masthead">
       <div className="container">
         <div className="row d-flex justify-content-between">
-          <Link href="/"><a className="col-10 col-lg-4 d-block"><img alt="Conan C++ Package Manager" className="header-logo" src="/logo-conan.svg"></img></a></Link>
+          <Link href="/"><a className="col-10 col-lg-4 d-block"><img alt="Conan C++ Package Manager" className="header-logo" src="/conan-logo.svg"></img></a></Link>
           <div className="col-2 d-flex d-lg-none align-items-center justify-content-end">
             <button className="d-block d-lg-none hamburger hamburger--collapse text-right" type="button">
             <span className="hamburger-box"><span className="hamburger-inner"></span></span>
