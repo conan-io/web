@@ -14,6 +14,11 @@ h4, .h4 {
   min-width: 77px;
 }
 
+.bg-primary {
+    background-color: #97bde7!important;
+    margin-right: 6px;
+}
+
 .btn {
   min-width: 97px;
   text-align: center;
