@@ -66,7 +66,7 @@ export default function ConanPackage(props) {
                 </Form.Select>
             </Col>
             <Col xs lg="5"><p><b>Licenses:</b> {props.data[selectedVersion].info.licenses.join(", ")}</p></Col>
-            <Col xs lg="3"><p><b>Downloads:</b> {props.data[selectedVersion].info.downloads}</p></Col>
+            { props.data[selectedVersion].info.downloads > 0 && <Col xs lg="3"><p><b>Downloads:</b> {props.data[selectedVersion].info.downloads}</p></Col> }
           </Row>
           <Row>
             <Col xs lg><p><b>Description:</b> {props.data[selectedVersion].info.description}</p></Col>
@@ -78,14 +78,14 @@ export default function ConanPackage(props) {
             <Link href={"https://github.com/conan-io/conan-center-index/tree/master/recipes/" + props.data[selectedVersion].name}><a><p>{props.data[selectedVersion].name} recipe</p></a></Link>
           </Row>
           </Col>
-          <Col xs lg="4">
+          { props.data[selectedVersion].info.downloads > 0 && <Col xs lg="4">
             <LineChart width={400} height={200} data={props.downloads[selectedVersion].downloads} margin={{ top: 20, right: 20, left: 20, bottom: 20 }}>
               <XAxis dataKey="date" />
               <Tooltip />
               <CartesianGrid stroke="#f5f5f5" />
               <Line type="monotone" dataKey="downloads" stroke="#0d6efd" yAxisId={0} />
             </LineChart>
-          </Col>
+          </Col>}
           </Row>
           <Row>
             <Tabs defaultActiveKey="use-it" id="uncontrolled">
