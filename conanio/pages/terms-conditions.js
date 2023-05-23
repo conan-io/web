@@ -79,7 +79,7 @@ function TermsConditionPage() {
                 by uploading contents to Conan you expressly grant Conan the right
                 of distribution, reproduction and public communication of the
                 contents, as established in the Intellectual Property Act (Minimum
-                Required License) as this license is needed by Conan's platform to
+                Required License) as this license is needed by Conan&apos;s platform to
                 render its services to other users. This Minimum Required License is
                 granted universally and for free. Please notice that Conan just
                 needs this license to operate the platform but no further rights are
