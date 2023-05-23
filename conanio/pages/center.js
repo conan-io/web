@@ -102,9 +102,9 @@ export default function Center(props) {
               <Col><CenterSearchBar filters={props.data.filters} data_to_show={"Number of references: "+props.data.reference_num}/></Col>
             </Row>
             <Row>
-              <Col><CenterList data={props.data.popular} name="Popular Package" full_name={true}/></Col>
-              <Col><CenterList data={props.data.updated} name="Just Updated" full_name={false}/></Col>
-              <Col><CenterList data={props.data.new} name="New Version" full_name={true}/></Col>
+              {props.data.popular.length > 0  && <Col><CenterList data={props.data.popular} name="Popular Package" full_name={true}/></Col>}
+              {props.data.updated.length > 0 && <Col><CenterList data={props.data.updated} name="Just Updated" full_name={false}/></Col>}
+              {props.data.new.length > 0 && <Col><CenterList data={props.data.new} name="New Version" full_name={true}/></Col>}
             </Row>
           </Container>
           <br/>

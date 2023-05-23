@@ -55,7 +55,7 @@ function PackageInfo(props) {
           </Row>
         </Col>
         <Col xs lg="5"><b>Licenses:</b> {props.data.info.licenses.join(", ")}</Col>
-        <Col xs lg="3"><b>Downloads:</b> {props.data.info.downloads}</Col>
+        {props.data.info.downloads > 0  && <Col xs lg="3"><b>Downloads:</b> {props.data.info.downloads}</Col>}
       </Row>
       <br/>
       <Row>
