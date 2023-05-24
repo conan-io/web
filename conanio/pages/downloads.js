@@ -5,6 +5,39 @@ import ConanFooter from '../components/footer';
 import { Tooltip } from 'react-tooltip';
 import Link from 'next/link';
 
+function CopyToClipboard(props) {
+  return (
+    <div className="package-wrapper d-flex flex-no-wrap">
+      <div className="cn-box small"><img alt={props.imageAlt} className="lazy" src={props.imageSrc}></img></div>
+      <div className="cn-box cn-main copy-text">{props.textToShow}</div>
+      <a
+        className="cn-box cn-action cn-copy"
+        onClick={() => {navigator.clipboard.writeText(props.textToCopy)}}
+        data-tooltip-id="copy-to-clipboard"
+        data-tooltip-content="Copy to clipboard"
+        data-tooltip-place="top"
+      ></a>
+    </div>
+  )
+}
+
+function DownloadInstaller(props) {
+  return (
+    <div className="package-wrapper d-flex flex-no-wrap">
+      <div className="cn-box small"><img alt={props.imageAlt} className="lazy" src={props.imageSrc}></img></div>
+      <div className="cn-box cn-main">{props.textToShow}</div>
+      <Link href={props.installerLink}>
+        <a
+          className="cn-box cn-action cn-download"
+          data-tooltip-id="download"
+          data-tooltip-content="Download"
+          data-tooltip-place="top"
+        ></a>
+      </Link>
+    </div>
+  )
+}
+
 function DownloadConanPackageManager() {
   return (
     <div className="col-lg-6 blue-downloads colored-downloads">
@@ -24,78 +57,46 @@ function DownloadConanPackageManager() {
           </div>
           <div className="install">
             <div className="installers pb-4">
-              <div className="package-wrapper d-flex flex-no-wrap mb-0">
-                <div className="cn-box small"><img alt="python" className="lazy" src="/downloads/python-small-pack.svg"></img></div>
-                <div className="cn-box cn-main copy-text">$ pip install conan</div>
-                <a
-                  className="cn-box cn-action cn-copy"
-                  onClick={() => {navigator.clipboard.writeText("pip install conan")}}
-                  data-tooltip-id="copy-to-clipboard"
-                  data-tooltip-content="Copy to clipboard"
-                  data-tooltip-place="top"
-                ></a>
-              </div>
+              <CopyToClipboard
+                imageAlt="python"
+                imageSrc="/downloads/python-small-pack.svg"
+                textToShow="$ pip install conan"
+                textToCopy="pip install conan"
+              />
             </div>
             <p>Other Installers:</p>
             <div className="installers small-installers pb-4">
-              <div className="package-wrapper d-flex flex-no-wrap">
-                <div className="cn-box small"><img alt="Darwin" className="lazy" src="/downloads/darwin-small-pack.svg"></img></div>
-                <div className="cn-box cn-main copy-text">$ brew install conan</div>
-                <a
-                  className="cn-box cn-action cn-copy"
-                  onClick={() => {navigator.clipboard.writeText("brew install conan")}}
-                  data-tooltip-id="copy-to-clipboard"
-                  data-tooltip-content="Copy to clipboard"
-                  data-tooltip-place="top"
-                ></a>
-              </div>
-              <div className="package-wrapper d-flex flex-no-wrap">
-                <div className="cn-box small"><img alt="Debian" className="lazy" src="/downloads/debian-small-pack.svg"></img></div>
-                <div className="cn-box cn-main">Ubuntu / Debian X64 Installer</div>
-                <Link href="https://github.com/conan-io/conan/releases/latest/download/conan-ubuntu-64.deb">
-                  <a
-                    className="cn-box cn-action cn-download"
-                    data-tooltip-id="download"
-                    data-tooltip-content="Download"
-                    data-tooltip-place="top"
-                  ></a>
-                </Link>
-              </div>
-              <div className="package-wrapper d-flex flex-no-wrap">
-                <div className="cn-box small"><img alt="Windows" className="lazy" src="/downloads/windows-small-pack.svg"></img></div>
-                <div className="cn-box cn-main">Download x86_64 Installer</div>
-                <Link href="https://github.com/conan-io/conan/releases/latest/download/conan-win-64.exe">
-                  <a
-                    className="cn-box cn-action cn-download"
-                    data-tooltip-id="download"
-                    data-tooltip-content="Download"
-                    data-tooltip-place="top"
-                  ></a>
-                </Link>
-              </div>
-              <div className="package-wrapper d-flex flex-no-wrap">
-                <div className="cn-box small"><img alt="Windows" className="lazy" src="/downloads/windows-small-pack.svg"></img></div>
-                <div className="cn-box cn-main">Download x86 Installer</div>
-                <Link href="https://github.com/conan-io/conan/releases/latest/download/conan-win-32.exe">
-                  <a
-                    className="cn-box cn-action cn-download"
-                    data-tooltip-id="download"
-                    data-tooltip-content="Download"
-                    data-tooltip-place="top"
-                  ></a>
-                </Link>
-              </div>
-              <div className="package-wrapper d-flex flex-no-wrap">
-                <div className="cn-box small"><img alt="Arc Linux" className="lazy" src="/downloads/archlinux-small-pack.svg"></img></div>
-                <div className="cn-box cn-main copy-text">$ yay -S conan</div>
-                <a
-                  className="cn-box cn-action cn-copy"
-                  data-copy-value="brew install conan" onClick={() => {navigator.clipboard.writeText("yay -S conan")}}
-                  data-tooltip-id="copy-to-clipboard"
-                  data-tooltip-content="Copy to clipboard"
-                  data-tooltip-place="top"
-                ></a>
-              </div>
+              <CopyToClipboard
+                imageAlt="Darwin"
+                imageSrc="/downloads/darwin-small-pack.svg"
+                textToShow="$ brew install conan"
+                textToCopy="brew install conan"
+              />
+              <DownloadInstaller
+                imageAlt="Debian"
+                imageSrc="/downloads/debian-small-pack.svg"
+                textToShow="Ubuntu / Debian X64 Installer"
+                installerLink="https://github.com/conan-io/conan/releases/latest/download/conan-ubuntu-64.deb"
+              />
+              <DownloadInstaller
+                imageAlt="Windows"
+                imageSrc="/downloads/windows-small-pack.svg"
+                textToShow="Download x86_64 Installer"
+                installerLink="https://github.com/conan-io/conan/releases/latest/download/conan-win-64.exe"
+              />
+              <DownloadInstaller
+                imageAlt="Windows"
+                imageSrc="/downloads/windows-small-pack.svg"
+                textToShow="Download x86 Installer"
+                installerLink="https://github.com/conan-io/conan/releases/latest/download/conan-win-32.exe"
+              />
+              <CopyToClipboard
+                imageAlt="Arch Linux"
+                imageSrc="/downloads/archlinux-small-pack.svg"
+                textToShow="$ yay -S conan"
+                textToCopy=" yay -S conan"
+              />
+
               <div className="package-wrapper d-flex flex-no-wrap">
                 <div className="cn-box small"><img alt="Github" className="lazy" src="/downloads/github-small-pack.svg"></img></div>
                 <div className="cn-box cn-main">Any OS:From Source</div>
@@ -145,137 +146,69 @@ function DownloadJFrogArtifactoryCommunityEditionForCpp() {
           </div>
           <div className="install">
             <div className="installers pb-4">
-              <div className="package-wrapper mb-0 d-flex flex-wrap align-items-center position-relative" id="artifactoryZipPackage">
-                <div className="package-wrapper d-flex flex-no-wrap">
-                  <div className="cn-box small"><img alt="Linux" className="lazy" src="/downloads/jfrog-artifactory-small-pack.png"></img></div>
-                  <div className="cn-box cn-main">Download tar.gz</div>
-                  <Link href={"https://releases.jfrog.io/artifactory/bintray-artifactory/org/artifactory/cpp/ce/jfrog-artifactory-cpp-ce/"+ releaseVersion +"/jfrog-artifactory-cpp-ce-"+ releaseVersion +"-linux.tar.gz"}>
-                    <a
-                      className="cn-box cn-action cn-download"
-                      data-tooltip-id="download"
-                      data-tooltip-content="Download"
-                      data-tooltip-place="top"
-                    ></a>
-                  </Link>
-                </div>
-              </div>
+              <DownloadInstaller
+                imageAlt="Linux"
+                imageSrc="/downloads/jfrog-artifactory-small-pack.png"
+                textToShow="Download tar.gz"
+                installerLink={"https://releases.jfrog.io/artifactory/bintray-artifactory/org/artifactory/cpp/ce/jfrog-artifactory-cpp-ce/"+ releaseVersion +"/jfrog-artifactory-cpp-ce-"+ releaseVersion +"-linux.tar.gz"}
+              />
             </div>
             <p>Other Installers:</p>
             <div className="installers small-installers pb-4">
-              <div className="package-wrapper d-flex flex-no-wrap">
-                <div className="cn-box small"><img alt="Linux" className="lazy" src="/downloads/linux-small-pack.svg"></img></div>
-                <div className="cn-box cn-main">Linux Installer</div>
-                <Link href={"https://releases.jfrog.io/artifactory/bintray-artifactory/org/artifactory/cpp/ce/jfrog-artifactory-cpp-ce/"+ releaseVersion +"/jfrog-artifactory-cpp-ce-"+ releaseVersion +"-linux.tar.gz"}>
-                  <a
-                    className="cn-box cn-action cn-download"
-                    data-tooltip-id="download"
-                    data-tooltip-content="Download"
-                    data-tooltip-place="top"
-                  ></a>
-                </Link>
-              </div>
-
-              <div className="package-wrapper d-flex flex-no-wrap">
-                <div className="cn-box small"><img alt="rpm" className="lazy" src="/downloads/rpm-small-pack.png"></img></div>
-                <div className="cn-box cn-main">RPM Installer</div>
-                <Link href={"https://releases.jfrog.io/artifactory/artifactory-rpms/jfrog-artifactory-cpp-ce/jfrog-artifactory-cpp-ce-"+ releaseVersion +".rpm"}>
-                  <a
-                    className="cn-box cn-action cn-download"
-                    data-tooltip-id="download"
-                    data-tooltip-content="Download"
-                    data-tooltip-place="top"
-                  ></a>
-                </Link>
-              </div>
-
-              <div className="package-wrapper d-flex flex-no-wrap">
-                <div className="cn-box small"><img alt="rpm" className="lazy" src="/downloads/rpm-small-pack.png"></img></div>
-                <div className="cn-box cn-main copy-text">Copy install command</div>
-                <a
-                  className="cn-box cn-action cn-copy"
-                  data-copy-value="brew install conan" onClick={() => {navigator.clipboard.writeText('#Add artifactory.repo file to your yum repository listsudo vi /etc/yum.repos.d/artifactory.repo\n#Add the following content[Artifactory]name=Artifactorybaseurl=https://releases.jfrog.io/artifactory/artifactory-rpms/enabled=1gpgcheck=0\n#Optional - if you have GPG signing keys installed, use the below flags to verify the repository metadata signature:\n#gpgkey=https://releases.jfrog.io/artifactory/artifactory-rpms/<PATH_TO_REPODATA_FOLDER>/repomd.xml.key\n#repo_gpgcheck=1\n#Run the install commandyum update && yum install jfrog-artifactory-cpp-ce')}}
-                  data-tooltip-id="copy-to-clipboard"
-                  data-tooltip-content="Copy to clipboard"
-                  data-tooltip-place="top"
-                ></a>
-              </div>
-
-              <div className="package-wrapper d-flex flex-no-wrap">
-                <div className="cn-box small"><img alt="debian" className="lazy" src="/downloads/debian-small-pack.svg"></img></div>
-                <div className="cn-box cn-main">Debian Installer</div>
-                <Link href={"https://releases.jfrog.io/artifactory/artifactory-debs/pool/jfrog-artifactory-cpp-ce/jfrog-artifactory-cpp-ce-"+ releaseVersion +".deb"}>
-                  <a
-                    className="cn-box cn-action cn-download"
-                    data-tooltip-id="download"
-                    data-tooltip-content="Download"
-                    data-tooltip-place="top"
-                  ></a>
-                </Link>
-              </div>
-
-              <div className="package-wrapper d-flex flex-no-wrap">
-                <div className="cn-box small"><img alt="debian" className="lazy" src="/downloads/debian-small-pack.svg"></img></div>
-                <div className="cn-box cn-main copy-text">Copy install command</div>
-                <a
-                  className="cn-box cn-action cn-copy"
-                  data-copy-value="brew install conan" onClick={() => {navigator.clipboard.writeText('wget -qO - https://releases.jfrog.io/artifactory/api/gpg/key/public | apt-key add -;echo "deb https://releases.jfrog.io/artifactory/artifactory-debs{distribution} main" | sudo tee -a /etc/apt/sources.list;# To determine your distribution, run lsb_release -c or cat /etc/os-release# Example:echo "deb https://releases.jfrog.io/artifactory/artifactory-debs xenial main" | sudo tee -a /etc/apt/sources.list;apt-get update;sudo apt-get install jfrog-artifactory-cpp-ce')}}
-                  data-tooltip-id="copy-to-clipboard"
-                  data-tooltip-content="Copy to clipboard"
-                  data-tooltip-place="top"
-                ></a>
-              </div>
-
-
-              <div className="package-wrapper d-flex flex-no-wrap">
-                <div className="cn-box small"><img alt="Windows" className="lazy" src="/downloads/windows-small-pack.svg"></img></div>
-                <div className="cn-box cn-main">Windows Installer</div>
-                <Link href={"https://releases.jfrog.io/artifactory/bintray-artifactory/org/artifactory/cpp/ce/jfrog-artifactory-cpp-ce/"+ releaseVersion +"/jfrog-artifactory-cpp-ce-"+ releaseVersion +"-windows.zip"}>
-                  <a
-                    className="cn-box cn-action cn-download"
-                    data-tooltip-id="download"
-                    data-tooltip-content="Download"
-                    data-tooltip-place="top"
-                  ></a>
-                </Link>
-              </div>
-
-              <div className="package-wrapper d-flex flex-no-wrap">
-                <div className="cn-box small"><img alt="Windows" className="lazy" src="/downloads/compose-small-pack.svg"></img></div>
-                <div className="cn-box cn-main">Docker Compose Installer</div>
-                <Link href={"https://releases.jfrog.io/artifactory/bintray-artifactory/org/artifactory/cpp/ce/docker/jfrog-artifactory-cpp-ce/"+ releaseVersion +"/jfrog-artifactory-cpp-ce-"+ releaseVersion +"-compose.tar.gz"}>
-                  <a
-                    className="cn-box cn-action cn-download"
-                    data-tooltip-id="download"
-                    data-tooltip-content="Download"
-                    data-tooltip-place="top"
-                  ></a>
-                </Link>
-              </div>
-
-              <div className="package-wrapper d-flex flex-no-wrap has-multiline-text">
-                <div className="cn-box small"><img alt="Arc Linux" className="lazy" src="/downloads/docker-small-pack.svg"></img></div>
-                <div className="cn-box cn-main copy-text">$ docker run ... </div>
-                <a
-                  className="cn-box cn-action cn-copy"
-                  data-copy-value="brew install conan" onClick={() => {navigator.clipboard.writeText('docker run --name artifactory -d -p 8081:8081 -p 8082:8082 docker.bintray.io/jfrog/artifactory-cpp-ce:latest')}}
-                  data-tooltip-id="copy-to-clipboard"
-                  data-tooltip-content="Copy to clipboard"
-                  data-tooltip-place="top"
-                ></a>
-              </div>
-
-              <div className="package-wrapper d-flex flex-no-wrap">
-                <div className="cn-box small"><img alt="Darwin" className="lazy" src="/downloads/darwin-small-pack.svg"></img></div>
-                <div className="cn-box cn-main">Darwin Installer</div>
-                <Link href={"https://releases.jfrog.io/artifactory/bintray-artifactory/org/artifactory/cpp/ce/jfrog-artifactory-cpp-ce/"+ releaseVersion +"/jfrog-artifactory-cpp-ce-"+ releaseVersion +"-darwin.tar.gz"}>
-                  <a
-                    className="cn-box cn-action cn-download"
-                    data-tooltip-id="download"
-                    data-tooltip-content="Download"
-                    data-tooltip-place="top"
-                  ></a>
-                </Link>
-              </div>
+              <DownloadInstaller
+                imageAlt="Linux"
+                imageSrc="/downloads/linux-small-pack.svg"
+                textToShow="Linux Installer"
+                installerLink={"https://releases.jfrog.io/artifactory/bintray-artifactory/org/artifactory/cpp/ce/jfrog-artifactory-cpp-ce/"+ releaseVersion +"/jfrog-artifactory-cpp-ce-"+ releaseVersion +"-linux.tar.gz"}
+              />
+              <DownloadInstaller
+                imageAlt="rpm"
+                imageSrc="/downloads/rpm-small-pack.png"
+                textToShow="RPM Installer"
+                installerLink={"https://releases.jfrog.io/artifactory/artifactory-rpms/jfrog-artifactory-cpp-ce/jfrog-artifactory-cpp-ce-"+ releaseVersion +".rpm"}
+              />
+              <CopyToClipboard
+                imageAlt="rpm"
+                imageSrc="/downloads/rpm-small-pack.png"
+                textToShow="Copy install command"
+                textToCopy={'#Add artifactory.repo file to your yum repository listsudo vi /etc/yum.repos.d/artifactory.repo\n#Add the following content[Artifactory]name=Artifactorybaseurl=https://releases.jfrog.io/artifactory/artifactory-rpms/enabled=1gpgcheck=0\n#Optional - if you have GPG signing keys installed, use the below flags to verify the repository metadata signature:\n#gpgkey=https://releases.jfrog.io/artifactory/artifactory-rpms/<PATH_TO_REPODATA_FOLDER>/repomd.xml.key\n#repo_gpgcheck=1\n#Run the install commandyum update && yum install jfrog-artifactory-cpp-ce'}
+              />
+              <DownloadInstaller
+                imageAlt="debian"
+                imageSrc="/downloads/debian-small-pack.svg"
+                textToShow="Debian Installer"
+                installerLink={"https://releases.jfrog.io/artifactory/artifactory-debs/pool/jfrog-artifactory-cpp-ce/jfrog-artifactory-cpp-ce-"+ releaseVersion +".deb"}
+              />
+              <CopyToClipboard
+                imageAlt="debian"
+                imageSrc="/downloads/debian-small-pack.svg"
+                textToShow="Copy install command"
+                textToCopy={'wget -qO - https://releases.jfrog.io/artifactory/api/gpg/key/public | apt-key add -;echo "deb https://releases.jfrog.io/artifactory/artifactory-debs{distribution} main" | sudo tee -a /etc/apt/sources.list;# To determine your distribution, run lsb_release -c or cat /etc/os-release# Example:echo "deb https://releases.jfrog.io/artifactory/artifactory-debs xenial main" | sudo tee -a /etc/apt/sources.list;apt-get update;sudo apt-get install jfrog-artifactory-cpp-ce'}
+              />
+              <DownloadInstaller
+                imageAlt="Windows"
+                imageSrc="/downloads/windows-small-pack.svg"
+                textToShow="Windows Installer"
+                installerLink={"https://releases.jfrog.io/artifactory/bintray-artifactory/org/artifactory/cpp/ce/jfrog-artifactory-cpp-ce/"+ releaseVersion +"/jfrog-artifactory-cpp-ce-"+ releaseVersion +"-windows.zip"}
+              />
+              <DownloadInstaller
+                imageAlt="Docker"
+                imageSrc="/downloads/compose-small-pack.svg"
+                textToShow="Docker Compose Installer"
+                installerLink={"https://releases.jfrog.io/artifactory/bintray-artifactory/org/artifactory/cpp/ce/docker/jfrog-artifactory-cpp-ce/"+ releaseVersion +"/jfrog-artifactory-cpp-ce-"+ releaseVersion +"-compose.tar.gz"}
+              />
+              <CopyToClipboard
+                imageAlt="Docker"
+                imageSrc="/downloads/docker-small-pack.svg"
+                textToShow="$ docker run ..."
+                textToCopy={'docker run --name artifactory -d -p 8081:8081 -p 8082:8082 docker.bintray.io/jfrog/artifactory-cpp-ce:latest'}
+              />
+              <DownloadInstaller
+                imageAlt="Darwin"
+                imageSrc="/downloads/darwin-small-pack.svg"
+                textToShow="Darwin Installer"
+                installerLink={"https://releases.jfrog.io/artifactory/bintray-artifactory/org/artifactory/cpp/ce/jfrog-artifactory-cpp-ce/"+ releaseVersion +"/jfrog-artifactory-cpp-ce-"+ releaseVersion +"-darwin.tar.gz"}
+              />
             </div>
 
             <div className="cta-wrapper"><a className="btn artifactory-green-gradient-bg"
