@@ -4,11 +4,10 @@ from fastapi import FastAPI
 
 from data import *
 
-ENABLE_CORS = os.getenv("ENABLE_CORS", False)
+
 app = FastAPI()
 
-
-if ENABLE_CORS:
+if os.getenv("ENABLE_CORS", False):
     origins = ["*"]
     app.add_middleware(
         CORSMiddleware,
@@ -256,8 +255,8 @@ async def get_md(name=''):
         '1.1.1q': {'md': md_use_it},
         '1.1.1p': {'md': md_use_it},
         '1.1.1o': {'md': md_use_it},
-        '1.1.0l': {'md': ""},
-        '1.0.2u': {'md':  None}
+        '1.1.0l': {},  # No markdown
+        '1.0.2u': {}  # No markdown
     }
 
 
