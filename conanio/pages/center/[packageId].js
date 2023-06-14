@@ -19,6 +19,9 @@ import ConanFooter from '../../components/footer';
 import {LineChart, XAxis, Tooltip, CartesianGrid, Line} from 'recharts';
 import {get_json, get_urls} from '../../service/service';
 
+
+import "highlight.js/styles/github.css";
+
 export async function getServerSideProps(context) {
   let urls = get_urls({packageId: context.params.packageId})
   let data = await get_json(urls.package.info, urls.api.private)
