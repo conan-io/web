@@ -132,7 +132,7 @@ CMakeToolchain
 ```
 
 To use **googleapis** in a simple CMake project with this structure:
-```shell
+```
 .
 |-- CMakeLists.txt
 |-- conanfile.txt
@@ -194,7 +194,7 @@ PkgConfigDeps
 ```
 
 To use **googleapis** in a simple Autotools project with this structure:
-```shell
+```
 .
 |-- configure.ac
 |-- Makefile.am
@@ -205,6 +205,7 @@ To use **googleapis** in a simple Autotools project with this structure:
 Your **Makefile.am**/**configure.ac** could look similar to this, using the global **googleapis** pkg-config target:
 
 **Makefile.am**
+
 ```makefile
 bin_PROGRAMS = main
 main_SOURCES = main.cpp

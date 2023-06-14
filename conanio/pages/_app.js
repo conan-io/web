@@ -7,6 +7,9 @@ import '../styles/index.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
+import "highlight.js/styles/github.css";
+
+
 const MyApp = ({ Component, pageProps }) => {
   return <Component {...pageProps} />
 }
