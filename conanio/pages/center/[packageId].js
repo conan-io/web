@@ -11,7 +11,6 @@ import Badge from 'react-bootstrap/Badge';
 import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
 import rehypeHighlight from 'rehype-highlight';
-import remarkGfm from 'remark-gfm';
 import cmake from 'highlight.js/lib/languages/cmake';
 import makefile from 'highlight.js/lib/languages/makefile';
 import { ConanHeader } from '../../components/header';
@@ -19,8 +18,6 @@ import ConanFooter from '../../components/footer';
 import {LineChart, XAxis, Tooltip, CartesianGrid, Line} from 'recharts';
 import {get_json, get_urls} from '../../service/service';
 
-
-import "highlight.js/styles/github.css";
 
 export async function getServerSideProps(context) {
   let urls = get_urls({packageId: context.params.packageId})
@@ -46,7 +43,7 @@ function RenderedMarkdown({md}) {
   if (typeof md === 'undefined') {
     return "It was not possible to load this information. Please, check if this recipe version is compatible with Conan v2.x.";
   }
-  return <ReactMarkdown children={md} remarkPlugins={[remarkGfm]} rehypePlugins={[[rehypeHighlight, {languages: {cmake, makefile}}]]} />;
+  return <ReactMarkdown children={md} rehypePlugins={[[rehypeHighlight, {languages: {cmake, makefile}, detect: true, ignoreMissing: true}]]} />;
 }
 
 
