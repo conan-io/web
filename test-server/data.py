@@ -205,7 +205,7 @@ To use **googleapis** in a simple Autotools project with this structure:
 Your **Makefile.am**/**configure.ac** could look similar to this, using the global **googleapis** pkg-config target:
 
 **Makefile.am**
-```automake
+```makefile
 bin_PROGRAMS = main
 main_SOURCES = main.cpp
 AM_CXXFLAGS = $(googleapis_CFLAGS)
@@ -213,7 +213,7 @@ main_LDADD = $(googleapis_LIBS)
 ```
 
 **configure.ac**
-```autoconf
+```
 AC_INIT([main], [1.0], [])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AC_PROG_CXX
