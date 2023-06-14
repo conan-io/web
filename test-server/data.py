@@ -206,7 +206,7 @@ Your **Makefile.am**/**configure.ac** could look similar to this, using the glob
 
 **Makefile.am**
 
-```makefile
+```
 bin_PROGRAMS = main
 main_SOURCES = main.cpp
 AM_CXXFLAGS = $(googleapis_CFLAGS)
