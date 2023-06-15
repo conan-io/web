@@ -43,7 +43,7 @@ function RenderedMarkdown({md}) {
   if (typeof md === 'undefined') {
     return "It was not possible to load this information. Please, check if this recipe version is compatible with Conan v2.x.";
   }
-  return <ReactMarkdown children={md} rehypePlugins={[[rehypeHighlight, {languages: {cmake, makefile}, detect: true, ignoreMissing: true}]]} />;
+  return <ReactMarkdown rehypePlugins={[[rehypeHighlight, {languages: {cmake, makefile}, detect: true, ignoreMissing: true}]]}>{md}</ReactMarkdown> ;
 }
 
 
