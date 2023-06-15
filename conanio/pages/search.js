@@ -72,7 +72,7 @@ function PackageInfo(props) {
 function SearchList(props) {
 
   return (
-    <div>
+    <div style={{width: "100%"}}>
       <h2 className="text-center">packages</h2>
       <ListGroup>
       {props.data && props.data.map(
