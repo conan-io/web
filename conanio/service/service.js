@@ -1,4 +1,4 @@
-export function get_urls({packageId='', search='all', filters=[], licenses=[]} = {}) {
+export function get_urls({packageId='', search='all', topics=[], licenses=[]} = {}) {
   return {
     api: {
       private: (`${encodeURI(process.env.conanioServer)}`),
@@ -16,13 +16,13 @@ export function get_urls({packageId='', search='all', filters=[], licenses=[]} =
     popular: 'popular',
     updated: 'updated',
     new: 'new',
-    filters: 'filters',
+    topics: 'topics',
     licenses: 'licenses',
     reference: {
       num: 'reference/num',
     },
     search: {
-      package: (`search/${encodeURIComponent(search.toLowerCase())}?filters=${encodeURIComponent(filters)}&licenses=${encodeURIComponent(licenses)}`)
+      package: (`search/${encodeURIComponent(search.toLowerCase())}?topics=${encodeURIComponent(topics)}&licenses=${encodeURIComponent(licenses)}`)
     }
   }
 }

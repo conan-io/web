@@ -13,7 +13,7 @@ import ReactMarkdown from 'react-markdown';
 import rehypeHighlight from 'rehype-highlight';
 import cmake from 'highlight.js/lib/languages/cmake';
 import makefile from 'highlight.js/lib/languages/makefile';
-import { ConanHeader } from '../../components/header';
+import { ConanCenterHeader } from '../../components/header';
 import ConanFooter from '../../components/footer';
 import {LineChart, XAxis, Tooltip, CartesianGrid, Line} from 'recharts';
 import {get_json, get_urls} from '../../service/service';
@@ -58,7 +58,7 @@ export default function ConanPackage(props) {
     <React.StrictMode>
       <SSRProvider>
       <div className="flex-wrapper">
-        <ConanHeader/>
+        <ConanCenterHeader/>
         <br/>
         <Container>
           <h1 className="text-center" >Conan {props.packageId} package site</h1>
@@ -87,7 +87,7 @@ export default function ConanPackage(props) {
                 <Col xs lg><p><b>Description:</b> {props.data[selectedVersion].info.description}</p></Col>
               </Row>
               <Row>
-                <Col xs lg><p><b>Labels:</b> {props.data[selectedVersion].info.labels.map((item) => (<Badge key={item}>{item}</Badge>))}</p></Col>
+                <Col xs lg><p><b>Topics:</b> {props.data[selectedVersion].info.labels.map((item) => (<Badge key={item}>{item}</Badge>))}</p></Col>
               </Row>
               <Row>
                 <Col xs lg><Link href={"https://github.com/conan-io/conan-center-index/tree/master/recipes/" + props.data[selectedVersion].name}><a><p>{props.data[selectedVersion].name} recipe</p></a></Link></Col>
