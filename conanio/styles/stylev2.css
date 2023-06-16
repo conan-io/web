@@ -1,13 +1,36 @@
 @charset "UTF-8";
-#onetrust-banner-sdk {
+/* #onetrust-banner-sdk {
   display: none !important;
-}
+} */
 
 /*
 How to push a footer to the bottom of page when content is short or missing?:
 
 https://stackoverflow.com/questions/4575826/how-to-push-a-footer-to-the-bottom-of-page-when-content-is-short-or-missing
 */
+
+/*
+Beta style
+*/
+.beta-banner {
+  background: #21AFFF;
+}
+
+.beta-banner a {
+  color: white;
+}
+.beta-banner a:hover {
+  color: #006dcc;
+}
+/*
+*/
+
+.conan-loading{
+  margin-top: 6rem;
+  width: 6rem;
+  height: 6rem;
+}
+
 .flex-wrapper {
   display: flex;
   min-height: 100vh;

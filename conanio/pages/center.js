@@ -9,8 +9,8 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { ConanListFilter, ConanSearchBar } from "../components/searchbar";
-import { ConanHeader } from '../components/header';
+import { ConanSearchBar } from "../components/searchbar";
+import { ConanCenterHeader } from '../components/header';
 import ConanFooter from '../components/footer';
 import useSWR from 'swr';
 import {get_json, get_json_list, get_urls, get_json_list_with_id} from '../service/service';
@@ -18,7 +18,6 @@ import {get_json, get_json_list, get_urls, get_json_list_with_id} from '../servi
 export async function getServerSideProps(context) {
   let urls = get_urls()
   const reference_num = await get_json(urls.reference.num, urls.api.private);
-  const filters_list = await get_json_list_with_id(urls.filters, urls.api.private);
 
   return {
     props: {
@@ -26,7 +25,6 @@ export async function getServerSideProps(context) {
         popular: await get_json_list(urls.popular, urls.api.private),
         updated: await get_json_list(urls.updated, urls.api.private),
         new: await get_json_list(urls.new, urls.api.private),
-        filters: filters_list.map(elem => {return {filter: elem.value, id: elem.id, checked: false};}),
         reference_num: reference_num.references,
       },
     },
@@ -37,18 +35,10 @@ function CenterSearchBar(props) {
 
   let router = useRouter();
   const [value, setValue] = useState('');
-  const [filters, setFilters] = useState([]);
-  const [allFilters, setAllFilters] = useState(null);
+  const [allTopics, setAllTopics] = useState(null);
 
   const handleChange = (e) => {
     setValue(e);
-  }
-
-  const handleFilter = (filter, filter_id, check) => {
-    let newFilters = filters
-    if(check && !newFilters.includes(filter_id)){newFilters.push(filter_id)}
-    if(!check && newFilters.includes(filter_id)){newFilters.splice(newFilters.indexOf(filter_id), 1)}
-    setFilters(newFilters)
   }
 
   const handleSubmit = (event) => {
@@ -56,7 +46,7 @@ function CenterSearchBar(props) {
     router.push(
       {
         pathname: '/search',
-        query: { defaultValue: value, defaultFilters: filters }
+        query: { defaultValue: value }
       },
       '/search'
     );
@@ -69,11 +59,6 @@ function CenterSearchBar(props) {
         <Col>
           <ConanSearchBar value={value} handleChange={handleChange} searchButton={props.button} data_to_show={props.data_to_show}/>
         </Col>
-        {false && (<Col xs lg="4">
-          <Row>
-            <ConanListFilter filters={props.filters} handleFilter={handleFilter}/>
-          </Row>
-        </Col>)}
       </Row>
     </Form>
   );
@@ -95,12 +80,12 @@ export default function Center(props) {
     <React.StrictMode>
       <SSRProvider>
       <div className="flex-wrapper">
-        <ConanHeader/>
+        <ConanCenterHeader/>
           <br/>
           <Container>
             <Container><h1 className="text-center">Conan Center</h1></Container>
             <Row>
-              <Col><CenterSearchBar filters={props.data.filters} data_to_show={"Number of references: "+props.data.reference_num}/></Col>
+              <Col><CenterSearchBar data_to_show={"Number of references: "+props.data.reference_num}/></Col>
             </Row>
             <Row>
               {props.data.popular.length > 0  && <Col><CenterList data={props.data.popular} name="Popular Package" full_name={true}/></Col>}
