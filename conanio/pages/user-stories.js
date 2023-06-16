@@ -53,6 +53,7 @@ function UserStoriesPage() {
   return (
     <React.StrictMode>
       <SSRProvider>
+      <div className="flex-wrapper">
         <ConanKitchenHeader/>
         <section className="user-stories-section py-2">
           <div className="container py-5">
@@ -61,6 +62,7 @@ function UserStoriesPage() {
           </div>
         </section>
         <ConanFooter/>
+      </div>
       </SSRProvider>
     </React.StrictMode>
   );

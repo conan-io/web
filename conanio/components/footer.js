@@ -33,8 +33,8 @@ function ConanFooter() {
         <div className="row d-flex justify-content-center px-0 px-md-3" style={{borderTop: '1px solid #404040',textAlign: 'center'}}>
           <div className="col-md-10 px-md-0 pl-3 pt-2">
             <ul className="d-md-flex justify-content-start pt-2 mt-1 list-unstyled footer-links">
-              <li><Link href="downloads.html"><a id="downloads_btn_footer">Download</a></Link></li>
-              <li><Link href="https://conan.io/center/"><a id="conancenter_btn_footer">ConanCenter</a></Link></li>
+              <li><Link href="/downloads"><a id="downloads_btn_footer">Download</a></Link></li>
+              <li><Link href="/center"><a id="conancenter_btn_footer">ConanCenter</a></Link></li>
               <li><Link href="https://github.com/conan-io/conan"><a id="github_btn_footer">GitHub</a></Link></li>
               <li><Link href="https://docs.conan.io/"><a id="docs_btn_footer">Docs</a></Link></li>
               <li><Link href="https://blog.conan.io/"><a id="blog_btn_footer">Blog</a></Link></li>

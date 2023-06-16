@@ -84,6 +84,7 @@ function FaqPage() {
   return (
     <React.StrictMode>
       <SSRProvider>
+      <div className="flex-wrapper">
         <ConanKitchenHeader/>
           <section id="faqHero" className="position-relative sub-page-hero">
             <div className="container py-3 py-md-5">
@@ -131,8 +132,8 @@ function FaqPage() {
             </div>
           </section>
 
-
         <ConanFooter/>
+      </div>
       </SSRProvider>
     </React.StrictMode>
   );

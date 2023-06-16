@@ -3,6 +3,18 @@
   display: none !important;
 }
 
+/*
+How to push a footer to the bottom of page when content is short or missing?:
+
+https://stackoverflow.com/questions/4575826/how-to-push-a-footer-to-the-bottom-of-page-when-content-is-short-or-missing
+*/
+.flex-wrapper {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
 h4, .h4 {
   font-size: 1.111rem;
   font-weight: 700;
@@ -322,6 +334,7 @@ section.testis .company-quote {
 footer#siteFooter {
   background-color: #0C0C0C;
   background-size: 24vw;
+  margin-top: auto;
 }
 @media screen and (max-width: 991px) {
   footer#siteFooter {

@@ -7,6 +7,7 @@ function TermsConditionPage() {
   return (
     <React.StrictMode>
       <SSRProvider>
+      <div className="flex-wrapper">
         <ConanKitchenHeader/>
         <section id="terms-and-conditions" className="py-5">
           <div className="container section-content">
@@ -126,6 +127,7 @@ function TermsConditionPage() {
           </div>
         </section>
         <ConanFooter/>
+      </div>
       </SSRProvider>
     </React.StrictMode>
   );

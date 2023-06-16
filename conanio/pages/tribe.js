@@ -508,6 +508,7 @@ function TribePage() {
   return (
     <React.StrictMode>
       <SSRProvider>
+      <div className="flex-wrapper">
         <ConanKitchenHeader/>
         <section id="tribrsHero" className="py-5 tribes-hero bg-cover bg-center">
           <div className="container section-content">
@@ -548,6 +549,7 @@ function TribePage() {
           </div>
         </section>
         <ConanFooter/>
+      </div>
       </SSRProvider>
     </React.StrictMode>
   );
