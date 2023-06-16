@@ -9,6 +9,7 @@ function UserStoriesTomtomPage() {
   return (
     <React.StrictMode>
       <SSRProvider>
+      <div className="flex-wrapper">
         <ConanKitchenHeader/>
         <SingleUserStory
           companyNameSlug="TomTom"
@@ -145,6 +146,7 @@ function UserStoriesTomtomPage() {
           }
         />
         <ConanFooter/>
+      </div>
       </SSRProvider>
     </React.StrictMode>
   );

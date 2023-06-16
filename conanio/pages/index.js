@@ -8,9 +8,11 @@ function HomePage() {
   return (
     <React.StrictMode>
       <SSRProvider>
+      <div className="flex-wrapper">
         <ConanKitchenHeader/>
         <ConanHome/>
         <ConanFooter/>
+      </div>
       </SSRProvider>
     </React.StrictMode>
   );

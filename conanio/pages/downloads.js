@@ -225,6 +225,7 @@ function DownloadsPage() {
   return (
     <React.StrictMode>
       <SSRProvider>
+      <div className="flex-wrapper">
         <ConanKitchenHeader/>
         <section className="downloads-hero position-relative pb-5" id="downloadsHero">
 
@@ -263,6 +264,7 @@ function DownloadsPage() {
           </div>
         </section>
         <ConanFooter/>
+      </div>
       </SSRProvider>
     </React.StrictMode>
   );

@@ -7,6 +7,7 @@ function PrivacyPolicyPage() {
   return (
     <React.StrictMode>
       <SSRProvider>
+      <div className="flex-wrapper">
         <ConanKitchenHeader/>
         <section id="privacy-policy" className="py-5">
           <div className="container section-content">
@@ -476,6 +477,7 @@ function PrivacyPolicyPage() {
           </div>
         </section>
         <ConanFooter/>
+      </div>
       </SSRProvider>
     </React.StrictMode>
   );

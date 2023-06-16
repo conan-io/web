@@ -138,6 +138,7 @@ export default function ConanSearch(props) {
   return (
     <React.StrictMode>
       <SSRProvider>
+      <div className="flex-wrapper">
         <ConanHeader/>
           <br/>
           <Container>
@@ -164,6 +165,7 @@ export default function ConanSearch(props) {
           </Container>
           <br/>
         <ConanFooter/>
+      </div>
       </SSRProvider>
     </React.StrictMode>
 

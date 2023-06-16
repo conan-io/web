@@ -8,6 +8,7 @@ function UserStoriesRTIPage() {
   return (
     <React.StrictMode>
       <SSRProvider>
+      <div className="flex-wrapper">
         <ConanKitchenHeader/>
         <SingleUserStory
           companyNameSlug="rti"
@@ -64,6 +65,7 @@ function UserStoriesRTIPage() {
           }
         />
         <ConanFooter/>
+      </div>
       </SSRProvider>
     </React.StrictMode>
   );
