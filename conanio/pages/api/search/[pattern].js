@@ -1,10 +1,15 @@
 export default async (req, res) => {
-  let filters = req.query.filters || ''
-  const getFilters = () => {
-    if (filters) {return `?filters=${encodeURIComponent(filters.split(','))}`}
-    return ''
-  }
-  const response = await fetch(`${encodeURI(process.env.conanioServer)}/search/${encodeURIComponent((req.query.pattern).toLowerCase())}${getFilters()}`);
+  let topics = req.query.topics || ''
+  let licenses = req.query.licenses || ''
+  const response = await fetch(
+    `${encodeURI(process.env.conanioServer)}/search/${encodeURIComponent(
+        (req.query.pattern).toLowerCase()
+      )}?topics=${encodeURIComponent(
+        topics.split(',')
+      )}&licenses=${encodeURIComponent(
+        licenses.split(',')
+      )}`
+  );
   if (!response.ok) {
     res.status(404).json({})
   }

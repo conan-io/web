@@ -7,35 +7,39 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import FormCheck from 'react-bootstrap/FormCheck';
 import Button from 'react-bootstrap/Button';
-import { ConanListFilter, ConanSearchBar } from "../components/searchbar";
+import { ConanListFilter, ConanSearchBar, ConanMultiSelectFilter } from "../components/searchbar";
 import ListGroup from 'react-bootstrap/ListGroup';
 import Link from 'next/link';
-import { ConanHeader } from '../components/header';
+import { ConanCenterHeader } from '../components/header';
 import ConanFooter from '../components/footer';
 import {get_json_list, get_urls, get_json_list_with_id} from '../service/service';
 
 
 export async function getServerSideProps(context) {
-  let { defaultValue, defaultFilters } = context.query;
+  let { defaultValue, defaultTopics, defaultLicenses } = context.query;
 
   let value = defaultValue || 'all';
-
-  defaultFilters = defaultFilters || [];
-  if (typeof defaultFilters === "string"){
-    defaultFilters = [defaultFilters]
+  defaultTopics = defaultTopics || [];
+  if (typeof defaultTopics === "string"){
+    defaultTopics = [defaultTopics]
+  }
+  defaultLicenses = defaultLicenses || [];
+  if (typeof defaultLicenses === "string"){
+    defaultLicenses = [defaultLicenses]
   }
   defaultValue = defaultValue || '';
-  let urls = get_urls({search: value, filters: defaultFilters})
-  const filters_list = await get_json_list_with_id(urls.filters, urls.api.private);
+  let urls = get_urls({search: value, topics: defaultTopics})
+  const topics_list = await get_json_list_with_id(urls.topics, urls.api.private);
   const licenses_list = await get_json_list_with_id(urls.licenses, urls.api.private);
 
   return {
     props: {
       data: {
-        licenses: licenses_list.map(elem => {return {filter: elem.value, id: elem.id, checked: false};}),
-        filters: filters_list.map(elem => {return {filter: elem.value, id: elem.id, checked: defaultFilters.includes(elem.id)};}),
+        licenses: licenses_list.map(elem => {return {filter: elem.value.filter, id: elem.value.id};}),
+        topics: topics_list.map(elem => {return {filter: elem.value.filter, id: elem.value.id};}),
         defaultValue: defaultValue,
-        defaultFilters: defaultFilters,
+        defaultTopics: defaultTopics,
+        defaultLicenses: defaultLicenses,
         packages: await get_json_list(urls.search.package, urls.api.private),
       },
     },
@@ -63,7 +67,7 @@ function PackageInfo(props) {
       </Row>
       <br/>
       <Row>
-        <Col xs lg><b>Labels:</b> {props.data.info.labels.join(", ")}</Col>
+        <Col xs lg><b>Topics:</b> {props.data.info.labels.join(", ")}</Col>
       </Row>
     </div>
   )
@@ -72,35 +76,34 @@ function PackageInfo(props) {
 function SearchList(props) {
 
   return (
-    <div style={{width: "100%"}}>
-      <h2 className="text-center">packages</h2>
-      <ListGroup>
-      {props.data && props.data.map(
-        (info) => (
-          <ListGroup.Item key={info.name}>
-            <PackageInfo data={info}/>
-          </ListGroup.Item>)
-        )
-      }
-      </ListGroup>
-    </div>
+    <ListGroup>
+    {props.data && props.data.map(
+      (info) => (
+        <ListGroup.Item key={info.name}>
+          <PackageInfo data={info}/>
+        </ListGroup.Item>)
+      )
+    }
+    </ListGroup>
   )
 }
 
 export default function ConanSearch(props) {
   const [value, setValue] = useState(props.data.defaultValue);
-  const [filters, setFilters] = useState(props.data.defaultFilters);
-  const [licenses, setLicense] = useState(null);
-  const [allFilters, setAllFilters] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [topics, setTopics] = useState(props.data.defaultTopics);
+  const [licenses, setLicenses] = useState(props.data.defaultLicenses);
+  const [allTopics, setAllTopics] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [data, setData] = useState(props.data.packages);
 
 
-  const getData = async (value, filterlist, licenseList) => {
+  const getData = async (value, topiclist, licenseList) => {
+    console.log(value, licenseList, topiclist)
+    setLoading(true);
     try {
       value = value || 'all';
-      let urls = get_urls({search: value, filters: filterlist, licenses: licenseList})
+      let urls = get_urls({search: value, topics: topiclist, licenses: licenseList})
       const packages = await get_json_list(urls.search.package, urls.api.public);
       setData(packages);
     } catch(err) {
@@ -115,53 +118,47 @@ export default function ConanSearch(props) {
     setValue(e);
   }
 
-  const handleFilter = (filter, filter_id, check) => {
-    let newFilters = filters
-    if(check && !newFilters.includes(filter_id)){newFilters.push(filter_id)}
-    if(!check && newFilters.includes(filter_id)){newFilters.splice(newFilters.indexOf(filter_id), 1)}
-    setFilters(newFilters);
-    getData(value, filters, licenses);
+  var handleTopics = (selectedOption) => {
+    let newTopics = selectedOption.map(elem => {return elem.value})
+    setTopics(newTopics);
+    getData(value, newTopics, licenses);
   }
 
-  const handleLicense = (license, license_id, check) => {
-    let newLicenses = licenses
-    if(check && !newLicenses.includes(license_id)){newLicenses.push(license_id)}
-    if(!check && newLicenses.includes(license_id)){newLicenses.splice(newLicenses.indexOf(license_id), 1)}
+  var handleLicenses = (selectedOption) => {
+    let newLicenses = selectedOption.map(elem => {return elem.value})
     setLicenses(newLicenses);
-    getData(value, filters, licenses);
+    getData(value, topics, newLicenses);
   }
 
   const handleSubmit = (event) => {
-    getData(value, filters, licenses);
+    getData(value, topics, licenses);
     event.preventDefault();
   }
   return (
     <React.StrictMode>
       <SSRProvider>
       <div className="flex-wrapper">
-        <ConanHeader/>
+        <ConanCenterHeader/>
           <br/>
           <Container>
             <Container><h1 className="text-center">Conan Center Search</h1></Container>
             <Form onSubmit={e => handleSubmit(e)}>
               <Row>
-                <Col><ConanSearchBar value={value} handleChange={handleChange} searchButton={props.button} data_to_show={"Number of references: "+data.length}/></Col>
-              </Row>
-              <br/>
-              <Row>
-                <Col xs lg="2">
-                <h2>Licenses</h2>
-                <Row><ConanListFilter filters={props.data.licenses} handleFilter={handleFilter}/></Row>
-                </Col>
-                <Col xs lg="8">
-                <Row><SearchList data={data}/></Row>
-                </Col>
-                <Col xs lg="2">
-                <h2>Filters</h2>
-                <Row><ConanListFilter filters={props.data.filters} handleFilter={handleFilter}/></Row>
-                </Col>
+                <Col><ConanSearchBar value={value} handleChange={handleChange} searchButton={false}/></Col>
               </Row>
             </Form>
+              <br/>
+            <Row>
+              <Col xs lg="6"><Row><ConanMultiSelectFilter title="Licenses" filters={props.data.licenses} handleFilter={handleLicenses}/></Row></Col>
+              <Col xs lg="6"><Row><ConanMultiSelectFilter title="Topics" filters={props.data.topics} handleFilter={handleTopics}/></Row></Col>
+            </Row>
+            <br/>
+            <div style={{width: "100%"}}>
+              <h2 className="text-center">
+              packages ({!loading && data.length}{loading && <div className="spinner-grow"></div>})
+              </h2>
+              <SearchList loading={loading} data={data}/>
+            </div>
           </Container>
           <br/>
         <ConanFooter/>
