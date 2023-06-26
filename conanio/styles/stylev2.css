@@ -50,8 +50,22 @@ h4, .h4 {
 }
 
 .bg-primary {
-    background-color: #97bde7!important;
+    background-color: #21AFFF!important;
     margin-right: 6px;
+    color: white;
+}
+
+.tab-content>.active {
+  padding: 0px 15px 15px 15px;
+  border-bottom: 1px solid #dee2e6;
+  border-left: 1px solid #dee2e6;
+  border-right: 1px solid #dee2e6;
+  border-radius: 0 0 0.25rem 0.25rem;
+}
+
+select {
+  border-color: #21AFFF;
+  border-radius: 0.25rem 0.25rem 0.25rem 0.25rem;
 }
 
 .btn {

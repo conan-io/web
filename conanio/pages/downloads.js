@@ -21,6 +21,31 @@ function CopyToClipboard(props) {
   )
 }
 
+function DownloadInstallerOrCopy(props) {
+  return (
+    <div className="package-wrapper d-flex flex-no-wrap">
+      <div className="cn-box small"><img alt={props.imageAlt} className="lazy" src={props.imageSrc}></img></div>
+      <div className="cn-box cn-main">{props.textToShow}</div>
+      <Link href={props.installerLink}>
+        <a
+          className="cn-box cn-action cn-download"
+          data-tooltip-id="download"
+          data-tooltip-content="Download"
+          data-tooltip-place="top"
+        ></a>
+      </Link>
+      <a
+        className="cn-box cn-action cn-copy"
+        style={{'margin': '0px 36px 0px 8px'}}
+        onClick={() => {navigator.clipboard.writeText(props.textToCopy)}}
+        data-tooltip-id="copy-to-clipboard"
+        data-tooltip-content={props.textTooltip}
+        data-tooltip-place="top"
+      ></a>
+    </div>
+  )
+}
+
 function DownloadInstaller(props) {
   return (
     <div className="package-wrapper d-flex flex-no-wrap">
@@ -96,7 +121,6 @@ function DownloadConanPackageManager() {
                 textToShow="$ yay -S conan"
                 textToCopy=" yay -S conan"
               />
-
               <div className="package-wrapper d-flex flex-no-wrap">
                 <div className="cn-box small"><img alt="Github" className="lazy" src="/downloads/github-small-pack.svg"></img></div>
                 <div className="cn-box cn-main">Any OS:From Source</div>
@@ -111,6 +135,37 @@ function DownloadConanPackageManager() {
                   ></a>
                 </Link>
               </div>
+            </div>
+              <p>Conan Bundle:</p>
+              <div className="installers small-installers pb-4">
+              <CopyToClipboard
+                imageAlt="Darwin"
+                imageSrc="/downloads/darwin-small-pack.svg"
+                textToShow="wget and tar -xvf conan bundle"
+                textToCopy={'wget https://github.com/conan-io/conan/releases/latest/download/conan-macos-arm64.tar.gz\ntar -xvf conan-macos-arm64.tar.gz'}
+              />
+              <DownloadInstallerOrCopy
+                imageAlt="Windows"
+                imageSrc="/downloads/windows-small-pack.svg"
+                textToShow="Download x64 Conan Bundle"
+                installerLink="https://github.com/conan-io/conan/releases/latest/download/conan-win-64.zip"
+                textTooltip="Copy powershell command"
+                textToCopy={'Invoke-WebRequest -Uri "https://github.com/conan-io/conan/releases/latest/download/conan-win-64.zip" -OutFile conan-win-64.zip\nExpand-Archive .\\conan-win-64.zip -DestinationPath .'}
+              />
+              <DownloadInstallerOrCopy
+                imageAlt="Windows"
+                imageSrc="/downloads/windows-small-pack.svg"
+                textToShow="Download x86 Conan Bundle"
+                installerLink="https://github.com/conan-io/conan/releases/latest/download/conan-win-32.zip"
+                textTooltip="Copy powershell command"
+                textToCopy={'Invoke-WebRequest -Uri "https://github.com/conan-io/conan/releases/latest/download/conan-win-32.zip" -OutFile conan-win-32.zip\nExpand-Archive .\\conan-win-32.zip -DestinationPath .'}
+              />
+              <CopyToClipboard
+                imageAlt="Linux"
+                imageSrc="/downloads/linux-small-pack.svg"
+                textToShow="wget and tar -xvf conan bundle"
+                textToCopy={'wget https://github.com/conan-io/conan/releases/latest/download/conan-linux-64.tar.gz\ntar -xvf conan-linux-64.tar.gz'}
+              />
             </div>
             <div className="left-downloads-spacer"></div>
             <div className="text text-two">
@@ -161,28 +216,21 @@ function DownloadJFrogArtifactoryCommunityEditionForCpp() {
                 textToShow="Linux Installer"
                 installerLink={"https://releases.jfrog.io/artifactory/bintray-artifactory/org/artifactory/cpp/ce/jfrog-artifactory-cpp-ce/"+ releaseVersion +"/jfrog-artifactory-cpp-ce-"+ releaseVersion +"-linux.tar.gz"}
               />
-              <DownloadInstaller
+
+              <DownloadInstallerOrCopy
                 imageAlt="rpm"
                 imageSrc="/downloads/rpm-small-pack.png"
                 textToShow="RPM Installer"
                 installerLink={"https://releases.jfrog.io/artifactory/artifactory-rpms/jfrog-artifactory-cpp-ce/jfrog-artifactory-cpp-ce-"+ releaseVersion +".rpm"}
-              />
-              <CopyToClipboard
-                imageAlt="rpm"
-                imageSrc="/downloads/rpm-small-pack.png"
-                textToShow="Copy install command"
+                textTooltip="Copy install command"
                 textToCopy={'#Add artifactory.repo file to your yum repository listsudo vi /etc/yum.repos.d/artifactory.repo\n#Add the following content[Artifactory]name=Artifactorybaseurl=https://releases.jfrog.io/artifactory/artifactory-rpms/enabled=1gpgcheck=0\n#Optional - if you have GPG signing keys installed, use the below flags to verify the repository metadata signature:\n#gpgkey=https://releases.jfrog.io/artifactory/artifactory-rpms/<PATH_TO_REPODATA_FOLDER>/repomd.xml.key\n#repo_gpgcheck=1\n#Run the install commandyum update && yum install jfrog-artifactory-cpp-ce'}
               />
-              <DownloadInstaller
+              <DownloadInstallerOrCopy
                 imageAlt="debian"
                 imageSrc="/downloads/debian-small-pack.svg"
                 textToShow="Debian Installer"
                 installerLink={"https://releases.jfrog.io/artifactory/artifactory-debs/pool/jfrog-artifactory-cpp-ce/jfrog-artifactory-cpp-ce-"+ releaseVersion +".deb"}
-              />
-              <CopyToClipboard
-                imageAlt="debian"
-                imageSrc="/downloads/debian-small-pack.svg"
-                textToShow="Copy install command"
+                textTooltip="Copy install command"
                 textToCopy={'wget -qO - https://releases.jfrog.io/artifactory/api/gpg/key/public | apt-key add -;echo "deb https://releases.jfrog.io/artifactory/artifactory-debs{distribution} main" | sudo tee -a /etc/apt/sources.list;# To determine your distribution, run lsb_release -c or cat /etc/os-release# Example:echo "deb https://releases.jfrog.io/artifactory/artifactory-debs xenial main" | sudo tee -a /etc/apt/sources.list;apt-get update;sudo apt-get install jfrog-artifactory-cpp-ce'}
               />
               <DownloadInstaller

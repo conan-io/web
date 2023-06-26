@@ -44,7 +44,7 @@ export function ConanHeader() {
           </div>
           <div className="col-lg-4 text-right d-flex align-items-center justify-content-end">
             <nav className="header-nav align-items-center d-lg-flex" id="headerNav">
-              <Link href="/search"><a className="btn conan-blue-border"> <img src="/small-search.svg" alt="Search" className="conan-center-icon mr-2 black"></img>Search</a></Link>
+              {/*<Link href="/search"><a className="btn conan-blue-border"> <img src="/small-search.svg" alt="Search" className="conan-center-icon mr-2 black"></img>Search</a></Link>*/}
               <Link href="/center"><a className="btn black">ConanCenter</a></Link>
               <Link href="/faq"><a className="btn black">FAQ</a></Link>
               <Link href="https://docs.conan.io/"><a className="btn black">Docs</a></Link>
