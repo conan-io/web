@@ -16,9 +16,9 @@ function BetaBanner() {
   )
 }
 
-export function ConanHeader() {
+export function ConanHeader(props) {
   return (
-    <header id="masthead">
+    <header id="masthead" className={props.background}>
       <Script
         id="cdn-cookielaw-org-consent"
         type="text/javascript"
@@ -67,7 +67,7 @@ export function ConanHeader() {
 export function ConanCenterHeader() {
   return (
     <div>
-      <ConanHeader/>
+      <ConanHeader background="backgroundWhite"/>
       <BetaBanner/>
     </div>
   )

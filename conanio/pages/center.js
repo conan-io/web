@@ -6,6 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -82,13 +83,13 @@ export default function Center(props) {
       <div className="flex-wrapper">
         <ConanCenterHeader/>
           <br/>
-          <Container>
+          <Container className="conancontainer">
             <Container><h1 className="text-center">Conan Center</h1></Container>
             <Row>
-              <Col><CenterSearchBar data_to_show={"Number of references: "+props.data.reference_num}/></Col>
+              <Col><CenterSearchBar data_to_show={props.data.reference_num}/></Col>
             </Row>
             <Row>
-              {props.data.popular.length > 0  && <Col><CenterList data={props.data.popular} name="Popular Package" full_name={true}/></Col>}
+              {/*props.data.popular.length > 0  && <Col><CenterList data={props.data.popular} name="Popular Package" full_name={true}/></Col>*/}
               {props.data.updated.length > 0 && <Col><CenterList data={props.data.updated} name="Just Updated" full_name={false}/></Col>}
               {props.data.new.length > 0 && <Col><CenterList data={props.data.new} name="New Version" full_name={true}/></Col>}
             </Row>

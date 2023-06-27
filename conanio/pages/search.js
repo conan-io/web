@@ -140,17 +140,16 @@ export default function ConanSearch(props) {
       <div className="flex-wrapper">
         <ConanCenterHeader/>
           <br/>
-          <Container>
+          <Container className="conancontainer">
             <Container><h1 className="text-center">Conan Center Search</h1></Container>
             <Form onSubmit={e => handleSubmit(e)}>
               <Row>
                 <Col><ConanSearchBar value={value} handleChange={handleChange} searchButton={false}/></Col>
               </Row>
             </Form>
-              <br/>
-            <Row>
-              <Col xs lg="6"><Row><ConanMultiSelectFilter title="Licenses" filters={props.data.licenses} handleFilter={handleLicenses}/></Row></Col>
-              <Col xs lg="6"><Row><ConanMultiSelectFilter title="Topics" filters={props.data.topics} handleFilter={handleTopics}/></Row></Col>
+            <Row className="justify-content-md-center mt-2">
+              <Col xs lg="3"><ConanMultiSelectFilter title="Licenses" filters={props.data.licenses} handleFilter={handleLicenses}/></Col>
+              <Col xs lg="3"><ConanMultiSelectFilter title="Topics" filters={props.data.topics} handleFilter={handleTopics}/></Col>
             </Row>
             <br/>
             <div style={{width: "100%"}}>
