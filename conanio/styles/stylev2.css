@@ -12,6 +12,103 @@ https://stackoverflow.com/questions/4575826/how-to-push-a-footer-to-the-bottom-o
 /*
 Beta style
 */
+
+.searchButtonConan{
+  background-color: white;
+  border-color: #21AFFF !important;
+  border-radius: 0px 40px 40px 0px !important;
+  height: calc(1.5em + 0.75rem + 2px) !important;
+  min-width: 50px !important;
+  max-width: 50px !important;
+  font-size: 1rem !important;
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  border-left: 0px;
+}
+
+.searchbarConan{
+  border-right: 0px;
+  border-radius: 40px 0 0 40px !important;
+  border-color: #21AFFF !important;
+}
+
+@media screen and (max-width: 991px) {
+  .searchbarConan{
+    width: 85% !important;
+  }
+}
+
+.searchbarConan:focus {
+    box-shadow: 0 0 0 0 !important;
+}
+
+.conanLogo{
+  transition: 0.5;
+  color: #21AFFF;
+}
+
+.conanPackageLogo{
+  flex: none ;
+  height: 26px;
+  width: 34px;
+  color: #21AFFF;
+}
+
+.searchButtonConan:focus .conanLogo{
+  transition: 0.5;
+  color: white;
+}
+
+.searchButtonConan:focus {
+    box-shadow: 0 0 0 0 !important;
+    background-color: #21AFFF;
+}
+
+.searchButtonConan:hover{
+  background-color: #21AFFF;
+  border-color: #21AFFF !important;
+}
+
+.searchButtonConan:hover .conanLogo{
+  transition: 0.5;
+  color: white;
+}
+
+.searchButtonConan:active{
+  background-color: #21AFFF !important;
+  border-color: #21AFFF !important;
+}
+
+.searchButtonConan:active .conanLogo{
+  transition: 0.5;
+  color: white;
+}
+
+
+.backgroundWhite{
+  background-color: #ffffff;
+}
+
+.searchButton{
+ border-radius: 0px 15px 15px 0px !important;
+ height: calc(1.5em + 0.75rem + 2px) !important;
+ min-width: 50px !important;
+ max-width: 50px !important;
+ font-size: 1rem !important;
+}
+
+.flex-wrapper {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  justify-content: flex-start;
+  background-color: #EDF7FF;
+}
+
+.conancontainer{
+  max-width: 1140px !important;
+}
+
 .beta-banner {
   background: #21AFFF;
 }
@@ -29,13 +126,6 @@ Beta style
   margin-top: 6rem;
   width: 6rem;
   height: 6rem;
-}
-
-.flex-wrapper {
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
-  justify-content: flex-start;
 }
 
 h4, .h4 {
@@ -61,6 +151,7 @@ h4, .h4 {
   border-left: 1px solid #dee2e6;
   border-right: 1px solid #dee2e6;
   border-radius: 0 0 0.25rem 0.25rem;
+  background-color: #FFFFFF;
 }
 
 select {

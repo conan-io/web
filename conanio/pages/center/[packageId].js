@@ -60,7 +60,7 @@ export default function ConanPackage(props) {
       <div className="flex-wrapper">
         <ConanCenterHeader/>
         <br/>
-        <Container>
+        <Container className="conancontainer">
           <h1 className="text-center" >Conan {props.packageId} package site</h1>
           <br/>
           <Row>

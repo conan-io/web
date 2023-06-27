@@ -4,7 +4,7 @@ export default function SingleUserStory(props) {
   return (
     <div>
       <section className="breadcrumbs pt-5">
-        <div className="container">
+        <div className="container conancontainer">
           <Link href="/user-stories">
             <a className="dark-blue"> &lt; Back to all resources </a>
           </Link>
@@ -12,7 +12,7 @@ export default function SingleUserStory(props) {
       </section>
 
       <section className="user-story-top py-4">
-        <div className="container">
+        <div className="container conancontainer">
           <div className="row">
             <div className="col-lg-9">
               <h1>
@@ -41,7 +41,7 @@ export default function SingleUserStory(props) {
             </div>
           </div>
         </div>
-        <div className="container pt-5">
+        <div className="container conancontainer pt-5">
           <div className="col-lg-8">
             <div className="d-flex justify-content-center align-items-center top-together-images">
               <img alt="Conan" height="115" src="/favicon.png"></img>
@@ -53,7 +53,7 @@ export default function SingleUserStory(props) {
       </section>
 
       <section className="user-story-content">
-        <div className="container py-5">
+        <div className="container conancontainer py-5">
 
           <div className="row justify-content-between">
             <div className="col-lg-8">

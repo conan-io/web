@@ -5,6 +5,8 @@ import Form from 'react-bootstrap/Form';
 import FormCheck from 'react-bootstrap/FormCheck';
 import Button from 'react-bootstrap/Button';
 import Select from "react-select";
+import { AiOutlineFileSearch } from "react-icons/ai";
+import { BiPackage } from "react-icons/bi";
 
 function ConanFilter(props) {
   const [checked, setChecked] = useState(props.checked);
@@ -35,9 +37,25 @@ export function ConanListFilter(props) {
 }
 
 export function ConanMultiSelectFilter(props) {
+  const customStyles = {
+    option: (defaultStyles, state) => ({
+      ...defaultStyles,
+    }),
+
+    control: (defaultStyles) => ({
+      ...defaultStyles,
+      borderColor: "#21AFFF",
+      borderRadius: "40px 40px 40px 40px",
+    })
+  };
   return(
-    <div className="m-auto w-75">
-      {props.title} <Select isMulti onChange={props.handleFilter} options={props.filters.map(elem => {return {label: elem.filter, value: elem.id};})} />
+    <div className="w-100">
+      <Select
+        styles={customStyles}
+        isMulti
+        placeholder={props.title}
+        onChange={props.handleFilter}
+        options={props.filters.map(elem => {return {label: elem.filter, value: elem.id};})} />
     </div>
   )
 }
@@ -45,9 +63,18 @@ export function ConanMultiSelectFilter(props) {
 export function ConanSearchBar(props) {
   return (
     <div>
-      <Row><Form.Control type="text" placeholder="Search..." value={props.value} onChange={(e) => props.handleChange(e.target.value)}/></Row>
-      {props.data_to_show && <Row lg="4">{props.data_to_show}</Row>}
-      {props.searchButton && <Row lg="4"><Button variant="primary" type="submit">Search</Button></Row>}
+      <Row className="justify-content-md-center" lg="2">
+          <Form.Control className="searchbarConan" type="text" placeholder="Search..." value={props.value} onChange={(e) => props.handleChange(e.target.value)}/>
+          <Button className="searchButtonConan" type="submit">
+            <AiOutlineFileSearch className="conanLogo"/>
+          </Button>
+      </Row>
+      {props.data_to_show && <Row className="justify-content-md-center mt-2 mb-2" lg="2">
+        <BiPackage className="conanPackageLogo"/>
+        <div>
+          {props.data_to_show} references
+        </div>
+      </Row>}
     </div>
   )
 }
