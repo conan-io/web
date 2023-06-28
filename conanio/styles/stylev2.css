@@ -107,6 +107,9 @@ Beta style
   min-height: 100vh;
   flex-direction: column;
   justify-content: flex-start;
+}
+
+.bg-conan-blue {
   background-color: #EDF7FF;
 }
 
