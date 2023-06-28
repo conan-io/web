@@ -2,6 +2,10 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Script from 'next/script'
 
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+
+
 function BetaBanner() {
   return (
     <section id="beta-banner" className="beta-banner">
@@ -15,6 +19,7 @@ function BetaBanner() {
     </section>
   )
 }
+
 
 export function ConanHeader(props) {
   return (
@@ -36,26 +41,25 @@ export function ConanHeader(props) {
       </Script>
       <div className="container">
         <div className="row d-flex justify-content-between">
-          <Link href="/"><a className="col-10 col-lg-4 d-block"><img alt="Conan C++ Package Manager" className="header-logo" src="/conan-logo.svg"></img></a></Link>
-          <div className="col-2 d-flex d-lg-none align-items-center justify-content-end">
-            <button className="d-block d-lg-none hamburger hamburger--collapse text-right" type="button">
-            <span className="hamburger-box"><span className="hamburger-inner"></span></span>
-            </button>
-          </div>
-          <div className="col-lg-4 text-right d-flex align-items-center justify-content-end">
-            <nav className="header-nav align-items-center d-lg-flex" id="headerNav">
-              {/*<Link href="/search"><a className="btn conan-blue-border"> <img src="/small-search.svg" alt="Search" className="conan-center-icon mr-2 black"></img>Search</a></Link>*/}
-              <Link href="/center"><a className="btn black">ConanCenter</a></Link>
-              <Link href="/faq"><a className="btn black">FAQ</a></Link>
-              <Link href="https://docs.conan.io/"><a className="btn black">Docs</a></Link>
-              <Link href="https://blog.conan.io/"><a className="btn black">Blog</a></Link>
-              <Link href="https://github.com/conan-io/conan"><a className="btn mr-3" rel="nofollow noopener noreferrer" target="_blank"><img src="/small-github.svg" alt="Github"></img></a></Link>
-              <div className="downloads-cta arrow-cta">
-                <div className="button_cont">
-                  <Link href="/downloads"><a className="btn conan-blue-gradient-bg white font-weight-bold" id="download_btn_header"><span>Downloads</span></a></Link>
-                </div>
-              </div>
-            </nav>
+          <Link href="/"><a className="col-6 col-lg-4 d-block"><img alt="Conan C++ Package Manager" className="header-logo" src="/conan-logo.svg"></img></a></Link>
+          <div className="col-6 col-lg-4 xs text-right d-flex align-items-center justify-content-end">
+            <Navbar collapseOnSelect expand="lg">
+                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                <Navbar.Collapse id="responsive-navbar-nav">
+                  <Nav className="me-auto">
+                    <Nav.Link href="/center"><a className="btn navBtn black">ConanCenter</a></Nav.Link>
+                    <Nav.Link href="/faq"><a className="btn navBtn black">FAQ</a></Nav.Link>
+                    <Nav.Link href="https://docs.conan.io/"><a className="btn navBtn black">Docs</a></Nav.Link>
+                    <Nav.Link href="https://blog.conan.io/"><a className="btn navBtn black">Blog</a></Nav.Link>
+                    <Nav.Link href="https://github.com/conan-io/conan"><a className="btn navBtn mr-3" rel="nofollow noopener noreferrer" target="_blank"><img src="/small-github.svg" alt="Github"></img></a></Nav.Link>
+                    <div className="downloads-cta arrow-cta">
+                      <div className="button_cont">
+                        <Nav.Link href="/downloads"><a className="btn conan-blue-gradient-bg white font-weight-bold" id="download_btn_header"><span>Downloads</span></a></Nav.Link>
+                      </div>
+                    </div>
+                  </Nav>
+                </Navbar.Collapse>
+            </Navbar>
           </div>
         </div>
       </div>
