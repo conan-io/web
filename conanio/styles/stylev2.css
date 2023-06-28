@@ -13,6 +13,11 @@ https://stackoverflow.com/questions/4575826/how-to-push-a-footer-to-the-bottom-o
 Beta style
 */
 
+.navBtn{
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}
+
 .searchButtonConan{
   background-color: white;
   border-color: #21AFFF !important;
