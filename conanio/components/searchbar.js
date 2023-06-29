@@ -42,10 +42,18 @@ export function ConanMultiSelectFilter(props) {
       ...defaultStyles,
     }),
 
+    dropdownIndicator: (defaultStyles) => ({
+      ...defaultStyles,
+      color: "#21AFFF"
+    }),
+
     control: (defaultStyles) => ({
       ...defaultStyles,
       borderColor: "#21AFFF",
       borderRadius: "40px 40px 40px 40px",
+      "&:hover": {
+        borderColor: "#21AFFF"
+      }
     })
   };
   return(
