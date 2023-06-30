@@ -246,7 +246,7 @@ function ConanHomeCustomerSuccess() {
       <div className="container py-5">
         <div className="row">
           <div className="col-12">
-            <h4 className="text-center mt-2 mb-4">CUSTOMER SUCCESS STORIES</h4>
+            <h4 className="text-center mt-2 mb-4 font-weight-bold">CUSTOMER SUCCESS STORIES</h4>
           </div>
         </div>
         <div className="row">
@@ -299,7 +299,7 @@ function ConanHomeUsers() {
       <div className="container">
         <div className="row">
           <div className="col-12">
-            <h4 className="text-center py-2 mb-4 mb-md-5">OUR USERS</h4>
+            <h4 className="text-center py-2 mb-4 mb-md-5 font-weight-bold">OUR USERS</h4>
           </div>
         </div>
 

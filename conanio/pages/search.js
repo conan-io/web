@@ -141,7 +141,6 @@ export default function ConanSearch(props) {
         <ConanCenterHeader/>
           <br/>
           <Container className="conancontainer">
-            <Container><h1 className="text-center">Conan Center Search</h1></Container>
             <Form onSubmit={e => handleSubmit(e)}>
               <Row>
                 <Col><ConanSearchBar value={value} handleChange={handleChange} searchButton={false}/></Col>
