@@ -17,6 +17,7 @@ import { ConanCenterHeader } from '../../components/header';
 import ConanFooter from '../../components/footer';
 import {LineChart, XAxis, Tooltip, CartesianGrid, Line} from 'recharts';
 import {get_json, get_urls} from '../../service/service';
+import { LiaBalanceScaleSolid, LiaGithub } from "react-icons/lia";
 
 
 export async function getServerSideProps(context) {
@@ -61,36 +62,33 @@ export default function ConanPackage(props) {
         <ConanCenterHeader/>
         <br/>
         <Container className="conancontainer">
-          <h1 className="text-center" >Conan {props.packageId} package site</h1>
-          <br/>
           <Row>
             <Col xs lg="8">
               <Row>
                 <Col>
-                  <h3>
-                    {props.data[selectedVersion].name}
-                  </h3>
+                <h4 className="mt-2 mb-2 font-weight-bold">
+                  {props.data[selectedVersion].name}/
+                  <Form.Select size="sm" value={selectedVersion} onChange={handleChange}>
+                    {Object.keys(props.data).map((version) => (<option key={version} value={version}>Version: {version}</option>))}
+                  </Form.Select>
+                </h4>
+                <br/>
                 </Col>
               </Row>
               <Row>
-                <Col xs lg="4">
-                   <Form.Select size="sm" value={selectedVersion} onChange={handleChange}>
-                      {Object.keys(props.data).map((version) => (<option key={version} value={version}>Version: {version}</option>))}
-                    </Form.Select>
-                </Col>
-                <Col xs lg="5"><p><b>Licenses:</b> {props.data[selectedVersion].info.licenses.join(", ")}</p></Col>
+                <Col xs lg><p>{props.data[selectedVersion].info.description}</p></Col>
+              </Row>
+              <Row>
+                <Col xs lg="5"><p><LiaBalanceScaleSolid className="conanIconBlue"/> {props.data[selectedVersion].info.licenses.join(", ")}</p></Col>
                 { ((props.downloads[selectedVersion].downloads && props.downloads[selectedVersion].downloads.length > 0) ||
                   props.data[selectedVersion].info.downloads > 0) &&
                   <Col xs lg="3"><p><b>Downloads:</b> {props.data[selectedVersion].info.downloads}</p></Col> }
               </Row>
               <Row>
-                <Col xs lg><p><b>Description:</b> {props.data[selectedVersion].info.description}</p></Col>
+                <Col xs lg><p><LiaGithub className="conanIconBlue"/> <Link href={"https://github.com/conan-io/conan-center-index/tree/master/recipes/" + props.data[selectedVersion].name}><a>{props.data[selectedVersion].name} recipe</a></Link></p></Col>
               </Row>
               <Row>
-                <Col xs lg><p><b>Topics:</b> {props.data[selectedVersion].info.labels.map((item) => (<Badge key={item}>{item}</Badge>))}</p></Col>
-              </Row>
-              <Row>
-                <Col xs lg><Link href={"https://github.com/conan-io/conan-center-index/tree/master/recipes/" + props.data[selectedVersion].name}><a><p>{props.data[selectedVersion].name} recipe</p></a></Link></Col>
+                <Col xs lg><p> {props.data[selectedVersion].info.labels.map((item) => (<Badge key={item}>#{item}</Badge>))}</p></Col>
               </Row>
             </Col>
             { props.downloads[selectedVersion].downloads && props.downloads[selectedVersion].downloads.length > 0 &&

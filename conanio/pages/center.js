@@ -84,10 +84,12 @@ export default function Center(props) {
         <ConanCenterHeader/>
           <br/>
           <Container className="conancontainer">
-            <Container><h1 className="text-center">Conan Center</h1></Container>
+            <Container><h1 className="text-center">The Conan community’s package center</h1></Container>
+            <br/>
             <Row>
               <Col><CenterSearchBar data_to_show={props.data.reference_num}/></Col>
             </Row>
+            <br/>
             <Row>
               {/*props.data.popular.length > 0  && <Col><CenterList data={props.data.popular} name="Popular Package" full_name={true}/></Col>*/}
               {props.data.updated.length > 0 && <Col><CenterList data={props.data.updated} name="Just Updated" full_name={false}/></Col>}

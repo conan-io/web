@@ -78,7 +78,7 @@ export function ConanSearchBar(props) {
           </Button>
       </Row>
       {props.data_to_show && <Row className="justify-content-md-center mt-2 mb-2" lg="2">
-        <BiPackage className="conanPackageLogo"/>
+        <BiPackage className="conanIconBlue"/>
         <div>
           {props.data_to_show} references
         </div>

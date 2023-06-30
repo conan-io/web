@@ -61,11 +61,18 @@ Beta style
   color: #21AFFF;
 }
 
-.conanPackageLogo{
+.conanIconBlue{
   flex: none ;
   height: 26px;
   width: 34px;
   color: #21AFFF;
+}
+
+.conanIconWhite{
+  flex: none ;
+  height: 26px;
+  width: 34px;
+  color: #FFFFFF;
 }
 
 .searchButtonConan:focus .conanLogo{
@@ -147,7 +154,6 @@ Beta style
 
 h4, .h4 {
   font-size: 1.111rem;
-  font-weight: 700;
 }
 
 #masthead .btn {
