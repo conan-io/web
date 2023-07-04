@@ -70,7 +70,11 @@ function CenterList(props) {
     <div className="text-center">
       <h2>{props.name}</h2>
       <ListGroup>
-        {props.data.map((info) => (<ListGroup.Item key={info.name}><Link href={"/center/" + info.name}><a>{info.name}{props.full_name && "/"+info.version}</a></Link></ListGroup.Item>))}
+        {props.data.map((info) => (
+          <ListGroup.Item style={{border: '0.05rem solid #21AFFF', borderRadius: '10px', margin:'0px 0px 5px 0px'}} key={info.name}>
+            <Link href={"/center/" + info.name}><a>{info.name}{props.full_name && "/"+info.version}</a></Link>
+          </ListGroup.Item>
+        ))}
       </ListGroup>
     </div>
   )
@@ -90,10 +94,10 @@ export default function Center(props) {
               <Col><CenterSearchBar data_to_show={props.data.reference_num}/></Col>
             </Row>
             <br/>
-            <Row>
-              {/*props.data.popular.length > 0  && <Col><CenterList data={props.data.popular} name="Popular Package" full_name={true}/></Col>*/}
-              {props.data.updated.length > 0 && <Col><CenterList data={props.data.updated} name="Just Updated" full_name={false}/></Col>}
-              {props.data.new.length > 0 && <Col><CenterList data={props.data.new} name="New Version" full_name={true}/></Col>}
+            <Row className="justify-content-md-center">
+              {/*props.data.popular.length > 0  && <Col xs lg="4"><CenterList data={props.data.popular} name="Popular Package" full_name={true}/></Col>*/}
+              {props.data.updated.length > 0 && <Col xs lg="4"><CenterList data={props.data.updated} name="Just Updated" full_name={false}/></Col>}
+              {props.data.new.length > 0 && <Col xs lg="4"><CenterList data={props.data.new} name="New Version" full_name={true}/></Col>}
             </Row>
           </Container>
           <br/>

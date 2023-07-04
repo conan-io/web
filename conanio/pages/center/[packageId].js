@@ -69,23 +69,25 @@ export default function ConanPackage(props) {
                 <h4 className="mt-2 mb-2 font-weight-bold">
                   {props.data[selectedVersion].name}/
                   <Form.Select size="sm" value={selectedVersion} onChange={handleChange}>
-                    {Object.keys(props.data).map((version) => (<option key={version} value={version}>Version: {version}</option>))}
+                    {Object.keys(props.data).map((version) => (<option key={version} value={version}>{version}</option>))}
                   </Form.Select>
                 </h4>
                 <br/>
                 </Col>
               </Row>
               <Row>
-                <Col xs lg><p>{props.data[selectedVersion].info.description}</p></Col>
+                <Col className="mb-2" xs lg>{props.data[selectedVersion].info.description}</Col>
               </Row>
               <Row>
-                <Col xs lg="5"><p><LiaBalanceScaleSolid className="conanIconBlue"/> {props.data[selectedVersion].info.licenses.join(", ")}</p></Col>
+                <Col xs lg="8"><LiaBalanceScaleSolid className="conanIconBlue"/> {props.data[selectedVersion].info.licenses.join(", ")}</Col>
+              </Row>
+              <Row>
                 { ((props.downloads[selectedVersion].downloads && props.downloads[selectedVersion].downloads.length > 0) ||
                   props.data[selectedVersion].info.downloads > 0) &&
-                  <Col xs lg="3"><p><b>Downloads:</b> {props.data[selectedVersion].info.downloads}</p></Col> }
+                  <Col xs lg="8"><b>Downloads:</b> {props.data[selectedVersion].info.downloads}</Col> }
               </Row>
               <Row>
-                <Col xs lg><p><LiaGithub className="conanIconBlue"/> <Link href={"https://github.com/conan-io/conan-center-index/tree/master/recipes/" + props.data[selectedVersion].name}><a>{props.data[selectedVersion].name} recipe</a></Link></p></Col>
+                <Col xs lg className="mb-2"><Link href={"https://github.com/conan-io/conan-center-index/tree/master/recipes/" + props.data[selectedVersion].name}><a><LiaGithub className="conanIconBlue"/>Recipe source</a></Link></Col>
               </Row>
               <Row>
                 <Col xs lg><p> {props.data[selectedVersion].info.labels.map((item) => (<Badge key={item}>#{item}</Badge>))}</p></Col>
@@ -101,7 +103,7 @@ export default function ConanPackage(props) {
                 </LineChart>
               </Col> }
             </Row>
-          <Tabs defaultActiveKey="use-it" id="uncontrolled">
+          <Tabs className="package-tabs" defaultActiveKey="use-it" id="uncontrolled">
             <Tab eventKey="use-it" title="Use it"><br/><RenderedMarkdown md={props.tabs.md[selectedVersion].md} /></Tab>
             <Tab eventKey="badges" title="Badges"><br/><ReactMarkdown>{props.tabs.shields_io[selectedVersion].md}</ReactMarkdown></Tab>
             {/*
