@@ -168,17 +168,44 @@ h4, .h4 {
     color: white;
 }
 
+.nav-item {
+  border-color: #21AFFF;
+  border-bottom: 0px;
+}
+
+.nav-item.show {
+  border-color: #21AFFF;
+  border-bottom: 0px;
+}
+
+.package-tabs .nav-link {
+  background-color: #21AFFF;
+  color: white;
+  border-bottom: 0px;
+}
+
+.package-tabs .nav-link.active {
+  background-color: white;
+  border-color: #21AFFF;
+  border-bottom: 0px;
+}
+
+.nav-tabs {
+  border-color: #21AFFF;
+}
+
 .tab-content>.active {
   padding: 0px 15px 15px 15px;
-  border-bottom: 1px solid #dee2e6;
-  border-left: 1px solid #dee2e6;
-  border-right: 1px solid #dee2e6;
+  border-bottom: 1px solid #21AFFF;
+  border-left: 1px solid #21AFFF;
+  border-right: 1px solid #21AFFF;
   border-radius: 0 0 0.25rem 0.25rem;
   background-color: #FFFFFF;
 }
 
 select {
   border-color: #21AFFF;
+  margin-left: 2px;
   border-radius: 0.25rem 0.25rem 0.25rem 0.25rem;
 }
 

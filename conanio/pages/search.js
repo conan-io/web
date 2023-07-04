@@ -7,11 +7,13 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import FormCheck from 'react-bootstrap/FormCheck';
 import Button from 'react-bootstrap/Button';
+import Badge from 'react-bootstrap/Badge';
 import { ConanListFilter, ConanSearchBar, ConanMultiSelectFilter } from "../components/searchbar";
 import ListGroup from 'react-bootstrap/ListGroup';
 import Link from 'next/link';
 import { ConanCenterHeader } from '../components/header';
 import ConanFooter from '../components/footer';
+import { LiaBalanceScaleSolid, LiaGithub } from "react-icons/lia";
 import {get_json_list, get_urls, get_json_list_with_id} from '../service/service';
 
 
@@ -48,27 +50,17 @@ export async function getServerSideProps(context) {
 
 function PackageInfo(props) {
   return (
-    <div>
+    <div className="m-2">
       <Row>
-        <Col xs lg="4">
-          <Row>
-            <Col xs lg><Link href={"/center/" + props.data.name}><a><h3>{props.data.name}</h3></a></Link></Col>
-          </Row>
-          <Row>
-            <Col xs lg md={{ span: 1, offset: 2 }}><b>last version:</b> {props.data.info.version}</Col>
-          </Row>
-        </Col>
-        <Col xs lg="5"><b>Licenses:</b> {props.data.info.licenses.join(", ")}</Col>
-        {props.data.info.downloads > 0  && <Col xs lg="3"><b>Downloads:</b> {props.data.info.downloads}</Col>}
+        <Col xs lg><Link href={"/center/" + props.data.name}><a><h3>{props.data.name}</h3></a></Link></Col>
+        <Col xs lg><b>last version:</b> {props.data.info.version}</Col>
       </Row>
-      <br/>
-      <Row>
-        <Col xs lg><b>Description:</b> {props.data.info.description}</Col>
-      </Row>
-      <br/>
-      <Row>
-        <Col xs lg><b>Topics:</b> {props.data.info.labels.join(", ")}</Col>
-      </Row>
+      <Row><Col xs lg><LiaBalanceScaleSolid className="conanIconBlue"/> {props.data.info.licenses.join(", ")}</Col></Row>
+      {props.data.info.downloads > 0  &&
+        <Row><Col xs lg="3"><b>Downloads:</b> {props.data.info.downloads}</Col></Row>
+      }
+      <Row><Col xs lg className="mt-2">{props.data.info.description}</Col></Row>
+      <Row><Col xs lg className="mt-2"><p> {props.data.info.labels.map((item) => (<Badge key={item}>#{item}</Badge>))}</p></Col></Row>
     </div>
   )
 }
@@ -79,7 +71,7 @@ function SearchList(props) {
     <ListGroup>
     {props.data && props.data.map(
       (info) => (
-        <ListGroup.Item key={info.name}>
+        <ListGroup.Item style={{borderRadius: '10px'}} className="mt-4" key={info.name}>
           <PackageInfo data={info}/>
         </ListGroup.Item>)
       )

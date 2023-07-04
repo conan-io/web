@@ -4,6 +4,26 @@ import Script from 'next/script'
 
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import { AiOutlineFileSearch } from "react-icons/ai";
+
+
+function ConanHead() {
+  return (
+    <Head>
+      <meta charset="UTF-8"/>
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+      <meta name="title" content="Conan.io - the Open Source C and C++ Package Manager for Developers"/>
+      <meta
+        name="description"
+        content="Conan is an open source, decentralized and multi-platform package manager for C and C++ that allows you to create and share all your native binaries."
+      />
+      <link rel="shortcut icon" type="image/png" href="favicon.png"/>
+      <link rel="alternate" href="https://conan.io" hrefLang="en"/>
+      <title>Conan 2.0 - C and C++ Open Source Package Manager</title>
+      <link rel="canonical" href="https://conan.io"/>
+    </Head>
+  )
+}
 
 
 function BetaBanner() {
@@ -48,6 +68,7 @@ export function ConanHeader(props) {
                 <Navbar.Collapse id="responsive-navbar-nav">
                   <Nav className="me-auto">
                     <Nav.Link href="/center"><a className="btn navBtn black">ConanCenter</a></Nav.Link>
+                    <Nav.Link href="/search"><a className="btn navBtn black"><AiOutlineFileSearch className="mr-1"/>Search</a></Nav.Link>
                     <Nav.Link href="/faq"><a className="btn navBtn black">FAQ</a></Nav.Link>
                     <Nav.Link href="https://docs.conan.io/"><a className="btn navBtn black">Docs</a></Nav.Link>
                     <Nav.Link href="https://blog.conan.io/"><a className="btn navBtn black">Blog</a></Nav.Link>
@@ -71,6 +92,7 @@ export function ConanHeader(props) {
 export function ConanCenterHeader() {
   return (
     <div>
+      <ConanHead/>
       <ConanHeader background="backgroundWhite"/>
       <BetaBanner/>
     </div>
@@ -81,6 +103,7 @@ export function ConanCenterHeader() {
 export function ConanKitchenHeader() {
   return (
     <div>
+      <ConanHead/>
       <div className="header-bg position-absolute"><img src="/kitchen-bg.svg" width="100%"></img></div>
       <ConanHeader/>
     </div>
