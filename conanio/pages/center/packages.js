@@ -8,13 +8,13 @@ import Form from 'react-bootstrap/Form';
 import FormCheck from 'react-bootstrap/FormCheck';
 import Button from 'react-bootstrap/Button';
 import Badge from 'react-bootstrap/Badge';
-import { ConanListFilter, ConanSearchBar, ConanMultiSelectFilter } from "../components/searchbar";
+import { ConanListFilter, ConanSearchBar, ConanMultiSelectFilter } from "../../components/searchbar";
 import ListGroup from 'react-bootstrap/ListGroup';
 import Link from 'next/link';
-import { ConanCenterHeader } from '../components/header';
-import ConanFooter from '../components/footer';
+import { ConanCenterHeader } from '../../components/header';
+import ConanFooter from '../../components/footer';
 import { LiaBalanceScaleSolid, LiaGithub } from "react-icons/lia";
-import {get_json_list, get_urls, get_json_list_with_id} from '../service/service';
+import {get_json_list, get_urls, get_json_list_with_id} from '../../service/service';
 
 
 export async function getServerSideProps(context) {
@@ -52,7 +52,7 @@ function PackageInfo(props) {
   return (
     <div className="m-2">
       <Row>
-        <Col xs lg><Link href={"/center/" + props.data.name}><a><h3>{props.data.name}</h3></a></Link></Col>
+        <Col xs lg><Link href={"/center/packages/" + props.data.name}><a><h3>{props.data.name}</h3></a></Link></Col>
         <Col xs lg><b>last version:</b> {props.data.info.version}</Col>
       </Row>
       <Row><Col xs lg><LiaBalanceScaleSolid className="conanIconBlue"/> {props.data.info.licenses.join(", ")}</Col></Row>
@@ -145,7 +145,7 @@ export default function ConanSearch(props) {
             <br/>
             <div style={{width: "100%"}}>
               <h2 className="text-center">
-              packages ({!loading && data.length}{loading && <div className="spinner-grow"></div>})
+              packages ({!loading && !data && 0}{!loading && data && data.length}{loading && <div className="spinner-grow"></div>})
               </h2>
               <SearchList loading={loading} data={data}/>
             </div>

@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 import FormCheck from 'react-bootstrap/FormCheck';
 import Button from 'react-bootstrap/Button';
 import Select from "react-select";
-import { AiOutlineFileSearch } from "react-icons/ai";
+import { LuPackageSearch } from "react-icons/lu";
 import { BiPackage } from "react-icons/bi";
 
 function ConanFilter(props) {
@@ -74,7 +74,7 @@ export function ConanSearchBar(props) {
       <Row className="justify-content-md-center" lg="2">
           <Form.Control className="searchbarConan" type="text" placeholder="Search..." value={props.value} onChange={(e) => props.handleChange(e.target.value)}/>
           <Button className="searchButtonConan" type="submit">
-            <AiOutlineFileSearch className="conanLogo"/>
+            <LuPackageSearch className="conanLogo"/>
           </Button>
       </Row>
       {props.data_to_show && <Row className="justify-content-md-center mt-2 mb-2" lg="2">
