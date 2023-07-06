@@ -10,6 +10,7 @@ import Button from 'react-bootstrap/Button';
 import Badge from 'react-bootstrap/Badge';
 import { ConanListFilter, ConanSearchBar, ConanMultiSelectFilter } from "../../components/searchbar";
 import ListGroup from 'react-bootstrap/ListGroup';
+import Alert from 'react-bootstrap/Alert';
 import Link from 'next/link';
 import { ConanCenterHeader } from '../../components/header';
 import ConanFooter from '../../components/footer';
@@ -48,6 +49,19 @@ export async function getServerSideProps(context) {
   }
 }
 
+
+export function DefaultDescription (props) {
+  return (
+    (<Alert className="text-center" variant="secondary">
+      It has not been possible to load this information.
+      Please, check if <Link href={"https://github.com/conan-io/conan-center-index/tree/master/recipes/" + props.name}>
+        <a>this recipe version</a>
+      </Link> is compatible with Conan v2.x.
+    </Alert>)
+  )
+}
+
+
 function PackageInfo(props) {
   return (
     <div className="m-2">
@@ -55,11 +69,13 @@ function PackageInfo(props) {
         <Col xs lg><Link href={"/center/packages/" + props.data.name}><a><h3>{props.data.name}</h3></a></Link></Col>
         <Col xs lg><b>last version:</b> {props.data.info.version}</Col>
       </Row>
-      <Row><Col xs lg><LiaBalanceScaleSolid className="conanIconBlue"/> {props.data.info.licenses.join(", ")}</Col></Row>
+      {props.data.info.licenses && props.data.info.licenses.length > 0 &&
+        <Row><Col xs lg><LiaBalanceScaleSolid className="conanIconBlue"/> {props.data.info.licenses.join(", ")}</Col></Row>
+      }
       {props.data.info.downloads > 0  &&
         <Row><Col xs lg="3"><b>Downloads:</b> {props.data.info.downloads}</Col></Row>
       }
-      <Row><Col xs lg className="mt-2">{props.data.info.description}</Col></Row>
+      <Row><Col xs lg className="mt-2">{props.data.info.description || (<DefaultDescription name={props.data.name}/>)}</Col></Row>
       <Row><Col xs lg className="mt-2"><p> {props.data.info.labels.map((item) => (<Badge key={item}>#{item}</Badge>))}</p></Col></Row>
     </div>
   )
