@@ -2,7 +2,7 @@ export function get_urls({packageId='', search='all', topics=[], licenses=[]} = 
   return {
     api: {
       private: (`${encodeURI(process.env.conanioServer)}`),
-      public: 'api',
+      public: '/api',
     },
     package: {
       info: (`package/${encodeURIComponent(packageId.toLowerCase())}`),

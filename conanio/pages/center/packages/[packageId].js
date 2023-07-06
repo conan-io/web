@@ -13,10 +13,10 @@ import ReactMarkdown from 'react-markdown';
 import rehypeHighlight from 'rehype-highlight';
 import cmake from 'highlight.js/lib/languages/cmake';
 import makefile from 'highlight.js/lib/languages/makefile';
-import { ConanCenterHeader } from '../../components/header';
-import ConanFooter from '../../components/footer';
+import { ConanCenterHeader } from '../../../components/header';
+import ConanFooter from '../../../components/footer';
 import {LineChart, XAxis, Tooltip, CartesianGrid, Line} from 'recharts';
-import {get_json, get_urls} from '../../service/service';
+import {get_json, get_urls} from '../../../service/service';
 import { LiaBalanceScaleSolid, LiaGithub } from "react-icons/lia";
 
 

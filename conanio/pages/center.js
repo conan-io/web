@@ -46,10 +46,10 @@ function CenterSearchBar(props) {
     event.preventDefault();
     router.push(
       {
-        pathname: '/search',
+        pathname: '/center/packages',
         query: { defaultValue: value }
       },
-      '/search'
+      '/center/packages'
     );
     //window.location.reload(false);
   }
@@ -72,7 +72,7 @@ function CenterList(props) {
       <ListGroup>
         {props.data.map((info) => (
           <ListGroup.Item style={{border: '0.05rem solid #21AFFF', borderRadius: '10px', margin:'0px 0px 5px 0px'}} key={info.name}>
-            <Link href={"/center/" + info.name}><a>{info.name}{props.full_name && "/"+info.version}</a></Link>
+            <Link href={"/center/packages/" + info.name}><a>{info.name}{props.full_name && "/"+info.version}</a></Link>
           </ListGroup.Item>
         ))}
       </ListGroup>

@@ -4,7 +4,7 @@ import Script from 'next/script'
 
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import { AiOutlineFileSearch } from "react-icons/ai";
+import { LuPackageSearch } from "react-icons/lu";
 
 
 function ConanHead() {
@@ -67,8 +67,7 @@ export function ConanHeader(props) {
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                   <Nav className="me-auto">
-                    <Nav.Link href="/center"><a className="btn navBtn black">ConanCenter</a></Nav.Link>
-                    <Nav.Link href="/search"><a className="btn navBtn black"><AiOutlineFileSearch className="mr-1"/>Search</a></Nav.Link>
+                    <Nav.Link href="/center"><a className="btn navBtn black">ConanCenter<LuPackageSearch className="ml-1"/></a></Nav.Link>
                     <Nav.Link href="/faq"><a className="btn navBtn black">FAQ</a></Nav.Link>
                     <Nav.Link href="https://docs.conan.io/"><a className="btn navBtn black">Docs</a></Nav.Link>
                     <Nav.Link href="https://blog.conan.io/"><a className="btn navBtn black">Blog</a></Nav.Link>
