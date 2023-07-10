@@ -274,21 +274,6 @@ async def get_example(name=''):
     }
 
 
-@app.get('/package/{name}/shields_io')
-async def get_shields_io(name=''):
-    return {
-        '3.0.5': {'md': shields_io_md},
-        '3.0.4': {'md': shields_io_md},
-        '3.0.3': {'md': shields_io_md},
-        '1.1.1q': {'md': shields_io_md},
-        '1.1.1p': {'md': shields_io_md},
-        '1.1.1o': {'md': shields_io_md},
-        '1.1.0l': {'md': shields_io_md},
-        '1.0.2u': {'md': shields_io_md}
-    }
-
-
-
 @app.get('/package/{name}/options')
 async def get_options(name=''):
     return {

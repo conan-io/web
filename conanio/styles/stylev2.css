@@ -190,6 +190,18 @@ h4, .h4 {
   border-bottom: 0px;
 }
 
+.badges-tabs .nav-link {
+  background-color: #21AFFF;
+  color: white;
+  border-bottom: 0px;
+}
+
+.badges-tabs .nav-link.active {
+  background-color: white;
+  border-color: #21AFFF;
+  border-bottom: 0px;
+}
+
 .nav-tabs {
   border-color: #21AFFF;
 }

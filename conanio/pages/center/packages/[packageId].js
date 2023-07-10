@@ -32,7 +32,6 @@ export async function getServerSideProps(context) {
         example: await get_json(urls.package.example, urls.api.private),
         options: await get_json(urls.package.options, urls.api.private),
         packages: await get_json(urls.package.packages, urls.api.private),
-        shields_io: await get_json(urls.package.shields_io, urls.api.private),
       },
       packageId: context.params.packageId,
     },
@@ -47,6 +46,67 @@ function RenderedMarkdown({md}) {
   return <ReactMarkdown rehypePlugins={[[rehypeHighlight, {languages: {cmake, makefile}, detect: true, ignoreMissing: true}]]}>{md}</ReactMarkdown> ;
 }
 
+
+function ClipboardCopy({ copyText }) {
+  const [isCopied, setIsCopied] = useState(false);
+
+  // This is the function we wrote earlier
+  async function copyTextToClipboard(text) {
+    if ('clipboard' in navigator) {
+      return await navigator.clipboard.writeText(text);
+    } else {
+      return document.execCommand('copy', true, text);
+    }
+  }
+
+  // onClick handler function for the copy button
+  const handleCopyClick = () => {
+    // Asynchronously call copyTextToClipboard
+    copyTextToClipboard(copyText)
+      .then(() => {
+        // If successful, update the isCopied state value
+        setIsCopied(true);
+        setTimeout(() => {
+          setIsCopied(false);
+        }, 1500);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  return (
+    <div>
+      <input type="text" value={copyText} readOnly />
+      {/* Bind our handler function to the onClick button property */}
+      <button onClick={handleCopyClick}>
+        <span>{isCopied ? 'Copied!' : 'Copy'}</span>
+      </button>
+    </div>
+  );
+}
+
+
+function BadgesTab({packageName}) {
+  return (
+    <div>
+      <img src={"https://img.shields.io/conan/v/" + packageName} alt="Conan Center"></img>
+      <br/><br/>
+      <Tabs className="badges-tabs" defaultActiveKey="Markdown" id="badges">
+        <Tab eventKey="Markdown" title="Markdown"><br/><pre><code> ![Conan Center](https://img.shields.io/conan/v/{packageName})
+              <button 
+        onClick={() =>  window.clipboardData.setData("Text", 'Copy this text to clipboard')}>
+      Copy
+      </button>
+
+        </code></pre></Tab>
+        <Tab eventKey="reStructuredText" title="reStructuredText"><br/><pre><code> .. image:: https://img.shields.io/conan/v/{packageName}   :alt: Conan Center</code></pre></Tab>
+        <Tab eventKey="AsciiDoc" title="AsciiDoc"><br/><pre><code> image:https://img.shields.io/conan/v/{packageName} [Conan Center]</code></pre></Tab>
+        <Tab eventKey="HTML" title="HTML"><br/><pre><code> &lt;img alt=&quot;Conan Center&quot; src=&quot;https://img.shields.io/conan/v/{packageName}&quot;&gt;</code></pre></Tab>
+      </Tabs>
+    </div>
+  )
+}
 
 export default function ConanPackage(props) {
   const [selectedVersion, setSelectedVersion] = useState(Object.keys(props.data)[0]);
@@ -105,7 +165,7 @@ export default function ConanPackage(props) {
             </Row>
           <Tabs className="package-tabs" defaultActiveKey="use-it" id="uncontrolled">
             <Tab eventKey="use-it" title="Use it"><br/><RenderedMarkdown md={props.tabs.md[selectedVersion].md} /></Tab>
-            <Tab eventKey="badges" title="Badges"><br/><ReactMarkdown>{props.tabs.shields_io[selectedVersion].md}</ReactMarkdown></Tab>
+            <Tab eventKey="badges" title="Badges"><br/><BadgesTab packageName={props.packageId} /></Tab>
             {/*
             <Tab eventKey="packages" title="Packages"><br/><ReactMarkdown>{props.tabs.packages[selectedVersion].md}</ReactMarkdown></Tab>
             <Tab eventKey="examples" title="Examples"><br/><ReactMarkdown>{props.tabs.example[selectedVersion].md}</ReactMarkdown></Tab>

@@ -10,7 +10,6 @@ export function get_urls({packageId='', search='all', topics=[], licenses=[]} = 
       example: (`package/${encodeURIComponent(packageId.toLowerCase())}/example`),
       options: (`package/${encodeURIComponent(packageId.toLowerCase())}/options`),
       packages: (`package/${encodeURIComponent(packageId.toLowerCase())}/packages`),
-      shields_io: (`package/${encodeURIComponent(packageId.toLowerCase())}/shields_io`),
       downloads: (`package/${encodeURIComponent(packageId.toLowerCase())}/downloads`),
     },
     popular: 'popular',

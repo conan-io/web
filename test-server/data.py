@@ -59,20 +59,6 @@ packages_md = '''
 }
 '''
 
-shields_io_md = '''
-# shields.io badges
-
-![Conan Center](https://img.shields.io/conan/v/opengl)
-
-**Copy Markdown** `![Conan Center](https://img.shields.io/conan/v/opengl)`
-
-**Copy reStructuredText** `.. image:: https://img.shields.io/conan/v/opengl   :alt: Conan Center`
-
-**Copy AsciiDoc** `image:https://img.shields.io/conan/v/opengl[Conan Center]`
-
-**copy HTML** `<img alt="Conan Center" src="https://img.shields.io/conan/v/opengl">`
-'''
-
 
 md_example = '''
     #include <iostream>
