@@ -1,20 +1,17 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { SSRProvider } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup';
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ConanSearchBar } from "../components/searchbar";
 import { ConanCenterHeader } from '../components/header';
 import ConanFooter from '../components/footer';
-import useSWR from 'swr';
-import {get_json, get_json_list, get_urls, get_json_list_with_id} from '../service/service';
+import {get_json, get_json_list, get_urls} from '../service/service';
 
 export async function getServerSideProps(context) {
   let urls = get_urls()
@@ -72,7 +69,7 @@ function CenterList(props) {
       <ListGroup>
         {props.data.map((info) => (
           <ListGroup.Item style={{border: '0.05rem solid #21AFFF', borderRadius: '10px', margin:'0px 0px 5px 0px'}} key={info.name}>
-            <Link href={"/center/packages/" + info.name}><a>{info.name}{props.full_name && "/"+info.version}</a></Link>
+            <Link href={"/center/packages/" + info.name + "?version=" + info.version}><a>{info.name}{props.full_name && "/" + info.version}</a></Link>
           </ListGroup.Item>
         ))}
       </ListGroup>

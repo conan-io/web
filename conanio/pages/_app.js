@@ -1,8 +1,4 @@
-import Router from "next/router";
 import React from "react";
-import { useState, useEffect } from "react";
-import { ConanKitchenHeader } from '../components/header';
-import ConanFooter from '../components/footer';
 
 import '../styles/bootstrap.min.css';
 import '../styles/style.css';
@@ -12,8 +8,6 @@ import '../styles/index.css';
 
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-
-import "highlight.js/styles/github.css";
 
 
 const MyApp = ({ Component, pageProps }) => {
