@@ -17,7 +17,7 @@ function ConanHead() {
         name="description"
         content="Conan is an open source, decentralized and multi-platform package manager for C and C++ that allows you to create and share all your native binaries."
       />
-      <link rel="shortcut icon" type="image/png" href="favicon.png"/>
+      <link rel="shortcut icon" type="image/png" href="/favicon.png"/>
       <link rel="alternate" href="https://conan.io" hrefLang="en"/>
       <title>Conan 2.0 - C and C++ Open Source Package Manager</title>
       <link rel="canonical" href="https://conan.io"/>
