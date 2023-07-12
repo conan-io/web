@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { SSRProvider } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -9,9 +9,6 @@ import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import Badge from 'react-bootstrap/Badge';
 import Link from 'next/link';
-import rehypeHighlight from 'rehype-highlight';
-import cmake from 'highlight.js/lib/languages/cmake';
-import makefile from 'highlight.js/lib/languages/makefile';
 import { ConanCenterHeader } from '../../../components/header';
 import ConanFooter from '../../../components/footer';
 import {LineChart, XAxis, Tooltip, CartesianGrid, Line} from 'recharts';
@@ -21,13 +18,14 @@ import { LiaBalanceScaleSolid, LiaGithub } from "react-icons/lia";
 
 
 export async function getServerSideProps(context) {
-  let urls = get_urls({packageId: context.params.packageId})
-  let data = await get_json(urls.package.info, urls.api.private)
+  let urls = get_urls({packageId: context.params.packageId});
+  let data = await get_json(urls.package.info, urls.api.private);
   return {
     props: {
       data: data,
       downloads: await get_json(urls.package.downloads, urls.api.private),
       packageId: context.params.packageId,
+      packageVersion: context.query.version? context.query.version: null
     },
   }
 }
@@ -57,7 +55,7 @@ function BadgesTab({packageName}) {
 }
 
 export default function ConanPackage(props) {
-  const [selectedVersion, setSelectedVersion] = useState(Object.keys(props.data)[0]);
+  const [selectedVersion, setSelectedVersion] = useState(props.packageVersion !== null? props.packageVersion: Object.keys(props.data)[0]);
   const handleChange = (e) => {
     setSelectedVersion(e.target.value)
   }

@@ -66,8 +66,8 @@ function PackageInfo(props) {
   return (
     <div className="m-2">
       <Row>
-        <Col xs lg><Link href={"/center/packages/" + props.data.name}><a><h3>{props.data.name}</h3></a></Link></Col>
-        <Col xs lg><b>last version:</b> {props.data.info.version}</Col>
+        <Col xs lg><Link href={"/center/packages/" + props.data.name + "?version=" + props.data.info.version}><a><h3>{props.data.name}</h3></a></Link></Col>
+        <Col xs lg><b>Last version:</b> {props.data.info.version}</Col>
       </Row>
       {props.data.info.licenses && props.data.info.licenses.length > 0 &&
         <Row><Col xs lg><LiaBalanceScaleSolid className="conanIconBlue"/> {props.data.info.licenses.join(", ")}</Col></Row>
@@ -100,14 +100,11 @@ export default function ConanSearch(props) {
   const [value, setValue] = useState(props.data.defaultValue);
   const [topics, setTopics] = useState(props.data.defaultTopics);
   const [licenses, setLicenses] = useState(props.data.defaultLicenses);
-  const [allTopics, setAllTopics] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [data, setData] = useState(props.data.packages);
 
 
   const getData = async (value, topiclist, licenseList) => {
-    console.log(value, licenseList, topiclist)
     setLoading(true);
     try {
       value = value || 'all';
