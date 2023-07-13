@@ -201,6 +201,7 @@ h4, .h4 {
   border-right: 1px solid #21AFFF;
   border-radius: 0 0 0.25rem 0.25rem;
   background-color: #FFFFFF;
+  position: relative;
 }
 
 .badges-code {
@@ -253,6 +254,22 @@ select {
   color: white;
   text-align: center;
 }
+
+.copyBadgesButton {
+  border: none;
+  background-color: transparent;
+  color: #3498db;
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: inherit;
+}
+.copyBadgesButton,
+.copyBadgesButton:active,
+.copyBadgesButton:focus {
+  outline: none;
+}
+
 
 .conan-blue-gradient-bg {
   background: linear-gradient(92.17deg, #0086FD 6.81%, #21AFFF 83.22%);
