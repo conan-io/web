@@ -66,7 +66,7 @@ function PackageInfo(props) {
   return (
     <div className="m-2">
       <Row>
-        <Col xs lg><Link href={"/center/packages/" + props.data.name + "?version=" + props.data.info.version}><a><h3>{props.data.name}</h3></a></Link></Col>
+        <Col xs lg><Link href={{ pathname: "/center/packages/" + props.data.name, query: { version: props.data.info.version } }}><a><h3>{props.data.name}</h3></a></Link></Col>
         <Col xs lg><b>Last version:</b> {props.data.info.version}</Col>
       </Row>
       {props.data.info.licenses && props.data.info.licenses.length > 0 &&
