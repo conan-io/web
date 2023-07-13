@@ -1,14 +1,12 @@
 import React from 'react';
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { SSRProvider } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
-import FormCheck from 'react-bootstrap/FormCheck';
-import Button from 'react-bootstrap/Button';
 import Badge from 'react-bootstrap/Badge';
-import { ConanListFilter, ConanSearchBar, ConanMultiSelectFilter } from "../../components/searchbar";
+import { ConanSearchBar, ConanMultiSelectFilter } from "../../components/searchbar";
 import ListGroup from 'react-bootstrap/ListGroup';
 import Alert from 'react-bootstrap/Alert';
 import Link from 'next/link';
@@ -67,7 +65,7 @@ function PackageInfo(props) {
     <div className="m-2">
       <Row>
         <Col xs lg><Link href={{ pathname: "/center/packages/" + props.data.name, query: { version: props.data.info.version } }}><a><h3>{props.data.name}</h3></a></Link></Col>
-        <Col xs lg><b>Last version:</b> {props.data.info.version}</Col>
+        <Col xs lg><b>Last updated version:</b> {props.data.info.version}</Col>
       </Row>
       {props.data.info.licenses && props.data.info.licenses.length > 0 &&
         <Row><Col xs lg><LiaBalanceScaleSolid className="conanIconBlue"/> {props.data.info.licenses.join(", ")}</Col></Row>
