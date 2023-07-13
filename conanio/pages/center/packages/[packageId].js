@@ -15,7 +15,7 @@ import {LineChart, XAxis, Tooltip, CartesianGrid, Line} from 'recharts';
 import {get_json, get_urls} from '../../../service/service';
 import { DefaultDescription } from '../packages';
 import { LiaBalanceScaleSolid, LiaGithub } from "react-icons/lia";
-
+import { FaCopy } from "react-icons/fa";
 
 export async function getServerSideProps(context) {
   let urls = get_urls({packageId: context.params.packageId});
@@ -38,17 +38,70 @@ function RenderedMarkdown({md}) {
   return <div><pre>{JSON.stringify(md, null, 2)}</pre></div>;
 }
 
+function ClipboardCopy({ copyText }) {
+  const [isCopied, setIsCopied] = useState(false);
+  async function copyTextToClipboard(text) {
+    return await navigator.clipboard.writeText(text);
+  }
+  // onClick handler function for the copy button
+  const handleCopyClick = () => {
+    // Asynchronously call copyTextToClipboard
+    copyTextToClipboard(copyText)
+      .then(() => {
+        // If successful, update the isCopied state value
+        setIsCopied(true);
+        setTimeout(() => {
+          setIsCopied(false);
+        }, 1500);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  return (
+    <div>
+      {/* Bind our handler function to the onClick button property */}
+      <button className="copyBadgesButton" onClick={handleCopyClick}>
+        <span>{isCopied ? 'Copied!' : <FaCopy/>}</span>
+      </button>
+    </div>
+  );
+}
+
+
 
 function BadgesTab({packageName}) {
+  const mdMessage = `![Conan Center](https://img.shields.io/conan/v/${packageName})`;
+  const resMessage = `.. image:: https://img.shields.io/conan/v/${packageName}   :alt: Conan Center`;
+  const asciiMessage = `image:https://img.shields.io/conan/v/${packageName} [Conan Center]`;
+  const htmlMessage = `<img alt="Conan Center" src="https://img.shields.io/conan/v/${packageName}">`;
+
   return (
     <div>
       <img src={"https://img.shields.io/conan/v/" + packageName} alt="Conan Center"></img>
       <br/><br/>
       <Tabs className="package-tabs" defaultActiveKey="Markdown" id="uncontrolled">
-        <Tab eventKey="Markdown" title="Markdown"><br/><pre><code className='badges-code'>![Conan Center](https://img.shields.io/conan/v/{packageName})</code></pre></Tab>
-        <Tab eventKey="reStructuredText" title="reStructuredText"><br/><pre><code className='badges-code'>.. image:: https://img.shields.io/conan/v/{packageName}   :alt: Conan Center</code></pre></Tab>
-        <Tab eventKey="AsciiDoc" title="AsciiDoc"><br/><pre><code className='badges-code'>image:https://img.shields.io/conan/v/{packageName} [Conan Center]</code></pre></Tab>
-        <Tab eventKey="HTML" title="HTML"><br/><pre><code className='badges-code'>&lt;img alt=&quot;Conan Center&quot; src=&quot;https://img.shields.io/conan/v/{packageName}&quot;&gt;</code></pre></Tab>
+        <Tab eventKey="Markdown" title="Markdown">
+          <br/>
+          <ClipboardCopy copyText={mdMessage}/>
+          <pre><code className='badges-code'>{mdMessage}</code></pre>
+        </Tab>
+        <Tab eventKey="reStructuredText" title="reStructuredText">
+          <br/>
+          <ClipboardCopy copyText={resMessage}/>
+          <pre><code className='badges-code'>{resMessage}</code></pre>
+        </Tab>
+        <Tab eventKey="AsciiDoc" title="AsciiDoc">
+          <br/>
+          <ClipboardCopy copyText={asciiMessage}/>
+          <pre><code className='badges-code'>{asciiMessage}</code></pre>
+          </Tab>
+        <Tab eventKey="HTML" title="HTML">
+          <br/>
+          <ClipboardCopy copyText={htmlMessage}/>
+          <pre><code className='badges-code'>{htmlMessage}</code></pre>
+        </Tab>
       </Tabs>
     </div>
   );
