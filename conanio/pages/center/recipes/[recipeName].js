@@ -13,18 +13,18 @@ import { ConanCenterHeader } from '../../../components/header';
 import ConanFooter from '../../../components/footer';
 import {LineChart, XAxis, Tooltip, CartesianGrid, Line} from 'recharts';
 import {get_json, get_urls} from '../../../service/service';
-import { DefaultDescription } from '../packages';
+import { DefaultDescription } from '../recipes';
 import { LiaBalanceScaleSolid, LiaGithub } from "react-icons/lia";
 import { FaCopy } from "react-icons/fa";
 
 export async function getServerSideProps(context) {
-  let urls = get_urls({packageId: context.params.packageId});
+  let urls = get_urls({packageId: context.params.recipeName});
   let data = await get_json(urls.package.info, urls.api.private);
   return {
     props: {
       data: data,
       downloads: await get_json(urls.package.downloads, urls.api.private),
-      packageId: context.params.packageId,
+      recipeName: context.params.recipeName,
       packageVersion: context.query.version? context.query.version: null
     },
   }
@@ -109,9 +109,14 @@ function BadgesTab({packageName}) {
 
 export default function ConanPackage(props) {
   const [selectedVersion, setSelectedVersion] = useState(props.packageVersion !== null? props.packageVersion: Object.keys(props.data)[0]);
+  const [showUnmaintainedVersions, setShowUnmaintainedVersions] = useState(false);
   const handleChange = (e) => {
     setSelectedVersion(e.target.value)
   }
+
+  const onUnmaintainedVersionsChange = (e) => {
+    setShowUnmaintainedVersions(e.target.checked)
+  };
 
   if (!props.data) return <div>Loading...</div>
   return (
@@ -128,12 +133,27 @@ export default function ConanPackage(props) {
                 <h4 className="mt-2 mb-2 font-weight-bold">
                   {props.data[selectedVersion].name}/
                   <Form.Select size="sm" value={selectedVersion} onChange={handleChange}>
-                    {Object.keys(props.data).map((version) => (<option key={version} value={version}>{version}</option>))}
+                    {Object.keys(props.data).filter(version => showUnmaintainedVersions || props.data[version].info.status === "ok").map((version) => (<option key={version} value={version}>{version}</option>))}
                   </Form.Select>
                 </h4>
-                <br/>
                 </Col>
               </Row>
+              {
+                Object.keys(props.data).filter(version => props.data[version].info.status === "unmaintained").length > 0 && (
+                <Row>
+                  <Col>
+                    <Form>
+                      <Form.Switch
+                        id="custom-switch"
+                        label="Show unmaintained versions"
+                        defaultChecked={showUnmaintainedVersions}
+                        onChange={onUnmaintainedVersionsChange}
+                      />
+                    </Form>
+                  </Col>
+                </Row>)
+              }
+              <br/>
               {props.data[selectedVersion].info.description && (<Row>
                 <Col className="mb-2" xs lg>{props.data[selectedVersion].info.description}</Col>
               </Row>)}
@@ -163,7 +183,7 @@ export default function ConanPackage(props) {
           {!props.data[selectedVersion].info.description && (<DefaultDescription name={props.data[selectedVersion].name}/>)}
           {props.data[selectedVersion].info.description && (<Tabs className="package-tabs" defaultActiveKey="use-it" id="uncontrolled">
             <Tab eventKey="use-it" title="Use it"><br/><RenderedMarkdown md={props.data[selectedVersion].info.use_it} /></Tab>
-            <Tab eventKey="badges" title="Badges"><br/><BadgesTab packageName={props.packageId} /></Tab>
+            <Tab eventKey="badges" title="Badges"><br/><BadgesTab packageName={props.recipeName} /></Tab>
           </Tabs>)}
         </Container>
         <br/>
