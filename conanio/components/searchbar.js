@@ -7,6 +7,8 @@ import Button from 'react-bootstrap/Button';
 import Select from "react-select";
 import { LuPackageSearch } from "react-icons/lu";
 import { BiPackage } from "react-icons/bi";
+import { PiNoteBold } from "react-icons/pi";
+import { CgFormatSlash } from "react-icons/cg";
 
 function ConanFilter(props) {
   const [checked, setChecked] = useState(props.checked);
@@ -50,11 +52,31 @@ export function ConanMultiSelectFilter(props) {
     control: (defaultStyles) => ({
       ...defaultStyles,
       borderColor: "#21AFFF",
-      borderRadius: "40px 40px 40px 40px",
+      borderRadius: "40px",
+      paddingLeft: "20px",
       "&:hover": {
         borderColor: "#21AFFF"
       }
-    })
+    }),
+    multiValue: (defaultStyles, { data }) => {
+      return {
+        ...defaultStyles,
+        borderRadius: "0.25rem",
+        backgroundColor: "#EDF7FF",
+      };
+    },
+    multiValueLabel: (styles, { data }) => ({
+      ...styles,
+      color: data.color,
+    }),
+    multiValueRemove: (styles, { data }) => ({
+      ...styles,
+      color: "#21AFFF",
+      ':hover': {
+        backgroundColor: data.color,
+        color: 'white',
+      },
+    }),
   };
   return(
     <div className="w-100">
@@ -77,10 +99,13 @@ export function ConanSearchBar(props) {
             <LuPackageSearch className="conanLogo"/>
           </Button>
       </Row>
-      {props.data_to_show && <Row className="justify-content-md-center mt-2 mb-2" lg="2">
-        <BiPackage className="conanIconBlue"/>
-        <div>
-          {props.data_to_show} references
+      {(props.recipes || props.references) && <Row className="justify-content-md-center mt-2" lg="2">
+        <div className="text-center" style={{color: '#21AFFF'}}>
+          <PiNoteBold className="conanIconBlue"/>
+          {props.recipes} recipes
+          <CgFormatSlash style={{height: '36px'}} className="conanIconBlue"/>
+          <BiPackage className="conanIconBlue"/>
+          {props.references} references
         </div>
       </Row>}
     </div>

@@ -24,6 +24,7 @@ export async function getServerSideProps(context) {
         updated: await get_json_list(urls.updated, urls.api.private),
         new: await get_json_list(urls.new, urls.api.private),
         reference_num: reference_num.references,
+        recipes_num: reference_num.recipes,
       },
     },
   }
@@ -43,10 +44,10 @@ function CenterSearchBar(props) {
     event.preventDefault();
     router.push(
       {
-        pathname: '/center/packages',
+        pathname: '/center/recipes',
         query: { defaultValue: value }
       },
-      '/center/packages'
+      '/center/recipes'
     );
     //window.location.reload(false);
   }
@@ -55,7 +56,7 @@ function CenterSearchBar(props) {
     <Form onSubmit={e => handleSubmit(e)}>
       <Row>
         <Col>
-          <ConanSearchBar value={value} handleChange={handleChange} searchButton={props.button} data_to_show={props.data_to_show}/>
+          <ConanSearchBar value={value} handleChange={handleChange} searchButton={props.button} recipes={props.recipes} references={props.references}/>
         </Col>
       </Row>
     </Form>
@@ -69,7 +70,7 @@ function CenterList(props) {
       <ListGroup>
         {props.data.map((info) => (
           <ListGroup.Item style={{border: '0.05rem solid #21AFFF', borderRadius: '10px', margin:'0px 0px 5px 0px'}} key={info.name}>
-            <Link href={{ pathname: "/center/packages/" + info.name, query: { version: info.version } }}><a>{info.name}{props.full_name && "/" + info.version}</a></Link>
+            <Link href={{ pathname: "/center/recipes/" + info.name, query: { version: info.version } }}><a>{info.name}{props.full_name && "/" + info.version}</a></Link>
           </ListGroup.Item>
         ))}
       </ListGroup>
@@ -85,10 +86,10 @@ export default function Center(props) {
         <ConanCenterHeader/>
           <br/>
           <Container className="conancontainer">
-            <Container><h1 className="text-center">The Conan community’s package center</h1></Container>
+            <Container><h1 className="text-center">The Conan libraries and tools registry</h1></Container>
             <br/>
             <Row>
-              <Col><CenterSearchBar data_to_show={props.data.reference_num}/></Col>
+              <Col><CenterSearchBar recipes={props.data.recipes_num} references={props.data.reference_num}/></Col>
             </Row>
             <br/>
             <Row className="justify-content-md-center">
