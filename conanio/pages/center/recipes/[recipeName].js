@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SSRProvider } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -15,7 +15,9 @@ import {LineChart, XAxis, Tooltip, CartesianGrid, Line} from 'recharts';
 import {get_json, get_urls} from '../../../service/service';
 import { DefaultDescription } from '../recipes';
 import { LiaBalanceScaleSolid, LiaGithub } from "react-icons/lia";
-import { FaCopy } from "react-icons/fa";
+import hljs from "highlight.js";
+import {UseItTab, BadgesTab} from "./packageTabs";
+
 
 export async function getServerSideProps(context) {
   let urls = get_urls({packageId: context.params.recipeName});
@@ -31,83 +33,10 @@ export async function getServerSideProps(context) {
 }
 
 
-function RenderedMarkdown({md}) {
-  if (typeof md === 'undefined') {
-    return "It was not possible to load this information. Please, check if this recipe version is compatible with Conan v2.x.";
-  }
-  return <div><pre>{JSON.stringify(md, null, 2)}</pre></div>;
-}
-
-function ClipboardCopy({ copyText }) {
-  const [isCopied, setIsCopied] = useState(false);
-  async function copyTextToClipboard(text) {
-    return await navigator.clipboard.writeText(text);
-  }
-  // onClick handler function for the copy button
-  const handleCopyClick = () => {
-    // Asynchronously call copyTextToClipboard
-    copyTextToClipboard(copyText)
-      .then(() => {
-        // If successful, update the isCopied state value
-        setIsCopied(true);
-        setTimeout(() => {
-          setIsCopied(false);
-        }, 1500);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
-  return (
-    <div>
-      {/* Bind our handler function to the onClick button property */}
-      <button className="copyBadgesButton" onClick={handleCopyClick}>
-        <span>{isCopied ? 'Copied!' : <FaCopy/>}</span>
-      </button>
-    </div>
-  );
-}
-
-
-
-function BadgesTab({packageName}) {
-  const mdMessage = `![Conan Center](https://img.shields.io/conan/v/${packageName})`;
-  const resMessage = `.. image:: https://img.shields.io/conan/v/${packageName}   :alt: Conan Center`;
-  const asciiMessage = `image:https://img.shields.io/conan/v/${packageName} [Conan Center]`;
-  const htmlMessage = `<img alt="Conan Center" src="https://img.shields.io/conan/v/${packageName}">`;
-
-  return (
-    <div>
-      <img src={"https://img.shields.io/conan/v/" + packageName} alt="Conan Center"></img>
-      <br/><br/>
-      <Tabs className="package-tabs" defaultActiveKey="Markdown" id="uncontrolled">
-        <Tab eventKey="Markdown" title="Markdown">
-          <br/>
-          <ClipboardCopy copyText={mdMessage}/>
-          <pre><code className='badges-code'>{mdMessage}</code></pre>
-        </Tab>
-        <Tab eventKey="reStructuredText" title="reStructuredText">
-          <br/>
-          <ClipboardCopy copyText={resMessage}/>
-          <pre><code className='badges-code'>{resMessage}</code></pre>
-        </Tab>
-        <Tab eventKey="AsciiDoc" title="AsciiDoc">
-          <br/>
-          <ClipboardCopy copyText={asciiMessage}/>
-          <pre><code className='badges-code'>{asciiMessage}</code></pre>
-          </Tab>
-        <Tab eventKey="HTML" title="HTML">
-          <br/>
-          <ClipboardCopy copyText={htmlMessage}/>
-          <pre><code className='badges-code'>{htmlMessage}</code></pre>
-        </Tab>
-      </Tabs>
-    </div>
-  );
-}
-
 export default function ConanPackage(props) {
+  useEffect(() => {
+    hljs.highlightAll();
+  });
   const [selectedVersion, setSelectedVersion] = useState(props.packageVersion !== null? props.packageVersion: Object.keys(props.data)[0]);
   const [showUnmaintainedVersions, setShowUnmaintainedVersions] = useState(false);
   const handleChange = (e) => {
@@ -182,8 +111,8 @@ export default function ConanPackage(props) {
           </Row>
           {!props.data[selectedVersion].info.description && (<DefaultDescription name={props.data[selectedVersion].name}/>)}
           {props.data[selectedVersion].info.description && (<Tabs className="package-tabs" defaultActiveKey="use-it" id="uncontrolled">
-            <Tab eventKey="use-it" title="Use it"><br/><RenderedMarkdown md={props.data[selectedVersion].info.use_it} /></Tab>
-            <Tab eventKey="badges" title="Badges"><br/><BadgesTab packageName={props.recipeName} /></Tab>
+            <Tab eventKey="use-it" title="Use it"><br/><UseItTab info={props.data[selectedVersion].info.use_it} packageName={props.packageId} packageVersion={selectedVersion} /></Tab>
+            <Tab eventKey="badges" title="Badges"><br/><BadgesTab packageName={props.packageId} /></Tab>
           </Tabs>)}
         </Container>
         <br/>
