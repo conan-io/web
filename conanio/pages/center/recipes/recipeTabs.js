@@ -4,7 +4,6 @@ import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import Link from 'next/link';
 import { FaCopy } from "react-icons/fa";
-import { IoMdHome } from "react-icons/io";
 
 
 {/* TODO: this function should go in a more common module. More configurable? */}
@@ -89,10 +88,12 @@ $ cmake .. -G "Visual Studio 15 2017" -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cma
 $ cmake --build . --config Release`;
 
     if (props.info) {
-      const isToolRequire = props.info.package_type & props.info.package_type == "application";
       const exampleName = props.info.project_type == "CXX" ? "main.cpp": "main.c";
       const headers = props.info.headers && props.info.headers.length > 0 ? props.info.headers: "";
+      {/* TODO: if tool_require, it should have another instructions
+      const isToolRequire = props.info.package_type & props.info.package_type == "application";
       const requiresSection = isToolRequire ? "tool_requires": "requires";
+      */}
 
       // Pieces of code
       const projectLayout = `./
@@ -145,16 +146,13 @@ return 0;
             <pre><code className="language-bash">{unixCLI}</code></pre>
           </Tab>
         </Tabs>
-        <br/>
-        <h3>Project homepage</h3>
-        <Link href={props.info.homepage}><a><IoMdHome/>  {props.info.homepage}</a></Link>
       </div>
       );
     }
     return (
       <div>
         <h3>Using {props.recipeName} with CMake <strong>(**)</strong></h3>
-        <p><strong>(**)</strong> It was not possible to load all the metadata belonging to this recipe. Maybe, this recipe is not completely migrated for Conan 2.x.</p>
+        <p><strong>(**)</strong> <em>It was not possible to load all the metadata belonging to this recipe. Maybe, this recipe is not completely migrated for Conan 2.x.</em></p>
         <p>Please, let's try this command if you want to install it locally and generate its CMake files:</p>
         <pre><code className="language-bash">$ conan install --requires {reference} --build missing -g CMakeDeps -g CMakeToolchain --output-folder=build</code></pre>
         <p>Assuming that you already have your own project, you'll have to find out the {reference} targets that 
