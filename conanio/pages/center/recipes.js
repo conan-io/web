@@ -64,7 +64,7 @@ function PackageInfo(props) {
   return (
     <div className="m-2">
       <Row>
-        <Col xs lg><Link href={{ pathname: "/center/recipes/" + props.data.name, query: { version: props.data.info.version } }}><a><h3>{props.data.name}</h3></a></Link></Col>
+        <Col xs lg><Link href={{ pathname: "/center/recipes/" + props.data.name + "/" + props.data.info.version }}><a><h3>{props.data.name}</h3></a></Link></Col>
         <Col xs lg><b>Last updated version:</b> {props.data.info.version}</Col>
       </Row>
       {props.data.info.licenses && props.data.info.licenses.length > 0 &&
@@ -156,7 +156,7 @@ export default function ConanSearch(props) {
             <br/>
             <div style={{width: "100%"}}>
               <h2 className="text-center">
-              packages ({!loading && !data && 0}{!loading && data && data.length}{loading && <div className="spinner-grow"></div>})
+              Recipes ({!loading && !data && 0}{!loading && data && data.length}{loading && <div className="spinner-grow"></div>})
               </h2>
               <SearchList loading={loading} data={data}/>
             </div>

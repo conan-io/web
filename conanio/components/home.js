@@ -153,7 +153,7 @@ function ConanHomePlaces() {
             </p>
             <div className="d-inline">
               <Link href="/center">
-                <a className="btn conan-blue-gradient-bg white font-weight-bold" id="conancenter_btn_middle"><span>Find Conan packages</span></a>
+                <a className="btn conan-blue-gradient-bg white font-weight-bold" id="conancenter_btn_middle"><span>Explore Conan libraries and tools</span></a>
               </Link>
             </div>
           </div>

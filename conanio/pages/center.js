@@ -70,7 +70,7 @@ function CenterList(props) {
       <ListGroup>
         {props.data.map((info) => (
           <ListGroup.Item style={{border: '0.05rem solid #21AFFF', borderRadius: '10px', margin:'0px 0px 5px 0px'}} key={info.name}>
-            <Link href={{ pathname: "/center/recipes/" + info.name, query: { version: info.version } }}><a>{info.name}{props.full_name && "/" + info.version}</a></Link>
+            <Link href={{ pathname: "/center/recipes/" + info.name + "/" + info.version }}><a>{info.name}{props.full_name && "/" + info.version}</a></Link>
           </ListGroup.Item>
         ))}
       </ListGroup>
@@ -86,16 +86,16 @@ export default function Center(props) {
         <ConanCenterHeader/>
           <br/>
           <Container className="conancontainer">
-            <Container><h1 className="text-center">The Conan libraries and tools registry</h1></Container>
+            <Container><h1 className="text-center">The Conan libraries and tools central repository</h1></Container>
             <br/>
             <Row>
               <Col><CenterSearchBar recipes={props.data.recipes_num} references={props.data.reference_num}/></Col>
             </Row>
             <br/>
             <Row className="justify-content-md-center">
-              {/*props.data.popular.length > 0  && <Col xs lg="4"><CenterList data={props.data.popular} name="Popular Package" full_name={true}/></Col>*/}
-              {props.data.updated.length > 0 && <Col xs lg="4"><CenterList data={props.data.updated} name="Just Updated" full_name={false}/></Col>}
-              {props.data.new.length > 0 && <Col xs lg="4"><CenterList data={props.data.new} name="New Version" full_name={true}/></Col>}
+              {props.data.popular.length > 0  && <Col xs lg="4"><CenterList data={props.data.popular} name="Popular recipes" full_name={true}/></Col>}
+              {props.data.updated.length > 0 && <Col xs lg="4"><CenterList data={props.data.updated} name="Just updated" full_name={false}/></Col>}
+              {props.data.new.length > 0 && <Col xs lg="4"><CenterList data={props.data.new} name="New version" full_name={true}/></Col>}
             </Row>
           </Container>
           <br/>

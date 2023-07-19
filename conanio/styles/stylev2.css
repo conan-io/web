@@ -79,16 +79,17 @@ blockquote:not(.important):not(.warning):not(.restricted):not(.experimental):not
 
 .conanIconBlue{
   flex: none ;
-  height: 26px;
-  width: 34px;
   color: #21AFFF;
 }
 
-.conanIconWhite{
-  flex: none ;
+.conanIcon26{
   height: 26px;
+  width: 26px;
+}
+
+.conanIcon34{
+  height: 34px;
   width: 34px;
-  color: #FFFFFF;
 }
 
 .searchButtonConan:focus .conanLogo{
@@ -276,11 +277,11 @@ select {
 .copyBadgesButton {
   border: none;
   background-color: transparent;
-  color: #3498db;
   position: absolute;
   top: 0;
   right: 0;
   font-size: inherit;
+  color: #21AFFF;
 }
 .copyBadgesButton,
 .copyBadgesButton:active,
