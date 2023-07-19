@@ -41,15 +41,15 @@ function ClipboardCopy({ copyText }) {
   
   
   
-  function BadgesTab({packageName}) {
-    const mdMessage = `![Conan Center](https://img.shields.io/conan/v/${packageName})`;
-    const resMessage = `.. image:: https://img.shields.io/conan/v/${packageName}   :alt: Conan Center`;
-    const asciiMessage = `image:https://img.shields.io/conan/v/${packageName} [Conan Center]`;
-    const htmlMessage = `<img alt="Conan Center" src="https://img.shields.io/conan/v/${packageName}">`;
+  function BadgesTab({recipeName}) {
+    const mdMessage = `![Conan Center](https://img.shields.io/conan/v/${recipeName})`;
+    const resMessage = `.. image:: https://img.shields.io/conan/v/${recipeName}   :alt: Conan Center`;
+    const asciiMessage = `image:https://img.shields.io/conan/v/${recipeName} [Conan Center]`;
+    const htmlMessage = `<img alt="Conan Center" src="https://img.shields.io/conan/v/${recipeName}">`;
   
     return (
       <div>
-        <img src={"https://img.shields.io/conan/v/" + packageName} alt="Conan Center"></img>
+        <img src={"https://img.shields.io/conan/v/" + recipeName} alt="Conan Center"></img>
         <br/><br/>
         <Tabs className="package-tabs" defaultActiveKey="Markdown" id="uncontrolled">
           <Tab eventKey="Markdown" title="Markdown">
@@ -79,7 +79,7 @@ function ClipboardCopy({ copyText }) {
   
   
   function UseItTab(props) {
-    const reference = props.packageName + "/" + props.packageVersion;
+    const reference = props.recipeName + "/" + props.recipeVersion;
     const unixCLI = `$ cd build
 $ cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release
 $ cmake --build .`;
@@ -120,7 +120,7 @@ return 0;
 }`;
       return (
       <div>
-        <h3>Using {props.packageName} with CMake</h3>
+        <h3>Using {props.recipeName} with CMake</h3>
         <p>This is a simple CMake project layout using this library:</p>
         <pre><code className="language-plaintext">{projectLayout}</code></pre>
         <h4>conanfile.txt</h4>
@@ -153,7 +153,7 @@ return 0;
     }
     return (
       <div>
-        <h3>Using {props.packageName} with CMake <strong>(**)</strong></h3>
+        <h3>Using {props.recipeName} with CMake <strong>(**)</strong></h3>
         <p><strong>(**)</strong> It was not possible to load all the metadata belonging to this recipe. Maybe, this recipe is not completely migrated for Conan 2.x.</p>
         <p>Please, let's try this command if you want to install it locally and generate its CMake files:</p>
         <pre><code className="language-bash">$ conan install --requires {reference} --build missing -g CMakeDeps -g CMakeToolchain --output-folder=build</code></pre>
