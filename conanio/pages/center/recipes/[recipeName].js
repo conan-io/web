@@ -16,7 +16,7 @@ import {get_json, get_urls} from '../../../service/service';
 import { DefaultDescription } from '../recipes';
 import { LiaBalanceScaleSolid, LiaGithub } from "react-icons/lia";
 import hljs from "highlight.js";
-import {UseItTab, BadgesTab} from "./packageTabs";
+import {UseItTab, BadgesTab} from "./recipeTabs";
 
 
 export async function getServerSideProps(context) {
@@ -27,7 +27,7 @@ export async function getServerSideProps(context) {
       data: data,
       downloads: await get_json(urls.package.downloads, urls.api.private),
       recipeName: context.params.recipeName,
-      packageVersion: context.query.version? context.query.version: null
+      recipeVersion: context.query.version? context.query.version: null
     },
   }
 }
@@ -37,7 +37,7 @@ export default function ConanPackage(props) {
   useEffect(() => {
     hljs.highlightAll();
   });
-  const [selectedVersion, setSelectedVersion] = useState(props.packageVersion !== null? props.packageVersion: Object.keys(props.data)[0]);
+  const [selectedVersion, setSelectedVersion] = useState(props.recipeVersion !== null? props.recipeVersion: Object.keys(props.data)[0]);
   const [showUnmaintainedVersions, setShowUnmaintainedVersions] = useState(false);
   const handleChange = (e) => {
     setSelectedVersion(e.target.value)
@@ -111,8 +111,8 @@ export default function ConanPackage(props) {
           </Row>
           {!props.data[selectedVersion].info.description && (<DefaultDescription name={props.data[selectedVersion].name}/>)}
           {props.data[selectedVersion].info.description && (<Tabs className="package-tabs" defaultActiveKey="use-it" id="uncontrolled">
-            <Tab eventKey="use-it" title="Use it"><br/><UseItTab info={props.data[selectedVersion].info.use_it} packageName={props.packageId} packageVersion={selectedVersion} /></Tab>
-            <Tab eventKey="badges" title="Badges"><br/><BadgesTab packageName={props.packageId} /></Tab>
+            <Tab eventKey="use-it" title="Use it"><br/><UseItTab info={props.data[selectedVersion].info.use_it} recipeName={props.recipeName} recipeVersion={selectedVersion} /></Tab>
+            <Tab eventKey="badges" title="Badges"><br/><BadgesTab recipeName={props.recipeName} /></Tab>
           </Tabs>)}
         </Container>
         <br/>
