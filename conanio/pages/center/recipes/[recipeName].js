@@ -15,6 +15,7 @@ import {LineChart, XAxis, Tooltip, CartesianGrid, Line} from 'recharts';
 import {get_json, get_urls} from '../../../service/service';
 import { DefaultDescription } from '../recipes';
 import { LiaBalanceScaleSolid, LiaGithub } from "react-icons/lia";
+import { IoMdHome } from "react-icons/io";
 import hljs from "highlight.js";
 import {UseItTab, BadgesTab} from "./recipeTabs";
 
@@ -30,6 +31,11 @@ export async function getServerSideProps(context) {
       recipeVersion: context.query.version? context.query.version: null
     },
   }
+}
+
+function sanitizeURL(url) {
+  let protocol = new URL(url).protocol;
+  return url.replace(protocol + "//", "");
 }
 
 
@@ -48,6 +54,16 @@ export default function ConanPackage(props) {
   };
 
   if (!props.data) return <div>Loading...</div>
+
+  const selectedData = props.data[selectedVersion];
+  const recipeDescription = selectedData.info.description;
+  const recipeLabels = selectedData.info.labels;
+  const recipeLicenses = selectedData.info.licenses;
+  const recipeConanCenterUrl = "https://github.com/conan-io/conan-center-index/tree/master/recipes/" + selectedData.name;
+  const recipeUseIt = selectedData.info.use_it;
+  const recipeDownloads = props.downloads[selectedVersion].downloads;
+
+
   return (
     <React.StrictMode>
       <SSRProvider>
@@ -60,7 +76,7 @@ export default function ConanPackage(props) {
               <Row>
                 <Col>
                 <h4 className="mt-2 mb-2 font-weight-bold">
-                  {props.data[selectedVersion].name}/
+                  {selectedData.name}/
                   <Form.Select size="sm" value={selectedVersion} onChange={handleChange}>
                     {Object.keys(props.data).filter(version => showUnmaintainedVersions || props.data[version].info.status === "ok").map((version) => (<option key={version} value={version}>{version}</option>))}
                   </Form.Select>
@@ -83,25 +99,29 @@ export default function ConanPackage(props) {
                 </Row>)
               }
               <br/>
-              {props.data[selectedVersion].info.description && (<Row>
-                <Col className="mb-2" xs lg>{props.data[selectedVersion].info.description}</Col>
+              {recipeDescription && (<Row>
+                <Col className="mb-2" xs lg>{recipeDescription}</Col>
               </Row>)}
-              {props.data[selectedVersion].info.licenses && props.data[selectedVersion].info.licenses.length > 0 && (<Row>
-                <Col xs lg="8"><LiaBalanceScaleSolid className="conanIconBlue"/> {props.data[selectedVersion].info.licenses.join(", ")}</Col>
+              {recipeLabels && recipeLabels.length > 0 && (<Row>
+                <Col xs lg><p> {recipeLabels.map((item) => (<Badge key={item}>#{item}</Badge>))}</p></Col>
               </Row>)}
-              {((props.downloads[selectedVersion].downloads && props.downloads[selectedVersion].downloads.length > 0) || props.data[selectedVersion].info.downloads > 0) && (<Row>
-                <Col xs lg="8"><b>Downloads:</b> {props.data[selectedVersion].info.downloads}</Col>
+              {recipeLicenses && recipeLicenses.length > 0 && (<Row>
+                <Col xs lg="8"><LiaBalanceScaleSolid className="conanIconBlue"/> {recipeLicenses.join(", ")}</Col>
               </Row>)}
-              {props.data[selectedVersion].info.description && (<Row>
-                <Col xs lg className="mb-2"><Link href={"https://github.com/conan-io/conan-center-index/tree/master/recipes/" + props.data[selectedVersion].name}><a><LiaGithub className="conanIconBlue"/>Recipe source</a></Link></Col>
+              {((recipeDownloads && recipeDownloads.length > 0) || selectedData.info.downloads > 0) && (<Row>
+                <Col xs lg="8"><b>Downloads:</b> {selectedData.info.downloads}</Col>
               </Row>)}
-              {props.data[selectedVersion].info.labels && props.data[selectedVersion].info.labels.length > 0 && (<Row>
-                <Col xs lg><p> {props.data[selectedVersion].info.labels.map((item) => (<Badge key={item}>#{item}</Badge>))}</p></Col>
+              {recipeDescription && (<Row>
+                <Col xs lg className="mb-2"><Link href={recipeConanCenterUrl}><a><LiaGithub className="conanIconBlue"/>{sanitizeURL(recipeConanCenterUrl)}</a></Link></Col>
               </Row>)}
+              {(recipeUseIt && recipeUseIt.homepage) && (<Row>
+                <Col xs lg="8"><Link href={recipeUseIt.homepage}><a><IoMdHome className="conanIconBlue"/>{sanitizeURL(recipeUseIt.homepage)}</a></Link></Col>
+              </Row>)}
+              <br/>
             </Col>
-            { props.downloads[selectedVersion].downloads && props.downloads[selectedVersion].downloads.length > 0 &&
+            { recipeDownloads && recipeDownloads.length > 0 &&
             <Col xs lg="4">
-              <LineChart width={400} height={200} data={props.downloads[selectedVersion].downloads} margin={{ top: 20, right: 20, left: 20, bottom: 20 }}>
+              <LineChart width={400} height={200} data={recipeDownloads} margin={{ top: 20, right: 20, left: 20, bottom: 20 }}>
                 <XAxis dataKey="date" />
                 <Tooltip />
                 <CartesianGrid stroke="#f5f5f5" />
@@ -109,9 +129,9 @@ export default function ConanPackage(props) {
               </LineChart>
             </Col> }
           </Row>
-          {!props.data[selectedVersion].info.description && (<DefaultDescription name={props.data[selectedVersion].name}/>)}
-          {props.data[selectedVersion].info.description && (<Tabs className="package-tabs" defaultActiveKey="use-it" id="uncontrolled">
-            <Tab eventKey="use-it" title="Use it"><br/><UseItTab info={props.data[selectedVersion].info.use_it} recipeName={props.recipeName} recipeVersion={selectedVersion} /></Tab>
+          {!recipeDescription && (<DefaultDescription name={selectedData.name}/>)}
+          {recipeDescription && (<Tabs className="package-tabs" defaultActiveKey="use-it" id="uncontrolled">
+            <Tab eventKey="use-it" title="Use it"><br/><UseItTab info={recipeUseIt} recipeName={props.recipeName} recipeVersion={selectedVersion} /></Tab>
             <Tab eventKey="badges" title="Badges"><br/><BadgesTab recipeName={props.recipeName} /></Tab>
           </Tabs>)}
         </Container>
