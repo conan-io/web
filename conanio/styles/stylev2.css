@@ -188,6 +188,7 @@ h4, .h4 {
   background-color: white;
   border-color: #21AFFF;
   border-bottom: 0px;
+  outline: none;
 }
 
 .nav-tabs {
@@ -204,8 +205,9 @@ h4, .h4 {
   position: relative;
 }
 
-.badges-code {
-  color: darkred;
+/* Changing highlight.js background code color */
+code.hljs{
+  background: aliceblue;
 }
 
 select {
