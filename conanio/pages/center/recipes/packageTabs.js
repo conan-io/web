@@ -122,15 +122,15 @@ return 0;
       <div>
         <h3>Using {props.packageName} with CMake</h3>
         <p>This is a simple CMake project layout using this library:</p>
-        <pre><code class="language-plaintext">{projectLayout}</code></pre>
+        <pre><code className="language-plaintext">{projectLayout}</code></pre>
         <h4>conanfile.txt</h4>
-        <pre><code class="language-ini">{conanfileTxt}</code></pre>
+        <pre><code className="language-ini">{conanfileTxt}</code></pre>
         <h4>CMakeLists.txt</h4>
-        <pre><code class="language-cmake">{cmakeContent}</code></pre>
+        <pre><code className="language-cmake">{cmakeContent}</code></pre>
         <h4>{exampleName}</h4>
-        <pre><code class="language-c">{exampleContent}</code></pre>
+        <pre><code className="language-c">{exampleContent}</code></pre>
         <p>Now, let's run the Conan command to build this project:</p>
-        <pre><code class="language-bash">$ conan install . --output-folder=build --build=missing</code></pre>
+        <pre><code className="language-bash">$ conan install . --output-folder=build --build=missing</code></pre>
         <p>Please, be aware that this information is generated automatically and it may contain some mistakes. If you have any problem, you can check 
         the upstream recipe to confirm the information. Also, for more detailed information on how to consume Conan packages, 
         please check the <Link href="https://docs.conan.io/2/tutorial/consuming_packages.html"><a>Conan documentation</a></Link>.</p>
