@@ -9,18 +9,20 @@ import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import Badge from 'react-bootstrap/Badge';
 import Link from 'next/link';
-import { ConanCenterHeader } from '../../../../components/header';
-import ConanFooter from '../../../../components/footer';
+import { ConanCenterHeader } from '../../../components/header';
+import ConanFooter from '../../../components/footer';
 import {LineChart, XAxis, Tooltip, CartesianGrid, Line} from 'recharts';
-import { get_json, get_urls } from '../../../../service/service';
-import { DefaultDescription } from '../../recipes';
+import { get_json, get_urls } from '../../../service/service';
+import { DefaultDescription } from '../recipes';
 import { LiaBalanceScaleSolid, LiaGithub } from "react-icons/lia";
 import { IoMdHome } from "react-icons/io";
 import hljs from "highlight.js";
-import { UseItTab, BadgesTab, DependenciesTab } from "../../../../components/recipeTabs";
+import { UseItTab, BadgesTab, DependenciesTab } from "../../../components/recipeTabs";
 import { FaCopy } from "react-icons/fa";
 import { HiClipboardCopy } from "react-icons/hi";
 import { FaTags } from "react-icons/fa";
+import { PiWarningBold } from "react-icons/pi";
+import { MdOutlineSyncDisabled } from "react-icons/md";
 
 
 export async function getServerSideProps(context) {
@@ -31,7 +33,7 @@ export async function getServerSideProps(context) {
       data: data,
       downloads: await get_json(urls.package.downloads, urls.api.private),
       recipeName: context.params.recipeName,
-      recipeVersion: context.params.version
+      recipeVersion: context.query.version? context.query.version: null
     },
   }
 }
@@ -47,21 +49,21 @@ export default function ConanPackage(props) {
     hljs.highlightAll();
   });
 
-  const handleChange = (e) => {
-    setSelectedVersion(e.target.value)
-  }
+  const [showOldVersions, setShowOldVersions] = useState(false);
+  const [selectedVersion, setSelectedVersion] = useState(props.recipeVersion !== null? props.recipeVersion: Object.keys(props.data)[0]);
 
   if (!props.data) return <div>Loading...</div>
 
-  const recipeData = props.data[props.recipeVersion];
+  const recipeData = props.data[selectedVersion];
+  const recipeStatus = recipeData.info.status;
   const recipeDescription = recipeData.info.description;
   const recipeLabels = recipeData.info.labels;
   const recipeLicenses = recipeData.info.licenses;
   const recipeConanCenterUrl = "https://github.com/conan-io/conan-center-index/tree/master/recipes/" + recipeData.name;
   const recipeUseIt = recipeData.info.use_it;
-  const recipeDownloads = props.downloads[props.recipeVersion].downloads;
-  const maintainedVersions = Object.keys(props.data).filter(version => version !== props.recipeVersion && props.data[version].info.status === "ok")
-  const unmaintainedVersions = Object.keys(props.data).filter(version => version !== props.recipeVersion && props.data[version].info.status !== "ok")
+  const recipeDownloads = props.downloads[selectedVersion].downloads;
+  const maintainedVersions = Object.keys(props.data).filter(version => props.data[version].info.status === "ok")
+  const unmaintainedVersions = Object.keys(props.data).filter(version => props.data[version].info.status !== "ok")
 
 
 
@@ -76,7 +78,17 @@ export default function ConanPackage(props) {
             <Col xs lg>
               <Row>
                 <Col>
-                  <h1 className="mt-2 mb-2" style={{display: 'inline'}}>{recipeData.name}</h1> <h4 style={{display: 'inline',color: 'grey'}}>v{props.recipeVersion}</h4>
+                  <h1 className="mt-2 mb-2" style={{display: 'inline'}}>
+                    {recipeData.name}/{selectedVersion}{
+                      (recipeStatus !== "ok") && (<
+                          MdOutlineSyncDisabled
+                          style={{
+                            height: '30px',
+                            width: '30px'
+                          }}
+                        />)
+                    }
+                  </h1>
                 </Col>
               </Row>
               <Row>
@@ -85,25 +97,23 @@ export default function ConanPackage(props) {
                     <FaTags className="conanIconBlue"/> {
                       maintainedVersions.map(
                         version => (
-                          <Link key={version} href={{ pathname: "/center/recipes/" + props.data[version].name + "/" + version }}>
-                            <a>{version} </a>
-                          </Link>
+                          <a key={version} style={{color: '#007bff',cursor: 'pointer'}} onClick={()=>{setSelectedVersion(version)}}>{version}</a>
                         )
-                      )
+                      ).reduce((prev, curr) => [prev, ', ', curr])
                     }
-                    { unmaintainedVersions.length > 0 &&
-                    (
+                    {!showOldVersions && unmaintainedVersions.length > 0 &&
                       <div>
-                        <FaTags style={{color: 'grey'}}/> Other versions: {
-                          unmaintainedVersions.map(
-                            version => (
-                              <Link key={version} href={{ pathname: "/center/recipes/" + props.data[version].name + "/" + version }}>
-                                <a style={{color: 'grey'}}>{version} </a>
-                              </Link>
-                            )
-                          )
-                        }
+                        <a style={{color: 'grey',cursor: 'pointer'}} onClick={()=>{setShowOldVersions(!showOldVersions)}}> show deprecated</a>
                       </div>
+                    }
+                    {showOldVersions && unmaintainedVersions.length > 0 && ", " }
+                    { showOldVersions && unmaintainedVersions.length > 0 &&
+                    (
+                     unmaintainedVersions.map(
+                        version => (
+                          <a key={version} style={{color: 'grey', cursor: 'pointer'}} onClick={()=>{setSelectedVersion(version)}}>{version}</a>
+                        )
+                      ).reduce((prev, curr) => [prev, ', ', curr])
                     )
                   }
                   </p>
@@ -126,7 +136,7 @@ export default function ConanPackage(props) {
               </Row>)}
 
               {recipeDescription && (<Row>
-                <Col xs lg="8"><Link href={recipeConanCenterUrl}><a><LiaGithub className="conanIconBlue conanIcon26"/> Recipe source</a></Link></Col>
+                <Col xs lg="8"><Link href={recipeConanCenterUrl}><a><LiaGithub className="conanIconBlue conanIcon26"/> View recipe on GitHub</a></Link></Col>
               </Row>)}
 
               {(recipeUseIt && recipeUseIt.homepage) && (<Row>
@@ -134,7 +144,14 @@ export default function ConanPackage(props) {
               </Row>)}
 
               {recipeLabels && recipeLabels.length > 0 && (<Row>
-                <Col xs lg="8"><p> {recipeLabels.map((item) => (<Badge key={item}>#{item}</Badge>))}</p></Col>
+                <Col xs lg="8">
+                  <p>
+                    {recipeLabels.map((item) => (<Badge key={item}>#{item}</Badge>))}
+                    {
+                      (recipeStatus !== "ok") && (<Badge bg="warning" text="white"><PiWarningBold/> {recipeStatus}</Badge>)
+                    }
+                  </p>
+                </Col>
               </Row>)}
             </Col>
 
@@ -149,10 +166,10 @@ export default function ConanPackage(props) {
             </Col> }
           </Row>
           {!recipeDescription && (<DefaultDescription name={recipeData.name}/>)}
-          {recipeDescription && (<Tabs className="package-tabs" defaultActiveKey="use-it" id="uncontrolled">
-            <Tab eventKey="use-it" title="Use it"><br/><UseItTab info={recipeUseIt} recipeName={props.recipeName} recipeVersion={props.recipeVersion} /></Tab>
+          {recipeDescription && (<Tabs className="package-tabs" id="uncontrolled">
+            {/* <Tab eventKey="use-it" title="Use it"><br/><UseItTab info={recipeUseIt} recipeName={props.recipeName} recipeVersion={selectedVersion} /></Tab>*}
             {/* FIXME: we're not passing showUnmaintainedVersions to handle it! */}
-            <Tab eventKey="dependencies" title="Dependencies"><br/><DependenciesTab info={recipeUseIt} recipeName={props.recipeName} recipeVersion={props.recipeVersion} setRecipeVersion={handleChange} /></Tab>
+            <Tab eventKey="dependencies" title="Dependencies"><br/><DependenciesTab info={recipeUseIt} recipeName={props.recipeName} recipeVersion={selectedVersion}/></Tab>
             <Tab eventKey="badges" title="Badges"><br/><BadgesTab recipeName={props.recipeName} /></Tab>
           </Tabs>)}
         </Container>
