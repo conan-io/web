@@ -13,6 +13,18 @@ https://stackoverflow.com/questions/4575826/how-to-push-a-footer-to-the-bottom-o
 Beta style
 */
 
+blockquote {
+  padding: 10px 20px;
+  margin: 0 0 20px;
+  font-size: 17.5px;
+  border-left: none;
+}
+
+blockquote:not(.important):not(.warning):not(.restricted):not(.experimental):not(.tip) {
+  background-color: #E5F2FC;
+  font-size: unset;
+}
+
 .navbar{
   flex-direction: column !important;
   align-items: flex-end !important;
