@@ -97,7 +97,6 @@ function ClipboardCopy({ copyText }) {
            </div>
           );
       }
-      console.log(props);
       const exampleName = props.info.project_type == "CXX" ? "main.cpp": "main.c";
       const headers = props.info.headers;
       const componentTargets = props.info.cmake_variables.component_alias; 
