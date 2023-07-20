@@ -80,49 +80,54 @@ function ClipboardCopy({ copyText }) {
   
   function UseItTab(props) {
     const reference = props.recipeName + "/" + props.recipeVersion;
-    const unixCLI = `$ cd build
-$ cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release
-$ cmake --build .`;
-    const winCLI = `$ cd build
-# assuming Visual Studio 15 2017 is your VS version and that it matches your default profile
-$ cmake .. -G "Visual Studio 15 2017" -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake
-$ cmake --build . --config Release`;
-
     if (props.info) {
-      const exampleName = props.info.project_type == "CXX" ? "main.cpp": "main.c";
-      const headers = props.info.headers && props.info.headers.length > 0 ? props.info.headers: "";
-      {/* TODO: if tool_require, it should have another instructions
       const isToolRequire = props.info.package_type & props.info.package_type == "application";
-      const requiresSection = isToolRequire ? "tool_requires": "requires";
-      */}
-
+      if (isToolRequire) {
+          return (
+            <div>
+              <h3>Using {props.recipeName} as a tool</h3>
+              <p>This recipe belongs to the family of the Conan build requirements. It means that you could likely want to use it
+              as a tool to build your project.
+              </p>
+              <p>Please, have a look at the Conan documentation about 
+              <Link href={{ pathname: "https://docs.conan.io/2/tutorial/consuming_packages/use_tools_as_conan_packages.html"}} passHref>
+                <a> how to use build tools as Conan packages</a>
+              </Link>
+              .</p>
+           </div>
+          );
+      }
+      console.log(props);
+      const exampleName = props.info.project_type == "CXX" ? "main.cpp": "main.c";
+      const headers = props.info.headers;
+      const componentTargets = props.info.cmake_variables.component_alias; 
       // Pieces of code
-      const projectLayout = `./
-| - CMakeLists.txt
-| - ${exampleName}
-| - conanfile.txt`;
+      const unixCLI = "$ cd build\n" +
+                      "$ cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release\n" +
+                      "$ cmake --build .";
+      const winCLI = "$ cd build\n" +
+                     "# assuming Visual Studio 15 2017 is your VS version and that it matches your default profile\n" +
+                     "$ cmake .. -G \"Visual Studio 15 2017\" -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake\n" +
+                     "$ cmake --build . --config Release";
 
-      const conanfileTxt = `[requires]
-${reference}
-[generators]
-CMakeDeps
-CMakeToolchain`;
+      const projectLayout = "./\n" +
+                              "| - CMakeLists.txt\n" +
+                              "| - " + exampleName + "\n" +
+                              "| - conanfile.txt\n";
 
-      const cmakeContent = `cmake_minimum_required(VERSION 3.15)
-project(test ${props.info.project_type})
+      const conanfileTxt = "[requires]\n" +
+                           reference + "\n" +
+                           "[generators]\n" +
+                           "CMakeDeps\n" +
+                           "CMakeToolchain";
 
-find_package(${props.info.cmake_variables.file_name} CONFIG REQUIRED)
+      const cmakeContent = "cmake_minimum_required(VERSION 3.15)\n" +
+                           "project(test " + props.info.project_type + ")\n\n" +
+                           "find_package(" + props.info.cmake_variables.file_name + " REQUIRED)\n\n" +
+                           "add_executable(example " + exampleName + ")\n" +
+                           "# Using the global target name\n" +
+                           "target_link_libraries(example " + props.info.cmake_variables.global_target_name + ")";
 
-add_executable(example ${exampleName})
-target_link_libraries(example ${props.info.cmake_variables.global_target_name})`;
-
-      const exampleContent = `// Using a random header. Please, check any other header available.
-#include "${headers[0]}"
-
-int main() {
-// Here your source code using the library
-return 0;
-}`;
       return (
       <div>
         <h3>Using {props.recipeName} with CMake</h3>
@@ -132,8 +137,22 @@ return 0;
         <pre><code className="language-ini">{conanfileTxt}</code></pre>
         <h4>CMakeLists.txt</h4>
         <pre><code className="language-cmake">{cmakeContent}</code></pre>
+        {Object.keys(componentTargets).length > 0 &&
+         (<div>
+            <p><strong>Important!</strong> This <em>example</em> target is linking against the global <em>{props.recipeName}</em> one, perhaps, what you really want is to 
+              link against any of their components instead:</p>
+            <pre className='preFixed'><code className="language-cmake">{Object.keys(componentTargets).map(function(component) {
+              return "# Component " + component + "\ntarget_link_libraries(example " + componentTargets[component] + ")\n";
+            })}</code></pre>
+          </div>)}
         <h4>{exampleName}</h4>
-        <pre><code className="language-c">{exampleContent}</code></pre>
+        {headers.length > 0 &&
+         (<div>
+            <p>You could use any of these headers in your example:</p>
+            <pre className='preFixed'><code className="language-c">{headers.map(function(h) {
+              return `#include "${h}"\n`;
+            })}</code></pre>
+          </div>)}
         <p>Now, let&apos;s run the Conan command to build this project:</p>
         <pre><code className="language-bash">$ conan install . --output-folder=build --build=missing</code></pre>
         <br/>
