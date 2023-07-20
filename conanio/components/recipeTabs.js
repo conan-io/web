@@ -186,19 +186,34 @@ function ClipboardCopy({ copyText }) {
 
   function DependenciesTab(props) {
     if (props.info) {
-      if (props.info.requires && props.info.requires.length > 0) {
+      const hasRequires = props.info.requires && props.info.requires.length > 0;
+      const hasBuildRequires = props.info.build_requires && props.info.build_requires.length > 0;
+      if (hasRequires || hasBuildRequires) {
         return (
           <div>
-          <h3>Dependencies</h3>
-          <br/>
-          {props.info.requires.map( function(require) { 
-            let ref = require.split("/");
-            let name = ref[0];
-            let version = ref[1];
-            return <Link key={require} href={{ pathname: "/center/recipes/" + name, query: { version: version } }} passHref><a onClick={() => props.setRecipeVersion(version)}><h5>{require}</h5></a></Link>;
-            })
-          }
-        </div>
+            {hasRequires && (<div>
+            <h3>Dependencies</h3>
+            <br/>
+            {props.info.requires.map( function(require) { 
+              let ref = require.split("/");
+              let name = ref[0];
+              let version = ref[1];
+              return <Link key={require} href={{ pathname: "/center/recipes/" + name, query: { version: version } }} passHref><a onClick={() => props.setRecipeVersion(version)}><h5>{require}</h5></a></Link>;
+              })
+            }
+            </div>)}
+            {hasBuildRequires && (<div>
+            <h3>Dependencies (tool requirements)</h3>
+            <br/>
+            {props.info.build_requires.map( function(require) { 
+              let ref = require.split("/");
+              let name = ref[0];
+              let version = ref[1];
+              return <Link key={require} href={{ pathname: "/center/recipes/" + name, query: { version: version } }} passHref><a onClick={() => props.setRecipeVersion(version)}><h5>{require}</h5></a></Link>;
+              })
+            }
+            </div>)}
+          </div>
         )
       }
       return (
