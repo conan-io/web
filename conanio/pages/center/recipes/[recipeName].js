@@ -17,7 +17,7 @@ import { DefaultDescription } from '../recipes';
 import { LiaBalanceScaleSolid, LiaGithub } from "react-icons/lia";
 import { IoMdHome } from "react-icons/io";
 import hljs from "highlight.js";
-import {UseItTab, BadgesTab, DependenciesTab} from "./recipeTabs";
+import {UseItTab, BadgesTab, DependenciesTab} from "../../../components/recipeTabs";
 
 
 export async function getServerSideProps(context) {
@@ -44,11 +44,10 @@ export default function ConanPackage(props) {
     hljs.highlightAll();
   });
   const [selectedVersion, setSelectedVersion] = useState(props.recipeVersion !== null? props.recipeVersion: Object.keys(props.data)[0]);
-  const [showUnmaintainedVersions, setShowUnmaintainedVersions] = useState(false);
   const handleChange = (e) => {
     setSelectedVersion(e.target.value)
   }
-
+  const [showUnmaintainedVersions, setShowUnmaintainedVersions] = useState(false);
   const onUnmaintainedVersionsChange = (e) => {
     setShowUnmaintainedVersions(e.target.checked)
   };
@@ -98,12 +97,8 @@ export default function ConanPackage(props) {
                   </Col>
                 </Row>)
               }
-              <br/>
               {recipeDescription && (<Row>
                 <Col className="mb-2" xs lg>{recipeDescription}</Col>
-              </Row>)}
-              {recipeLabels && recipeLabels.length > 0 && (<Row>
-                <Col xs lg><p> {recipeLabels.map((item) => (<Badge key={item}>#{item}</Badge>))}</p></Col>
               </Row>)}
               {recipeLicenses && recipeLicenses.length > 0 && (<Row>
                 <Col xs lg="8"><LiaBalanceScaleSolid className="conanIconBlue"/> {recipeLicenses.join(", ")}</Col>
@@ -112,12 +107,15 @@ export default function ConanPackage(props) {
                 <Col xs lg="8"><b>Downloads:</b> {selectedData.info.downloads}</Col>
               </Row>)}
               {recipeDescription && (<Row>
-                <Col xs lg className="mb-2"><Link href={recipeConanCenterUrl}><a><LiaGithub className="conanIconBlue"/>{sanitizeURL(recipeConanCenterUrl)}</a></Link></Col>
+                <Col xs lg className="mb-2"><Link href={recipeConanCenterUrl}><a><LiaGithub className="conanIconBlue"/> Recipe source</a></Link></Col>
               </Row>)}
               {(recipeUseIt && recipeUseIt.homepage) && (<Row>
                 <Col xs lg="8"><Link href={recipeUseIt.homepage}><a><IoMdHome className="conanIconBlue"/>{sanitizeURL(recipeUseIt.homepage)}</a></Link></Col>
               </Row>)}
               <br/>
+              {recipeLabels && recipeLabels.length > 0 && (<Row>
+                <Col xs lg><p> {recipeLabels.map((item) => (<Badge key={item}>#{item}</Badge>))}</p></Col>
+              </Row>)}
             </Col>
             { recipeDownloads && recipeDownloads.length > 0 &&
             <Col xs lg="4">
@@ -132,7 +130,8 @@ export default function ConanPackage(props) {
           {!recipeDescription && (<DefaultDescription name={selectedData.name}/>)}
           {recipeDescription && (<Tabs className="package-tabs" defaultActiveKey="use-it" id="uncontrolled">
             <Tab eventKey="use-it" title="Use it"><br/><UseItTab info={recipeUseIt} recipeName={props.recipeName} recipeVersion={selectedVersion} /></Tab>
-            <Tab eventKey="dependencies" title="Dependencies"><br/><DependenciesTab info={recipeUseIt} recipeName={props.recipeName} recipeVersion={selectedVersion} /></Tab>
+            {/* FIXME: we're not passing showUnmaintainedVersions to handle it! */}
+            <Tab eventKey="dependencies" title="Dependencies"><br/><DependenciesTab info={recipeUseIt} recipeName={props.recipeName} recipeVersion={selectedVersion} setRecipeVersion={handleChange} /></Tab>
             <Tab eventKey="badges" title="Badges"><br/><BadgesTab recipeName={props.recipeName} /></Tab>
           </Tabs>)}
         </Container>
