@@ -25,6 +25,10 @@ blockquote:not(.important):not(.warning):not(.restricted):not(.experimental):not
   font-size: unset;
 }
 
+.preFixed {
+  max-height: 200px;
+}
+
 .navbar{
   flex-direction: column !important;
   align-items: flex-end !important;
