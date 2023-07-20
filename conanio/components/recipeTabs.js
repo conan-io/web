@@ -189,7 +189,7 @@ return 0;
             let ref = require.split("/");
             let name = ref[0];
             let version = ref[1];
-            return <Link href={{ pathname: "/center/recipes/" + name, query: { version: version } }}><a><h5>{require}</h5></a></Link>;
+            return <Link key={require} href={{ pathname: "/center/recipes/" + name, query: { version: version } }} passHref><a onClick={() => props.setRecipeVersion(version)}><h5>{require}</h5></a></Link>;
             })
           }
         </div>
