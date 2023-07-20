@@ -214,7 +214,7 @@ function ClipboardCopy({ copyText }) {
             }
             </div>)}
           </div>
-        )
+        );
       }
       return (
         <div>
@@ -222,13 +222,13 @@ function ClipboardCopy({ copyText }) {
           <br/>
           <p>This recipe version (<strong>{props.recipeName}/{props.recipeVersion}</strong>) has no dependencies</p>
         </div>
-      )
+      );
     }
     return (
       <div>
         <p>It was not possible to load all the metadata belonging to this recipe. Maybe, this recipe is not completely migrated for Conan 2.x.</p>
       </div>
-    )
+    );
   }
   
 
