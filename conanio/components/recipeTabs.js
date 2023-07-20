@@ -4,6 +4,7 @@ import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import Link from 'next/link';
 import { FaCopy } from "react-icons/fa";
+import { BiSolidInfoCircle } from "react-icons/bi";
 
 
 {/* TODO: this function should go in a more common module. More configurable? */}
@@ -133,11 +134,8 @@ return 0;
         <pre><code className="language-cmake">{cmakeContent}</code></pre>
         <h4>{exampleName}</h4>
         <pre><code className="language-c">{exampleContent}</code></pre>
-        <p>Now, let's run the Conan command to build this project:</p>
+        <p>Now, let&apos;s run the Conan command to build this project:</p>
         <pre><code className="language-bash">$ conan install . --output-folder=build --build=missing</code></pre>
-        <p>Please, be aware that this information is generated automatically and it may contain some mistakes. If you have any problem, you can check 
-        the upstream recipe to confirm the information. Also, for more detailed information on how to consume Conan packages, 
-        please check the <Link href="https://docs.conan.io/2/tutorial/consuming_packages.html"><a>Conan documentation</a></Link>.</p>
         <br/>
         <Tabs className="package-tabs" defaultActiveKey="win" id="uncontrolled">
           <Tab eventKey="win" title="Windows">
@@ -149,30 +147,20 @@ return 0;
             <pre><code className="language-bash">{unixCLI}</code></pre>
           </Tab>
         </Tabs>
+        <br/>
+        <blockquote>
+          <BiSolidInfoCircle/><strong> Note</strong>
+          <br/><br/>
+          <p>Please, be aware that this information is generated automatically and it may contain some mistakes. If you have any problem, you can check 
+          the upstream recipe to confirm the information. Also, for more detailed information on how to consume Conan packages, 
+          please check the <Link href="https://docs.conan.io/2/tutorial/consuming_packages.html"><a>Conan documentation</a></Link>.</p>
+        </blockquote>
       </div>
       );
     }
     return (
       <div>
-        <h3>Using {props.recipeName} with CMake <strong>(**)</strong></h3>
-        <p><strong>(**)</strong> <em>It was not possible to load all the metadata belonging to this recipe. Maybe, this recipe is not completely migrated for Conan 2.x.</em></p>
-        <p>Please, let's try this command if you want to install it locally and generate its CMake files:</p>
-        <pre><code className="language-bash">$ conan install --requires {reference} --build missing -g CMakeDeps -g CMakeToolchain --output-folder=build</code></pre>
-        <p>Assuming that you already have your own project, you'll have to find out the {reference} targets that 
-        you want to use within the <strong><em>build/</em></strong> folder. After that, you could run it:</p>
-        <br/>
-        <Tabs className="package-tabs" defaultActiveKey="win" id="uncontrolled">
-          <Tab eventKey="win" title="Windows">
-            <br/>
-            <pre><code className="language-bash">{winCLI}</code></pre>
-          </Tab>
-          <Tab eventKey="unix" title="Linux/macOS">
-            <br/>
-            <pre><code className="language-bash">{unixCLI}</code></pre>
-          </Tab>
-        </Tabs>
-        <br/>
-        <p>Please visit the <Link href="https://docs.conan.io/2/tutorial/consuming_packages.html"><a>Conan documentation</a></Link> for more information.</p>
+        <p>It was not possible to load all the metadata belonging to this recipe. Maybe, this recipe is not completely migrated for Conan 2.x.</p>
       </div>
     );
   }
@@ -199,14 +187,13 @@ return 0;
         <div>
           <h3>Dependencies</h3>
           <br/>
-          <p>This recipe (<strong>{props.recipeName}/{props.recipeVersion}</strong>) has no dependencies</p>
+          <p>This recipe version (<strong>{props.recipeName}/{props.recipeVersion}</strong>) has no dependencies</p>
         </div>
       )
     }
     return (
       <div>
-        <h3>Dependencies <strong>(**)</strong></h3>
-        <p><strong>(**)</strong> <em>It was not possible to load all the metadata belonging to this recipe. Maybe, this recipe is not completely migrated for Conan 2.x.</em></p>
+        <p>It was not possible to load all the metadata belonging to this recipe. Maybe, this recipe is not completely migrated for Conan 2.x.</p>
       </div>
     )
   }
