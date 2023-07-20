@@ -110,11 +110,10 @@ export default function ConanPackage(props) {
                 <Col xs lg className="mb-2"><Link href={recipeConanCenterUrl}><a><LiaGithub className="conanIconBlue"/> Recipe source</a></Link></Col>
               </Row>)}
               {(recipeUseIt && recipeUseIt.homepage) && (<Row>
-                <Col xs lg="8"><Link href={recipeUseIt.homepage}><a><IoMdHome className="conanIconBlue"/>{sanitizeURL(recipeUseIt.homepage)}</a></Link></Col>
+                <Col xs lg className="mb-2"><Link href={recipeUseIt.homepage}><a><IoMdHome className="conanIconBlue"/>{sanitizeURL(recipeUseIt.homepage)}</a></Link></Col>
               </Row>)}
-              <br/>
               {recipeLabels && recipeLabels.length > 0 && (<Row>
-                <Col xs lg><p> {recipeLabels.map((item) => (<Badge key={item}>#{item}</Badge>))}</p></Col>
+                <Col xs lg="8"><p> {recipeLabels.map((item) => (<Badge key={item}>#{item}</Badge>))}</p></Col>
               </Row>)}
             </Col>
             { recipeDownloads && recipeDownloads.length > 0 &&
