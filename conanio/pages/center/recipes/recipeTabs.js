@@ -100,11 +100,13 @@ $ cmake --build . --config Release`;
 | - CMakeLists.txt
 | - ${exampleName}
 | - conanfile.txt`;
+
       const conanfileTxt = `[requires]
 ${reference}
 [generators]
 CMakeDeps
 CMakeToolchain`;
+
       const cmakeContent = `cmake_minimum_required(VERSION 3.15)
 project(test ${props.info.project_type})
 
@@ -112,6 +114,7 @@ find_package(${props.info.cmake_variables.file_name} CONFIG REQUIRED)
 
 add_executable(example ${exampleName})
 target_link_libraries(example ${props.info.cmake_variables.global_target_name})`;
+
       const exampleContent = `// Using a random header. Please, check any other header available.
 #include "${headers[0]}"
 
@@ -173,6 +176,40 @@ return 0;
       </div>
     );
   }
+
+
+  function DependenciesTab(props) {
+    if (props.info) {
+      if (props.info.requires && props.info.requires.length > 0) {
+        return (
+          <div>
+          <h3>Dependencies</h3>
+          <br/>
+          {props.info.requires.map( function(require) { 
+            let ref = require.split("/");
+            let name = ref[0];
+            let version = ref[1];
+            return <Link href={{ pathname: "/center/recipes/" + name, query: { version: version } }}><a><h5>{require}</h5></a></Link>;
+            })
+          }
+        </div>
+        )
+      }
+      return (
+        <div>
+          <h3>Dependencies</h3>
+          <br/>
+          <p>This recipe (<strong>{props.recipeName}/{props.recipeVersion}</strong>) has no dependencies</p>
+        </div>
+      )
+    }
+    return (
+      <div>
+        <h3>Dependencies <strong>(**)</strong></h3>
+        <p><strong>(**)</strong> <em>It was not possible to load all the metadata belonging to this recipe. Maybe, this recipe is not completely migrated for Conan 2.x.</em></p>
+      </div>
+    )
+  }
   
 
-  export { UseItTab, BadgesTab };
+  export { UseItTab, BadgesTab, DependenciesTab };

@@ -17,7 +17,7 @@ import { DefaultDescription } from '../recipes';
 import { LiaBalanceScaleSolid, LiaGithub } from "react-icons/lia";
 import { IoMdHome } from "react-icons/io";
 import hljs from "highlight.js";
-import {UseItTab, BadgesTab} from "./recipeTabs";
+import {UseItTab, BadgesTab, DependenciesTab} from "./recipeTabs";
 
 
 export async function getServerSideProps(context) {
@@ -132,6 +132,7 @@ export default function ConanPackage(props) {
           {!recipeDescription && (<DefaultDescription name={selectedData.name}/>)}
           {recipeDescription && (<Tabs className="package-tabs" defaultActiveKey="use-it" id="uncontrolled">
             <Tab eventKey="use-it" title="Use it"><br/><UseItTab info={recipeUseIt} recipeName={props.recipeName} recipeVersion={selectedVersion} /></Tab>
+            <Tab eventKey="dependencies" title="Dependencies"><br/><DependenciesTab info={recipeUseIt} recipeName={props.recipeName} recipeVersion={selectedVersion} /></Tab>
             <Tab eventKey="badges" title="Badges"><br/><BadgesTab recipeName={props.recipeName} /></Tab>
           </Tabs>)}
         </Container>
