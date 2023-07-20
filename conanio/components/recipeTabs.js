@@ -28,7 +28,7 @@ function ClipboardCopy({ copyText }) {
           console.log(err);
         });
     }
-  
+
     return (
       <div>
         {/* Bind our handler function to the onClick button property */}
@@ -38,15 +38,15 @@ function ClipboardCopy({ copyText }) {
       </div>
     );
   }
-  
-  
-  
+
+
+
   function BadgesTab({recipeName}) {
     const mdMessage = `![Conan Center](https://img.shields.io/conan/v/${recipeName})`;
     const resMessage = `.. image:: https://img.shields.io/conan/v/${recipeName}   :alt: Conan Center`;
     const asciiMessage = `image:https://img.shields.io/conan/v/${recipeName} [Conan Center]`;
     const htmlMessage = `<img alt="Conan Center" src="https://img.shields.io/conan/v/${recipeName}">`;
-  
+
     return (
       <div>
         <img src={"https://img.shields.io/conan/v/" + recipeName} alt="Conan Center"></img>
@@ -76,8 +76,8 @@ function ClipboardCopy({ copyText }) {
       </div>
     );
   }
-  
-  
+
+
   function UseItTab(props) {
     const reference = props.recipeName + "/" + props.recipeVersion;
     if (props.info) {
@@ -89,7 +89,7 @@ function ClipboardCopy({ copyText }) {
               <p>This recipe belongs to the family of the Conan build requirements. It means that you could likely want to use it
               as a tool to build your project.
               </p>
-              <p>Please, have a look at the Conan documentation about 
+              <p>Please, have a look at the Conan documentation about
               <Link href={{ pathname: "https://docs.conan.io/2/tutorial/consuming_packages/use_tools_as_conan_packages.html"}} passHref>
                 <a> how to use build tools as Conan packages</a>
               </Link>
@@ -99,7 +99,7 @@ function ClipboardCopy({ copyText }) {
       }
       const exampleName = props.info.project_type == "CXX" ? "main.cpp": "main.c";
       const headers = props.info.headers;
-      const componentTargets = props.info.cmake_variables.component_alias; 
+      const componentTargets = props.info.cmake_variables.component_alias;
       // Pieces of code
       const unixCLI = "$ cd build\n" +
                       "$ cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release\n" +
@@ -138,7 +138,7 @@ function ClipboardCopy({ copyText }) {
         <pre><code className="language-cmake">{cmakeContent}</code></pre>
         {Object.keys(componentTargets).length > 0 &&
          (<div>
-            <p><strong>Important!</strong> This <em>example</em> target is linking against the global <em>{props.recipeName}</em> one, perhaps, what you really want is to 
+            <p><strong>Important!</strong> This <em>example</em> target is linking against the global <em>{props.recipeName}</em> one, perhaps, what you really want is to
               link against any of their components instead:</p>
             <pre className='preFixed'><code className="language-cmake">{Object.keys(componentTargets).map(function(component) {
               return "# Component " + component + "\ntarget_link_libraries(example " + componentTargets[component] + ")\n";
@@ -169,8 +169,8 @@ function ClipboardCopy({ copyText }) {
         <blockquote>
           <BiSolidInfoCircle/><strong> Note</strong>
           <br/><br/>
-          <p>Please, be aware that this information is generated automatically and it may contain some mistakes. If you have any problem, you can check 
-          the upstream recipe to confirm the information. Also, for more detailed information on how to consume Conan packages, 
+          <p>Please, be aware that this information is generated automatically and it may contain some mistakes. If you have any problem, you can check
+          the upstream recipe to confirm the information. Also, for more detailed information on how to consume Conan packages,
           please check the <Link href="https://docs.conan.io/2/tutorial/consuming_packages.html"><a>Conan documentation</a></Link>.</p>
         </blockquote>
       </div>
@@ -194,7 +194,7 @@ function ClipboardCopy({ copyText }) {
             {hasRequires && (<div>
             <h3>Dependencies</h3>
             <br/>
-            {props.info.requires.map( function(require) { 
+            {props.info.requires.map( function(require) {
               let ref = require.split("/");
               let name = ref[0];
               let version = ref[1];
@@ -205,11 +205,11 @@ function ClipboardCopy({ copyText }) {
             {hasBuildRequires && (<div>
             <h3>Dependencies (tool requirements)</h3>
             <br/>
-            {props.info.build_requires.map( function(require) { 
+            {props.info.build_requires.map( function(require) {
               let ref = require.split("/");
               let name = ref[0];
               let version = ref[1];
-              return <Link key={require} href={{ pathname: "/center/recipes/" + name, query: { version: version } }} passHref><a onClick={() => props.setRecipeVersion(version)}><h5>{require}</h5></a></Link>;
+              return <Link key={require} href={{ pathname: "/center/recipes/" + name, query: { version: version } }} passHref><a><h5>{require}</h5></a></Link>;
               })
             }
             </div>)}
@@ -230,6 +230,6 @@ function ClipboardCopy({ copyText }) {
       </div>
     );
   }
-  
+
 
   export { UseItTab, BadgesTab, DependenciesTab };
