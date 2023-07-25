@@ -51,7 +51,7 @@ function ClipboardCopy({ copyText }) {
       <div>
         <img src={"https://img.shields.io/conan/v/" + recipeName} alt="Conan Center"></img>
         <br/><br/>
-        <Tabs className="package-tabs" defaultActiveKey="Markdown" id="uncontrolled">
+        <Tabs className="package-tabs" defaultActiveKey="Markdown" id="badges-uncontrolled">
           <Tab eventKey="Markdown" title="Markdown">
             <br/>
             <ClipboardCopy copyText={mdMessage}/>
@@ -78,56 +78,65 @@ function ClipboardCopy({ copyText }) {
   }
 
 
-  function UseItTab(props) {
+  function UseItFullContent({props}) {
     const reference = props.recipeName + "/" + props.recipeVersion;
-    if (props.info) {
-      const isToolRequire = props.info.package_type & props.info.package_type == "application";
-      if (isToolRequire) {
-          return (
-            <div>
-              <h3>Using {props.recipeName} as a tool</h3>
-              <p>This recipe belongs to the family of the Conan build requirements. It means that you could likely want to use it
-              as a tool to build your project.
-              </p>
-              <p>Please, have a look at the Conan documentation about
-              <Link href={{ pathname: "https://docs.conan.io/2/tutorial/consuming_packages/use_tools_as_conan_packages.html"}}>
-                <a> how to use build tools as Conan packages</a>
-              </Link>
-              .</p>
-           </div>
-          );
+    const Components = function({components}) {
+      if (Object.keys(components).length > 1) {
+        return (<div>
+           <p><strong>Important!</strong> This <em>example</em> target is linking against the global <em>{props.recipeName}</em> one, perhaps, what you really want is to
+             link against any of their components instead:</p>
+           <pre className='preFixed'>
+             <code className="language-cmake">{Object.keys(components).map(function(component) {
+             return "# Component " + component + "\ntarget_link_libraries(example " + components[component] + ")\n";
+           })}</code></pre>
+         </div>)
       }
-      const exampleName = props.info.project_type == "CXX" ? "main.cpp": "main.c";
-      const headers = props.info.headers;
-      const componentTargets = props.info.cmake_variables.component_alias;
-      // Pieces of code
-      const unixCLI = "$ cd build\n" +
-                      "$ cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release\n" +
-                      "$ cmake --build .";
-      const winCLI = "$ cd build\n" +
-                     "# assuming Visual Studio 15 2017 is your VS version and that it matches your default profile\n" +
-                     "$ cmake .. -G \"Visual Studio 15 2017\" -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake\n" +
-                     "$ cmake --build . --config Release";
+      return null;
+    };
+    const Headers = function({headers}) {
+      if (headers.length > 0) {
+        return (
+        <div>
+          <p>You could use any of these headers in your example:</p>
+          <pre className='preFixed'>
+            <code className="language-c">{headers.map(function(h) {
+            return `#include "${h}"\n`;})}</code>
+          </pre>
+        </div>);
+      }
+      return null;
+    };
+    const exampleName = props.info.project_type == "CXX" ? "main.cpp": "main.c";
+    const headers = props.info.headers;
+    const componentTargets = props.info.cmake_variables.component_alias;
+    // Pieces of code
+    const unixCLI = "$ cd build\n" +
+                    "$ cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release\n" +
+                    "$ cmake --build .";
+    const winCLI = "$ cd build\n" +
+                   "# assuming Visual Studio 15 2017 is your VS version and that it matches your default profile\n" +
+                   "$ cmake .. -G \"Visual Studio 15 2017\" -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake\n" +
+                   "$ cmake --build . --config Release";
 
-      const projectLayout = "./\n" +
-                              "| - CMakeLists.txt\n" +
-                              "| - " + exampleName + "\n" +
-                              "| - conanfile.txt\n";
+    const projectLayout = "./\n" +
+                            "| - CMakeLists.txt\n" +
+                            "| - " + exampleName + "\n" +
+                            "| - conanfile.txt\n";
 
-      const conanfileTxt = "[requires]\n" +
-                           reference + "\n" +
-                           "[generators]\n" +
-                           "CMakeDeps\n" +
-                           "CMakeToolchain";
+    const conanfileTxt = "[requires]\n" +
+                         reference + "\n" +
+                         "[generators]\n" +
+                         "CMakeDeps\n" +
+                         "CMakeToolchain";
 
-      const cmakeContent = "cmake_minimum_required(VERSION 3.15)\n" +
-                           "project(test " + props.info.project_type + ")\n\n" +
-                           "find_package(" + props.info.cmake_variables.file_name + " REQUIRED)\n\n" +
-                           "add_executable(example " + exampleName + ")\n" +
-                           "# Using the global target name\n" +
-                           "target_link_libraries(example " + props.info.cmake_variables.global_target_name + ")";
+    const cmakeContent = "cmake_minimum_required(VERSION 3.15)\n" +
+                         "project(test " + props.info.project_type + ")\n\n" +
+                         "find_package(" + props.info.cmake_variables.file_name + " REQUIRED)\n\n" +
+                         "add_executable(example " + exampleName + ")\n" +
+                         "# Using the global target name\n" +
+                         "target_link_libraries(example " + props.info.cmake_variables.global_target_name + ")";
 
-      return (
+    return (
       <div>
         <h3>Using {props.recipeName} with CMake</h3>
         <p>This is a simple CMake project layout using this library:</p>
@@ -136,26 +145,13 @@ function ClipboardCopy({ copyText }) {
         <pre><code className="language-ini">{conanfileTxt}</code></pre>
         <h4>CMakeLists.txt</h4>
         <pre><code className="language-cmake">{cmakeContent}</code></pre>
-        {Object.keys(componentTargets).length > 0 &&
-         (<div>
-            <p><strong>Important!</strong> This <em>example</em> target is linking against the global <em>{props.recipeName}</em> one, perhaps, what you really want is to
-              link against any of their components instead:</p>
-            <pre className='preFixed'><code className="language-cmake">{Object.keys(componentTargets).map(function(component) {
-              return "# Component " + component + "\ntarget_link_libraries(example " + componentTargets[component] + ")\n";
-            })}</code></pre>
-          </div>)}
+        <Components components={componentTargets}></Components>
         <h4>{exampleName}</h4>
-        {headers.length > 0 &&
-         (<div>
-            <p>You could use any of these headers in your example:</p>
-            <pre className='preFixed'><code className="language-c">{headers.map(function(h) {
-              return `#include "${h}"\n`;
-            })}</code></pre>
-          </div>)}
+        <Headers headers={headers}></Headers>
         <p>Now, let&apos;s run the Conan command to build this project:</p>
         <pre><code className="language-bash">$ conan install . --output-folder=build --build=missing</code></pre>
         <br/>
-        <Tabs className="package-tabs" defaultActiveKey="win" id="uncontrolled">
+        <Tabs className="package-tabs" defaultActiveKey="win" id="use-it-uncontrolled">
           <Tab eventKey="win" title="Windows">
             <br/>
             <pre><code className="language-bash">{winCLI}</code></pre>
@@ -174,10 +170,36 @@ function ClipboardCopy({ copyText }) {
           please check the <Link href="https://docs.conan.io/2/tutorial/consuming_packages.html"><a>Conan documentation</a></Link>.</p>
         </blockquote>
       </div>
-      );
+    );
+  }
+
+  function UseItTab(props) {
+    if (props.info) {
+      const isToolRequire = props.info.package_type && props.info.package_type == "application";
+      // If it's a tool requirement
+      if (isToolRequire) {
+          return (
+            <div className='use-it-tab'>
+              <h3>Using {props.recipeName} as a tool</h3>
+              <p>This recipe belongs to the family of the Conan build requirements. It means that you could likely want to use it
+              as a tool to build your project.
+              </p>
+              <p>Please, have a look at the Conan documentation about
+              <Link href={{ pathname: "https://docs.conan.io/2/tutorial/consuming_packages/use_tools_as_conan_packages.html"}}>
+                <a> how to use build tools as Conan packages</a>
+              </Link>
+              .</p>
+           </div>
+          );
+      }
+      else {
+        // if it's a normal library
+        return <UseItFullContent props={props}></UseItFullContent>
+      }
     }
     return (
-      <div>
+      // Something went wrong
+      <div className='use-it-tab'>
         <p>It was not possible to load all the metadata belonging to this recipe. Maybe, this recipe is not completely migrated for Conan 2.x.</p>
       </div>
     );
