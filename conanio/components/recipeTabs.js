@@ -77,6 +77,14 @@ function ClipboardCopy({ copyText }) {
     );
   }
 
+  function CCIAssistanceLink() {
+    return (
+      <p>If you need additional assistance, please ask a
+        <Link href={{ pathname: "https://github.com/conan-io/conan-center-index/issues/new", query: { labels: "question", template: "question.yml", title: "[question] SHORT DESCRIPTION" }}}>
+          <a> question</a></Link> in the Conan Center Index repository.
+        </p>
+    );
+  }
 
   function UseItFullContent({props}) {
     const reference = props.recipeName + "/" + props.recipeVersion;
@@ -145,9 +153,9 @@ function ClipboardCopy({ copyText }) {
         <pre><code className="language-ini">{conanfileTxt}</code></pre>
         <h4>CMakeLists.txt</h4>
         <pre><code className="language-cmake">{cmakeContent}</code></pre>
-        <Components components={componentTargets}></Components>
+        <Components components={componentTargets} />
         <h4>{exampleName}</h4>
-        <Headers headers={headers}></Headers>
+        <Headers headers={headers} />
         <p>Now, let&apos;s run the Conan command to build this project:</p>
         <pre><code className="language-bash">$ conan install . --output-folder=build --build=missing</code></pre>
         <br/>
@@ -169,6 +177,7 @@ function ClipboardCopy({ copyText }) {
           the upstream recipe to confirm the information. Also, for more detailed information on how to consume Conan packages,
           please check the <Link href="https://docs.conan.io/2/tutorial/consuming_packages.html"><a>Conan documentation</a></Link>.</p>
         </blockquote>
+        <CCIAssistanceLink />
       </div>
     );
   }
@@ -179,16 +188,15 @@ function ClipboardCopy({ copyText }) {
       // If it's a tool requirement
       if (isToolRequire) {
           return (
-            <div className='use-it-tab'>
+            <div>
               <h3>Using {props.recipeName} as a tool</h3>
-              <p>This recipe belongs to the family of the Conan build requirements. It means that you could likely want to use it
-              as a tool to build your project.
-              </p>
+              <p>This recipe belongs to the family of the Conan build tools.</p>
               <p>Please, have a look at the Conan documentation about
               <Link href={{ pathname: "https://docs.conan.io/2/tutorial/consuming_packages/use_tools_as_conan_packages.html"}}>
                 <a> how to use build tools as Conan packages</a>
               </Link>
               .</p>
+              <CCIAssistanceLink />
            </div>
           );
       }
@@ -199,8 +207,13 @@ function ClipboardCopy({ copyText }) {
     }
     return (
       // Something went wrong
-      <div className='use-it-tab'>
-        <p>It was not possible to load all the metadata belonging to this recipe. Maybe, this recipe is not completely migrated for Conan 2.x.</p>
+      <div>
+        <p>Please, have a look at the Conan documentation about
+        <Link href={{ pathname: "https://docs.conan.io/2/tutorial/consuming_packages/build_simple_cmake_project.html"}}>
+          <a> how to use a library in your project</a>
+        </Link>
+        .</p>
+        <CCIAssistanceLink />
       </div>
     );
   }
@@ -242,13 +255,14 @@ function ClipboardCopy({ copyText }) {
         <div>
           <h3>Dependencies</h3>
           <br/>
-          <p>This recipe version (<strong>{props.recipeName}/{props.recipeVersion}</strong>) has no dependencies</p>
+          <p>This recipe version (<strong>{props.recipeName}/{props.recipeVersion}</strong>) has no dependencies.</p>
         </div>
       );
     }
     return (
       <div>
-        <p>It was not possible to load all the metadata belonging to this recipe. Maybe, this recipe is not completely migrated for Conan 2.x.</p>
+        <p>This information is not available at this moment.</p>
+        <CCIAssistanceLink />
       </div>
     );
   }
