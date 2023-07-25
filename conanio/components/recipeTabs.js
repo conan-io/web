@@ -198,7 +198,7 @@ function ClipboardCopy({ copyText }) {
               let ref = require.split("/");
               let name = ref[0];
               let version = ref[1];
-              return <Link key={require} href={{ pathname: "/center/recipes/" + name, query: { version: version } }} passHref><a onClick={() => props.setRecipeVersion(version)}><h5>{require}</h5></a></Link>;
+              return <Link key={ + "deps"} href={{ pathname: "/center/recipes/" + name, query: { version: version } }} passHref><a onClick={() => props.setRecipeVersion(version)}><h5>{require}</h5></a></Link>;
               })
             }
             </div>)}
@@ -209,7 +209,7 @@ function ClipboardCopy({ copyText }) {
               let ref = require.split("/");
               let name = ref[0];
               let version = ref[1];
-              return <Link key={require} href={{ pathname: "/center/recipes/" + name, query: { version: version } }} passHref><a onClick={() => props.setRecipeVersion(version)}><h5>{require}</h5></a></Link>;
+              return <Link key={require + "tool_deps"} href={{ pathname: "/center/recipes/" + name, query: { version: version } }} passHref><a onClick={() => props.setRecipeVersion(version)}><h5>{require}</h5></a></Link>;
               })
             }
             </div>)}

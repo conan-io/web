@@ -35,7 +35,7 @@ export async function getServerSideProps(context) {
       recipeName: context.params.recipeName,
       recipeVersion: context.query.version? context.query.version: null
     },
-  }
+  };
 }
 
 function sanitizeURL(url) {
@@ -52,7 +52,7 @@ export default function ConanPackage(props) {
   const [showOldVersions, setShowOldVersions] = useState(false);
   const [selectedVersion, setSelectedVersion] = useState(props.recipeVersion !== null? props.recipeVersion: Object.keys(props.data)[0]);
 
-  if (!props.data) return <div>Loading...</div>
+  if (!props.data) return (<div>Loading...</div>);
 
   const recipeData = props.data[selectedVersion];
   const recipeStatus = recipeData.info.status;
@@ -62,10 +62,8 @@ export default function ConanPackage(props) {
   const recipeConanCenterUrl = "https://github.com/conan-io/conan-center-index/tree/master/recipes/" + recipeData.name;
   const recipeUseIt = recipeData.info.use_it;
   const recipeDownloads = props.downloads[selectedVersion].downloads;
-  const maintainedVersions = Object.keys(props.data).filter(version => props.data[version].info.status === "ok")
-  const unmaintainedVersions = Object.keys(props.data).filter(version => props.data[version].info.status !== "ok")
-
-
+  const maintainedVersions = Object.keys(props.data).filter(version => props.data[version].info.status === "ok");
+  const unmaintainedVersions = Object.keys(props.data).filter(version => props.data[version].info.status !== "ok");
 
   return (
     <React.StrictMode>
@@ -93,7 +91,6 @@ export default function ConanPackage(props) {
               </Row>
               <Row>
                 <Col>
-                  <p>
                     <FaTags className="conanIconBlue"/> {
                       maintainedVersions.map(
                         version => (
@@ -116,7 +113,6 @@ export default function ConanPackage(props) {
                       ).reduce((prev, curr) => [prev, ', ', curr])
                     )
                   }
-                  </p>
                 </Col>
               </Row>
             </Col>
@@ -177,5 +173,5 @@ export default function ConanPackage(props) {
       </div>
       </SSRProvider>
     </React.StrictMode>
-  )
+  );
 }

@@ -38,7 +38,7 @@ blockquote:not(.important):not(.warning):not(.restricted):not(.experimental):not
 
 }
 
-.navBtn{
+.navBtn .nav-link {
   padding-left: 0px !important;
   padding-right: 0px !important;
 }

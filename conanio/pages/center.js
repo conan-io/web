@@ -69,7 +69,7 @@ function CenterList(props) {
       <h2>{props.name}</h2>
       <ListGroup>
         {props.data.map((info) => (
-          <ListGroup.Item style={{border: '0.05rem solid #21AFFF', borderRadius: '10px', margin:'0px 0px 5px 0px'}} key={info.name}>
+          <ListGroup.Item style={{border: '0.05rem solid #21AFFF', borderRadius: '10px', margin:'0px 0px 5px 0px'}} key={info.name + info.version}>
             <Link href={{ pathname: "/center/recipes/" + info.name, query: { version: info.version } }}><a>{info.name}{props.full_name && "/" + info.version}</a></Link>
           </ListGroup.Item>
         ))}
