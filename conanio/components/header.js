@@ -69,7 +69,7 @@ export function ConanHeader(props) {
                       <Nav.Link href="/faq"><span className="btn navBtn black">FAQ</span></Nav.Link>
                       <Nav.Link href="https://docs.conan.io/"><span className="btn navBtn black">Docs</span></Nav.Link>
                       <Nav.Link href="https://blog.conan.io/"><span className="btn navBtn black">Blog</span></Nav.Link>
-                      <Nav.Link href="https://github.com/conan-io/conan"><span className="btn navBtn mr-3" rel="nofollow noopener noreferrer" target="_blank"><img src="/small-github.svg" alt="Github"></img></span></Nav.Link>
+                      <Nav.Link href="https://github.com/conan-io/conan" rel="nofollow noopener noreferrer" target="_blank"><span className="btn navBtn mr-3"><img src="/small-github.svg" alt="Github"></img></span></Nav.Link>
                       <div className="downloads-cta arrow-cta">
                         <div className="button_cont">
                           <Nav.Link href="/downloads"><span className="btn conan-blue-gradient-bg white font-weight-bold" id="download_btn_header"><span>Downloads</span></span></Nav.Link>
