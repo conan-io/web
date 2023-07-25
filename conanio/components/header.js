@@ -65,16 +65,16 @@ export function ConanHeader(props) {
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                   <Nav className="me-auto">
-                    <Nav.Link href="/center" className="btn navBtn black">ConanCenter<LuPackageSearch className="ml-1"/></Nav.Link>
-                    <Nav.Link href="/faq" className="btn navBtn black">FAQ</Nav.Link>
-                    <Nav.Link href="https://docs.conan.io/" className="btn navBtn black">Docs</Nav.Link>
-                    <Nav.Link href="https://blog.conan.io/" className="btn navBtn black">Blog</Nav.Link>
-                    <Nav.Link href="https://github.com/conan-io/conan" className="btn navBtn mr-3" rel="nofollow noopener noreferrer" target="_blank"><img src="/small-github.svg" alt="Github" /></Nav.Link>
-                    <div className="downloads-cta arrow-cta">
-                      <div className="button_cont">
-                        <Nav.Link href="/downloads" className="btn conan-blue-gradient-bg white font-weight-bold" id="download_btn_header"><span>Downloads</span></Nav.Link>
+                      <Nav.Link href="/center"><span className="btn navBtn black">ConanCenter<LuPackageSearch className="ml-1"/></span></Nav.Link>
+                      <Nav.Link href="/faq"><span className="btn navBtn black">FAQ</span></Nav.Link>
+                      <Nav.Link href="https://docs.conan.io/"><span className="btn navBtn black">Docs</span></Nav.Link>
+                      <Nav.Link href="https://blog.conan.io/"><span className="btn navBtn black">Blog</span></Nav.Link>
+                      <Nav.Link href="https://github.com/conan-io/conan"><span className="btn navBtn mr-3" rel="nofollow noopener noreferrer" target="_blank"><img src="/small-github.svg" alt="Github"></img></span></Nav.Link>
+                      <div className="downloads-cta arrow-cta">
+                        <div className="button_cont">
+                          <Nav.Link href="/downloads"><span className="btn conan-blue-gradient-bg white font-weight-bold" id="download_btn_header"><span>Downloads</span></span></Nav.Link>
+                        </div>
                       </div>
-                    </div>
                   </Nav>
                 </Navbar.Collapse>
             </Navbar>
