@@ -90,7 +90,7 @@ function ClipboardCopy({ copyText }) {
               as a tool to build your project.
               </p>
               <p>Please, have a look at the Conan documentation about
-              <Link href={{ pathname: "https://docs.conan.io/2/tutorial/consuming_packages/use_tools_as_conan_packages.html"}} passHref>
+              <Link href={{ pathname: "https://docs.conan.io/2/tutorial/consuming_packages/use_tools_as_conan_packages.html"}}>
                 <a> how to use build tools as Conan packages</a>
               </Link>
               .</p>
@@ -198,7 +198,7 @@ function ClipboardCopy({ copyText }) {
               let ref = require.split("/");
               let name = ref[0];
               let version = ref[1];
-              return <Link key={ + "deps"} href={{ pathname: "/center/recipes/" + name, query: { version: version } }} passHref><a onClick={() => props.setRecipeVersion(version)}><h5>{require}</h5></a></Link>;
+              return <Link key={ require + "deps"} href={{ pathname: "/center/recipes/" + name, query: { version: version } }} passHref><a onClick={() => props.setRecipeVersion(version)}><h5>{require}</h5></a></Link>;
               })
             }
             </div>)}
