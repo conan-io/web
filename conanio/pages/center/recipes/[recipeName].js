@@ -166,12 +166,11 @@ export default function ConanPackage(props) {
             </Col> }
           </Row>
           {!recipeDescription && (<DefaultDescription name={recipeData.name}/>)}
-          {recipeDescription && (<Tabs className="package-tabs" id="uncontrolled">
-            {/* <Tab eventKey="use-it" title="Use it"><br/><UseItTab info={recipeUseIt} recipeName={props.recipeName} recipeVersion={selectedVersion} /></Tab>*}
-            {/* FIXME: we're not passing showUnmaintainedVersions to handle it! */}
-            <Tab eventKey="dependencies" title="Dependencies"><br/><DependenciesTab info={recipeUseIt} recipeName={props.recipeName} recipeVersion={selectedVersion}/></Tab>
+          {recipeDescription && <Tabs className="package-tabs" id="uncontrolled">
+            {recipeUseIt && <Tab eventKey="use-it" title="Use it"><br/><UseItTab info={recipeUseIt} recipeName={props.recipeName} recipeVersion={selectedVersion} /></Tab>}
+            {recipeUseIt &&<Tab eventKey="dependencies" title="Dependencies"><br/><DependenciesTab info={recipeUseIt} recipeName={props.recipeName} recipeVersion={selectedVersion}/></Tab>}
             <Tab eventKey="badges" title="Badges"><br/><BadgesTab recipeName={props.recipeName} /></Tab>
-          </Tabs>)}
+          </Tabs>}
         </Container>
         <br/>
         <ConanFooter/>
