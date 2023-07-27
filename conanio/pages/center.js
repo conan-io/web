@@ -20,7 +20,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       data: {
-        popular: await get_json_list(urls.popular, urls.api.private),
+        /*popular: await get_json_list(urls.popular, urls.api.private),*/
         updated: await get_json_list(urls.updated, urls.api.private),
         new: await get_json_list(urls.new, urls.api.private),
         reference_num: reference_num.references,
@@ -93,7 +93,7 @@ export default function Center(props) {
             </Row>
             <br/>
             <Row className="justify-content-md-center">
-              {props.data.popular.length > 0  && <Col xs lg="4"><CenterList data={props.data.popular} name="Popular recipes" full_name={true}/></Col>}
+              {/*props.data.popular.length > 0  && <Col xs lg="4"><CenterList data={props.data.popular} name="Popular recipes" full_name={true}/></Col>*/}
               {props.data.updated.length > 0 && <Col xs lg="4"><CenterList data={props.data.updated} name="Just updated" full_name={false}/></Col>}
               {props.data.new.length > 0 && <Col xs lg="4"><CenterList data={props.data.new} name="New version" full_name={true}/></Col>}
             </Row>
