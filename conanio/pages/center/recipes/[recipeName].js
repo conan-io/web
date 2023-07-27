@@ -103,7 +103,7 @@ export default function ConanPackage(props) {
                         <a style={{color: 'grey',cursor: 'pointer'}} onClick={()=>{setShowOldVersions(!showOldVersions)}}> show deprecated</a>
                       </div>
                     }
-                    {showOldVersions && unmaintainedVersions.length > 0 && " - " }
+                    {showOldVersions && unmaintainedVersions.length > 0 && ", " }
                     { showOldVersions && unmaintainedVersions.length > 0 &&
                       (
                        unmaintainedVersions.map(
