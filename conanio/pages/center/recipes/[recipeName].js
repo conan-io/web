@@ -31,7 +31,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       data: data,
-      downloads: await get_json(urls.package.downloads, urls.api.private),
+      /*downloads: await get_json(urls.package.downloads, urls.api.private),*/
       recipeName: context.params.recipeName,
       recipeVersion: context.query.version? context.query.version: null
     },
@@ -61,7 +61,7 @@ export default function ConanPackage(props) {
   const recipeLicenses = recipeData.info.licenses;
   const recipeConanCenterUrl = "https://github.com/conan-io/conan-center-index/tree/master/recipes/" + recipeData.name;
   const recipeUseIt = recipeData.info.use_it;
-  const recipeDownloads = props.downloads[selectedVersion].downloads;
+  /*const recipeDownloads = props.downloads[selectedVersion].downloads;*/
   const maintainedVersions = Object.keys(props.data).filter(version => props.data[version].info.status === "ok");
   const unmaintainedVersions = Object.keys(props.data).filter(version => props.data[version].info.status !== "ok");
 
@@ -105,14 +105,14 @@ export default function ConanPackage(props) {
                     }
                     {showOldVersions && unmaintainedVersions.length > 0 && ", " }
                     { showOldVersions && unmaintainedVersions.length > 0 &&
-                    (
-                     unmaintainedVersions.map(
-                        version => (
-                          <a key={version} style={{color: 'grey', cursor: 'pointer'}} onClick={()=>{setSelectedVersion(version)}}>{version}</a>
-                        )
-                      ).reduce((prev, curr) => [prev, ', ', curr])
-                    )
-                  }
+                      (
+                       unmaintainedVersions.map(
+                          version => (
+                            <a key={version} style={{color: 'grey', cursor: 'pointer'}} onClick={()=>{setSelectedVersion(version)}}>{version}</a>
+                          )
+                        ).reduce((prev, curr) => [prev, ', ', curr])
+                      )
+                    }
                 </Col>
               </Row>
             </Col>
@@ -120,16 +120,16 @@ export default function ConanPackage(props) {
           <Row>
             <Col xs lg="8">
               {recipeDescription && (<Row>
-                <Col className="mb-2" xs lg>{recipeDescription}</Col>
+                <Col className="mt-2 mb-2" xs lg>{recipeDescription}</Col>
               </Row>)}
 
               {recipeLicenses && recipeLicenses.length > 0 && (<Row>
                 <Col xs lg="8"><LiaBalanceScaleSolid className="conanIconBlue conanIcon26"/> {recipeLicenses.join(", ")}</Col>
               </Row>)}
 
-              {((recipeDownloads && recipeDownloads.length > 0) || recipeData.info.downloads > 0) && (<Row>
+              {/*((recipeDownloads && recipeDownloads.length > 0) || recipeData.info.downloads > 0) && (<Row>
                 <Col xs lg="8"><b>Downloads:</b> {recipeData.info.downloads}</Col>
-              </Row>)}
+              </Row>)*/}
 
               {recipeDescription && (<Row>
                 <Col xs lg="8"><Link href={recipeConanCenterUrl}><a><LiaGithub className="conanIconBlue conanIcon26"/> View recipe on GitHub</a></Link></Col>
@@ -151,7 +151,7 @@ export default function ConanPackage(props) {
               </Row>)}
             </Col>
 
-            { recipeDownloads && recipeDownloads.length > 0 &&
+            {/* recipeDownloads && recipeDownloads.length > 0 &&
             <Col xs lg="4">
               <LineChart width={400} height={200} data={recipeDownloads} margin={{ top: 20, right: 20, left: 20, bottom: 20 }}>
                 <XAxis dataKey="date" />
@@ -159,7 +159,7 @@ export default function ConanPackage(props) {
                 <CartesianGrid stroke="#f5f5f5" />
                 <Line type="monotone" dataKey="downloads" stroke="#0d6efd" yAxisId={0} />
               </LineChart>
-            </Col> }
+            </Col> */}
           </Row>
           {!recipeDescription && (<DefaultDescription name={recipeData.name}/>)}
           {recipeDescription && <Tabs className="package-tabs" id="uncontrolled">

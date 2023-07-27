@@ -70,9 +70,9 @@ function PackageInfo(props) {
       {props.data.info.licenses && props.data.info.licenses.length > 0 &&
         <Row><Col xs lg><LiaBalanceScaleSolid className="conanIconBlue"/> {props.data.info.licenses.join(", ")}</Col></Row>
       }
-      {props.data.info.downloads > 0  &&
+      {/*props.data.info.downloads > 0  &&
         <Row><Col xs lg="3"><b>Downloads:</b> {props.data.info.downloads}</Col></Row>
-      }
+      */}
       <Row><Col xs lg className="mt-2">{props.data.info.description || (<DefaultDescription name={props.data.name}/>)}</Col></Row>
       <Row><Col xs lg className="mt-2"><p> {props.data.info.labels.map((item) => (<Badge key={item}>#{item}</Badge>))}</p></Col></Row>
     </div>
