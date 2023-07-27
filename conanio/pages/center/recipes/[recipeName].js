@@ -96,7 +96,7 @@ export default function ConanPackage(props) {
                         version => (
                           <a key={version} style={{color: '#007bff',cursor: 'pointer'}} onClick={()=>{setSelectedVersion(version)}}>{version}</a>
                         )
-                      ).reduce((prev, curr) => [prev, ' - ', curr])
+                      ).reduce((prev, curr) => [prev, ', ', curr])
                     }
                     {!showOldVersions && unmaintainedVersions.length > 0 &&
                       <div>
@@ -110,7 +110,7 @@ export default function ConanPackage(props) {
                           version => (
                             <a key={version} style={{color: 'grey', cursor: 'pointer'}} onClick={()=>{setSelectedVersion(version)}}>{version}</a>
                           )
-                        ).reduce((prev, curr) => [prev, ' - ', curr])
+                        ).reduce((prev, curr) => [prev, ', ', curr])
                       )
                     }
                 </Col>
