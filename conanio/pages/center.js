@@ -7,11 +7,12 @@ import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Form from 'react-bootstrap/Form';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { ConanSearchBar } from "../components/searchbar";
+import { Tooltip } from 'react-tooltip';
+import { BasicSearchBar } from "../components/searchbar";
 import { ConanCenterHeader } from '../components/header';
 import ConanFooter from '../components/footer';
 import {get_json, get_json_list, get_urls} from '../service/service';
+import { BiInfoCircle } from "react-icons/bi";
 
 export async function getServerSideProps(context) {
   let urls = get_urls()
@@ -30,43 +31,16 @@ export async function getServerSideProps(context) {
   }
 }
 
-function CenterSearchBar(props) {
-
-  let router = useRouter();
-  const [value, setValue] = useState('');
-  const [allTopics, setAllTopics] = useState(null);
-
-  const handleChange = (e) => {
-    setValue(e);
-  }
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    router.push(
-      {
-        pathname: '/center/recipes',
-        query: { defaultValue: value }
-      },
-      '/center/recipes'
-    );
-    //window.location.reload(false);
-  }
-
-  return (
-    <Form onSubmit={e => handleSubmit(e)}>
-      <Row>
-        <Col>
-          <ConanSearchBar value={value} handleChange={handleChange} searchButton={props.button} recipes={props.recipes} references={props.references}/>
-        </Col>
-      </Row>
-    </Form>
-  );
-}
 
 function CenterList(props) {
   return (
     <div className="text-center">
-      <h2>{props.name}</h2>
+      <Tooltip id="extra-info" />
+      <h2>
+        {props.name}{props.extraInfo && (<a data-tooltip-id="extra-info" data-tooltip-html={props.extraInfo} data-tooltip-place="top">
+          <BiInfoCircle style={{padding: '0px 0px 0px 0px'}} className="mb-3 conanIconGrey conanIcon18"/>
+        </a>)}
+      </h2>
       <ListGroup>
         {props.data.map((info) => (
           <ListGroup.Item style={{border: '0.05rem solid #21AFFF', borderRadius: '10px', margin:'0px 0px 5px 0px'}} key={info.name + info.version}>
@@ -89,13 +63,33 @@ export default function Center(props) {
             <Container><h1 className="text-center">The Conan libraries and tools central repository</h1></Container>
             <br/>
             <Row>
-              <Col><CenterSearchBar recipes={props.data.recipes_num} references={props.data.reference_num}/></Col>
+              <Col>
+                <BasicSearchBar recipes={props.data.recipes_num} references={props.data.reference_num}/>
+              </Col>
             </Row>
             <br/>
             <Row className="justify-content-md-center">
               {/*props.data.popular.length > 0  && <Col xs lg="4"><CenterList data={props.data.popular} name="Popular recipes" full_name={true}/></Col>*/}
-              {props.data.updated.length > 0 && <Col xs lg="4"><CenterList data={props.data.updated} name="Just updated" full_name={false}/></Col>}
-              {props.data.new.length > 0 && <Col xs lg="4"><CenterList data={props.data.new} name="New version" full_name={true}/></Col>}
+              {
+                props.data.updated.length > 0 && <Col xs lg="4">
+                  <CenterList
+                    data={props.data.updated}
+                    name="Just updated"
+                    full_name={false}
+                    extraInfo='List of the last recipes updated. Updated every 6 hours'
+                  />
+                </Col>
+              }
+              {
+                props.data.new.length > 0 && <Col xs lg="4">
+                  <CenterList
+                   data={props.data.new}
+                   name="New version"
+                   full_name={true}
+                   extraInfo='List of the latest versions indexed by the web. Updated every 6 hours'
+                  />
+                </Col>
+              }
             </Row>
           </Container>
           <br/>

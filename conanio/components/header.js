@@ -32,7 +32,7 @@ function BetaBanner() {
       <div className="container">
         <div className="row d-flex justify-content-around align-items-center">
           <div className="col-auto mt-1 mb-1 text-center text-white beta-links">
-            Conancenter web BETA version - <Link href="https://github.com/conan-io/web/issues"><a className="white"><b>your feedback</b></a></Link> will help us to improve it!
+            Conancenter web BETA version - <Link href="https://github.com/conan-io/web/issues"><a style={{textDecoration: 'underline'}} className="white"><b>your feedback</b></a></Link> will help us to improve it!
           </div>
         </div>
       </div>

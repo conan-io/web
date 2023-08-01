@@ -4,6 +4,7 @@ import { ConanKitchenHeader } from '../components/header';
 import ConanFooter from '../components/footer';
 import { Tooltip } from 'react-tooltip';
 import Link from 'next/link';
+import { BiInfoCircle } from "react-icons/bi";
 
 function CopyToClipboard(props) {
   return (
@@ -72,6 +73,7 @@ function DownloadConanPackageManager() {
           <Tooltip id="copy-to-clipboard" />
           <Tooltip id="download" />
           <Tooltip id="go-to-conan-github" />
+          <Tooltip id="extra-info" />
           <div className="small-title d-flex align-items-center"><img
               alt="Downlod Conan Open Source C and C++ Package Manager" className="mr-2 small-title-lazy"
               src="/conan-downloads-logo.svg"></img></div>
@@ -136,12 +138,19 @@ function DownloadConanPackageManager() {
                 </Link>
               </div>
             </div>
-              <p>Conan Bundle:</p>
+              <p>
+                Self-contained (no Python needed)<a
+                  data-tooltip-id="extra-info"
+                  data-tooltip-place="top"
+                  data-tooltip-html="self-contained executable with everything you need to run conan<br/>without installing python or any other requirement">
+                    <BiInfoCircle style={{padding: '0px 0px 0px 0px'}} className="mb-3 conanIconGrey conanIcon18"/>
+                </a>:
+              </p>
               <div className="installers small-installers pb-4">
               <CopyToClipboard
                 imageAlt="Darwin"
                 imageSrc="/downloads/darwin-small-pack.svg"
-                textToShow="wget and tar -xvf conan bundle"
+                textToShow="wget and tar -xvf conan executable"
                 textToCopy={'wget https://github.com/conan-io/conan/releases/latest/download/conan-macos-arm64.tar.gz\ntar -xvf conan-macos-arm64.tar.gz'}
               />
               <DownloadInstallerOrCopy
@@ -163,7 +172,7 @@ function DownloadConanPackageManager() {
               <CopyToClipboard
                 imageAlt="Linux"
                 imageSrc="/downloads/linux-small-pack.svg"
-                textToShow="wget and tar -xvf conan bundle"
+                textToShow="wget and tar -xvf conan executable"
                 textToCopy={'wget https://github.com/conan-io/conan/releases/latest/download/conan-linux-64.tar.gz\ntar -xvf conan-linux-64.tar.gz'}
               />
             </div>
