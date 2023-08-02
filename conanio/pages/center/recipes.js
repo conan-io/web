@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from "react";
+import { useState, useEffect } from 'react';
 import { SSRProvider } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -100,6 +100,7 @@ export default function ConanSearch(props) {
   const [licenses, setLicenses] = useState(props.data.defaultLicenses);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(props.data.packages);
+  const [timer, setTimer] = useState(null);
 
 
   const getData = async (value, topiclist, licenseList) => {
@@ -118,7 +119,15 @@ export default function ConanSearch(props) {
   }
 
   const handleChange = (e) => {
+    const typingSearch = (v) => {
+      getData(v, topics, licenses);
+    };
     setValue(e);
+    clearTimeout(timer);
+    const newTimer = setTimeout(() => {
+      typingSearch(e);
+    }, 500);
+    setTimer(newTimer);
   }
 
   var handleTopics = (selectedOption) => {
@@ -137,6 +146,7 @@ export default function ConanSearch(props) {
     getData(value, topics, licenses);
     event.preventDefault();
   }
+
   return (
     <React.StrictMode>
       <SSRProvider>
