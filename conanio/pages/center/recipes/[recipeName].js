@@ -17,13 +17,11 @@ import { DefaultDescription } from '../recipes';
 import { LiaBalanceScaleSolid, LiaGithub } from "react-icons/lia";
 import { IoMdHome } from "react-icons/io";
 import hljs from "highlight.js";
-import { UseItTab, BadgesTab, DependenciesTab } from "../../../components/recipeTabs";
-import { FaCopy } from "react-icons/fa";
-import { HiClipboardCopy } from "react-icons/hi";
-import { FaTags } from "react-icons/fa";
+import { UseItTab, BadgesTab, DependenciesTab, VersionsTab } from "../../../components/recipeTabs";
 import { PiWarningBold } from "react-icons/pi";
 import { MdOutlineSyncDisabled } from "react-icons/md";
 import { BiInfoCircle } from "react-icons/bi";
+import { AiOutlinePushpin } from "react-icons/ai";
 import { BasicSearchBar } from "../../../components/searchbar";
 
 
@@ -54,18 +52,19 @@ export default function ConanPackage(props) {
   const [showOldVersions, setShowOldVersions] = useState(false);
   const [selectedVersion, setSelectedVersion] = useState(props.recipeVersion !== null? props.recipeVersion: Object.keys(props.data)[0]);
 
+  const indexSelectedVersion = Object.keys(props.data).filter(index => props.data[index].info.version === selectedVersion)[0];
   if (!props.data) return (<div>Loading...</div>);
-
-  const recipeData = props.data[selectedVersion];
+  const recipeData = props.data[indexSelectedVersion];
   const recipeStatus = recipeData.info.status;
+  const recipeRevision = recipeData.info.recipe_revision;
   const recipeDescription = recipeData.info.description;
   const recipeLabels = recipeData.info.labels;
   const recipeLicenses = recipeData.info.licenses;
   const recipeConanCenterUrl = "https://github.com/conan-io/conan-center-index/tree/master/recipes/" + recipeData.name;
   const recipeUseIt = recipeData.info.use_it;
   /*const recipeDownloads = props.downloads[selectedVersion].downloads;*/
-  const maintainedVersions = Object.keys(props.data).filter(version => props.data[version].info.status === "ok");
-  const unmaintainedVersions = Object.keys(props.data).filter(version => props.data[version].info.status !== "ok");
+  const maintainedVersions = Object.values(props.data).filter(data => data.info.status === "ok").map(data => data.info.version);
+  const unmaintainedVersions = Object.values(props.data).filter(data => data.info.status !== "ok").map(data => data.info.version);
 
   return (
     <React.StrictMode>
@@ -93,38 +92,12 @@ export default function ConanPackage(props) {
                   </h1>
                 </Col>
               </Row>
-              <Row>
-                <Col>
-                    <FaTags className="conanIconBlue"/> {
-                      maintainedVersions.map(
-                        version => (
-                          <a key={version} style={{color: '#007bff',cursor: 'pointer'}} onClick={()=>{setSelectedVersion(version)}}>{version}</a>
-                        )
-                      ).reduce((prev, curr) => [prev, ', ', curr])
-                    }
-                    {!showOldVersions && unmaintainedVersions.length > 0 &&
-                      <div>
-                        <a style={{color: 'grey',cursor: 'pointer'}} onClick={()=>{setShowOldVersions(!showOldVersions)}}> show deprecated</a>
-                      </div>
-                    }
-                    {showOldVersions && unmaintainedVersions.length > 0 && ", " }
-                    { showOldVersions && unmaintainedVersions.length > 0 &&
-                      (
-                       unmaintainedVersions.map(
-                          version => (
-                            <a key={version} style={{color: 'grey', cursor: 'pointer'}} onClick={()=>{setSelectedVersion(version)}}>{version}</a>
-                          )
-                        ).reduce((prev, curr) => [prev, ', ', curr])
-                      )
-                    }
-                </Col>
-              </Row>
             </Col>
           </Row>
           <Row>
-            <Col xs lg="8">
+            <Col xs lg="8" className="mt-2">
               {recipeDescription && (<Row>
-                <Col className="mt-2 mb-2" xs lg>{recipeDescription}</Col>
+                <Col className="mb-2" xs lg>{recipeDescription}</Col>
               </Row>)}
 
               {recipeLicenses && recipeLicenses.length > 0 && (<Row>
@@ -140,10 +113,14 @@ export default function ConanPackage(props) {
               </Row>)}
 
               {(recipeUseIt && recipeUseIt.homepage) && (<Row>
-                <Col xs lg="8" className="mb-2"><Link href={recipeUseIt.homepage}><a><IoMdHome className="conanIconBlue conanIcon26"/>{sanitizeURL(recipeUseIt.homepage)}</a></Link></Col>
+                <Col xs lg="8"><Link href={recipeUseIt.homepage}><a><IoMdHome className="conanIconBlue conanIcon26"/>{sanitizeURL(recipeUseIt.homepage)}</a></Link></Col>
               </Row>)}
 
-              {recipeLabels && recipeLabels.length > 0 && (<Row>
+              {recipeDescription && (<Row>
+                <Col xs lg="8"><AiOutlinePushpin className="conanIconBlue conanIcon26"/> {recipeRevision}</Col>
+              </Row>)}
+
+              {recipeLabels && recipeLabels.length > 0 && (<Row className="mt-2">
                 <Col xs lg="8">
                   <p>
                     {recipeLabels.map((item) => (<Badge key={item}>#{item}</Badge>))}
@@ -166,11 +143,12 @@ export default function ConanPackage(props) {
             </Col> */}
           </Row>
           {!recipeDescription && (<DefaultDescription name={recipeData.name}/>)}
-          {recipeDescription && <Tabs className="package-tabs" id="uncontrolled">
-            <Tab eventKey="use-it" title="Use it"><br/><UseItTab info={recipeUseIt} recipeName={props.recipeName} recipeVersion={selectedVersion} /></Tab>
-            <Tab eventKey="dependencies" title="Dependencies"><br/><DependenciesTab info={recipeUseIt} recipeName={props.recipeName} recipeVersion={selectedVersion}/></Tab>
+          <Tabs className="package-tabs" id="uncontrolled">
+            {recipeDescription && <Tab eventKey="use-it" title="Use it"><br/><UseItTab info={recipeUseIt} recipeName={props.recipeName} recipeVersion={selectedVersion} /></Tab>}
+            {recipeDescription && <Tab eventKey="dependencies" title="Dependencies"><br/><DependenciesTab info={recipeUseIt} recipeName={props.recipeName} recipeVersion={selectedVersion}/></Tab>}
+            <Tab eventKey="version" title="Versions"><br/><VersionsTab selector={setSelectedVersion} data={props.data} /></Tab>
             <Tab eventKey="badges" title="Badges"><br/><BadgesTab recipeName={props.recipeName} /></Tab>
-          </Tabs>}
+          </Tabs>
         </Container>
         <br/>
         <ConanFooter/>
