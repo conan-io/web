@@ -23,6 +23,8 @@ import { HiClipboardCopy } from "react-icons/hi";
 import { FaTags } from "react-icons/fa";
 import { PiWarningBold } from "react-icons/pi";
 import { MdOutlineSyncDisabled } from "react-icons/md";
+import { BiInfoCircle } from "react-icons/bi";
+import { BasicSearchBar } from "../../../components/searchbar";
 
 
 export async function getServerSideProps(context) {
@@ -70,8 +72,10 @@ export default function ConanPackage(props) {
       <SSRProvider>
       <div className="flex-wrapper bg-conan-blue">
         <ConanCenterHeader/>
-        <br/>
         <Container className="conancontainer">
+          <div className="mt-3 mb-3">
+          <BasicSearchBar/>
+          </div>
           <Row>
             <Col xs lg>
               <Row>

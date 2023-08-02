@@ -82,6 +82,16 @@ blockquote:not(.important):not(.warning):not(.restricted):not(.experimental):not
   color: #21AFFF;
 }
 
+.conanIconGrey{
+  flex: none ;
+  color: grey;
+}
+
+.conanIcon18{
+  height: 18px;
+  width: 18px;
+}
+
 .conanIcon26{
   height: 26px;
   width: 26px;

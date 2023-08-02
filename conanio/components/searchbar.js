@@ -9,6 +9,8 @@ import { LuPackageSearch } from "react-icons/lu";
 import { BiPackage } from "react-icons/bi";
 import { PiNoteBold } from "react-icons/pi";
 import { CgFormatSlash } from "react-icons/cg";
+import { useRouter } from 'next/router';
+
 
 function ConanFilter(props) {
   const [checked, setChecked] = useState(props.checked);
@@ -110,4 +112,35 @@ export function ConanSearchBar(props) {
       </Row>}
     </div>
   )
+}
+
+
+export function BasicSearchBar(props) {
+
+  let router = useRouter();
+  const [value, setValue] = useState('');
+  const handleChange = (e) => {
+    setValue(e);
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    router.push(
+      {
+        pathname: '/center/recipes',
+        query: { defaultValue: value }
+      },
+      '/center/recipes'
+    );
+  }
+
+  return (
+    <Form onSubmit={e => handleSubmit(e)}>
+      <Row className="justify-content-md-center">
+        <Col>
+          <ConanSearchBar value={value} handleChange={handleChange} recipes={props.recipes} references={props.references}/>
+        </Col>
+      </Row>
+    </Form>
+  );
 }
