@@ -7,6 +7,15 @@ const nextConfig = {
   env: {
     conanioServer: process.env.CONANIO_SERVER,
   },
+  async redirects() {
+    return [
+      {
+        source: '/:slug*.html',
+        destination: '/:slug*',
+        permanent: true,
+      },
+    ]
+  },
 }
 
 module.exports = nextConfig
