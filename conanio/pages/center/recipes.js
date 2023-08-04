@@ -65,7 +65,7 @@ function PackageInfo(props) {
     <div className="m-2">
       <Row>
         <Col xs lg><Link href={{ pathname: "/center/recipes/" + props.data.name, query: { version: props.data.info.version } }}><a><h3>{props.data.name}</h3></a></Link></Col>
-        <Col xs lg><b>Last updated version:</b> {props.data.info.version}</Col>
+        <Col xs lg><b>Latest version:</b> {props.data.info.version}</Col>
       </Row>
       {props.data.info.licenses && props.data.info.licenses.length > 0 &&
         <Row><Col xs lg><LiaBalanceScaleSolid className="conanIconBlue"/> {props.data.info.licenses.join(", ")}</Col></Row>
