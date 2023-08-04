@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from "react";
+import { useRouter } from 'next/router';
 import { SSRProvider } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -45,11 +46,11 @@ function sanitizeURL(url) {
 
 
 export default function ConanPackage(props) {
+  let router = useRouter();
   useEffect(() => {
     hljs.highlightAll();
   });
 
-  const [showOldVersions, setShowOldVersions] = useState(false);
   const [selectedVersion, setSelectedVersion] = useState(props.recipeVersion !== null? props.recipeVersion: props.data[0].info.version);
 
   const indexSelectedVersion = Object.keys(props.data).filter(index => props.data[index].info.version === selectedVersion)[0];
@@ -59,12 +60,24 @@ export default function ConanPackage(props) {
   const recipeRevision = recipeData.info.recipe_revision;
   const recipeDescription = recipeData.info.description;
   const recipeLabels = recipeData.info.labels;
-  const recipeLicenses = recipeData.info.licenses;
+  const recipeLicenses = Object.keys(recipeData.info.licenses);
   const recipeConanCenterUrl = "https://github.com/conan-io/conan-center-index/tree/master/recipes/" + recipeData.name;
   const recipeUseIt = recipeData.info.use_it;
   /*const recipeDownloads = props.downloads[selectedVersion].downloads;*/
   const maintainedVersions = Object.values(props.data).filter(data => data.info.status === "ok").map(data => data.info.version);
   const unmaintainedVersions = Object.values(props.data).filter(data => data.info.status !== "ok").map(data => data.info.version);
+
+  const onClickTopics = (topic) => {
+    router.push(
+      {
+        pathname: '/center/recipes',
+        query: {
+          defaultValue: '',
+          defaultTopics: topic}
+      },
+      '/center/recipes'
+    );
+  }
 
   return (
     <React.StrictMode>
@@ -120,10 +133,18 @@ export default function ConanPackage(props) {
                 <Col xs lg="8"><AiOutlinePushpin className="conanIconBlue conanIcon26"/> {recipeRevision}</Col>
               </Row>)}
 
-              {recipeLabels && recipeLabels.length > 0 && (<Row className="mt-2">
+              {recipeLabels && Object.keys(recipeLabels).length > 0 && (<Row className="mt-2">
                 <Col xs lg="8">
                   <p>
-                    {recipeLabels.map((item) => (<Badge key={item}>#{item}</Badge>))}
+                    {
+                      Object.keys(recipeLabels).map(
+                        (item) => (
+                          <a style={{cursor: 'pointer'}} key={item} onClick={() => onClickTopics(recipeLabels[item])}>
+                            <Badge key={item}>#{item}</Badge>
+                          </a>
+                        )
+                      )
+                    }
                     {
                       (recipeStatus !== "ok") && (<Badge bg="warning" text="white"><PiWarningBold/> {recipeStatus}</Badge>)
                     }
