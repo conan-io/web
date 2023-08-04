@@ -50,7 +50,7 @@ export default function ConanPackage(props) {
   });
 
   const [showOldVersions, setShowOldVersions] = useState(false);
-  const [selectedVersion, setSelectedVersion] = useState(props.recipeVersion !== null? props.recipeVersion: Object.keys(props.data)[0]);
+  const [selectedVersion, setSelectedVersion] = useState(props.recipeVersion !== null? props.recipeVersion: props.data[0].info.version);
 
   const indexSelectedVersion = Object.keys(props.data).filter(index => props.data[index].info.version === selectedVersion)[0];
   if (!props.data) return (<div>Loading...</div>);
