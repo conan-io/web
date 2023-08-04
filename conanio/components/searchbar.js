@@ -41,6 +41,11 @@ export function ConanListFilter(props) {
 }
 
 export function ConanMultiSelectFilter(props) {
+  const options = props.filters.map(elem => {return {label: elem.filter, value: elem.id};});
+  let defaultValues = []
+  if (props.defaultValue){
+    defaultValues = options.filter((elem) => props.defaultValue.includes(elem.value));
+  }
   const customStyles = {
     option: (defaultStyles, state) => ({
       ...defaultStyles,
@@ -87,7 +92,8 @@ export function ConanMultiSelectFilter(props) {
         isMulti
         placeholder={props.title}
         onChange={props.handleFilter}
-        options={props.filters.map(elem => {return {label: elem.filter, value: elem.id};})} />
+        defaultValue={defaultValues}
+        options={options} />
     </div>
   )
 }

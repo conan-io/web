@@ -24,6 +24,7 @@ export async function getServerSideProps(context) {
   if (typeof defaultTopics === "string"){
     defaultTopics = [defaultTopics]
   }
+  defaultTopics = defaultTopics.map(e => parseInt(e))
   defaultLicenses = defaultLicenses || [];
   if (typeof defaultLicenses === "string"){
     defaultLicenses = [defaultLicenses]
@@ -61,20 +62,22 @@ export function DefaultDescription (props) {
 
 
 function PackageInfo(props) {
+  const licenses = Object.keys(props.data.info.licenses)
+  const labels = Object.keys(props.data.info.labels)
   return (
     <div className="m-2">
       <Row>
         <Col xs lg><Link href={{ pathname: "/center/recipes/" + props.data.name, query: { version: props.data.info.version } }}><a><h3>{props.data.name}</h3></a></Link></Col>
         <Col xs lg><b>Latest version:</b> {props.data.info.version}</Col>
       </Row>
-      {props.data.info.licenses && props.data.info.licenses.length > 0 &&
-        <Row><Col xs lg><LiaBalanceScaleSolid className="conanIconBlue"/> {props.data.info.licenses.join(", ")}</Col></Row>
+      {licenses && licenses.length > 0 &&
+        <Row><Col xs lg><LiaBalanceScaleSolid className="conanIconBlue"/> {licenses.join(", ")}</Col></Row>
       }
       {/*props.data.info.downloads > 0  &&
         <Row><Col xs lg="3"><b>Downloads:</b> {props.data.info.downloads}</Col></Row>
       */}
       <Row><Col xs lg className="mt-2">{props.data.info.description || (<DefaultDescription name={props.data.name}/>)}</Col></Row>
-      <Row><Col xs lg className="mt-2"><p> {props.data.info.labels.map((item) => (<Badge key={item}>#{item}</Badge>))}</p></Col></Row>
+      <Row><Col xs lg className="mt-2"><p> {labels.map((item) => (<Badge key={item}>#{item}</Badge>))}</p></Col></Row>
     </div>
   )
 }
@@ -160,8 +163,8 @@ export default function ConanSearch(props) {
               </Row>
             </Form>
             <Row className="justify-content-md-center mt-2">
-              <Col xs lg="3"><ConanMultiSelectFilter title="Licenses" filters={props.data.licenses} handleFilter={handleLicenses}/></Col>
-              <Col xs lg="3"><ConanMultiSelectFilter title="Topics" filters={props.data.topics} handleFilter={handleTopics}/></Col>
+              <Col xs lg="3"><ConanMultiSelectFilter title="Licenses" defaultValue={props.data.defaultLicenses} filters={props.data.licenses} handleFilter={handleLicenses}/></Col>
+              <Col xs lg="3"><ConanMultiSelectFilter title="Topics" defaultValue={props.data.defaultTopics} filters={props.data.topics} handleFilter={handleTopics}/></Col>
             </Row>
             <br/>
             <div style={{width: "100%"}}>
