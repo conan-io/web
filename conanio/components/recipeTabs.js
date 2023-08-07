@@ -291,28 +291,35 @@ function VersionsTab(props) {
             </a>
           </Col>
           <Col className="text-center" md="auto">
+            <a data-tooltip-id='extra-info' data-tooltip-html="reference version" data-tooltip-place="top">
+              <FaTags className="mr-2" style={{verticalAlign:'text-top',color: '#21AFFF', height: '21px', width: '21px'}}/>
+            </a>
             <a key={recipe.info.version} style={{color: '#007bff',cursor: 'pointer'}} onClick={()=>{props.selector(recipe.info.version);window.scrollTo(0, 0);}}>
-              <FaTags className="mr-2" style={{verticalAlign:'text-top',color: '#21AFFF', height: '21px', width: '21px'}}/>{recipe.info.version}
+              {recipe.info.version}
             </a>
           </Col>
           <Col md="auto">
             <Row style={{padding:'0px 15px'}}>
               <div className="d-inline">
-                <MdOutlineToday className="conanIconBlue" style={{verticalAlign:'text-top',color: '#21AFFF',height: '21px', width: '21px'}}/> {recipe.info.timestamp}
+                <a data-tooltip-id='extra-info' data-tooltip-html="last updated date" data-tooltip-place="top">
+                  <MdOutlineToday className="conanIconBlue" style={{verticalAlign:'text-top',color: '#21AFFF',height: '21px', width: '21px'}}/>
+                </a> {recipe.info.timestamp}
               </div>
             </Row>
             <Row style={{padding:'0px 15px'}}>
-              {recipe.info.licenses.length > 0 && (
+              {Object.keys(recipe.info.licenses).length > 0 && (
                 <div className="d-inline">
-                  <LiaBalanceScaleSolid style={{verticalAlign:'text-top',color: '#21AFFF',height: '21px', width: '21px'}}/> {recipe.info.licenses.join(", ")}
+                  <a data-tooltip-id='extra-info' data-tooltip-html="licenses" data-tooltip-place="top">
+                    <LiaBalanceScaleSolid style={{verticalAlign:'text-top',color: '#21AFFF',height: '21px', width: '21px'}}/>
+                  </a> {Object.keys(recipe.info.licenses).join(", ")}
                 </div>)
               }
             </Row>
           </Col>
           <Col className="text-center" md="auto">
-            <
-              AiOutlinePushpin style={{verticalAlign:'text-top',color: '#21AFFF', height: '21px', width: '21px'}}
-            /> {recipe.info.recipe_revision}
+            <a data-tooltip-id='extra-info' data-tooltip-html="recipe revision" data-tooltip-place="top">
+              <AiOutlinePushpin style={{verticalAlign:'text-top',color: '#21AFFF', height: '21px', width: '21px'}}/>
+            </a> {recipe.info.recipe_revision}
           </Col>
         </Row>
       </ListGroup.Item>

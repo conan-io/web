@@ -20,10 +20,11 @@ import { IoMdHome } from "react-icons/io";
 import hljs from "highlight.js";
 import { UseItTab, BadgesTab, DependenciesTab, VersionsTab } from "../../../components/recipeTabs";
 import { PiWarningBold } from "react-icons/pi";
-import { MdOutlineSyncDisabled } from "react-icons/md";
+import { MdOutlineCheckCircleOutline } from "react-icons/md";
 import { BiInfoCircle } from "react-icons/bi";
 import { AiOutlinePushpin } from "react-icons/ai";
 import { BasicSearchBar } from "../../../components/searchbar";
+import { Tooltip as ReactToolTip } from 'react-tooltip';
 
 
 export async function getServerSideProps(context) {
@@ -67,6 +68,9 @@ export default function ConanPackage(props) {
   const maintainedVersions = Object.values(props.data).filter(data => data.info.status === "ok").map(data => data.info.version);
   const unmaintainedVersions = Object.values(props.data).filter(data => data.info.status !== "ok").map(data => data.info.version);
 
+  const iconStatusColor = recipeStatus === 'ok'? 'green': 'orange'
+  const extraInfo = recipeStatus === 'ok'? 'maintained version': recipeStatus + ' version'
+
   const onClickTopics = (topic) => {
     router.push(
       {
@@ -92,17 +96,13 @@ export default function ConanPackage(props) {
             <Col xs lg>
               <Row>
                 <Col>
+                <ReactToolTip id="package-info"/>
                   <h1 className="mt-2 mb-2" style={{display: 'inline'}}>
-                    {recipeData.name}/{selectedVersion}{
-                      (recipeStatus !== "ok") && (<
-                          MdOutlineSyncDisabled
-                          style={{
-                            height: '30px',
-                            width: '30px'
-                          }}
-                        />)
-                    }
-                  </h1>
+                    {recipeData.name}/{selectedVersion}
+                  </h1> <a data-tooltip-id='package-info' data-tooltip-html={extraInfo} data-tooltip-place="top">
+                    {(recipeStatus === "unmaintained") && (<PiWarningBold style={{verticalAlign:'sub',color: iconStatusColor,height: '36px', width: '36px'}}/>)}
+                    {(recipeStatus === "ok") && (<MdOutlineCheckCircleOutline style={{verticalAlign:'sub',color: iconStatusColor,height: '36px', width: '36px'}}/>)}
+                  </a>
                 </Col>
               </Row>
             </Col>
@@ -114,7 +114,12 @@ export default function ConanPackage(props) {
               </Row>)}
 
               {recipeLicenses && recipeLicenses.length > 0 && (<Row>
-                <Col xs lg="8"><LiaBalanceScaleSolid className="conanIconBlue conanIcon26"/> {recipeLicenses.join(", ")}</Col>
+                <Col xs lg="8">
+                  <ReactToolTip id="package-info"/>
+                  <a data-tooltip-id='package-info' data-tooltip-html="licenses" data-tooltip-place="top">
+                    <LiaBalanceScaleSolid className="conanIconBlue conanIcon26"/>
+                  </a> {recipeLicenses.join(", ")}
+                </Col>
               </Row>)}
 
               {/*((recipeDownloads && recipeDownloads.length > 0) || recipeData.info.downloads > 0) && (<Row>
@@ -122,15 +127,33 @@ export default function ConanPackage(props) {
               </Row>)*/}
 
               {recipeDescription && (<Row>
-                <Col xs lg="8"><Link href={recipeConanCenterUrl}><a><LiaGithub className="conanIconBlue conanIcon26"/> View recipe on GitHub</a></Link></Col>
+                <Col xs lg="8">
+                  <ReactToolTip id="package-info"/>
+                  <a data-tooltip-id='package-info' data-tooltip-html="GitHub repository" data-tooltip-place="top">
+                    <LiaGithub className="conanIconBlue conanIcon26"/>
+                  </a> <Link href={recipeConanCenterUrl}>
+                    <a>View recipe on GitHub</a>
+                  </Link>
+                </Col>
               </Row>)}
 
               {(recipeUseIt && recipeUseIt.homepage) && (<Row>
-                <Col xs lg="8"><Link href={recipeUseIt.homepage}><a><IoMdHome className="conanIconBlue conanIcon26"/>{sanitizeURL(recipeUseIt.homepage)}</a></Link></Col>
+                <Col xs lg="8">
+                  <ReactToolTip id="package-info"/>
+                  <a data-tooltip-id='package-info' data-tooltip-html="home page" data-tooltip-place="top">
+                    <IoMdHome className="conanIconBlue conanIcon26"/>
+                  </a> <Link href={recipeUseIt.homepage}>
+                    <a>{sanitizeURL(recipeUseIt.homepage)}</a>
+                  </Link>
+                </Col>
               </Row>)}
 
               {recipeDescription && (<Row>
-                <Col xs lg="8"><AiOutlinePushpin className="conanIconBlue conanIcon26"/> {recipeRevision}</Col>
+                <Col xs lg="8">
+                  <ReactToolTip id="package-info"/>
+                  <a data-tooltip-id='package-info' data-tooltip-html="recipe revision" data-tooltip-place="top">
+                    <AiOutlinePushpin className="conanIconBlue conanIcon26"/>
+                  </a> {recipeRevision}</Col>
               </Row>)}
 
               {recipeLabels && Object.keys(recipeLabels).length > 0 && (<Row className="mt-2">
@@ -164,7 +187,7 @@ export default function ConanPackage(props) {
             </Col> */}
           </Row>
           {!recipeDescription && (<DefaultDescription name={recipeData.name}/>)}
-          <Tabs className="package-tabs" id="uncontrolled">
+          <Tabs className="package-tabs mt-2" id="uncontrolled">
             {recipeDescription && <Tab eventKey="use-it" title="Use it"><br/><UseItTab info={recipeUseIt} recipeName={props.recipeName} recipeVersion={selectedVersion} /></Tab>}
             {recipeDescription && <Tab eventKey="dependencies" title="Dependencies"><br/><DependenciesTab info={recipeUseIt} recipeName={props.recipeName} recipeVersion={selectedVersion}/></Tab>}
             <Tab eventKey="version" title="Versions"><br/><VersionsTab selector={setSelectedVersion} data={props.data} /></Tab>
