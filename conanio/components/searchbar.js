@@ -4,6 +4,7 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import FormCheck from 'react-bootstrap/FormCheck';
 import Button from 'react-bootstrap/Button';
+import InputGroup from 'react-bootstrap/InputGroup';
 import Select from "react-select";
 import { LuPackageSearch } from "react-icons/lu";
 import { BiPackage } from "react-icons/bi";
@@ -101,13 +102,15 @@ export function ConanMultiSelectFilter(props) {
 export function ConanSearchBar(props) {
   return (
     <div>
-      <Row className="justify-content-md-center" lg="2">
+      <Row className="justify-content-md-center">
+        <InputGroup>
           <Form.Control className="searchbarConan" type="text" placeholder="Search..." value={props.value} onChange={(e) => props.handleChange(e.target.value)}/>
           <Button className="searchButtonConan" type="submit">
             <LuPackageSearch className="conanLogo"/>
           </Button>
+        </InputGroup>
       </Row>
-      {(props.recipes || props.references) && <Row className="justify-content-md-center mt-2" lg="2">
+      {(props.recipes || props.references) && <Row className="justify-content-md-center mt-2">
         <div className="text-center" style={{color: '#21AFFF'}}>
           <PiNoteBold className="conanIconBlue conanIcon26"/>
           {props.recipes} recipes
@@ -141,12 +144,14 @@ export function BasicSearchBar(props) {
   }
 
   return (
-    <Form onSubmit={e => handleSubmit(e)}>
-      <Row className="justify-content-md-center">
-        <Col>
+    <Row className="justify-content-md-center" xs="12">
+      <Col xs="1" lg="3"></Col>
+      <Col xs="10" lg="6">
+        <Form onSubmit={e => handleSubmit(e)}>
           <ConanSearchBar value={value} handleChange={handleChange} recipes={props.recipes} references={props.references}/>
-        </Col>
-      </Row>
-    </Form>
+        </Form>
+      </Col><Col xs="1" lg="3">
+      </Col>
+    </Row>
   );
 }

@@ -5,7 +5,6 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup';
-import Form from 'react-bootstrap/Form';
 import Link from 'next/link';
 import { Tooltip } from 'react-tooltip';
 import { BasicSearchBar } from "../components/searchbar";
@@ -62,11 +61,7 @@ export default function Center(props) {
           <Container className="conancontainer">
             <Container><h1 className="text-center">The Conan libraries and tools central repository</h1></Container>
             <br/>
-            <Row>
-              <Col>
-                <BasicSearchBar recipes={props.data.recipes_num} references={props.data.reference_num}/>
-              </Col>
-            </Row>
+            <BasicSearchBar recipes={props.data.recipes_num} references={props.data.reference_num}/>
             <br/>
             <Row className="justify-content-md-center">
               {/*props.data.popular.length > 0  && <Col xs lg="4"><CenterList data={props.data.popular} name="Popular recipes" full_name={true}/></Col>*/}

@@ -6,6 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Badge from 'react-bootstrap/Badge';
+import InputGroup from 'react-bootstrap/InputGroup';
 import { ConanSearchBar, ConanMultiSelectFilter } from "../../components/searchbar";
 import ListGroup from 'react-bootstrap/ListGroup';
 import Alert from 'react-bootstrap/Alert';
@@ -157,14 +158,20 @@ export default function ConanSearch(props) {
         <ConanCenterHeader/>
           <br/>
           <Container className="conancontainer">
-            <Form onSubmit={e => handleSubmit(e)}>
-              <Row>
-                <Col><ConanSearchBar value={value} handleChange={handleChange}/></Col>
-              </Row>
-            </Form>
+            <Row className="justify-content-md-center">
+              <Col xs="1" md="1" lg="2"></Col>
+              <Col xs="10" md="10" lg="8">
+                <Form onSubmit={e => handleSubmit(e)}>
+                  <div>
+                    <ConanSearchBar value={value} handleChange={handleChange}/>
+                  </div>
+                </Form>
+              </Col>
+              <Col xs="1" md="1" lg="2"></Col>
+            </Row>
             <Row className="justify-content-md-center mt-2">
-              <Col xs lg="3"><ConanMultiSelectFilter title="Licenses" defaultValue={props.data.defaultLicenses} filters={props.data.licenses} handleFilter={handleLicenses}/></Col>
-              <Col xs lg="3"><ConanMultiSelectFilter title="Topics" defaultValue={props.data.defaultTopics} filters={props.data.topics} handleFilter={handleTopics}/></Col>
+              <Col xs md="5" lg="4"><ConanMultiSelectFilter title="Licenses" defaultValue={props.data.defaultLicenses} filters={props.data.licenses} handleFilter={handleLicenses}/></Col>
+              <Col xs md="5" lg="4"><ConanMultiSelectFilter title="Topics" defaultValue={props.data.defaultTopics} filters={props.data.topics} handleFilter={handleTopics}/></Col>
             </Row>
             <br/>
             <div style={{width: "100%"}}>
