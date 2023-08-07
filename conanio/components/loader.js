@@ -16,7 +16,6 @@ export default function Loader() {
           <div className="loader-container">
             <div className="spinner"></div>
           </div>
-        <ConanFooter/>
       </div>
       </SSRProvider>
     </React.StrictMode>
