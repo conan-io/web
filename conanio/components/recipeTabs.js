@@ -15,6 +15,8 @@ import { FaTags } from "react-icons/fa";
 import ListGroup from 'react-bootstrap/ListGroup';
 import { Tooltip } from 'react-tooltip';
 
+// https://docs.conan.io/2/reference/tools/cmake/cmakedeps.html#properties
+// https://docs.conan.io/2/reference/tools/gnu/pkgconfigdeps.html#properties
 
 {/* TODO: this function should go in a more common module. More configurable? */}
 function ClipboardCopy({ copyText }) {
@@ -97,13 +99,11 @@ function CCIAssistanceLink() {
 function UseItFullContent({props}) {
   const reference = props.recipeName + "/" + props.recipeVersion;
   const Components = function({components}) {
-    if (Object.keys(components).length > 1) {
+    if (Object.keys(components).length > 0) {
       return (<div>
-         <p><strong>Important!</strong> This <em>example</em> target is linking against the global <em>{props.recipeName}</em> one, perhaps, what you really want is to
-           link against any of their components instead:</p>
          <pre className='preFixed'>
            <code className="language-cmake">{Object.keys(components).map(function(component) {
-           return "# Component " + component + "\ntarget_link_libraries(example " + components[component] + ")\n";
+           return "# Component " + component + "\ntarget_link_libraries(example " + JSON.stringify(components[component]) + ")\n";
          })}</code></pre>
        </div>)
     }
@@ -122,9 +122,8 @@ function UseItFullContent({props}) {
     }
     return null;
   };
-  const exampleName = props.info.project_type == "CXX" ? "main.cpp": "main.c";
-  const headers = props.info.headers;
-  const componentTargets = props.info.cmake_variables.component_alias;
+  const headers = props.info.headers? props.info.headers: [];
+  const componentTargets = props.info.components_properties? props.info.components_properties: Object();
   // Pieces of code
   const unixCLI = "$ cd build\n" +
                   "$ cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release\n" +
@@ -134,35 +133,27 @@ function UseItFullContent({props}) {
                  "$ cmake .. -G \"Visual Studio 15 2017\" -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake\n" +
                  "$ cmake --build . --config Release";
 
-  const projectLayout = "./\n" +
-                          "| - CMakeLists.txt\n" +
-                          "| - " + exampleName + "\n" +
-                          "| - conanfile.txt\n";
-
   const conanfileTxt = "[requires]\n" +
                        reference + "\n" +
                        "[generators]\n" +
                        "CMakeDeps\n" +
                        "CMakeToolchain";
-
-  const cmakeContent = "cmake_minimum_required(VERSION 3.15)\n" +
-                       "project(test " + props.info.project_type + ")\n\n" +
-                       "find_package(" + props.info.cmake_variables.file_name + " REQUIRED)\n\n" +
-                       "add_executable(example " + exampleName + ")\n" +
-                       "# Using the global target name\n" +
-                       "target_link_libraries(example " + props.info.cmake_variables.global_target_name + ")";
-
+  let cmakeContent = "";
+  if (props.info.hasOwnProperty("properties") && props.info.properties.cmake_file_name) {
+      cmakeContent = "# ..." +
+                     "find_package(" + props.info.properties.cmake_file_name + " REQUIRED)\n\n" +
+                     "# ..." +
+                     "target_link_libraries(example " + props.info.properties.cmake_target_name + ")";
+  }
   return (
     <div>
       <h3>Using {props.recipeName} with CMake</h3>
-      <p>This is a simple CMake project layout using this library:</p>
-      <pre><code className="language-plaintext">{projectLayout}</code></pre>
       <h4>conanfile.txt</h4>
       <pre><code className="language-ini">{conanfileTxt}</code></pre>
       <h4>CMakeLists.txt</h4>
       <pre><code className="language-cmake">{cmakeContent}</code></pre>
       <Components components={componentTargets} />
-      <h4>{exampleName}</h4>
+      <h4>Headers</h4>
       <Headers headers={headers} />
       <p>Now, let&apos;s run the Conan command to build this project:</p>
       <pre><code className="language-bash">$ conan install . --output-folder=build --build=missing</code></pre>
@@ -191,6 +182,7 @@ function UseItFullContent({props}) {
 }
 
 function UseItTab(props) {
+  console.log(props);
   if (props.info) {
     const isToolRequire = props.info.package_type && props.info.package_type == "application";
     // If it's a tool requirement

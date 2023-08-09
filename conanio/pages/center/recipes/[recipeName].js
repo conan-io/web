@@ -60,6 +60,7 @@ export default function ConanPackage(props) {
   const recipeStatus = recipeData.info.status;
   const recipeRevision = recipeData.info.recipe_revision;
   const recipeDescription = recipeData.info.description;
+  const recipeHomepage = recipeData.info.homepage;
   const recipeLabels = recipeData.info.labels;
   const recipeLicenses = Object.keys(recipeData.info.licenses);
   const recipeConanCenterUrl = "https://github.com/conan-io/conan-center-index/tree/master/recipes/" + recipeData.name;
@@ -137,13 +138,13 @@ export default function ConanPackage(props) {
                 </Col>
               </Row>)}
 
-              {(recipeUseIt && recipeUseIt.homepage) && (<Row>
+              {(recipeHomepage) && (<Row>
                 <Col xs lg="8">
                   <ReactToolTip id="package-info"/>
                   <a data-tooltip-id='package-info' data-tooltip-html="home page" data-tooltip-place="top">
                     <IoMdHome className="conanIconBlue conanIcon26"/>
-                  </a> <Link href={recipeUseIt.homepage}>
-                    <a>{sanitizeURL(recipeUseIt.homepage)}</a>
+                  </a> <Link href={recipeHomepage}>
+                    <a>{sanitizeURL(recipeHomepage)}</a>
                   </Link>
                 </Col>
               </Row>)}
