@@ -15,8 +15,6 @@ import { FaTags } from "react-icons/fa";
 import ListGroup from 'react-bootstrap/ListGroup';
 import { Tooltip } from 'react-tooltip';
 
-// https://docs.conan.io/2/reference/tools/cmake/cmakedeps.html#properties
-// https://docs.conan.io/2/reference/tools/gnu/pkgconfigdeps.html#properties
 
 {/* TODO: this function should go in a more common module. More configurable? */}
 function ClipboardCopy({ copyText }) {
@@ -98,21 +96,27 @@ function CCIAssistanceLink() {
 
 function UseItFullContent({props}) {
   const reference = props.recipeName + "/" + props.recipeVersion;
-  const Components = function({components}) {
-    if (Object.keys(components).length > 0) {
+  const Properties = function({properties}) {
+    return Object.keys(properties).map(function(property) {
+           return property + " = " + properties[property] + "\n";});
+  };
+  const ComponentsInfo = function({components}) {
+    if (components && Object.keys(components).length > 0) {
       return (<div>
+         <h4>Components properties</h4>
          <pre className='preFixed'>
-           <code className="language-cmake">{Object.keys(components).map(function(component) {
-           return "# Component " + component + "\ntarget_link_libraries(example " + JSON.stringify(components[component]) + ")\n";
+           <code className="language-python">{Object.keys(components).map(function(component) {
+           return "# Component: " + component + "\n" + Properties(components[component]) + "\n";
          })}</code></pre>
        </div>)
     }
     return null;
   };
   const Headers = function({headers}) {
-    if (headers.length > 0) {
+    if (headers && headers.length > 0) {
       return (
       <div>
+        <h4>Headers</h4>
         <p>You could use any of these headers in your example:</p>
         <pre className='preFixed'>
           <code className="language-c">{headers.map(function(h) {
@@ -122,60 +126,73 @@ function UseItFullContent({props}) {
     }
     return null;
   };
-  const headers = props.info.headers? props.info.headers: [];
-  const componentTargets = props.info.components_properties? props.info.components_properties: Object();
-  // Pieces of code
-  const unixCLI = "$ cd build\n" +
-                  "$ cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release\n" +
-                  "$ cmake --build .";
-  const winCLI = "$ cd build\n" +
-                 "# assuming Visual Studio 15 2017 is your VS version and that it matches your default profile\n" +
-                 "$ cmake .. -G \"Visual Studio 15 2017\" -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake\n" +
-                 "$ cmake --build . --config Release";
-
+  const RootInfo = function({root}) {
+    if (root && Object.keys(root).length > 0){
+      let CMakeContent = null;
+      if (props.info.properties.cmake_file_name && props.info.properties.cmake_target_name) {
+        const cmakelists = "# ..." +
+                           "find_package(" + props.info.properties.cmake_file_name + " REQUIRED)\n\n" +
+                           "# ..." +
+                           "target_link_libraries(example " + props.info.properties.cmake_target_name + ")";
+        CMakeContent = (
+          <div>
+            <p>A simple example using some of these targets in your CMakeLists.txt:</p>
+            <pre><code className="language-cmake">{cmakelists}</code></pre>
+          </div>
+        )
+      }
+      return (
+        <div>
+          <h4>Root properties</h4>
+          <code className="language-python">{Properties(root)}</code>
+          <CMakeContent />
+          <p>See more about <Link href="https://docs.conan.io/2/reference/tools/cmake/cmakedeps.html#properties"><a>CMakeDeps properties</a></Link>
+            and <Link href="https://docs.conan.io/2/reference/tools/gnu/pkgconfigdeps.html#properties"><a>PkgConfigDeps properties</a></Link></p>
+        </div>
+      )
+    }
+    return null;
+  };
+  const RecipeMetaInfo = function(){
+    const recipeConanCenterUrl = "https://github.com/conan-io/conan-center-index/tree/master/recipes/" + props.recipeName;
+    return (
+      <div>
+        <h3>{props.recipeName} properties</h3>
+        {props.info.package_type && (<p><strong>Package type</strong>: {props.info.package_type}</p>)}
+        <RootInfo root={props.info.properties} />
+        <ComponentsInfo components={props.info.components_properties} />
+        <Headers headers={props.info.headers} />
+        <blockquote>
+        <BiSolidInfoCircle/><strong> Warning</strong>
+        <br/><br/>
+        <p>Please, be aware that this information is generated automatically and it may contain some mistakes or missing some information. You can check all the recipe properties visiting its
+        <Link href={recipeConanCenterUrl}><a> source code</a></Link>.</p>
+      </blockquote>
+      </div>
+    )
+  };
   const conanfileTxt = "[requires]\n" +
                        reference + "\n" +
                        "[generators]\n" +
                        "CMakeDeps\n" +
                        "CMakeToolchain";
-  let cmakeContent = "";
-  if (props.info.hasOwnProperty("properties") && props.info.properties.cmake_file_name) {
-      cmakeContent = "# ..." +
-                     "find_package(" + props.info.properties.cmake_file_name + " REQUIRED)\n\n" +
-                     "# ..." +
-                     "target_link_libraries(example " + props.info.properties.cmake_target_name + ")";
-  }
   return (
     <div>
-      <h3>Using {props.recipeName} with CMake</h3>
+      <h3>Using {props.recipeName}</h3>
+      Simplest use case consuming this recipe and assuming CMake as your local building tool:
+      <br/><br/>
       <h4>conanfile.txt</h4>
       <pre><code className="language-ini">{conanfileTxt}</code></pre>
-      <h4>CMakeLists.txt</h4>
-      <pre><code className="language-cmake">{cmakeContent}</code></pre>
-      <Components components={componentTargets} />
-      <h4>Headers</h4>
-      <Headers headers={headers} />
-      <p>Now, let&apos;s run the Conan command to build this project:</p>
+      <p>Now, you could run this Conan command to install (and build if necessary) locally this recipe and its dependencies (if it really got):</p>
       <pre><code className="language-bash">$ conan install . --output-folder=build --build=missing</code></pre>
-      <br/>
-      <Tabs className="package-tabs" defaultActiveKey="win" id="use-it-uncontrolled">
-        <Tab eventKey="win" title="Windows">
-          <br/>
-          <pre><code className="language-bash">{winCLI}</code></pre>
-        </Tab>
-        <Tab eventKey="unix" title="Linux/macOS">
-          <br/>
-          <pre><code className="language-bash">{unixCLI}</code></pre>
-        </Tab>
-      </Tabs>
-      <br/>
       <blockquote>
         <BiSolidInfoCircle/><strong> Note</strong>
         <br/><br/>
-        <p>Please, be aware that this information is generated automatically and it may contain some mistakes. If you have any problem, you can check
-        the upstream recipe to confirm the information. Also, for more detailed information on how to consume Conan packages,
+        <p>If you faced any problem, you can check the upstream recipe to confirm the information shown here. Also, for more detailed information on how to consume Conan packages,
         please check the <Link href="https://docs.conan.io/2/tutorial/consuming_packages.html"><a>Conan documentation</a></Link>.</p>
       </blockquote>
+      <RecipeMetaInfo />
+      <br/>
       <CCIAssistanceLink />
     </div>
   );
@@ -238,6 +255,7 @@ function DependenciesTab(props) {
           }
           </div>)}
           {hasBuildRequires && (<div>
+          <br/>
           <h3>Dependencies (tool requirements)</h3>
           <br/>
           {props.info.build_requires.map( function(require) {
