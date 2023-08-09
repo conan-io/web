@@ -199,7 +199,6 @@ function UseItFullContent({props}) {
 }
 
 function UseItTab(props) {
-  console.log(props);
   if (props.info) {
     const isToolRequire = props.info.package_type && props.info.package_type == "application";
     // If it's a tool requirement
