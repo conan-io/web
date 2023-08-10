@@ -96,22 +96,52 @@ function CCIAssistanceLink() {
 
 function UseItFullContent({props}) {
   const reference = props.recipeName + "/" + props.recipeVersion;
-  const Properties = function({properties}) {
-    return Object.keys(properties).map(function(property) {
-           return property + " = " + properties[property] + "\n";});
+
+  const Properties = function(properties) {
+    return Object.keys(properties).map(function(property) {return `${property} = ${JSON.stringify(properties[property])}\n`;}).join('');
   };
+
   const ComponentsInfo = function({components}) {
     if (components && Object.keys(components).length > 0) {
-      return (<div>
+      return (
+      <div>
          <h4>Components properties</h4>
+         <p>These are the properties belonging to each of the components defined:</p>
          <pre className='preFixed'>
-           <code className="language-python">{Object.keys(components).map(function(component) {
-           return "# Component: " + component + "\n" + Properties(components[component]) + "\n";
-         })}</code></pre>
-       </div>)
+           <code className="language-python">{ Object.keys(components).map(function(component) {
+                return `# Component: ${component} \n${Properties(components[component])}\n`;}).join('')
+           }</code></pre>
+      </div>)
     }
     return null;
   };
+
+  const RootInfo = function({root}) {
+    if (root && Object.keys(root).length > 0){
+      const cmakeFileName = props.info.properties.cmake_file_name;
+      const targetName = props.info.properties.cmake_target_name? props.info.properties.cmake_target_name: `${props.recipeName}::${props.recipeName}`;
+      return (
+        <div>
+          <h4>Root properties</h4>
+          <p>These are the properties belonging to the root component:</p>
+          <pre><code className="language-python">{ Properties(root)}</code></pre>
+          <p>Let&apos;s see how could we use some of these properties in our CMakeLists.txt file:</p>
+          {cmakeFileName && (<pre><code className="language-cmake">
+            {`# ...
+find_package(${cmakeFileName} REQUIRED)
+# ...
+# Notice that the library target name could come from the "cmake_target_name" property
+# or simply be the "recipe_name::recipe_name"
+target_link_libraries(YOUR_TARGET ${targetName})`}
+            </code></pre>)}
+          <p>See more about <Link href="https://docs.conan.io/2/reference/tools/cmake/cmakedeps.html#properties"><a>CMakeDeps properties </a></Link>
+            and <Link href="https://docs.conan.io/2/reference/tools/gnu/pkgconfigdeps.html#properties"><a>PkgConfigDeps properties</a></Link></p>
+        </div>
+      );
+    }
+    return null;
+  };
+
   const Headers = function({headers}) {
     if (headers && headers.length > 0) {
       return (
@@ -126,51 +156,29 @@ function UseItFullContent({props}) {
     }
     return null;
   };
-  const RootInfo = function({root}) {
-    if (root && Object.keys(root).length > 0){
-      let CMakeContent = null;
-      if (props.info.properties.cmake_file_name && props.info.properties.cmake_target_name) {
-        const cmakelists = "# ..." +
-                           "find_package(" + props.info.properties.cmake_file_name + " REQUIRED)\n\n" +
-                           "# ..." +
-                           "target_link_libraries(example " + props.info.properties.cmake_target_name + ")";
-        CMakeContent = (
-          <div>
-            <p>A simple example using some of these targets in your CMakeLists.txt:</p>
-            <pre><code className="language-cmake">{cmakelists}</code></pre>
-          </div>
-        )
-      }
+
+  const RecipeMetaInfo = function(){
+    if (props.info.properties || props.info.components_properties || props.info.headers) {
+      const recipeConanCenterUrl = "https://github.com/conan-io/conan-center-index/tree/master/recipes/" + props.recipeName;
       return (
         <div>
-          <h4>Root properties</h4>
-          <code className="language-python">{Properties(root)}</code>
-          <CMakeContent />
-          <p>See more about <Link href="https://docs.conan.io/2/reference/tools/cmake/cmakedeps.html#properties"><a>CMakeDeps properties</a></Link>
-            and <Link href="https://docs.conan.io/2/reference/tools/gnu/pkgconfigdeps.html#properties"><a>PkgConfigDeps properties</a></Link></p>
+          <h3>{props.recipeName} properties</h3>
+          {/* {props.info.package_type && (<p><strong>Package type</strong>: {props.info.package_type}</p>)}*/}
+          <RootInfo root={props.info.properties} />
+          <ComponentsInfo components={props.info.components_properties} />
+          <Headers headers={props.info.headers} />
+          <blockquote>
+          <BiSolidInfoCircle/><strong> Warning</strong>
+          <br/><br/>
+          <p>Please, be aware that this information is generated automatically and it may contain some mistakes or missing some information. You can check all the recipe properties visiting its
+          <Link href={recipeConanCenterUrl}><a> source code</a></Link>.</p>
+        </blockquote>
         </div>
-      )
-    }
+        );
+      }
     return null;
   };
-  const RecipeMetaInfo = function(){
-    const recipeConanCenterUrl = "https://github.com/conan-io/conan-center-index/tree/master/recipes/" + props.recipeName;
-    return (
-      <div>
-        <h3>{props.recipeName} properties</h3>
-        {props.info.package_type && (<p><strong>Package type</strong>: {props.info.package_type}</p>)}
-        <RootInfo root={props.info.properties} />
-        <ComponentsInfo components={props.info.components_properties} />
-        <Headers headers={props.info.headers} />
-        <blockquote>
-        <BiSolidInfoCircle/><strong> Warning</strong>
-        <br/><br/>
-        <p>Please, be aware that this information is generated automatically and it may contain some mistakes or missing some information. You can check all the recipe properties visiting its
-        <Link href={recipeConanCenterUrl}><a> source code</a></Link>.</p>
-      </blockquote>
-      </div>
-    )
-  };
+
   const conanfileTxt = "[requires]\n" +
                        reference + "\n" +
                        "[generators]\n" +
@@ -179,7 +187,7 @@ function UseItFullContent({props}) {
   return (
     <div>
       <h3>Using {props.recipeName}</h3>
-      Simplest use case consuming this recipe and assuming CMake as your local building tool:
+      Simplest use case consuming this recipe and assuming CMake as your local build tool:
       <br/><br/>
       <h4>conanfile.txt</h4>
       <pre><code className="language-ini">{conanfileTxt}</code></pre>
