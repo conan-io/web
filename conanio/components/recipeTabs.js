@@ -98,7 +98,10 @@ function UseItFullContent({props}) {
   const reference = props.recipeName + "/" + props.recipeVersion;
 
   const Properties = function(properties) {
-    return Object.keys(properties).map(function(property) {return `${property} = ${JSON.stringify(properties[property])}\n`;}).join('');
+    if (properties) {
+      return Object.keys(properties).map(function(property) {return `${property} = ${JSON.stringify(properties[property])}\n`;}).join('');
+    }
+    return "# This component is defined but has no properties."
   };
 
   const ComponentsInfo = function({components}) {
@@ -130,7 +133,7 @@ function UseItFullContent({props}) {
             {`# ...
 find_package(${cmakeFileName} REQUIRED)
 # ...
-# Notice that the library target name could come from the "cmake_target_name" property
+# The library target name could be the "cmake_target_name" property
 # or simply be the "recipe_name::recipe_name"
 target_link_libraries(YOUR_TARGET ${targetName})`}
             </code></pre>)}
