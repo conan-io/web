@@ -14,6 +14,7 @@ import Link from 'next/link';
 import { ConanCenterHeader } from '../../components/header';
 import ConanFooter from '../../components/footer';
 import { LiaBalanceScaleSolid, LiaGithub } from "react-icons/lia";
+import { IoMdDownload } from "react-icons/io";
 import {get_json_list, get_urls, get_json_list_with_id} from '../../service/service';
 
 
@@ -73,12 +74,10 @@ function PackageInfo(props) {
         </Link></Col>
         <Col xs lg><b>Latest version:</b> {props.data.info.version}</Col>
       </Row>
-      {licenses && licenses.length > 0 &&
-        <Row><Col xs lg><LiaBalanceScaleSolid className="conanIconBlue"/> {licenses.join(", ")}</Col></Row>
-      }
-      {/*props.data.info.downloads > 0  &&
-        <Row><Col xs lg="3"><b>Downloads:</b> {props.data.info.downloads}</Col></Row>
-      */}
+      <Row>
+      {licenses && licenses.length > 0 && <Col xs lg="auto"><LiaBalanceScaleSolid className="conanIconBlue"/> {licenses.join(", ")}</Col>}
+      {props.data.info.downloads > 0  && <Col xs lg="auto"><IoMdDownload className="conanIconBlue"/> {props.data.info.downloads}</Col>}
+      </Row>
       <Row><Col xs lg className="mt-2">{props.data.info.description || (<DefaultDescription name={props.data.name}/>)}</Col></Row>
       <Row><Col xs lg className="mt-2"><p> {labels.map((item) => (<Badge key={item}>#{item}</Badge>))}</p></Col></Row>
     </div>
