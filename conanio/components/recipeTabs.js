@@ -156,7 +156,7 @@ target_link_libraries(YOUR_TARGET ${cmakeTargetName})`}
     if (headers && headers.length > 0) {
       return (
       <div>
-        <p>These are all the available headers. Some of the listed headers might be non-public, make sure of it visiting the {props.recipeName} homepage listed above:</p>
+        <p>These are all the available headers. Some of these ones might be non-public; make sure of it by visiting the <code>{props.recipeName}</code> homepage listed above:</p>
         <pre className='preFixed'>
           <code className="language-c">{headers.map(function(h) {
           return `#include "${h}"\n`;})}</code>
@@ -187,7 +187,7 @@ target_link_libraries(YOUR_TARGET ${cmakeTargetName})`}
       <blockquote>
         <BiSolidInfoCircle/><strong> Note</strong>
         <br/><br/>
-        <p>If you are new with Conan, we recommend to read the section <Link href="https://docs.conan.io/2/tutorial/consuming_packages.html"><a>how to consume packages</a></Link>.</p>
+        If you are new with Conan, we recommend to read the section <Link href="https://docs.conan.io/2/tutorial/consuming_packages.html"><a>how to consume packages</a></Link>.
         <CCIAssistanceLink />
       </blockquote>
       Simplest use case consuming this recipe and assuming CMake as your local build tool:
