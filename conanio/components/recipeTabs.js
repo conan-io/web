@@ -10,11 +10,11 @@ import { BiSolidInfoCircle } from "react-icons/bi";
 import { MdOutlineCheckCircleOutline, MdOutlineToday } from "react-icons/md";
 import { PiWarningBold } from "react-icons/pi";
 import { LiaBalanceScaleSolid } from "react-icons/lia";
-import { AiOutlinePushpin } from "react-icons/ai";
+import { AiOutlinePushpin, AiFillCaretDown, AiFillCaretRight } from "react-icons/ai";
 import { FaTags } from "react-icons/fa";
 import ListGroup from 'react-bootstrap/ListGroup';
 import { Tooltip } from 'react-tooltip';
-
+import Collapse from 'react-bootstrap/Collapse';
 
 {/* TODO: this function should go in a more common module. More configurable? */}
 function ClipboardCopy({ copyText }) {
@@ -97,60 +97,66 @@ function CCIAssistanceLink() {
 function UseItFullContent({props}) {
   const reference = props.recipeName + "/" + props.recipeVersion;
 
-  const Properties = function(properties) {
-    if (properties) {
-      return Object.keys(properties).map(function(property) {return `${property} = ${JSON.stringify(properties[property])}\n`;}).join('');
-    }
-    return "# This component is defined but has no properties."
-  };
-
-  const ComponentsInfo = function({components}) {
-    if (components && Object.keys(components).length > 0) {
-      return (
-      <div>
-         <h4>Components properties</h4>
-         <p>These are the properties belonging to each of the components defined:</p>
-         <pre className='preFixed'>
-           <code className="language-python">{ Object.keys(components).map(function(component) {
-                return `# Component: ${component} \n${Properties(components[component])}\n`;}).join('')
-           }</code></pre>
-      </div>)
-    }
-    return null;
-  };
-
-  const RootInfo = function({root}) {
-    if (root && Object.keys(root).length > 0){
-      const cmakeFileName = props.info.properties.cmake_file_name;
-      const targetName = props.info.properties.cmake_target_name? props.info.properties.cmake_target_name: `${props.recipeName}::${props.recipeName}`;
+  const TargetsInfo = function(recipe_properties) {
+    if ((recipe_properties.root && Object.keys(recipe_properties.root).length > 0) |
+        (recipe_properties.components && Object.keys(recipe_properties.components).length > 0)){
+      const [open, setOpen] = useState(false);
+      const [open2, setOpen2] = useState(false);
+      const root = recipe_properties.root? recipe_properties.root: Object();
+      const components = recipe_properties.components? recipe_properties.components: Object();
+      const cmakeFileName = root.cmake_file_name? root.cmake_file_name: props.recipeName;
+      const cmakeTargetName = root.cmake_target_name? root.cmake_target_name: `${props.recipeName}::${props.recipeName}`;
+      const pkgConfigName = root.pkg_config_name? root.pkg_config_name: `${props.recipeName}.pc`;
+      const componentsTargetNames = Object.keys(components).map(function(component) { if (components[component].cmake_target_name) return `${component} => ${components[component].cmake_target_name}`;});
+      const componentspkgConfigName = Object.keys(components).map(function(component) { if (components[component].cmake_target_name) return `${component} => ${components[component].pkg_config_name}.pc`;});
       return (
         <div>
-          <h4>Root properties</h4>
-          <p>These are the properties belonging to the root component:</p>
-          <pre><code className="language-python">{ Properties(root)}</code></pre>
-          <p>Let&apos;s see how could we use some of these properties in our CMakeLists.txt file:</p>
-          {cmakeFileName && (<pre><code className="language-cmake">
+          <p>These are the main declared targets:</p>
+          <ul>
+            <li><strong>CMake file name</strong>: <code>{cmakeFileName}</code></li>
+            <li><strong>CMake target name(s)</strong>: <code>{cmakeTargetName} </code>
+            {componentsTargetNames.length > 0 && open && (<AiFillCaretDown className='fa-3x' style={{color: "cornflowerblue"}} onClick={() => setOpen(!open)} />)}
+            {componentsTargetNames.length > 0 && !open && (<AiFillCaretRight className='fa-3x' style={{color: "cornflowerblue"}} onClick={() => setOpen(!open)} />)}
+            </li>
+            <Collapse in={open}>
+              <div>
+                <pre className='preFixed'>
+                  <code style={{color: "#e83e8c"}}>{componentsTargetNames.map(function(c) {
+                  return `${c}\n`;})}</code>
+                </pre>
+              </div>
+            </Collapse>
+            <li><strong>pkg-config file name(s)</strong>: <code>{pkgConfigName} </code>
+            {componentspkgConfigName.length > 0 && open2 && (<AiFillCaretDown className='fa-3x' style={{color: "cornflowerblue"}} onClick={() => setOpen2(!open2)} />)}
+            {componentspkgConfigName.length > 0 && !open2 && (<AiFillCaretRight className='fa-3x' style={{color: "cornflowerblue"}} onClick={() => setOpen2(!open2)} />)}
+            </li>
+            <Collapse in={open2}>
+              <div>
+                <pre className='preFixed'>
+                  <code style={{color: "#e83e8c"}}>{componentspkgConfigName.map(function(c) {
+                  return `${c}\n`;})}</code>
+                </pre>
+                </div>
+            </Collapse>
+          </ul>
+          <p>A simple use case using the CMake file name and the global target:</p>
+          <pre><code className="language-cmake">
             {`# ...
 find_package(${cmakeFileName} REQUIRED)
 # ...
-# The library target name could be the "cmake_target_name" property
-# or simply be the "recipe_name::recipe_name"
-target_link_libraries(YOUR_TARGET ${targetName})`}
-            </code></pre>)}
-          <p>See more about <Link href="https://docs.conan.io/2/reference/tools/cmake/cmakedeps.html#properties"><a>CMakeDeps properties </a></Link>
-            and <Link href="https://docs.conan.io/2/reference/tools/gnu/pkgconfigdeps.html#properties"><a>PkgConfigDeps properties</a></Link></p>
+target_link_libraries(YOUR_TARGET ${cmakeTargetName})`}
+          </code></pre>
         </div>
       );
     }
     return null;
   };
 
-  const Headers = function({headers}) {
+  const HeadersInfo = function({headers}) {
     if (headers && headers.length > 0) {
       return (
       <div>
-        <h4>Headers</h4>
-        <p>You could use any of these headers in your example:</p>
+        <p>These are all the available headers. Some of the listed headers might be non-public, make sure of it visiting the {props.recipeName} homepage listed above:</p>
         <pre className='preFixed'>
           <code className="language-c">{headers.map(function(h) {
           return `#include "${h}"\n`;})}</code>
@@ -160,51 +166,38 @@ target_link_libraries(YOUR_TARGET ${targetName})`}
     return null;
   };
 
-  const RecipeMetaInfo = function(){
+  const RecipeDetails = function(){
     if (props.info.properties || props.info.components_properties || props.info.headers) {
-      const recipeConanCenterUrl = "https://github.com/conan-io/conan-center-index/tree/master/recipes/" + props.recipeName;
       return (
         <div>
-          <h3>{props.recipeName} properties</h3>
-          {/* {props.info.package_type && (<p><strong>Package type</strong>: {props.info.package_type}</p>)}*/}
-          <RootInfo root={props.info.properties} />
-          <ComponentsInfo components={props.info.components_properties} />
-          <Headers headers={props.info.headers} />
-          <blockquote>
-          <BiSolidInfoCircle/><strong> Warning</strong>
-          <br/><br/>
-          <p>Please, be aware that this information is generated automatically and it may contain some mistakes or missing some information. You can check all the recipe properties visiting its
-          <Link href={recipeConanCenterUrl}><a> source code</a></Link>.</p>
-        </blockquote>
+          <p>Useful information to take into account to consume this library:</p>
+          <Tabs className="package-tabs mt-2" id="uncontrolled">
+            {props.info.properties && (<Tab eventKey="targets" title="Targets"><br/><TargetsInfo root={props.info.properties} components={props.info.components_properties} /></Tab>)}
+            {props.info.headers && (<Tab eventKey="headers" title="Headers"><br/><HeadersInfo headers={props.info.headers} /></Tab>)}
+          </Tabs>
         </div>
         );
       }
     return null;
   };
 
-  const conanfileTxt = "[requires]\n" +
-                       reference + "\n" +
-                       "[generators]\n" +
-                       "CMakeDeps\n" +
-                       "CMakeToolchain";
   return (
     <div>
       <h3>Using {props.recipeName}</h3>
-      Simplest use case consuming this recipe and assuming CMake as your local build tool:
-      <br/><br/>
-      <h4>conanfile.txt</h4>
-      <pre><code className="language-ini">{conanfileTxt}</code></pre>
-      <p>Now, you could run this Conan command to install (and build if necessary) locally this recipe and its dependencies (if it really got):</p>
-      <pre><code className="language-bash">$ conan install . --output-folder=build --build=missing</code></pre>
       <blockquote>
         <BiSolidInfoCircle/><strong> Note</strong>
         <br/><br/>
-        <p>If you faced any problem, you can check the upstream recipe to confirm the information shown here. Also, for more detailed information on how to consume Conan packages,
-        please check the <Link href="https://docs.conan.io/2/tutorial/consuming_packages.html"><a>Conan documentation</a></Link>.</p>
+        <p>If you are new with Conan, we recommend to read the section <Link href="https://docs.conan.io/2/tutorial/consuming_packages.html"><a>how to consume packages</a></Link>.</p>
+        <CCIAssistanceLink />
       </blockquote>
-      <RecipeMetaInfo />
+      Simplest use case consuming this recipe and assuming CMake as your local build tool:
+      <br/><br/>
+      <h4>conanfile.txt</h4>
+      <pre><code className="language-ini">{"[requires]\n" + reference + "\n" + "[generators]\n" + "CMakeDeps\n" + "CMakeToolchain"}</code></pre>
+      <p>Now, you can run this Conan command to locally install (and build if necessary) this recipe and its dependencies (if any):</p>
+      <pre><code className="language-bash">$ conan install conanfile.txt --output-folder=build --build=missing</code></pre>
+      <RecipeDetails />
       <br/>
-      <CCIAssistanceLink />
     </div>
   );
 }
