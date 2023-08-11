@@ -98,10 +98,10 @@ function UseItFullContent({props}) {
   const reference = props.recipeName + "/" + props.recipeVersion;
 
   const TargetsInfo = function(recipe_properties) {
+    const [open, setOpen] = useState(false);
+    const [open2, setOpen2] = useState(false);
     if ((recipe_properties.root && Object.keys(recipe_properties.root).length > 0) |
         (recipe_properties.components && Object.keys(recipe_properties.components).length > 0)){
-      const [open, setOpen] = useState(false);
-      const [open2, setOpen2] = useState(false);
       const root = recipe_properties.root? recipe_properties.root: Object();
       const components = recipe_properties.components? recipe_properties.components: Object();
       const cmakeFileName = root.cmake_file_name? root.cmake_file_name: props.recipeName;
@@ -115,8 +115,8 @@ function UseItFullContent({props}) {
           <ul>
             <li><strong>CMake file name</strong>: <code>{cmakeFileName}</code></li>
             <li><strong>CMake target name(s)</strong>: <code>{cmakeTargetName} </code>
-            {componentsTargetNames.length > 0 && open && (<AiFillCaretDown className='fa-3x' style={{color: "cornflowerblue"}} onClick={() => setOpen(!open)} />)}
-            {componentsTargetNames.length > 0 && !open && (<AiFillCaretRight className='fa-3x' style={{color: "cornflowerblue"}} onClick={() => setOpen(!open)} />)}
+            {componentsTargetNames.length > 0 && open && (<AiFillCaretDown style={{cursor: 'pointer'}} className='conanIcon18 conanIconBlue' onClick={() => setOpen(!open)} />)}
+            {componentsTargetNames.length > 0 && !open && (<AiFillCaretRight style={{cursor: 'pointer'}} className='conanIcon18 conanIconBlue' onClick={() => setOpen(!open)} />)}
             </li>
             <Collapse in={open}>
               <div>
@@ -127,8 +127,8 @@ function UseItFullContent({props}) {
               </div>
             </Collapse>
             <li><strong>pkg-config file name(s)</strong>: <code>{pkgConfigName} </code>
-            {componentspkgConfigName.length > 0 && open2 && (<AiFillCaretDown className='fa-3x' style={{color: "cornflowerblue"}} onClick={() => setOpen2(!open2)} />)}
-            {componentspkgConfigName.length > 0 && !open2 && (<AiFillCaretRight className='fa-3x' style={{color: "cornflowerblue"}} onClick={() => setOpen2(!open2)} />)}
+            {componentspkgConfigName.length > 0 && open2 && (<AiFillCaretDown style={{cursor: 'pointer'}} className='conanIcon18 conanIconBlue' onClick={() => setOpen2(!open2)} />)}
+            {componentspkgConfigName.length > 0 && !open2 && (<AiFillCaretRight style={{cursor: 'pointer'}} className='conanIcon18 conanIconBlue' onClick={() => setOpen2(!open2)} />)}
             </li>
             <Collapse in={open2}>
               <div>
