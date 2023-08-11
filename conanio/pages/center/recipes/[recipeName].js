@@ -12,11 +12,11 @@ import Badge from 'react-bootstrap/Badge';
 import Link from 'next/link';
 import { ConanCenterHeader } from '../../../components/header';
 import ConanFooter from '../../../components/footer';
-import {LineChart, XAxis, Tooltip, CartesianGrid, Line} from 'recharts';
+import {LineChart, XAxis, YAxis, Tooltip, CartesianGrid, Line, Legend} from 'recharts';
 import { get_json, get_urls } from '../../../service/service';
 import { DefaultDescription } from '../recipes';
 import { LiaBalanceScaleSolid, LiaGithub } from "react-icons/lia";
-import { IoMdHome } from "react-icons/io";
+import { IoMdHome, IoMdDownload } from "react-icons/io";
 import hljs from "highlight.js";
 import { UseItTab, BadgesTab, DependenciesTab, VersionsTab } from "../../../components/recipeTabs";
 import { PiWarningBold } from "react-icons/pi";
@@ -33,7 +33,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       data: data,
-      /*downloads: await get_json(urls.package.downloads, urls.api.private),*/
+      downloads: await get_json(urls.package.downloads, urls.api.private),
       recipeName: context.params.recipeName,
       recipeVersion: context.query.version? context.query.version: null
     },
@@ -51,7 +51,6 @@ export default function ConanPackage(props) {
   useEffect(() => {
     hljs.highlightAll();
   });
-
   const [selectedVersion, setSelectedVersion] = useState(props.recipeVersion !== null? props.recipeVersion: props.data[0].info.version);
 
   const indexSelectedVersion = Object.keys(props.data).filter(index => props.data[index].info.version === selectedVersion)[0];
@@ -65,12 +64,61 @@ export default function ConanPackage(props) {
   const recipeLicenses = Object.keys(recipeData.info.licenses);
   const recipeConanCenterUrl = "https://github.com/conan-io/conan-center-index/tree/master/recipes/" + recipeData.name;
   const recipeUseIt = recipeData.info.use_it;
-  /*const recipeDownloads = props.downloads[selectedVersion].downloads;*/
+  const recipeTotalDownloads = recipeData.info.downloads;
+  const recipeDownloads = props.downloads[selectedVersion].downloads;
   const maintainedVersions = Object.values(props.data).filter(data => data.info.status === "ok").map(data => data.info.version);
   const unmaintainedVersions = Object.values(props.data).filter(data => data.info.status !== "ok").map(data => data.info.version);
 
   const iconStatusColor = recipeStatus === 'ok'? 'green': 'orange'
   const extraInfo = recipeStatus === 'ok'? 'maintained version': recipeStatus + ' version'
+
+  const valid_licenses = [
+    '0bsd',
+    'afl-3.0',
+    'agpl-3.0',
+    'apache-2.0',
+    'artistic-2.0',
+    'bsd-2-clause',
+    'bsd-3-clause-clear',
+    'bsd-3-clause',
+    'bsd-4-clause',
+    'bsl-1.0',
+    'cc-by-4.0',
+    'cc-by-sa-4.0',
+    'cc0-1.0',
+    'cecill-2.1',
+    'cern-ohl-p-2.0',
+    'cern-ohl-s-2.0',
+    'cern-ohl-w-2.0',
+    'ecl-2.0',
+    'epl-1.0',
+    'epl-2.0',
+    'eupl-1.1',
+    'eupl-1.2',
+    'gfdl-1.3',
+    'gpl-2.0',
+    'gpl-3.0',
+    'isc',
+    'lgpl-2.1',
+    'lgpl-3.0',
+    'lppl-1.3c',
+    'mit-0',
+    'mit',
+    'mpl-2.0',
+    'ms-pl',
+    'ms-rl',
+    'mulanpsl-2.0',
+    'ncsa',
+    'odbl-1.0',
+    'ofl-1.1',
+    'osl-3.0',
+    'postgresql',
+    'unlicense',
+    'upl-1.0',
+    'vim',
+    'wtfpl',
+    'zlib'
+  ];
 
   const onClickTopics = (topic) => {
     router.push(
@@ -115,20 +163,25 @@ export default function ConanPackage(props) {
               </Row>)}
 
               {recipeLicenses && recipeLicenses.length > 0 && (<Row>
-                <Col xs lg="8">
+                <Col xs lg>
                   <ReactToolTip id="package-info"/>
                   <a data-tooltip-id='package-info' data-tooltip-html="Licenses" data-tooltip-place="top">
                     <LiaBalanceScaleSolid className="conanIconBlue conanIcon26"/>
-                  </a> {recipeLicenses.join(", ")}
+                  </a> {recipeLicenses.map((license) => {
+                    if(valid_licenses.includes(license.toLowerCase())) return (
+                      <a
+                        href={"https://choosealicense.com/licenses/" + license.toLowerCase()}
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >{license}</a>
+                    );
+                    return license;
+                  }).reduce((prev, curr) => [prev, ', ', curr])}
                 </Col>
               </Row>)}
 
-              {/*((recipeDownloads && recipeDownloads.length > 0) || recipeData.info.downloads > 0) && (<Row>
-                <Col xs lg="8"><b>Downloads:</b> {recipeData.info.downloads}</Col>
-              </Row>)*/}
-
               {recipeDescription && (<Row>
-                <Col xs lg="8">
+                <Col xs lg>
                   <ReactToolTip id="package-info"/>
                   <a data-tooltip-id='package-info' data-tooltip-html="GitHub repository" data-tooltip-place="top">
                     <LiaGithub className="conanIconBlue conanIcon26"/>
@@ -149,8 +202,17 @@ export default function ConanPackage(props) {
                 </Col>
               </Row>)}
 
-              {recipeDescription && (<Row>
+              {(recipeDescription && recipeTotalDownloads > 0) && (<Row>
                 <Col xs lg="8">
+                  <ReactToolTip id="package-info"/>
+                  <a data-tooltip-id='package-info' data-tooltip-html="Recipe version downloads" data-tooltip-place="top">
+                    <IoMdDownload className="conanIconBlue conanIcon26"/>
+                  </a> {recipeTotalDownloads}
+                </Col>
+              </Row>)}
+
+              {recipeDescription && (<Row>
+                <Col xs lg>
                   <ReactToolTip id="package-info"/>
                   <a data-tooltip-id='package-info' data-tooltip-html="Latest recipe revision" data-tooltip-place="top">
                     <AiOutlinePushpin className="conanIconBlue conanIcon26"/>
@@ -158,7 +220,7 @@ export default function ConanPackage(props) {
               </Row>)}
 
               {recipeLabels && Object.keys(recipeLabels).length > 0 && (<Row className="mt-2">
-                <Col xs lg="8">
+                <Col xs lg>
                   <p>
                     {
                       Object.keys(recipeLabels).map(
@@ -177,15 +239,18 @@ export default function ConanPackage(props) {
               </Row>)}
             </Col>
 
-            {/* recipeDownloads && recipeDownloads.length > 0 &&
-            <Col xs lg="4">
-              <LineChart width={400} height={200} data={recipeDownloads} margin={{ top: 20, right: 20, left: 20, bottom: 20 }}>
-                <XAxis dataKey="date" />
-                <Tooltip />
-                <CartesianGrid stroke="#f5f5f5" />
-                <Line type="monotone" dataKey="downloads" stroke="#0d6efd" yAxisId={0} />
-              </LineChart>
-            </Col> */}
+            {recipeDescription && recipeDownloads && recipeDownloads.length > 0 &&
+            <Col xs lg="4" className="mt-2">
+              <Row className="justify-content-md-center">
+                <LineChart width={340} height={230} data={recipeDownloads} margin={{ top: 20, right: 20, left: 0, bottom: 20 }}>
+                  <XAxis dataKey="date" stroke="#808080"/>
+                  <YAxis dataKey="downloads" stroke="#808080"/>
+                  <Tooltip />
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <Line type="monotone" dataKey="downloads" stroke="#21AFFF" yAxisId={0} />
+                </LineChart>
+              </Row>
+            </Col>}
           </Row>
           {!recipeDescription && (<DefaultDescription name={recipeData.name}/>)}
           <Tabs className="package-tabs mt-2" id="uncontrolled">
