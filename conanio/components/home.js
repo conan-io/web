@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Slider from 'react-slick';
 
+
 function ConanHomeHero() {
   return (
     <section id="hero" className="position-relative">
@@ -20,6 +21,7 @@ function ConanHomeHero() {
                         <div className="d-inline">
                             <Link href="/downloads" ><a className="btn conan-blue-gradient-bg ml-0" id="download_btn_top"><span>Downloads</span></a></Link>
                             <Link href="https://docs.conan.io/2/tutorial.html"><a className="btn conan-blue-border bg-white ml-lg-4" id="get_started_btn_top"><span>Get Started</span></a></Link>
+                            <Link href="/why-conan"><a className="btn conan-blue-border bg-white ml-lg-4" id="why_use_conan"><span>Why use Conan?</span></a></Link>
                         </div>
                     </div>
                 </div>

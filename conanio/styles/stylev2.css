@@ -117,6 +117,10 @@ border-radius: 10px;
     box-shadow: 0 0 0 0 !important;
 }
 
+.conanBlue{
+  color: #21AFFF;
+}
+
 .conanLogo{
   transition: 0.5;
   color: #21AFFF;
@@ -125,6 +129,11 @@ border-radius: 10px;
 .conanIconBlue{
   flex: none ;
   color: #21AFFF;
+}
+
+.conanIconGreen{
+  flex: none ;
+  color: green;
 }
 
 .conanIconGrey{
@@ -414,6 +423,10 @@ section#faqQuestions {
   gap: 5px;
 }
 
+section#why {
+  background: linear-gradient(180deg, rgba(216, 240, 255, 0) 0%, rgba(232, 246, 255, 0.7) 29.69%, #FFFFFF 100%);
+}
+
 section#hero, section#heroFaq {
   background: linear-gradient(180deg, rgba(216, 240, 255, 0) 0%, rgba(232, 246, 255, 0.14) 29.69%, #FBFDFF 90.16%);
 }
@@ -526,6 +539,12 @@ section.places p {
 .conan-card {
   height: 100%;
   border-top: 9px solid #1FACFF;
+  box-shadow: 0px 9px 29px rgba(0, 0, 0, 0.07), 0px 1.12694px 3.63125px rgba(0, 0, 0, 0.035);
+}
+
+.conan-card-white {
+  height: 100%;
+  border-top: 9px solid #FFFFFF;
   box-shadow: 0px 9px 29px rgba(0, 0, 0, 0.07), 0px 1.12694px 3.63125px rgba(0, 0, 0, 0.035);
 }
 
