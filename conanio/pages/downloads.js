@@ -192,7 +192,7 @@ function DownloadConanPackageManager() {
 }
 
 function DownloadJFrogArtifactoryCommunityEditionForCpp() {
-  let releaseVersion = "7.55.14"
+  let releaseVersion = "7.63.0"
   return (
     <div className="col-lg-6 mt-3 mt-lg-0 green-downloads colored-downloads">
       <div className="downloads-item-wrapper">
