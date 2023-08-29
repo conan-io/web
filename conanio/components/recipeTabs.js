@@ -100,56 +100,70 @@ function UseItFullContent({props}) {
   const TargetsInfo = function(recipe_properties) {
     const [open, setOpen] = useState(false);
     const [open2, setOpen2] = useState(false);
-    if ((recipe_properties.root && Object.keys(recipe_properties.root).length > 0) |
-        (recipe_properties.components && Object.keys(recipe_properties.components).length > 0)){
-      const root = recipe_properties.root? recipe_properties.root: Object();
-      const components = recipe_properties.components? recipe_properties.components: Object();
-      const cmakeFileName = root.cmake_file_name? root.cmake_file_name: props.recipeName;
-      const cmakeTargetName = root.cmake_target_name? root.cmake_target_name: `${props.recipeName}::${props.recipeName}`;
-      const pkgConfigName = root.pkg_config_name? root.pkg_config_name: `${props.recipeName}.pc`;
-      const componentsTargetNames = Object.keys(components).map(function(component) { if (components[component].cmake_target_name) return `${component} => ${components[component].cmake_target_name}`;});
-      const componentspkgConfigName = Object.keys(components).map(function(component) { if (components[component].cmake_target_name) return `${component} => ${components[component].pkg_config_name}.pc`;});
-      return (
-        <div>
-          <p>These are the main declared targets:</p>
-          <ul>
-            <li><strong>CMake file name</strong>: <code>{cmakeFileName}</code></li>
-            <li><strong>CMake target name(s)</strong>: <code>{cmakeTargetName} </code>
-            {componentsTargetNames.length > 0 && open && (<AiFillCaretDown style={{cursor: 'pointer'}} className='conanIcon18 conanIconBlue' onClick={() => setOpen(!open)} />)}
-            {componentsTargetNames.length > 0 && !open && (<AiFillCaretRight style={{cursor: 'pointer'}} className='conanIcon18 conanIconBlue' onClick={() => setOpen(!open)} />)}
-            </li>
-            <Collapse in={open}>
-              <div>
-                <pre className='preFixed'>
-                  <code style={{color: "#e83e8c"}}>{componentsTargetNames.map(function(c) {
-                  return `${c}\n`;})}</code>
-                </pre>
+    const root = recipe_properties.root? recipe_properties.root: Object();
+    const components = recipe_properties.components? recipe_properties.components: Object();
+    const getCMakePropertyValue = function(config_property, module_property) {
+      let name = root[config_property]? root[config_property]: props.recipeName;
+      if (root.cmake_find_mode === undefined || root.cmake_find_mode == "config") {
+        return name;
+      }
+      if (root.cmake_find_mode == "module" && root[module_property]) {
+        return root[module_property];
+      }
+      else if (root.cmake_find_mode == "both" && root[module_property]) {
+        return `${name} (config), ${root[module_property]} (module)`;
+      }
+    };
+    const cmakePackageName = getCMakePropertyValue("cmake_file_name", "cmake_module_file_name");
+    const cmakeTargetName = getCMakePropertyValue("cmake_target_name", "cmake_module_target_name");
+    const pkgConfigName = root.pkg_config_name? root.pkg_config_name: `${props.recipeName}.pc`;
+    const componentsTargetNames = Object.keys(components).map(function(component) {
+      let name = components[component].cmake_target_name? components[component].cmake_target_name: `${props.recipeName}::${component}`;
+      return `${component} => ${name}`;
+    });
+    const componentsPkgConfigName = Object.keys(components).map(function(component) {
+      let name = components[component].pkg_config_name? components[component].pkg_config_name: `${props.recipeName}-${component}.pc`;
+      return `${component} => ${name}.pc`;
+    });
+    return (
+      <div>
+        <p>These are the main declared targets:</p>
+        <ul>
+          <li><strong>CMake package name(s)</strong>: <code>{cmakePackageName}</code></li>
+          <li><strong>CMake target name(s)</strong>: <code>{cmakeTargetName} </code>
+          {componentsTargetNames.length > 0 && open && (<AiFillCaretDown style={{cursor: 'pointer'}} className='conanIcon18 conanIconBlue' onClick={() => setOpen(!open)} />)}
+          {componentsTargetNames.length > 0 && !open && (<AiFillCaretRight style={{cursor: 'pointer'}} className='conanIcon18 conanIconBlue' onClick={() => setOpen(!open)} />)}
+          </li>
+          <Collapse in={open}>
+            <div>
+              <pre className='preFixed'>
+                <code style={{color: "#e83e8c"}}>{componentsTargetNames.map(function(c) {
+                return `${c}\n`;})}</code>
+              </pre>
+            </div>
+          </Collapse>
+          <li><strong>pkg-config file name(s)</strong>: <code>{pkgConfigName} </code>
+          {componentsPkgConfigName.length > 0 && open2 && (<AiFillCaretDown style={{cursor: 'pointer'}} className='conanIcon18 conanIconBlue' onClick={() => setOpen2(!open2)} />)}
+          {componentsPkgConfigName.length > 0 && !open2 && (<AiFillCaretRight style={{cursor: 'pointer'}} className='conanIcon18 conanIconBlue' onClick={() => setOpen2(!open2)} />)}
+          </li>
+          <Collapse in={open2}>
+            <div>
+              <pre className='preFixed'>
+                <code style={{color: "#e83e8c"}}>{componentsPkgConfigName.map(function(c) {
+                return `${c}\n`;})}</code>
+              </pre>
               </div>
-            </Collapse>
-            <li><strong>pkg-config file name(s)</strong>: <code>{pkgConfigName} </code>
-            {componentspkgConfigName.length > 0 && open2 && (<AiFillCaretDown style={{cursor: 'pointer'}} className='conanIcon18 conanIconBlue' onClick={() => setOpen2(!open2)} />)}
-            {componentspkgConfigName.length > 0 && !open2 && (<AiFillCaretRight style={{cursor: 'pointer'}} className='conanIcon18 conanIconBlue' onClick={() => setOpen2(!open2)} />)}
-            </li>
-            <Collapse in={open2}>
-              <div>
-                <pre className='preFixed'>
-                  <code style={{color: "#e83e8c"}}>{componentspkgConfigName.map(function(c) {
-                  return `${c}\n`;})}</code>
-                </pre>
-                </div>
-            </Collapse>
-          </ul>
-          <p>A simple use case using the CMake file name and the global target:</p>
-          <pre><code className="language-cmake">
-            {`# ...
-find_package(${cmakeFileName} REQUIRED)
+          </Collapse>
+        </ul>
+        <p>A simple use case using the CMake file name and the global target:</p>
+        <pre><code className="language-cmake">
+          {`# ...
+find_package(${cmakePackageName.split(" (config),")[0].trim()} REQUIRED)
 # ...
-target_link_libraries(YOUR_TARGET ${cmakeTargetName})`}
-          </code></pre>
-        </div>
-      );
-    }
-    return null;
+target_link_libraries(YOUR_TARGET ${cmakeTargetName.split(" (config),")[0].trim()})`}
+        </code></pre>
+      </div>
+    );
   };
 
   const HeadersInfo = function({headers}) {
@@ -158,7 +172,7 @@ target_link_libraries(YOUR_TARGET ${cmakeTargetName})`}
       <div>
         <p>These are all the available headers. Some of these ones might be non-public; make sure of it by visiting the <code>{props.recipeName}</code> homepage listed above:</p>
         <pre className='preFixed'>
-          <code className="language-c">{headers.map(function(h) {
+          <code className="language-c">{headers.sort().map(function(h) {
           return `#include "${h}"\n`;})}</code>
         </pre>
       </div>);
@@ -167,12 +181,18 @@ target_link_libraries(YOUR_TARGET ${cmakeTargetName})`}
   };
 
   const RecipeDetails = function(){
-    if (props.info.properties || props.info.components_properties || props.info.headers) {
+    if (props.info.hasOwnProperty("properties") || props.info.headers) {
+      let cmakeFindModeNone = false;
+      if (props.info.properties) {
+          if (props.info.properties.hasOwnProperty("cmake_find_mode")) {
+            cmakeFindModeNone = props.info.properties.cmake_find_mode == "none";
+          }
+      }
       return (
         <div>
           <p>Useful information to take into account to consume this library:</p>
           <Tabs className="package-tabs mt-2" id="uncontrolled">
-            {props.info.properties && (<Tab eventKey="targets" title="Targets"><br/><TargetsInfo root={props.info.properties} components={props.info.components_properties} /></Tab>)}
+            {props.info.hasOwnProperty("properties") && !cmakeFindModeNone && (<Tab eventKey="targets" title="Targets"><br/><TargetsInfo root={props.info.properties} components={props.info.components_properties} /></Tab>)}
             {props.info.headers && (<Tab eventKey="headers" title="Headers"><br/><HeadersInfo headers={props.info.headers} /></Tab>)}
           </Tabs>
         </div>
@@ -193,9 +213,9 @@ target_link_libraries(YOUR_TARGET ${cmakeTargetName})`}
       Simplest use case consuming this recipe and assuming CMake as your local build tool:
       <br/><br/>
       <h4>conanfile.txt</h4>
-      <pre><code className="language-ini">{"[requires]\n" + reference + "\n" + "[generators]\n" + "CMakeDeps\n" + "CMakeToolchain"}</code></pre>
+      <pre><code className="language-ini">{"[requires]\n" + reference + "\n" + "[generators]\n" + "CMakeDeps\n" + "CMakeToolchain\n" + "[layout]\ncmake_layout"}</code></pre>
       <p>Now, you can run this Conan command to locally install (and build if necessary) this recipe and its dependencies (if any):</p>
-      <pre><code className="language-bash">$ conan install conanfile.txt --output-folder=build --build=missing</code></pre>
+      <pre><code className="language-bash">$ conan install conanfile.txt --build=missing</code></pre>
       <RecipeDetails />
       <br/>
     </div>
@@ -304,7 +324,7 @@ function VersionsTab(props) {
             </a>
           </Col>
           <Col className="text-center" md="auto">
-            <a data-tooltip-id='extra-info' data-tooltip-html="reference version" data-tooltip-place="top">
+            <a data-tooltip-id='extra-info' data-tooltip-html="Reference version" data-tooltip-place="top">
               <FaTags className="mr-2" style={{verticalAlign:'text-top',color: '#21AFFF', height: '21px', width: '21px'}}/>
             </a>
             <a key={recipe.info.version} style={{color: '#007bff',cursor: 'pointer'}} onClick={()=>{props.selector(recipe.info.version);window.scrollTo(0, 0);}}>
@@ -314,7 +334,7 @@ function VersionsTab(props) {
           <Col md="auto">
             <Row style={{padding:'0px 15px'}}>
               <div className="d-inline">
-                <a data-tooltip-id='extra-info' data-tooltip-html="last updated date" data-tooltip-place="top">
+                <a data-tooltip-id='extra-info' data-tooltip-html="Last updated date" data-tooltip-place="top">
                   <MdOutlineToday className="conanIconBlue" style={{verticalAlign:'text-top',color: '#21AFFF',height: '21px', width: '21px'}}/>
                 </a> {recipe.info.timestamp}
               </div>
@@ -322,7 +342,7 @@ function VersionsTab(props) {
             <Row style={{padding:'0px 15px'}}>
               {Object.keys(recipe.info.licenses).length > 0 && (
                 <div className="d-inline">
-                  <a data-tooltip-id='extra-info' data-tooltip-html="licenses" data-tooltip-place="top">
+                  <a data-tooltip-id='extra-info' data-tooltip-html="Licenses" data-tooltip-place="top">
                     <LiaBalanceScaleSolid style={{verticalAlign:'text-top',color: '#21AFFF',height: '21px', width: '21px'}}/>
                   </a> {Object.keys(recipe.info.licenses).join(", ")}
                 </div>)
@@ -330,7 +350,7 @@ function VersionsTab(props) {
             </Row>
           </Col>
           <Col className="text-center" md="auto">
-            <a data-tooltip-id='extra-info' data-tooltip-html="recipe revision" data-tooltip-place="top">
+            <a data-tooltip-id='extra-info' data-tooltip-html="Latest recipe revision" data-tooltip-place="top">
               <AiOutlinePushpin style={{verticalAlign:'text-top',color: '#21AFFF', height: '21px', width: '21px'}}/>
             </a> {recipe.info.recipe_revision}
           </Col>
