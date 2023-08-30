@@ -103,7 +103,8 @@ function UseItFullContent({props}) {
     const root = recipe_properties.root? recipe_properties.root: Object();
     const components = recipe_properties.components? recipe_properties.components: Object();
     const getCMakePropertyValue = function(config_property, module_property) {
-      let name = root[config_property]? root[config_property]: props.recipeName;
+      let defaultName = config_property == "cmake_target_name"? `${props.recipeName}::${props.recipeName}`: props.recipeName; 
+      let name = root[config_property]? root[config_property]: defaultName;
       if (root.cmake_find_mode === undefined || root.cmake_find_mode == "config") {
         return name;
       }
@@ -116,7 +117,7 @@ function UseItFullContent({props}) {
     };
     const cmakePackageName = getCMakePropertyValue("cmake_file_name", "cmake_module_file_name");
     const cmakeTargetName = getCMakePropertyValue("cmake_target_name", "cmake_module_target_name");
-    const pkgConfigName = root.pkg_config_name? root.pkg_config_name: `${props.recipeName}.pc`;
+    const pkgConfigName = root.pkg_config_name? `${root.pkg_config_name}.pc`: `${props.recipeName}.pc`;
     const componentsTargetNames = Object.keys(components).map(function(component) {
       let name = components[component].cmake_target_name? components[component].cmake_target_name: `${props.recipeName}::${component}`;
       return `${component} => ${name}`;
