@@ -117,7 +117,7 @@ export default function ConanPackage(props) {
               {recipeLicenses && recipeLicenses.length > 0 && (<Row>
                 <Col xs lg="8">
                   <ReactToolTip id="package-info"/>
-                  <a data-tooltip-id='package-info' data-tooltip-html="licenses" data-tooltip-place="top">
+                  <a data-tooltip-id='package-info' data-tooltip-html="Licenses" data-tooltip-place="top">
                     <LiaBalanceScaleSolid className="conanIconBlue conanIcon26"/>
                   </a> {recipeLicenses.join(", ")}
                 </Col>
@@ -141,7 +141,7 @@ export default function ConanPackage(props) {
               {(recipeHomepage) && (<Row>
                 <Col xs lg="8">
                   <ReactToolTip id="package-info"/>
-                  <a data-tooltip-id='package-info' data-tooltip-html="home page" data-tooltip-place="top">
+                  <a data-tooltip-id='package-info' data-tooltip-html="Home page" data-tooltip-place="top">
                     <IoMdHome className="conanIconBlue conanIcon26"/>
                   </a> <Link href={recipeHomepage}>
                     <a>{sanitizeURL(recipeHomepage)}</a>
@@ -152,7 +152,7 @@ export default function ConanPackage(props) {
               {recipeDescription && (<Row>
                 <Col xs lg="8">
                   <ReactToolTip id="package-info"/>
-                  <a data-tooltip-id='package-info' data-tooltip-html="recipe revision" data-tooltip-place="top">
+                  <a data-tooltip-id='package-info' data-tooltip-html="Latest recipe revision" data-tooltip-place="top">
                     <AiOutlinePushpin className="conanIconBlue conanIcon26"/>
                   </a> {recipeRevision}</Col>
               </Row>)}
