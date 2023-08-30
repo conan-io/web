@@ -105,14 +105,14 @@ function UseItFullContent({props}) {
     const getCMakePropertyValue = function(config_property, module_property) {
       let defaultName = config_property == "cmake_target_name"? `${props.recipeName}::${props.recipeName}`: props.recipeName; 
       let name = root[config_property]? root[config_property]: defaultName;
-      if (root.cmake_find_mode === undefined || root.cmake_find_mode == "config") {
-        return name;
-      }
       if (root.cmake_find_mode == "module" && root[module_property]) {
         return root[module_property];
       }
       else if (root.cmake_find_mode == "both" && root[module_property]) {
         return `${name} (config), ${root[module_property]} (module)`;
+      }
+      else {
+        return name;
       }
     };
     const cmakePackageName = getCMakePropertyValue("cmake_file_name", "cmake_module_file_name");
