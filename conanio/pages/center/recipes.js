@@ -68,7 +68,9 @@ function PackageInfo(props) {
   return (
     <div className="m-2">
       <Row>
-        <Col xs lg><Link href={{ pathname: "/center/recipes/" + props.data.name, query: { version: props.data.info.version } }}><a><h3>{props.data.name}</h3></a></Link></Col>
+        <Col xs lg><Link href={{ pathname: "/center/recipes/" + props.data.name, query: { version: props.data.info.version } }}>
+          <a><h3 style={{fontWeight: props.value === props.data.name ? "800" : "initial"}}>{props.data.name}</h3></a>
+        </Link></Col>
         <Col xs lg><b>Latest version:</b> {props.data.info.version}</Col>
       </Row>
       {licenses && licenses.length > 0 &&
@@ -90,53 +92,12 @@ function SearchList(props) {
     {props.data && props.data.map(
       (info) => (
         <ListGroup.Item style={{borderRadius: '10px'}} className="mt-4" key={info.name}>
-          <PackageInfo data={info}/>
+          <PackageInfo data={info} value={props.value}/>
         </ListGroup.Item>)
       )
     }
     </ListGroup>
   )
-}
-
-// This comes from the wikipedia's pseudocode, I couldn't be bothered to do some dynamic programming of my own,
-// comments left to make it easier to double-check the transpilation
-const levenshteinDistance = (s, t) => {
-  const m = s.length;
-  const n = t.length;
-
-  // Create two work arrays of integer distances
-  const v0 = new Array(n + 1);
-  const v1 = new Array(n + 1);
-
-  // Initialize v0 (the previous row of distances)
-  for (let i = 0; i <= n; i++) {
-    v0[i] = i;
-  }
-
-  for (let i = 0; i < m; i++) {
-    // Calculate v1 (current row distances) from the previous row v0
-
-    // First element of v1 is A[i + 1][0]
-    v1[0] = i + 1;
-
-    // Use formula to fill in the rest of the row
-    for (let j = 0; j < n; j++) {
-      // Calculating costs for A[i + 1][j + 1]
-      const deletionCost = v0[j + 1] + 1;
-      const insertionCost = v1[j] + 1;
-      const substitutionCost = (s[i] === t[j]) ? v0[j] : v0[j] + 1;
-
-      v1[j + 1] = Math.min(deletionCost, insertionCost, substitutionCost);
-    }
-
-    // Copy v1 (current row) to v0 (previous row) for the next iteration
-    for (let j = 0; j <= n; j++) {
-      v0[j] = v1[j];
-    }
-  }
-
-  // After the last iteration, the results of v1 are now in v0
-  return v0[n];
 }
 
 export default function ConanSearch(props) {
@@ -146,6 +107,48 @@ export default function ConanSearch(props) {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(props.data.packages);
   const [timer, setTimer] = useState(null);
+
+
+  // This comes from the wikipedia's pseudocode, I couldn't be bothered to do some dynamic programming of my own,
+  // comments left to make it easier to double-check the transpilation
+  const levenshteinDistance = (s, t) => {
+    const m = s.length;
+    const n = t.length;
+
+    // Create two work arrays of integer distances
+    const v0 = new Array(n + 1);
+    const v1 = new Array(n + 1);
+
+    // Initialize v0 (the previous row of distances)
+    for (let i = 0; i <= n; i++) {
+      v0[i] = i;
+    }
+
+    for (let i = 0; i < m; i++) {
+      // Calculate v1 (current row distances) from the previous row v0
+
+      // First element of v1 is A[i + 1][0]
+      v1[0] = i + 1;
+
+      // Use formula to fill in the rest of the row
+      for (let j = 0; j < n; j++) {
+        // Calculating costs for A[i + 1][j + 1]
+        const deletionCost = v0[j + 1] + 1;
+        const insertionCost = v1[j] + 1;
+        const substitutionCost = (s[i] === t[j]) ? v0[j] : v0[j] + 1;
+
+        v1[j + 1] = Math.min(deletionCost, insertionCost, substitutionCost);
+      }
+
+      // Copy v1 (current row) to v0 (previous row) for the next iteration
+      for (let j = 0; j <= n; j++) {
+        v0[j] = v1[j];
+      }
+    }
+
+    // After the last iteration, the results of v1 are now in v0
+    return v0[n];
+  }
 
   const getData = async (value, topiclist, licenseList) => {
     setLoading(true);
@@ -222,7 +225,7 @@ export default function ConanSearch(props) {
               <h2 className="text-center">
               Recipes ({!loading && !data && 0}{!loading && data && data.length}{loading && <div className="spinner-grow"></div>})
               </h2>
-              <SearchList loading={loading} data={data}/>
+              <SearchList loading={loading} data={data} value={value}/>
             </div>
           </Container>
           <br/>
