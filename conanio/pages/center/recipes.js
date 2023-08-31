@@ -98,6 +98,47 @@ function SearchList(props) {
   )
 }
 
+// This comes from the wikipedia's pseudocode, I couldn't be bothered to do some dynamic programming of my own,
+// comments left to make it easier to double-check the transpilation
+const levenshteinDistance = (s, t) => {
+  const m = s.length;
+  const n = t.length;
+
+  // Create two work arrays of integer distances
+  const v0 = new Array(n + 1);
+  const v1 = new Array(n + 1);
+
+  // Initialize v0 (the previous row of distances)
+  for (let i = 0; i <= n; i++) {
+    v0[i] = i;
+  }
+
+  for (let i = 0; i < m; i++) {
+    // Calculate v1 (current row distances) from the previous row v0
+
+    // First element of v1 is A[i + 1][0]
+    v1[0] = i + 1;
+
+    // Use formula to fill in the rest of the row
+    for (let j = 0; j < n; j++) {
+      // Calculating costs for A[i + 1][j + 1]
+      const deletionCost = v0[j + 1] + 1;
+      const insertionCost = v1[j] + 1;
+      const substitutionCost = (s[i] === t[j]) ? v0[j] : v0[j] + 1;
+
+      v1[j + 1] = Math.min(deletionCost, insertionCost, substitutionCost);
+    }
+
+    // Copy v1 (current row) to v0 (previous row) for the next iteration
+    for (let j = 0; j <= n; j++) {
+      v0[j] = v1[j];
+    }
+  }
+
+  // After the last iteration, the results of v1 are now in v0
+  return v0[n];
+}
+
 export default function ConanSearch(props) {
   const [value, setValue] = useState(props.data.defaultValue);
   const [topics, setTopics] = useState(props.data.defaultTopics);
@@ -114,10 +155,7 @@ export default function ConanSearch(props) {
       const packages = await get_json_list(urls.search.package, urls.api.public);
       // bring the exact match to the front
       if (packages && packages.length > 0 && value !== 'all') {
-        const matchIndex = packages.findIndex(e => e.name === value)
-        const matchItem = packages[matchIndex]
-        packages.splice(matchIndex, 1)
-        packages.unshift(matchItem)
+        packages.sort((a, b) => levenshteinDistance(a.name, value) - levenshteinDistance(b.name, value))
       }
       setData(packages);
     } catch(err) {
