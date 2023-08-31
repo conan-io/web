@@ -106,13 +106,19 @@ export default function ConanSearch(props) {
   const [data, setData] = useState(props.data.packages);
   const [timer, setTimer] = useState(null);
 
-
   const getData = async (value, topiclist, licenseList) => {
     setLoading(true);
     try {
       value = value || 'all';
       let urls = get_urls({search: value, topics: topiclist, licenses: licenseList})
       const packages = await get_json_list(urls.search.package, urls.api.public);
+      // bring the exact match to the front
+      if (packages && packages.length > 0 && value !== 'all') {
+        const matchIndex = packages.findIndex(e => e.name === value)
+        const matchItem = packages[matchIndex]
+        packages.splice(matchIndex, 1)
+        packages.unshift(matchItem)
+      }
       setData(packages);
     } catch(err) {
       setError(err.message);
