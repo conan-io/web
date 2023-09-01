@@ -118,12 +118,12 @@ function UseItFullContent({props}) {
     const cmakePackageName = getCMakePropertyValue("cmake_file_name", "cmake_module_file_name");
     const cmakeTargetName = getCMakePropertyValue("cmake_target_name", "cmake_module_target_name");
     const pkgConfigName = root.pkg_config_name? `${root.pkg_config_name}.pc`: `${props.recipeName}.pc`;
-    const componentsTargetNames = Object.keys(components).map(function(component) {
+    const componentsTargetNames = Object.keys(components).filter((component) => components[component]).map(function(component) {
       let name = components[component].cmake_target_name? components[component].cmake_target_name: `${props.recipeName}::${component}`;
       return `${component} => ${name}`;
     });
-    const componentsPkgConfigName = Object.keys(components).map(function(component) {
-      let name = components[component].pkg_config_name? components[component].pkg_config_name: `${props.recipeName}-${component}.pc`;
+    const componentsPkgConfigName = Object.keys(components).filter((component) => components[component]).map(function(component) {
+      let name = components[component].pkg_config_name? components[component].pkg_config_name: `${props.recipeName}-${component}`;
       return `${component} => ${name}.pc`;
     });
     return (
