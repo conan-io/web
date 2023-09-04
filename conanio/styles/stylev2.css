@@ -30,13 +30,13 @@ blockquote:not(.important):not(.warning):not(.restricted):not(.experimental):not
   width: 12px;
   height: 12px;
   }
-  
+
 .preFixed::-webkit-scrollbar-track {
 background-color: aliceblue;
 }
-  
+
 .preFixed::-webkit-scrollbar-thumb {
-background: rgb(50, 130, 205); 
+background: rgb(50, 130, 205);
 border-radius: 10px;
 }
 
@@ -265,6 +265,10 @@ h4, .h4 {
 
 .nav-tabs {
   border-color: #21AFFF;
+}
+
+#main-tab>.tab-content {
+  padding-bottom: 30px;
 }
 
 .tab-content>.active {

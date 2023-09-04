@@ -181,123 +181,129 @@ export default function ConanPackage(props) {
           <div className="mt-3 mb-3">
           <BasicSearchBar/>
           </div>
-          <Row>
-            <Col xs lg>
+          <div style={{backgroundColor:"white"}} className="advantage text-center black text-center conan-card">
+            <div className="advantage-text text-left mt-4 mr-4 ml-4">
               <Row>
-                <Col>
-                  <h1 className="mt-2 mb-2" style={{display: 'inline'}}>
-                    {recipeData.name}/{selectedVersion}
-                  </h1><ClipboardCopy copyText={recipeData.name + "/" + selectedVersion}/> <a data-tooltip-id='package-info' data-tooltip-html={extraInfo} data-tooltip-place="top">
-                    {(recipeStatus === "unmaintained") && (<PiWarningBold style={{verticalAlign:'sub',color: iconStatusColor, height: '36px', width: '36px'}}/>)}
-                    {/*(recipeStatus === "ok") && (<MdOutlineCheckCircleOutline style={{verticalAlign:'sub',color: iconStatusColor, height: '36px', width: '36px'}}/>)*/}
-                  </a>
+                <Col xs lg>
+                  <Row>
+                    <Col>
+                      <h1 className="mt-2 mb-2" style={{display: 'inline'}}>
+                        {recipeData.name}/{selectedVersion}
+                      </h1><ClipboardCopy copyText={recipeData.name + "/" + selectedVersion}/> <a data-tooltip-id='package-info' data-tooltip-html={extraInfo} data-tooltip-place="top">
+                        {(recipeStatus === "unmaintained") && (<PiWarningBold style={{verticalAlign:'sub',color: iconStatusColor, height: '36px', width: '36px'}}/>)}
+                        {/*(recipeStatus === "ok") && (<MdOutlineCheckCircleOutline style={{verticalAlign:'sub',color: iconStatusColor, height: '36px', width: '36px'}}/>)*/}
+                      </a>
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
-            </Col>
-          </Row>
-          <Row>
-            <Col xs lg="8" className="mt-2">
-              {recipeDescription && (<Row>
-                <Col className="mb-2" xs lg>{recipeDescription}</Col>
-              </Row>)}
+              <Row>
+                <Col xs lg="8" className="mt-2">
+                  {recipeDescription && (<Row>
+                    <Col className="mb-2" xs lg>{recipeDescription}</Col>
+                  </Row>)}
 
-              {recipeLicenses && recipeLicenses.length > 0 && (<Row>
-                <Col xs lg>
-                  <ReactToolTip id="package-info"/>
-                  <a data-tooltip-id='package-info' data-tooltip-html="Licenses" data-tooltip-place="top">
-                    <LiaBalanceScaleSolid className="conanIconBlue conanIcon26"/>
-                  </a> {recipeLicenses.map((license) => {
-                    if(valid_licenses.includes(license.toLowerCase())) return (
-                      <a
-                        href={"https://choosealicense.com/licenses/" + license.toLowerCase()}
-                        rel="noopener noreferrer"
-                        target="_blank"
-                      >{license}</a>
-                    );
-                    return license;
-                  }).reduce((prev, curr) => [prev, ', ', curr])}
+                  {recipeLicenses && recipeLicenses.length > 0 && (<Row>
+                    <Col xs lg>
+                      <ReactToolTip id="package-info"/>
+                      <a data-tooltip-id='package-info' data-tooltip-html="Licenses" data-tooltip-place="top">
+                        <LiaBalanceScaleSolid className="conanIconBlue conanIcon26"/>
+                      </a> {recipeLicenses.map((license) => {
+                        if(valid_licenses.includes(license.toLowerCase())) return (
+                          <a
+                            href={"https://choosealicense.com/licenses/" + license.toLowerCase()}
+                            rel="noopener noreferrer"
+                            target="_blank"
+                          >{license}</a>
+                        );
+                        return license;
+                      }).reduce((prev, curr) => [prev, ', ', curr])}
+                    </Col>
+                  </Row>)}
+
+                  {recipeDescription && (<Row>
+                    <Col xs lg>
+                      <ReactToolTip id="package-info"/>
+                      <a data-tooltip-id='package-info' data-tooltip-html="GitHub repository" data-tooltip-place="top">
+                        <LiaGithub className="conanIconBlue conanIcon26"/>
+                      </a> <Link href={recipeConanCenterUrl}>
+                        <a>View recipe on GitHub</a>
+                      </Link>
+                    </Col>
+                  </Row>)}
+
+                  {(recipeHomepage) && (<Row>
+                    <Col xs lg="8">
+                      <ReactToolTip id="package-info"/>
+                      <a data-tooltip-id='package-info' data-tooltip-html="Home page" data-tooltip-place="top">
+                        <IoMdHome className="conanIconBlue conanIcon26"/>
+                      </a> <Link href={recipeHomepage}>
+                        <a>{sanitizeURL(recipeHomepage)}</a>
+                      </Link>
+                    </Col>
+                  </Row>)}
+
+                  {(recipeDescription && recipeTotalDownloads > 0) && (<Row>
+                    <Col xs lg="8">
+                      <ReactToolTip id="package-info"/>
+                      <a data-tooltip-id='package-info' data-tooltip-html="Recipe version downloads" data-tooltip-place="top">
+                        <IoMdDownload className="conanIconBlue conanIcon26"/>
+                      </a> {recipeTotalDownloads}
+                    </Col>
+                  </Row>)}
+
+                  {recipeDescription && (<Row>
+                    <Col xs lg>
+                      <ReactToolTip id="package-info"/>
+                      <a data-tooltip-id='package-info' data-tooltip-html="Latest recipe revision" data-tooltip-place="top">
+                        <AiOutlinePushpin className="conanIconBlue conanIcon26"/>
+                      </a> {recipeRevision}</Col>
+                  </Row>)}
+
+                  {recipeLabels && Object.keys(recipeLabels).length > 0 && (<Row className="mt-2">
+                    <Col xs lg>
+                      <p>
+                        {
+                          Object.keys(recipeLabels).map(
+                            (item) => (
+                              <a style={{cursor: 'pointer'}} key={item} onClick={() => onClickTopics(recipeLabels[item])}>
+                                <Badge key={item}>#{item}</Badge>
+                              </a>
+                            )
+                          )
+                        }
+                        {
+                          (recipeStatus !== "ok") && (<Badge bg="warning" text="white"><PiWarningBold/> {recipeStatus}</Badge>)
+                        }
+                      </p>
+                    </Col>
+                  </Row>)}
                 </Col>
-              </Row>)}
 
-              {recipeDescription && (<Row>
-                <Col xs lg>
-                  <ReactToolTip id="package-info"/>
-                  <a data-tooltip-id='package-info' data-tooltip-html="GitHub repository" data-tooltip-place="top">
-                    <LiaGithub className="conanIconBlue conanIcon26"/>
-                  </a> <Link href={recipeConanCenterUrl}>
-                    <a>View recipe on GitHub</a>
-                  </Link>
-                </Col>
-              </Row>)}
-
-              {(recipeHomepage) && (<Row>
-                <Col xs lg="8">
-                  <ReactToolTip id="package-info"/>
-                  <a data-tooltip-id='package-info' data-tooltip-html="Home page" data-tooltip-place="top">
-                    <IoMdHome className="conanIconBlue conanIcon26"/>
-                  </a> <Link href={recipeHomepage}>
-                    <a>{sanitizeURL(recipeHomepage)}</a>
-                  </Link>
-                </Col>
-              </Row>)}
-
-              {(recipeDescription && recipeTotalDownloads > 0) && (<Row>
-                <Col xs lg="8">
-                  <ReactToolTip id="package-info"/>
-                  <a data-tooltip-id='package-info' data-tooltip-html="Recipe version downloads" data-tooltip-place="top">
-                    <IoMdDownload className="conanIconBlue conanIcon26"/>
-                  </a> {recipeTotalDownloads}
-                </Col>
-              </Row>)}
-
-              {recipeDescription && (<Row>
-                <Col xs lg>
-                  <ReactToolTip id="package-info"/>
-                  <a data-tooltip-id='package-info' data-tooltip-html="Latest recipe revision" data-tooltip-place="top">
-                    <AiOutlinePushpin className="conanIconBlue conanIcon26"/>
-                  </a> {recipeRevision}</Col>
-              </Row>)}
-
-              {recipeLabels && Object.keys(recipeLabels).length > 0 && (<Row className="mt-2">
-                <Col xs lg>
-                  <p>
-                    {
-                      Object.keys(recipeLabels).map(
-                        (item) => (
-                          <a style={{cursor: 'pointer'}} key={item} onClick={() => onClickTopics(recipeLabels[item])}>
-                            <Badge key={item}>#{item}</Badge>
-                          </a>
-                        )
-                      )
-                    }
-                    {
-                      (recipeStatus !== "ok") && (<Badge bg="warning" text="white"><PiWarningBold/> {recipeStatus}</Badge>)
-                    }
-                  </p>
-                </Col>
-              </Row>)}
-            </Col>
-
-            {recipeDescription && recipeDownloads && recipeDownloads.length > 0 &&
-            <Col xs lg="4" className="mt-2">
-              <Row className="justify-content-md-center">
-                <LineChart width={340} height={230} data={recipeDownloads} margin={{ top: 20, right: 20, left: 0, bottom: 20 }}>
-                  <XAxis dataKey="date" stroke="#808080"/>
-                  <YAxis dataKey="downloads" stroke="#808080"/>
-                  <Tooltip />
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <Line type="monotone" dataKey="downloads" stroke="#21AFFF" yAxisId={0} />
-                </LineChart>
+                {recipeDescription && recipeDownloads && recipeDownloads.length > 0 &&
+                <Col xs lg="4" className="mt-2">
+                  <Row className="justify-content-md-center">
+                    <LineChart width={340} height={230} data={recipeDownloads} margin={{ top: 20, right: 20, left: 0, bottom: 20 }}>
+                      <XAxis dataKey="date" stroke="#808080"/>
+                      <YAxis dataKey="downloads" stroke="#808080"/>
+                      <Tooltip />
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <Line type="monotone" dataKey="downloads" stroke="#21AFFF" yAxisId={0} />
+                    </LineChart>
+                  </Row>
+                </Col>}
               </Row>
-            </Col>}
-          </Row>
-          {!recipeDescription && (<DefaultDescription name={recipeData.name}/>)}
-          <Tabs className="package-tabs mt-2" id="uncontrolled">
-            {recipeDescription && <Tab eventKey="use-it" title="Use it"><br/><UseItTab info={recipeUseIt} recipeName={props.recipeName} recipeVersion={selectedVersion} /></Tab>}
-            {recipeDescription && <Tab eventKey="dependencies" title="Dependencies"><br/><DependenciesTab info={recipeUseIt} recipeName={props.recipeName} recipeVersion={selectedVersion}/></Tab>}
-            <Tab eventKey="version" title="Versions"><br/><VersionsTab selector={setSelectedVersion} data={props.data} /></Tab>
-            <Tab eventKey="badges" title="Badges"><br/><BadgesTab recipeName={props.recipeName} /></Tab>
-          </Tabs>
+              {!recipeDescription && (<DefaultDescription name={recipeData.name}/>)}
+              <div id="main-tab" className="mt-2 mb-4">
+                <Tabs className="package-tabs" id="uncontrolled">
+                  {recipeDescription && <Tab eventKey="use-it" title="Use it"><br/><UseItTab info={recipeUseIt} recipeName={props.recipeName} recipeVersion={selectedVersion} /></Tab>}
+                  {recipeDescription && <Tab eventKey="dependencies" title="Dependencies"><br/><DependenciesTab info={recipeUseIt} recipeName={props.recipeName} recipeVersion={selectedVersion}/></Tab>}
+                  <Tab eventKey="version" title="Versions"><br/><VersionsTab selector={setSelectedVersion} data={props.data} /></Tab>
+                  <Tab eventKey="badges" title="Badges"><br/><BadgesTab recipeName={props.recipeName} /></Tab>
+                </Tabs>
+              </div>
+            </div>
+          </div>
         </Container>
         <br/>
         <ConanFooter/>
