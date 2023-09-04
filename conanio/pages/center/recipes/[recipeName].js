@@ -63,17 +63,26 @@ function ClipboardCopy({ copyText }) {
   }
 
   return (
-    <a onClick={handleCopyClick} style={{cursor: 'pointer', display: 'inline'}}>
-      <span>
-        {isCopied ? <
-            HiOutlineClipboardCheck className="conanIcon18"
-            style={{color: 'green', verticalAlign: 'top', marginLeft:'1px', marginTop:'7px', height: '20px', width: '20px'}}
-          /> : <
-            HiOutlineClipboardCopy className="conanIcon18 conanIconBlue"
-            style={{verticalAlign: 'top', marginLeft:'1px', marginTop:'7px', height: '20px', width: '20px'}}
-          />}
-      </span>
-    </a>
+    <>
+      <ReactToolTip id="copy" style={{marginTop: "-14px"}}/>
+      <a
+        onClick={handleCopyClick}
+        style={{cursor: 'pointer', display: 'inline'}}
+        data-tooltip-id='copy'
+        data-tooltip-html={isCopied ? "Copied!" : "Copy to clipboard"}
+        data-tooltip-place="top"
+      >
+        <span>
+          {isCopied ? <
+              HiOutlineClipboardCheck className="conanIcon18"
+              style={{color: 'green', verticalAlign: 'top', marginLeft:'1px', marginTop:'7px', height: '20px', width: '20px'}}
+            /> : <
+              HiOutlineClipboardCopy className="conanIcon18 conanIconBlue"
+              style={{verticalAlign: 'top', marginLeft:'1px', marginTop:'7px', height: '20px', width: '20px'}}
+            />}
+        </span>
+      </a>
+    </>
   );
 }
 
@@ -176,10 +185,9 @@ export default function ConanPackage(props) {
             <Col xs lg>
               <Row>
                 <Col>
-                <ReactToolTip id="package-info"/>
                   <h1 className="mt-2 mb-2" style={{display: 'inline'}}>
-                    {recipeData.name}/{selectedVersion}<ClipboardCopy copyText={recipeData.name + "/" + selectedVersion}/>
-                  </h1> <a data-tooltip-id='package-info' data-tooltip-html={extraInfo} data-tooltip-place="top">
+                    {recipeData.name}/{selectedVersion}
+                  </h1><ClipboardCopy copyText={recipeData.name + "/" + selectedVersion}/> <a data-tooltip-id='package-info' data-tooltip-html={extraInfo} data-tooltip-place="top">
                     {(recipeStatus === "unmaintained") && (<PiWarningBold style={{verticalAlign:'sub',color: iconStatusColor, height: '36px', width: '36px'}}/>)}
                     {/*(recipeStatus === "ok") && (<MdOutlineCheckCircleOutline style={{verticalAlign:'sub',color: iconStatusColor, height: '36px', width: '36px'}}/>)*/}
                   </a>
