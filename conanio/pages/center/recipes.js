@@ -70,7 +70,7 @@ function PackageInfo(props) {
     <div className="m-2">
       <Row>
         <Col xs lg><Link href={{ pathname: "/center/recipes/" + props.data.name, query: { version: props.data.info.version } }}>
-          <a><h3 style={{fontWeight: props.value === props.data.name ? "800" : "initial"}}>{props.data.name}</h3></a>
+          <a><h3>{props.data.name}</h3></a>
         </Link></Col>
         <Col xs lg><b>Latest version:</b> {props.data.info.version}</Col>
       </Row>
@@ -91,7 +91,7 @@ function SearchList(props) {
     {props.data && props.data.map(
       (info) => (
         <ListGroup.Item style={{borderRadius: '10px'}} className="mt-4" key={info.name}>
-          <PackageInfo data={info} value={props.value}/>
+          <PackageInfo data={info}/>
         </ListGroup.Item>)
       )
     }
@@ -224,7 +224,7 @@ export default function ConanSearch(props) {
               <h2 className="text-center">
               Recipes ({!loading && !data && 0}{!loading && data && data.length}{loading && <div className="spinner-grow"></div>})
               </h2>
-              <SearchList loading={loading} data={data} value={value}/>
+              <SearchList loading={loading} data={data}/>
             </div>
           </Container>
           <br/>
