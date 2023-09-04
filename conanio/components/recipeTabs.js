@@ -5,7 +5,7 @@ import Tabs from 'react-bootstrap/Tabs';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Link from 'next/link';
-import { FaCopy } from "react-icons/fa";
+import { HiOutlineClipboardCopy, HiOutlineClipboardCheck } from "react-icons/hi";
 import { BiSolidInfoCircle } from "react-icons/bi";
 import { MdOutlineCheckCircleOutline, MdOutlineToday } from "react-icons/md";
 import { PiWarningBold } from "react-icons/pi";
@@ -42,7 +42,13 @@ function ClipboardCopy({ copyText }) {
     <div>
       {/* Bind our handler function to the onClick button property */}
       <button className="copyBadgesButton" onClick={handleCopyClick}>
-        <span>{isCopied ? 'Copied!' : <FaCopy/>}</span>
+        <span>
+          {isCopied ? <
+            HiOutlineClipboardCheck className="conanIcon18" style={{color: 'green', verticalAlign: 'baseline', height: '20px', width: '20px'}}
+          /> : <
+            HiOutlineClipboardCopy className="conanIcon18 conanIconBlue" style={{ verticalAlign: 'baseline', height: '20px', width: '20px'}}
+          />}
+        </span>
       </button>
     </div>
   );
@@ -103,7 +109,7 @@ function UseItFullContent({props}) {
     const root = recipe_properties.root? recipe_properties.root: Object();
     const components = recipe_properties.components? recipe_properties.components: Object();
     const getCMakePropertyValue = function(config_property, module_property) {
-      let defaultName = config_property == "cmake_target_name"? `${props.recipeName}::${props.recipeName}`: props.recipeName; 
+      let defaultName = config_property == "cmake_target_name"? `${props.recipeName}::${props.recipeName}`: props.recipeName;
       let name = root[config_property]? root[config_property]: defaultName;
       if (root.cmake_find_mode == "module" && root[module_property]) {
         return root[module_property];
