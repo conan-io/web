@@ -23,6 +23,7 @@ import { PiWarningBold } from "react-icons/pi";
 import { MdOutlineCheckCircleOutline } from "react-icons/md";
 import { BiInfoCircle } from "react-icons/bi";
 import { AiOutlinePushpin } from "react-icons/ai";
+import { HiOutlineClipboardCopy, HiOutlineClipboardCheck } from "react-icons/hi";
 import { BasicSearchBar } from "../../../components/searchbar";
 import { Tooltip as ReactToolTip } from 'react-tooltip';
 
@@ -45,6 +46,36 @@ function sanitizeURL(url) {
   return url.replace(protocol + "//", "");
 }
 
+function ClipboardCopy({ copyText }) {
+  const [isCopied, setIsCopied] = useState(false);
+  async function copyTextToClipboard(text) {
+    return await navigator.clipboard.writeText(text);
+  }
+  const handleCopyClick = () => {
+    copyTextToClipboard(copyText)
+      .then(() => {
+        setIsCopied(true);
+        setTimeout(() => {setIsCopied(false);}, 1500);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  return (
+    <a onClick={handleCopyClick} style={{cursor: 'pointer', display: 'inline'}}>
+      <span>
+        {isCopied ? <
+            HiOutlineClipboardCheck className="conanIcon18"
+            style={{color: 'green', verticalAlign: 'top', marginLeft:'1px', marginTop:'7px', height: '20px', width: '20px'}}
+          /> : <
+            HiOutlineClipboardCopy className="conanIcon18 conanIconBlue"
+            style={{verticalAlign: 'top', marginLeft:'1px', marginTop:'7px', height: '20px', width: '20px'}}
+          />}
+      </span>
+    </a>
+  );
+}
 
 export default function ConanPackage(props) {
   let router = useRouter();
@@ -147,10 +178,10 @@ export default function ConanPackage(props) {
                 <Col>
                 <ReactToolTip id="package-info"/>
                   <h1 className="mt-2 mb-2" style={{display: 'inline'}}>
-                    {recipeData.name}/{selectedVersion}
+                    {recipeData.name}/{selectedVersion}<ClipboardCopy copyText={recipeData.name + "/" + selectedVersion}/>
                   </h1> <a data-tooltip-id='package-info' data-tooltip-html={extraInfo} data-tooltip-place="top">
-                    {(recipeStatus === "unmaintained") && (<PiWarningBold style={{verticalAlign:'sub',color: iconStatusColor,height: '36px', width: '36px'}}/>)}
-                    {(recipeStatus === "ok") && (<MdOutlineCheckCircleOutline style={{verticalAlign:'sub',color: iconStatusColor,height: '36px', width: '36px'}}/>)}
+                    {(recipeStatus === "unmaintained") && (<PiWarningBold style={{verticalAlign:'sub',color: iconStatusColor, height: '36px', width: '36px'}}/>)}
+                    {/*(recipeStatus === "ok") && (<MdOutlineCheckCircleOutline style={{verticalAlign:'sub',color: iconStatusColor, height: '36px', width: '36px'}}/>)*/}
                   </a>
                 </Col>
               </Row>
