@@ -97,6 +97,7 @@ export default function ConanPackage(props) {
   if (!props.data) return (<div>Loading...</div>);
   const recipeData = props.data[indexSelectedVersion];
   const recipeStatus = recipeData.info.status;
+  const recipeProfileSetting = recipeData.info.settings;
   const recipeRevision = recipeData.info.recipe_revision;
   const recipeDescription = recipeData.info.description;
   const recipeHomepage = recipeData.info.homepage;
@@ -262,20 +263,29 @@ export default function ConanPackage(props) {
 
                   {recipeLabels && Object.keys(recipeLabels).length > 0 && (<Row className="mt-2">
                     <Col xs lg>
-                      <p>
-                        {
-                          Object.keys(recipeLabels).map(
-                            (item) => (
-                              <a style={{cursor: 'pointer'}} key={item} onClick={() => onClickTopics(recipeLabels[item])}>
-                                <Badge key={item}>#{item}</Badge>
-                              </a>
-                            )
+                      {
+                        Object.keys(recipeLabels).map(
+                          (item) => (
+                            <a style={{cursor: 'pointer'}} key={item} onClick={() => onClickTopics(recipeLabels[item])}>
+                              <Badge key={item}>#{item}</Badge>
+                            </a>
                           )
-                        }
-                        {
-                          (recipeStatus !== "ok") && (<Badge bg="warning" text="white"><PiWarningBold/> {recipeStatus}</Badge>)
-                        }
-                      </p>
+                        )
+                      }
+                      {
+                        (recipeStatus !== "ok") && (<Badge bg="warning" text="white"><PiWarningBold/> {recipeStatus}</Badge>)
+                      }
+                    </Col>
+                  </Row>)}
+                  {recipeProfileSetting && recipeProfileSetting.length > 0 && (<Row>
+                    <Col xs lg>
+                      {
+                        recipeProfileSetting.map(
+                          (item) => (
+                            <Badge bg="success" key={item.os + "-" + item.arch}>{item.os}-{item.arch}</Badge>
+                          )
+                        )
+                      }
                     </Col>
                   </Row>)}
                 </Col>

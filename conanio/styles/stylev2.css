@@ -249,6 +249,12 @@ h4, .h4 {
     color: white;
 }
 
+.bg-success {
+    background-color: #6CC04A!important;
+    margin-right: 6px;
+    color: white;
+}
+
 .nav-item {
   border-color: #21AFFF;
   border-bottom: 0px;
