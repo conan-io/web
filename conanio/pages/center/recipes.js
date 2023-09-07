@@ -111,17 +111,24 @@ function PackageInfo(props) {
   return (
     <div className="m-2">
       <Row>
-        <Col xs lg><Link href={{ pathname: "/center/recipes/" + props.data.name, query: { version: props.data.info.version } }}>
+        <Col xs lg="6"><Link href={{ pathname: "/center/recipes/" + props.data.name, query: { version: props.data.info.version } }}>
           <a><h3>{props.data.name}</h3></a>
         </Link></Col>
-        <Col xs lg><b>Latest version:</b> {props.data.info.version}</Col>
+        <Col xs lg="6"><b>Latest version:</b> {props.data.info.version}</Col>
       </Row>
       <Row>
       {licenses && licenses.length > 0 && <Col xs lg="auto"><LiaBalanceScaleSolid className="conanIconBlue"/> {licenses.join(", ")}</Col>}
       {props.data.info.downloads > 0  && <Col xs lg="auto"><IoMdDownload className="conanIconBlue"/> {props.data.info.downloads}</Col>}
       </Row>
       <Row><Col xs lg className="mt-2">{props.data.info.description || (<DefaultDescription name={props.data.name}/>)}</Col></Row>
-      <Row><Col xs lg className="mt-2"><p> {labels.map((item) => (<Badge key={item}>#{item}</Badge>))}</p></Col></Row>
+      <Row>
+        <Col xs lg="6" className="mt-2">{labels.map((item) => (<Badge className="recipeTopics" key={item}>#{item}</Badge>))}</Col>
+        {props.data.info.settings && props.data.info.settings.length > 0 && (
+        <Col xs lg="6" className="mt-2">{props.data.info.settings.map((item) => (<Badge className="profileTopics" key={item.os + "-" + item.arch}>
+            {item.os}-{item.arch}
+          </Badge>))}
+        </Col>)}
+      </Row>
     </div>
   )
 }
@@ -215,9 +222,9 @@ export default function ConanSearch(props) {
               </Col>
               <Col xs="1" md="1" lg="2"></Col>
             </Row>
-            <Row className="justify-content-md-center mt-2">
-              <Col xs md="5" lg="4"><ConanMultiSelectFilter title="Licenses" defaultValue={props.data.defaultLicenses} filters={props.data.licenses} handleFilter={handleLicenses}/></Col>
-              <Col xs md="5" lg="4"><ConanMultiSelectFilter title="Topics" defaultValue={props.data.defaultTopics} filters={props.data.topics} handleFilter={handleTopics}/></Col>
+            <Row className="justify-content-md-center">
+              <Col xs={{ span: 8, offset: 2 }} md={{ span: 8, offset: 2 }} lg={{span: 4, offset: 0}} className="mt-2"><ConanMultiSelectFilter title="Licenses" defaultValue={props.data.defaultLicenses} filters={props.data.licenses} handleFilter={handleLicenses}/></Col>
+              <Col xs={{ span: 8, offset: 2 }} md={{ span: 8, offset: 2 }} lg={{span: 4, offset: 0}} className="mt-2"><ConanMultiSelectFilter title="Topics" defaultValue={props.data.defaultTopics} filters={props.data.topics} handleFilter={handleTopics}/></Col>
             </Row>
             <br/>
             <div style={{width: "100%"}}>

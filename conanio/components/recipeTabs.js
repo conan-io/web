@@ -4,6 +4,7 @@ import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Badge from 'react-bootstrap/Badge';
 import Link from 'next/link';
 import { HiOutlineClipboardCopy, HiOutlineClipboardCheck } from "react-icons/hi";
 import { BiSolidInfoCircle } from "react-icons/bi";
@@ -13,8 +14,11 @@ import { LiaBalanceScaleSolid } from "react-icons/lia";
 import { AiOutlinePushpin, AiFillCaretDown, AiFillCaretRight } from "react-icons/ai";
 import { FaTags } from "react-icons/fa";
 import ListGroup from 'react-bootstrap/ListGroup';
-import { Tooltip } from 'react-tooltip';
+import { Tooltip as ReactTooltip } from 'react-tooltip';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Button from 'react-bootstrap/Button';
 import Collapse from 'react-bootstrap/Collapse';
+import {LineChart, XAxis, YAxis, Tooltip, CartesianGrid, Line, Legend} from 'recharts';
 
 {/* TODO: this function should go in a more common module. More configurable? */}
 function ClipboardCopy({ copyText }) {
@@ -62,7 +66,7 @@ function BadgesTab({recipeName}) {
   const htmlMessage = `<img alt="Conan Center" src="https://img.shields.io/conan/v/${recipeName}">`;
 
   return (
-    <div>
+    <div className="mb-4">
       <img src={"https://img.shields.io/conan/v/" + recipeName} alt="Conan Center"></img>
       <br/><br/>
       <Tabs className="package-tabs" defaultActiveKey="Markdown" id="badges-uncontrolled">
@@ -322,15 +326,15 @@ function VersionsTab(props) {
     const extraInfo = recipe.info.status === 'ok'? 'maintained version': recipe.info.status + ' version'
     return (
       <ListGroup.Item style={{border: '0.05rem solid #21AFFF', backgroundColor: '#FFFFFF', borderRadius: '10px', margin:'0px 0px 5px 0px'}}>
-        <Tooltip id="extra-info"/>
+        <ReactTooltip id="extra-info"/>
         <Row style={{alignItems: 'center'}}>
-          <Col md="auto">
+          <Col md="1">
             <a data-tooltip-id='extra-info' data-tooltip-html={extraInfo} data-tooltip-place="top">
             {(recipe.info.status === "unmaintained") && (<PiWarningBold style={{verticalAlign:'text-top',color: iconStatusColor,height: '21px', width: '21px'}}/>)}
             {(recipe.info.status === "ok") && (<MdOutlineCheckCircleOutline style={{verticalAlign:'text-top',color: iconStatusColor,height: '21px', width: '21px'}}/>)}
             </a>
           </Col>
-          <Col className="text-center" md="auto">
+          <Col md="2">
             <a data-tooltip-id='extra-info' data-tooltip-html="Reference version" data-tooltip-place="top">
               <FaTags className="mr-2" style={{verticalAlign:'text-top',color: '#21AFFF', height: '21px', width: '21px'}}/>
             </a>
@@ -338,7 +342,7 @@ function VersionsTab(props) {
               {recipe.info.version}
             </a>
           </Col>
-          <Col md="auto">
+          <Col md="3">
             <Row style={{padding:'0px 15px'}}>
               <div className="d-inline">
                 <a data-tooltip-id='extra-info' data-tooltip-html="Last updated date" data-tooltip-place="top">
@@ -346,20 +350,23 @@ function VersionsTab(props) {
                 </a> {recipe.info.timestamp}
               </div>
             </Row>
-            <Row style={{padding:'0px 15px'}}>
-              {Object.keys(recipe.info.licenses).length > 0 && (
+            {Object.keys(recipe.info.licenses).length > 0 && (<Row style={{padding:'0px 15px'}} className="mt-2">
                 <div className="d-inline">
                   <a data-tooltip-id='extra-info' data-tooltip-html="Licenses" data-tooltip-place="top">
                     <LiaBalanceScaleSolid style={{verticalAlign:'text-top',color: '#21AFFF',height: '21px', width: '21px'}}/>
                   </a> {Object.keys(recipe.info.licenses).join(", ")}
-                </div>)
-              }
-            </Row>
+                </div>
+            </Row>)}
           </Col>
-          <Col className="text-center" md="auto">
-            <a data-tooltip-id='extra-info' data-tooltip-html="Latest recipe revision" data-tooltip-place="top">
-              <AiOutlinePushpin style={{verticalAlign:'text-top',color: '#21AFFF', height: '21px', width: '21px'}}/>
-            </a> {recipe.info.recipe_revision}
+          <Col className="text-center" md="6">
+            <Row>
+              <a data-tooltip-id='extra-info' data-tooltip-html="Latest recipe revision" data-tooltip-place="top">
+                <AiOutlinePushpin style={{verticalAlign:'text-top',color: '#21AFFF', height: '21px', width: '21px'}}/>
+              </a> {recipe.info.recipe_revision}
+            </Row>
+            {recipe.info.settings && recipe.info.settings.length > 0 && <Row className="mt-2">
+              {recipe.info.settings.map((item) => (<Badge className="profileTopics" key={item.os + "-" + item.arch}>{item.os}-{item.arch}</Badge>))}
+            </Row>}
           </Col>
         </Row>
       </ListGroup.Item>
@@ -375,4 +382,120 @@ function VersionsTab(props) {
 }
 
 
-export { UseItTab, BadgesTab, DependenciesTab, VersionsTab };
+function StatsTab(props) {
+  const color = ['#21AFFF', '#3cb44b', '#ffe119', '#f58231', '#911eb4',
+                 '#e6194B', '#f032e6', '#bfef45', '#fabed4', '#469990', '#dcbeff',
+                 '#9A6324', '#fffac8', '#800000', '#aaffc3', '#808000', '#ffd8b1',
+                 '#000075', '#a9a9a9', '#4363d8', '#42d4f4']
+   const labels = props.maintainedVersions.map((item) => ({"key": item}));
+   const [lineProps, setLineProps] = useState(
+     labels.reduce(
+       (a, { key }) => {
+         a[key] = false;
+         return a;
+       },
+       { hover: null }
+     )
+   );
+   const handleLegendMouseEnter = (e) => {
+     if (!lineProps[e.dataKey]) {
+       setLineProps({ ...lineProps, hover: e.dataKey });
+     }
+   };
+
+   const handleLegendMouseLeave = (e) => {
+     setLineProps({ ...lineProps, hover: null });
+   };
+
+   const selectLine = (e) => {
+     setLineProps({
+       ...lineProps,
+       [e.dataKey]: !lineProps[e.dataKey],
+       hover: null
+     });
+   };
+
+   const showAllLines = () => {
+     const newLineProps = labels.reduce(
+       (a, { key }) => {
+         a[key] = false;
+         return a;
+       },
+       { hover: null }
+     );
+     setLineProps(newLineProps);
+   }
+
+   const hideAllLines = () => {
+     const newLineProps = labels.reduce(
+       (a, { key }) => {
+         a[key] = true;
+         return a;
+       },
+       { hover: null }
+     );
+     setLineProps(newLineProps);
+   }
+
+   const showCurrentVersionLine = () => {
+     const newLineProps = labels.reduce(
+       (a, { key }) => {
+         a[key] = !(key==props.selectedVersion);
+         return a;
+       },
+       { hover: null }
+     );
+     setLineProps(newLineProps);
+   }
+
+  return (
+    <div>
+      <Row className="pl-3 pb-3"><h3>{props.recipeName} stats</h3></Row>
+      <hr/>
+      <Row className="pl-1">
+        <Col xs md lg="3"><b>Total downloads:</b></Col>
+        <Col xs md lg="auto">
+          {Object.values(props.data).map((e) => e.info.downloads).reduce((a, b) => a + b, 0)}</Col>
+      </Row>
+      <hr/>
+      <Row className="pl-1">
+        <Col xs md lg="3"><b>Current version total downloads:</b></Col>
+        <Col xs md lg="auto">{props.currentVersionDownloads}</Col>
+      </Row>
+      <hr/>
+      <Row className="pt-4 pl-3"><h4>Recipe downloads by version</h4></Row>
+      <Row>
+        <LineChart width={Math.min(1100, window.innerWidth*0.8)} height={400} data={props.recipeDownloadsAll} margin={{ top: 10, right: 10, left: 10, bottom: 10 }}>
+          <XAxis dataKey="date" stroke="#808080"/>
+          <YAxis stroke="#808080"/>
+          <Legend
+            onClick={selectLine}
+            onMouseOver={handleLegendMouseEnter}
+            onMouseOut={handleLegendMouseLeave}
+          />
+          <Tooltip />
+          <CartesianGrid strokeDasharray="3 3" />
+          {props.maintainedVersions.map((item, index) => (
+            <Line
+              key={item}
+              type="monotone"
+              dataKey={item}
+              stroke={color[index]}
+              hide={lineProps[item] === true}
+            />
+          ))}
+        </LineChart>
+      </Row>
+      <Row className="justify-content-center">
+        <ButtonGroup size="sm" className="p-3 mb-4">
+          <Button className="statsButton" onClick={hideAllLines}>Hide all</Button>
+          <Button className="statsButton" onClick={showCurrentVersionLine}>Show current version</Button>
+          <Button className="statsButton" onClick={showAllLines}>Show all</Button>
+        </ButtonGroup>
+      </Row>
+    </div>
+  )
+}
+
+
+export { UseItTab, BadgesTab, DependenciesTab, VersionsTab, StatsTab };

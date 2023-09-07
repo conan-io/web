@@ -151,6 +151,11 @@ border-radius: 10px;
   width: 26px;
 }
 
+.conanIcon22{
+  height: 22px;
+  width: 22px;
+}
+
 .conanIcon34{
   height: 34px;
   width: 34px;
@@ -186,6 +191,74 @@ border-radius: 10px;
   color: white;
 }
 
+.statsButton {
+  color: white;
+  background-color: #21AFFF;
+  height: fit-content !important;
+  border-color: #21AFFF;
+  min-width: 0px !important;
+}
+
+.statsButton:hover {
+  color: white;
+  background-color: #21AFFF;
+  border-color: #21AFFF;
+}
+
+.statsButton:active {
+  border-color: #21AFFF !important;
+  background-color: #21AFFF !important;
+}
+
+.statsButton:focus {
+  border-color: #21AFFF;
+  background-color: #21AFFF;
+  box-shadow: none;
+}
+
+.tabButton {
+  color: black;
+  background-color: inherit;
+  height: fit-content !important;
+  margin-left: 0.5px !important;
+  border-radius: 10px 10px 0px 0px !important;
+  border-color: #EDF7FF;
+  border-bottom: 0px;
+  min-width: 0px !important;
+}
+
+.tabButtonActive {
+  color: white!important;
+  background-color: #21AFFF!important;
+}
+
+.tabButtonGroup {
+  margin: 0px 0px 0px -1px;
+  display: flex;
+}
+
+.tabButton:hover {
+  color: #21AFFF;
+  background-color: inherit;
+  border-color: #EDF7FF;
+}
+
+.tabButton:active {
+  border-color: #21AFFF !important;
+  background-color: #21AFFF !important;
+}
+
+.tabButton:focus {
+  border-color: #21AFFF;
+  background-color: #21AFFF;
+  box-shadow: none;
+}
+
+.recipeContentBox {
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: 0px 9px 29px rgba(0, 0, 0, 0.07), 0px 1.12694px 3.63125px rgba(0, 0, 0, 0.035);
+}
 
 .backgroundWhite{
   background-color: #ffffff;
@@ -211,7 +284,7 @@ border-radius: 10px;
 }
 
 .conancontainer{
-  max-width: 1140px !important;
+  max-width: 1228px !important;
 }
 
 .beta-banner {
@@ -243,14 +316,18 @@ h4, .h4 {
   min-width: 77px;
 }
 
-.bg-primary {
+.recharts-legend-wrapper .recharts-default-legend .recharts-legend-item {
+  cursor: pointer;
+}
+
+.recipeTopics {
     background-color: #21AFFF!important;
     margin-right: 6px;
     color: white;
 }
 
-.bg-success {
-    background-color: #6CC04A!important;
+.profileTopics {
+    background-color: #007BC6!important;
     margin-right: 6px;
     color: white;
 }
