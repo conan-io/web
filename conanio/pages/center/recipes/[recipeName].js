@@ -227,7 +227,7 @@ export default function ConanPackage(props) {
               <AiOutlinePushpin className="conanIconBlue conanIcon22" style={{verticalAlign: "middle;"}}/>
             </a>{truncateAdnCopy(recipeRevision, 20)}</Col>
         </Row>)}
-        <hr/>
+        {recipeDescription && (<hr/>)}
 
         {recipeProfileSetting && recipeProfileSetting.length > 0 && (<Row className="mt-3">
           <Col xs lg>
@@ -243,7 +243,7 @@ export default function ConanPackage(props) {
             </Row>))}
           </Col>
         </Row>)}
-        <hr/>
+        {recipeProfileSetting && recipeProfileSetting.length > 0 && (<hr/>)}
 
         {recipeDescription && <Row xs lg className="mt-3"><Col xs lg><h5>Install</h5></Col></Row>}
         {recipeDescription && <Row xs lg>
@@ -312,7 +312,7 @@ export default function ConanPackage(props) {
         <Col xs lg="9" className="mt-4 pl-4 pr-4 pt-4 recipeContentBox"><DependenciesTab info={recipeUseIt} recipeName={props.recipeName} recipeVersion={selectedVersion}/></Col>
       </Row>}
       {selectedTab=='versions' && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
-        <Col xs lg className="mt-4 pl-4 pr-4 pt-4 recipeContentBox"><VersionsTab selector={setSelectedVersion} data={props.data} /></Col>
+        <Col xs lg className="pb-4 mt-4 pl-4 pr-4 pt-4 recipeContentBox"><VersionsTab selector={setSelectedVersion} data={props.data} /></Col>
       </Row>}
       {selectedTab=='badges' && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
         <Col xs lg className="mt-4 pl-4 pr-4 pt-4 recipeContentBox"><BadgesTab recipeName={props.recipeName} /></Col>
