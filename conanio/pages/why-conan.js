@@ -47,13 +47,13 @@ function WhyConan() {
             <Row className="justify-content-md-center">
               <Col>
                 <div className="mt-4 conan-card" style={{backgroundColor: "white"}}>
-                <Row className="mt-4 text-center justify-content-md-center">
-                  <SiConan className="conanIconBlue conanIcon34 mr-1"/>
-                  <FcAdvance className="conanIcon34"/>
-                  <LuBinary className="conanIcon34"/>
-                  <FcAdvance className="conanIcon34"/>
-                  <FcDeployment className="conanIcon34"/>
-                </Row>
+                  <Row style={{justifyContent: "center !important;"}} className="mt-4 text-center justify-content-md-center">
+                    <SiConan className="conanIconBlue conanIcon34 mr-1"/>
+                    <FcAdvance className="conanIcon34"/>
+                    <LuBinary className="conanIcon34"/>
+                    <FcAdvance className="conanIcon34"/>
+                    <FcDeployment className="conanIcon34"/>
+                  </Row>
                   <Row style={{margin: '40px 40px 0px 40px'}}>
                     <p className="text-justify">
                       Conan can create, upload to your own server, store and efficiently retrieve pre-compiled binaries for your C++ development workflows, with full control over the ABI binary compatibility.
@@ -76,7 +76,7 @@ function WhyConan() {
             <Row className="justify-content-md-center">
               <Col>
                 <div className="mt-4 conan-card" style={{backgroundColor: "white"}}>
-                  <Row className="mt-4 text-center justify-content-md-center">
+                  <Row style={{justifyContent: "center !important;"}} className="mt-4 text-center justify-content-md-center">
                     <FcMultipleDevices className="conanIcon34"/>
                   </Row>
                   <Row style={{margin: '40px 40px 0px 40px'}}>
@@ -91,12 +91,12 @@ function WhyConan() {
               </Col>
               <Col>
                 <div className="mt-4 conan-card" style={{backgroundColor: "white"}}>
-                  <Row className="mt-4 text-center justify-content-md-center">
+                  <Row style={{justifyContent: "center !important;"}} className="mt-4 text-center justify-content-md-center">
                     <FcSupport className="conanIcon34"/>
                   </Row>
                   <Row style={{margin: '40px 40px 0px 40px'}}>
                     <p className="text-justify">
-                      While providing completely transparent integration with CMake, the most popular build system nowadays, Conan is build-system agnostic, and also integrates natively (without any need for CMake) with other build systems like MSBuld (Visual Studio solutions), Autotools, Meson, etc, and it can be extended to natively support any build system, including proprietary ones.
+                      While providing completely transparent integration with CMake, the most popular build system nowadays, Conan is build-system agnostic, and also <a href="https://docs.conan.io/2/integrations.html" rel="nofollow noopener noreferrer" target="_blank">integrates natively (without any need for CMake) with other build systems</a> like MSBuld (Visual Studio solutions), Autotools, Meson, etc, and it can be extended to natively support any build system, including proprietary ones.
                     </p>
                   </Row>
                 </div>
@@ -111,12 +111,12 @@ function WhyConan() {
             <Row className="justify-content-md-center">
               <Col>
                 <div className="mt-4 conan-card" style={{backgroundColor: "white"}}>
-                  <Row className="mt-4 text-center justify-content-md-center">
+                  <Row style={{justifyContent: "center !important;"}} className="mt-4 text-center justify-content-md-center">
                     <FcPuzzle className="conanIcon34"/>
                   </Row>
                   <Row style={{margin: '40px 40px 0px 40px'}}>
                     <p className="text-justify">
-                      Because C++ projects have very different needs, Conan beyond a tool is a framework for C++ package management. A rich Python API allows creating user custom commands to provide a unified interface for developers and CI to all custom extensions.
+                      Because C++ projects have very different needs, Conan beyond a tool is a <a href="https://docs.conan.io/2/reference/extensions.html" rel="nofollow noopener noreferrer" target="_blank">framework for C++ package management</a>. A rich Python API allows creating user custom commands to provide a unified interface for developers and CI to all custom extensions.
                     </p>
                     <p className="text-justify">
                       Extracting artifacts from Conan packages to deploy them in different systems can be done with custom deployers, and there are plugins to define the desired custom binary compatibility, command wrappers or dynamic configuration.
@@ -125,7 +125,7 @@ function WhyConan() {
                       Commands provide documented json output of dependency graphs, packages-lists, cache paths, profiles, and many more. Custom settings allow to define your own compilers, versions, microprocessor, architectures, and any other specialized configuration that your project might need.
                     </p>
                     <p className="text-justify">
-                      The configuration install system allows to automate the sharing and installation of all those extensions easily, together with many other configurable items, like the definitions of remote repositories.
+                      The <a href="https://docs.conan.io/2/reference/commands/config.html#conan-config-install" rel="nofollow noopener noreferrer" target="_blank">configuration install system</a> allows to automate the sharing and installation of all those extensions easily, together with many other configurable items, like the definitions of remote repositories.
                     </p>
                   </Row>
                 </div>
@@ -139,7 +139,7 @@ function WhyConan() {
             <Row className="justify-content-md-center">
               <Col>
                 <div className="mt-4 conan-card" style={{backgroundColor: "white"}}>
-                  <Row className="mt-4 text-center justify-content-md-center">
+                  <Row style={{justifyContent: "center !important;"}} className="mt-4 text-center justify-content-md-center">
                     <FcMultipleInputs className="conanIcon34"/>
                   </Row>
                   <Row style={{margin: '40px 40px 0px 40px'}}>
@@ -150,22 +150,22 @@ function WhyConan() {
                   </Row>
                   <Row style={{margin: '0px 40px 0px 40px'}}>
                     <Col>
-                      <Row className="mt-4 text-center justify-content-md-center">
+                      <Row style={{justifyContent: "center !important;"}} className="mt-4 text-center justify-content-md-center">
                         <FcElectronics className="conanIcon34"/>
                       </Row>
                       <Row style={{margin: '0px 10px 0px 0px'}} className="mt-4 text-center justify-content-md-center">
                         <p className="text-justify">
-                          Is it possible to create Conan packages that store these tools, so they will be automatically installed, updated and used by all developers and CI agents, and manage them in exactly the same way that other packages: creating, uploading and installing them from your own servers, having a centralized solution for all your packages, both libraries and tools.
+                          Is it possible to create <a href="https://docs.conan.io/2/tutorial/consuming_packages/use_tools_as_conan_packages.html" rel="nofollow noopener noreferrer" target="_blank">Conan packages that store these tools</a>, so they will be automatically installed, updated and used by all developers and CI agents, and manage them in exactly the same way that other packages: creating, uploading and installing them from your own servers, having a centralized solution for all your packages, both libraries and tools.
                         </p>
                       </Row>
                     </Col>
                     <Col>
-                      <Row className="mt-4 text-center justify-content-md-center">
+                      <Row style={{justifyContent: "center !important;"}} className="mt-4 text-center justify-content-md-center">
                         <FcMindMap className="conanIcon34"/>
                       </Row>
                       <Row style={{margin: '0px 00px 0px 10px'}} className="mt-4 text-center justify-content-md-center">
                         <p className="text-justify">
-                          The Conan graph model allows an advanced usage of tools requirements for native, embedded and cross-building scenarios that build systems alone or other package managers can&apos;t handle. Managing your tools in an unified way ensures better reproducibility, traceability and developer convenience.
+                          The Conan graph model allows an advanced usage of tools requirements for native, embedded and <a href="https://docs.conan.io/2/tutorial/consuming_packages/cross_building_with_conan.html" rel="nofollow noopener noreferrer" target="_blank">cross-building scenarios</a> that build systems alone or other package managers can&apos;t handle. Managing your tools in an unified way ensures better reproducibility, traceability and developer convenience.
                         </p>
                       </Row>
                     </Col>
@@ -181,7 +181,7 @@ function WhyConan() {
             <Row className="justify-content-md-center">
               <Col>
                 <div className="mt-4 conan-card" style={{backgroundColor: "white"}}>
-                  <Row className="mt-4 text-center justify-content-md-center">
+                  <Row style={{justifyContent: "center !important;"}} className="mt-4 text-center justify-content-md-center">
                     <FcWorkflow className="conanIcon34"/>
                   </Row>
                   <Row style={{margin: '40px 40px 0px 40px'}}>
@@ -189,7 +189,7 @@ function WhyConan() {
                       Conan graph model is capable of advanced modeling the different relationships between packages, like executables, shared libraries, static libraries or header-only libraries and package libraries that can be both built as shared or static. Together with the analysis of how the different versioning scheme and changes in dependencies versions affect the package binaries, allows Conan to determine which packages need to be built when changes happens in upstream dependencies, enabling both safe (ensuring that packages that need to be rebuilt are rebuilt) and optimal (ensuring that packages that don&apos;t need to be built from source aren&apos;t) builds are performed.
                     </p>
                     <p className="text-justify">
-                      Standard versioning mechanisms like version-ranges allow you to move fast, to automatically update the dependencies to the latest matching versions, for getting the latest bug fixes and security patches quickly into your builds. Lockfiles allow to have fully reproducible dependencies, irrespective of the release of new versions, it is always possible to reproduce exactly the same dependencies for reproducible builds.
+                      Standard <a href="https://docs.conan.io/2/tutorial/versioning.html" rel="nofollow noopener noreferrer" target="_blank">versioning mechanisms</a> like version-ranges allow you to move fast, to automatically update the dependencies to the latest matching versions, for getting the latest bug fixes and security patches quickly into your builds. Lockfiles allow to have fully reproducible dependencies, irrespective of the release of new versions, it is always possible to reproduce exactly the same dependencies for reproducible builds.
                     </p>
                   </Row>
                 </div>
@@ -203,7 +203,7 @@ function WhyConan() {
             <Row className="justify-content-md-center">
               <Col>
                 <div className="mt-4 conan-card" style={{backgroundColor: "white"}}>
-                  <Row className="mt-4 text-center justify-content-md-center">
+                  <Row style={{justifyContent: "center !important;"}} className="mt-4 text-center justify-content-md-center">
                     <FcAcceptDatabase className="conanIcon34"/>
                   </Row>
                   <Row style={{margin: '40px 40px 0px 40px'}}>
@@ -215,7 +215,7 @@ function WhyConan() {
               </Col>
               <Col>
                 <div className="mt-4 conan-card" style={{backgroundColor: "white"}}>
-                  <Row className="mt-4 text-center justify-content-md-center">
+                  <Row style={{justifyContent: "center !important;"}} className="mt-4 text-center justify-content-md-center">
                     <FcTodoList className="conanIcon34"/>
                   </Row>
                   <Row style={{margin: '40px 40px 0px 40px'}}>
@@ -234,15 +234,15 @@ function WhyConan() {
             <Row className="justify-content-md-center">
               <Col>
                 <div className="mt-4 conan-card" style={{backgroundColor: "white"}}>
-                  <Row className="mt-4 text-center justify-content-md-center">
+                  <Row style={{justifyContent: "center !important;"}} className="mt-4 text-center justify-content-md-center">
                     <RiOpenSourceFill className="conanIconBlue conanIcon34"/>
                   </Row>
                   <Row style={{margin: '40px 40px 0px 40px'}}>
                     <p className="text-justify">
-                      Conan is completely free and open source, with the very permissive MIT license. That means that you can use Conan freely for all kinds of projects, including commercial ones, without any restriction or limitation. You can also modify and adapt Conan to your needs, no lockin.
+                      Conan is completely <a href="https://github.com/conan-io" rel="nofollow noopener noreferrer" target="_blank">free and open source</a>, with the very permissive MIT license. That means that you can use Conan freely for all kinds of projects, including commercial ones, without any restriction or limitation. You can also modify and adapt Conan to your needs, no lock-in.
                     </p>
                     <p className="text-justify">
-                      The Conan project is sponsored by JFrog, meaning that there is a whole team dedicated to develop, improve, support, test and document Conan, with a strong commitment to stability, as the C/C++ industry needs.
+                      The Conan project is sponsored by JFrog, meaning that there is a whole team dedicated to developing, improving, supporting (use <a href="https://github.com/conan-io/conan/issues" rel="nofollow noopener noreferrer" target="_blank">Github issues</a> to ask anything you need), testing and documenting Conan, with a strong commitment to stability, as the C/C++ industry needs.
                     </p>
                   </Row>
                 </div>
@@ -256,24 +256,24 @@ function WhyConan() {
             <Row className="justify-content-md-center">
               <Col>
                 <div className="mt-4 conan-card" style={{backgroundColor: "white"}}>
-                  <Row className="mt-4 text-center justify-content-md-center">
+                  <Row style={{justifyContent: "center !important;"}} className="mt-4 text-center justify-content-md-center">
                     <FcCollaboration className="conanIcon34"/>
                   </Row>
                   <Row style={{margin: '40px 40px 0px 40px'}}>
                     <p className="text-justify">
-                      ConanCenter is a great resource, with more than 1500 popular open source packages built for a wide range of configurations in different operating systems and compilers, with a very strict contribution process, in which every contribution is reviewed by humans, and building all the binaries in our own infrastructure. But many industries, company policies or regulations don&apos;t allow or recommend using packages from the internet.
+                    <Link href="/center"><a>ConanCenter</a></Link> is a great resource, with more than 1500 popular open source packages built for a wide range of configurations in different operating systems and compilers, with a very strict contribution process, in which every contribution is reviewed by humans, and building all the binaries in our own infrastructure. But many industries, company policies or regulations don&apos;t allow or recommend using packages from the internet.
                     </p>
                   </Row>
                 </div>
               </Col>
               <Col>
                 <div className="mt-4 conan-card" style={{backgroundColor: "white"}}>
-                  <Row className="mt-4 text-center justify-content-md-center">
+                  <Row style={{justifyContent: "center !important;"}} className="mt-4 text-center justify-content-md-center">
                     <SiJfrog className="conanIconGreen conanIcon34"/>
                   </Row>
                   <Row style={{margin: '40px 40px 0px 40px'}}>
                     <p className="text-justify">
-                      Conan offers the best integration with JFrog Artifactory, including the free Artifactory CE (Community Edition), so you can easily build and host your own packages from the conan-center-index Github open source repository, fully owning your binaries supply chain.
+                      Conan offers the best integration with JFrog Artifactory, including the free Artifactory CE (Community Edition), so you can easily build and <a href="https://docs.conan.io/2/devops/using_conancenter.html" rel="nofollow noopener noreferrer" target="_blank">host your own packages from the conan-center-index</a> Github open source repository, fully owning your binaries supply chain.
                     </p>
                   </Row>
                 </div>
@@ -287,15 +287,15 @@ function WhyConan() {
             <Row className="justify-content-md-center">
               <Col>
                 <div className="mt-4 conan-card" style={{backgroundColor: "white"}}>
-                  <Row className="mt-4 text-center justify-content-md-center">
+                  <Row style={{justifyContent: "center !important;"}} className="mt-4 text-center justify-content-md-center">
                     <FcConferenceCall className="conanIcon34"/>
                   </Row>
                   <Row style={{margin: '40px 40px 0px 40px'}}>
                     <p className="text-justify">
-                      Conan is used in production by thousands of companies, including many from the Fortune 100, in automotive, embedded, robotics, financial, gaming, industrial, engineering and many other industries.
+                      Conan is used in production by thousands of companies, including many from the Fortune 100, in automotive, embedded, robotics, financial, gaming, industrial, engineering and many other industries. Conan client gets more than 750k downloads/month, only from PyPI (not counting our downloads page installer), making it one of the top 1% most downloaded projects there.
                     </p>
                     <p className="text-justify">
-                      The “#conan” channel in the CppLang slack team counts with more than 2500 users, consistently being ranked as one of the top most active and used channels in the C++ community. Conan contributors submitted only in the last year more than 5000 pull requests to improve the recipes in ConanCenter, that centralize the knowledge of the large conan community, in the same way that Conan tools integrate that knowledge and good practices gathered along the years with a vast amount of feedback from users and contributors.
+                      The “#conan” channel in the CppLang slack team counts with more than 2500 users, consistently being ranked as one of the top most active and used channels in the C++ community. Conan contributors submitted more than 5000 pull requests just in the last year, improving the recipes in ConanCenter, that centralize the knowledge of the large conan community, in the same way that Conan tools integrate that knowledge and good practices gathered along the years with a vast amount of feedback from users and contributors.
                     </p>
                   </Row>
                 </div>
