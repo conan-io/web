@@ -332,6 +332,12 @@ h4, .h4 {
     color: white;
 }
 
+.profileEmptyTopics {
+    background-color: #DADDE1!important;
+    margin-right: 6px;
+    color: white;
+}
+
 .nav-item {
   border-color: #21AFFF;
   border-bottom: 0px;

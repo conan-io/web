@@ -13,6 +13,7 @@ import Alert from 'react-bootstrap/Alert';
 import Link from 'next/link';
 import { ConanCenterHeader } from '../../components/header';
 import ConanFooter from '../../components/footer';
+import { prettyProfiles } from '../../components/utils';
 import { LiaBalanceScaleSolid, LiaGithub } from "react-icons/lia";
 import { IoMdDownload } from "react-icons/io";
 import {get_json_list, get_urls, get_json_list_with_id} from '../../service/service';
@@ -124,10 +125,7 @@ function PackageInfo(props) {
       <Row>
         <Col xs lg="6" className="mt-2">{labels.map((item) => (<Badge className="recipeTopics" key={item}>#{item}</Badge>))}</Col>
         {props.data.info.settings && props.data.info.settings.length > 0 && (
-        <Col xs lg="6" className="mt-2">{props.data.info.settings.map((item) => (<Badge className="profileTopics" key={item.os + "-" + item.arch}>
-            {item.os}-{item.arch}
-          </Badge>))}
-        </Col>)}
+        <Col xs lg="6" className="mt-2">{prettyProfiles(props.data.info.settings).map(i => i.badget)}</Col>)}
       </Row>
     </div>
   )

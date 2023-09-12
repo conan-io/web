@@ -14,6 +14,7 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Link from 'next/link';
 import { ConanCenterHeader } from '../../../components/header';
+import { prettyProfiles } from '../../../components/utils';
 import ConanFooter from '../../../components/footer';
 import { get_json, get_urls } from '../../../service/service';
 import { DefaultDescription } from '../recipes';
@@ -158,7 +159,7 @@ export default function ConanPackage(props) {
   const extraInfo = recipeStatus === 'ok'? 'maintained version': recipeStatus + ' version'
 
 
-  function RecipeInfoInfo() {
+  function RecipeInfo() {
     return (
       <Col xs lg="3" className="pl-4 mt-4 pt-4">
         {recipeDescription && <Row xs lg className="mb-2"><Col xs lg><h5>Recipe info</h5></Col></Row>}
@@ -206,7 +207,7 @@ export default function ConanPackage(props) {
           <Col xs lg>
             <Tooltip id="package-info"/>
             <a data-tooltip-id='package-info' data-tooltip-html="Total downloads (current version downloads)" data-tooltip-place="top">
-              <IoMdDownload className="conanIconBlue conanIcon22" style={{verticalAlign: "middle;"}}/>
+              <IoMdDownload className="conanIconBlue  " style={{verticalAlign: "middle;"}}/>
             </a> {Object.values(props.data).map( (e) => e.info.downloads ).reduce((a, b) => a + b, 0)}({recipeTotalDownloads})
           </Col>
         </Row>)}
@@ -236,9 +237,9 @@ export default function ConanPackage(props) {
         </Row>)}
         {recipeProfileSetting && recipeProfileSetting.length > 0 && (<Row>
           <Col xs lg>
-            {recipeProfileSetting.map((item) => (<Row key={item.os + "-" + item.arch}>
+            {prettyProfiles(recipeProfileSetting).map((item) => (<Row key={item.key}>
               <Col xs lg>
-                <Badge className="profileTopics">{item.os}-{item.arch}</Badge>
+                {item.badget}
               </Col>
             </Row>))}
           </Col>
@@ -302,13 +303,13 @@ export default function ConanPackage(props) {
     return (
       <>
       {selectedTab=='use_it' && recipeDescription && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
-        {metadatsInfo && (<RecipeInfoInfo/>)}
+        {metadatsInfo && (<RecipeInfo/>)}
         <Col xs lg="9" className="mt-4 pl-4 pr-4 pt-4 recipeContentBox">
           <UseItTab info={recipeUseIt} recipeName={props.recipeName} recipeVersion={selectedVersion} />
         </Col>
       </Row>}
       {selectedTab=='dependencies' && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
-        {metadatsInfo && (<RecipeInfoInfo/>)}
+        {metadatsInfo && (<RecipeInfo/>)}
         <Col xs lg="9" className="mt-4 pl-4 pr-4 pt-4 recipeContentBox"><DependenciesTab info={recipeUseIt} recipeName={props.recipeName} recipeVersion={selectedVersion}/></Col>
       </Row>}
       {selectedTab=='versions' && <Row style={{marginLeft: '0px', marginRight: '0px'}}>

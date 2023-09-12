@@ -19,6 +19,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Button from 'react-bootstrap/Button';
 import Collapse from 'react-bootstrap/Collapse';
 import {LineChart, XAxis, YAxis, Tooltip, CartesianGrid, Line, Legend} from 'recharts';
+import { prettyProfiles } from './utils';
 
 {/* TODO: this function should go in a more common module. More configurable? */}
 function ClipboardCopy({ copyText }) {
@@ -365,7 +366,7 @@ function VersionsTab(props) {
               </a> {recipe.info.recipe_revision}
             </Row>
             {recipe.info.settings && recipe.info.settings.length > 0 && <Row className="mt-2">
-              {recipe.info.settings.map((item) => (<Badge className="profileTopics" key={item.os + "-" + item.arch}>{item.os}-{item.arch}</Badge>))}
+              {prettyProfiles(recipe.info.settings).map((item) => (item.badget))}
             </Row>}
           </Col>
         </Row>
