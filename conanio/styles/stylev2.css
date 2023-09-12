@@ -191,6 +191,31 @@ border-radius: 10px;
   color: white;
 }
 
+.filterButton {
+  color: white;
+  background-color: #21AFFF;
+  height: fit-content !important;
+  border-color: #21AFFF;
+  min-width: 0px !important;
+}
+
+.filterButton:hover {
+  color: white;
+  background-color: #21AFFF;
+  border-color: #21AFFF;
+}
+
+.filterButton:active {
+  border-color: #21AFFF !important;
+  background-color: #21AFFF !important;
+}
+
+.filterButton:focus {
+  border-color: #21AFFF;
+  background-color: #21AFFF;
+  box-shadow: none;
+}
+
 .statsButton {
   color: white;
   background-color: #21AFFF;

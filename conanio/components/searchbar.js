@@ -5,13 +5,26 @@ import Form from 'react-bootstrap/Form';
 import FormCheck from 'react-bootstrap/FormCheck';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Select from "react-select";
 import { LuPackageSearch } from "react-icons/lu";
 import { BiPackage } from "react-icons/bi";
 import { PiNoteBold } from "react-icons/pi";
 import { CgFormatSlash } from "react-icons/cg";
 import { useRouter } from 'next/router';
+import {prettyProfileNames} from './utils';
 
+
+export function ProfileSettingsFilter(props) {
+  const [value, setValue] = useState(prettyProfileNames());
+  const handleChange = (val) => setValue(val);
+  const profiles = prettyProfileNames();
+  return (
+    <ButtonGroup size="sm" className="">
+      {Object.keys(profiles).map((key) => <Button key={key} value={key} className="filterButton">{profiles[key]}</Button>)}
+    </ButtonGroup>
+  );
+}
 
 function ConanFilter(props) {
   const [checked, setChecked] = useState(props.checked);
@@ -101,7 +114,7 @@ export function ConanMultiSelectFilter(props) {
 
 export function ConanSearchBar(props) {
   return (
-    <div>
+    <Col>
       <Row className="justify-content-md-center">
         <InputGroup>
           <Form.Control className="searchbarConan" type="text" placeholder="Search..." value={props.value} onChange={(e) => props.handleChange(e.target.value)}/>
@@ -119,7 +132,7 @@ export function ConanSearchBar(props) {
           {props.references} references
         </div>
       </Row>}
-    </div>
+    </Col>
   )
 }
 
@@ -144,14 +157,12 @@ export function BasicSearchBar(props) {
   }
 
   return (
-    <Row className="justify-content-md-center" xs="12">
-      <Col xs="1" lg="3"></Col>
-      <Col xs="10" lg="6">
-        <Form onSubmit={e => handleSubmit(e)}>
-          <ConanSearchBar value={value} handleChange={handleChange} recipes={props.recipes} references={props.references}/>
-        </Form>
-      </Col><Col xs="1" lg="3">
-      </Col>
-    </Row>
+      <Row className="justify-content-md-center">
+        <Col xs={{ span: 10, offset: 1 }} md={{ span: 10, offset: 1 }} lg={{ span: 8, offset: 0 }}>
+          <Form onSubmit={e => handleSubmit(e)}>
+            <ConanSearchBar value={value} handleChange={handleChange} recipes={props.recipes} references={props.references}/>
+          </Form>
+        </Col>
+      </Row>
   );
 }

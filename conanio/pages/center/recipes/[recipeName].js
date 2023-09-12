@@ -232,7 +232,7 @@ export default function ConanPackage(props) {
 
         {recipeProfileSetting && recipeProfileSetting.length > 0 && (<Row className="mt-3">
           <Col xs lg>
-            <h5>Availables packages</h5>
+            <h5>Available packages</h5>
           </Col>
         </Row>)}
         {recipeProfileSetting && recipeProfileSetting.length > 0 && (<Row>

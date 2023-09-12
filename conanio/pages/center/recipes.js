@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Badge from 'react-bootstrap/Badge';
 import InputGroup from 'react-bootstrap/InputGroup';
-import { ConanSearchBar, ConanMultiSelectFilter } from "../../components/searchbar";
+import { ConanSearchBar, ConanMultiSelectFilter, ProfileSettingsFilter } from "../../components/searchbar";
 import ListGroup from 'react-bootstrap/ListGroup';
 import Alert from 'react-bootstrap/Alert';
 import Link from 'next/link';
@@ -210,20 +210,23 @@ export default function ConanSearch(props) {
           <br/>
           <Container className="conancontainer">
             <Row className="justify-content-md-center">
-              <Col xs="1" md="1" lg="2"></Col>
-              <Col xs="10" md="10" lg="8">
+              <Col xs={{ span: 10, offset: 1 }} md={{ span: 10, offset: 1 }} lg={{ span: 8, offset: 0 }}>
                 <Form onSubmit={e => handleSubmit(e)}>
-                  <div>
+                    <div>
                     <ConanSearchBar value={value} handleChange={handleChange}/>
                   </div>
                 </Form>
               </Col>
-              <Col xs="1" md="1" lg="2"></Col>
             </Row>
             <Row className="justify-content-md-center">
-              <Col xs={{ span: 8, offset: 2 }} md={{ span: 8, offset: 2 }} lg={{span: 4, offset: 0}} className="mt-2"><ConanMultiSelectFilter title="Licenses" defaultValue={props.data.defaultLicenses} filters={props.data.licenses} handleFilter={handleLicenses}/></Col>
-              <Col xs={{ span: 8, offset: 2 }} md={{ span: 8, offset: 2 }} lg={{span: 4, offset: 0}} className="mt-2"><ConanMultiSelectFilter title="Topics" defaultValue={props.data.defaultTopics} filters={props.data.topics} handleFilter={handleTopics}/></Col>
+              <Col xs={{ span: 10, offset: 1 }} md={{ span: 10, offset: 1 }} lg={{span: 4, offset: 0}} className="mt-2"><ConanMultiSelectFilter title="Licenses" defaultValue={props.data.defaultLicenses} filters={props.data.licenses} handleFilter={handleLicenses}/></Col>
+              <Col xs={{ span: 10, offset: 1 }} md={{ span: 10, offset: 1 }} lg={{span: 4, offset: 0}} className="mt-2"><ConanMultiSelectFilter title="Topics" defaultValue={props.data.defaultTopics} filters={props.data.topics} handleFilter={handleTopics}/></Col>
             </Row>
+            {/*<Row className="justify-content-md-center">
+              <Col xs="auto" md="auto" lg="auto" className="mt-2">
+                <ProfileSettingsFilter/>
+              </Col>
+            </Row>*/}
             <br/>
             <div style={{width: "100%"}}>
               <h2 className="text-center">
