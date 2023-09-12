@@ -1,21 +1,26 @@
 import Badge from 'react-bootstrap/Badge';
 
 
-function prettyProfiles(profileSettings){
-  const profileList = profileSettings.map((item) => item.os + "-" + item.arch);
-  const prettyNames = {
+function prettyProfileNames(){
+  return {
     'Linux-x86_64': 'Linux',
     'Windows-x86_64': 'Windows',
     'Macos-x86_64': 'macOS',
     'Macos-armv8': 'macOS M1'
   };
-  return Object.keys(prettyNames).map((i) => {
+}
+
+
+function prettyProfiles(profileSettings){
+  const profileList = profileSettings.map((item) => item.os + "-" + item.arch);
+  return Object.keys(prettyProfileNames()).map((i) => {
     let bagdetClass = profileList.includes(i)? "profileTopics": "profileEmptyTopics"
     return {
       'key': i,
-      'badget': (<Badge className={bagdetClass}>{prettyNames[i]}</Badge>)}
+      'badget': (<Badge className={bagdetClass}>{prettyProfileNames()[i]}</Badge>)
+    }
   });
 };
 
 
-export { prettyProfiles };
+export { prettyProfiles, prettyProfileNames };
