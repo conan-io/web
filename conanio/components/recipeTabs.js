@@ -326,7 +326,7 @@ function VersionsTab(props) {
     const iconStatusColor = recipe.info.status === 'ok'? 'green': 'orange'
     const extraInfo = recipe.info.status === 'ok'? 'maintained version': recipe.info.status + ' version'
     return (
-      <ListGroup.Item style={{border: '0.05rem solid #21AFFF', backgroundColor: '#FFFFFF', borderRadius: '10px', margin:'0px 0px 5px 0px'}}>
+      <ListGroup.Item key={recipe.info.recipe_revision} style={{border: '0.05rem solid #21AFFF', backgroundColor: '#FFFFFF', borderRadius: '10px', margin:'0px 0px 5px 0px'}}>
         <ReactTooltip id="extra-info"/>
         <Row style={{alignItems: 'center'}}>
           <Col md="1">
@@ -374,11 +374,9 @@ function VersionsTab(props) {
     )
   }
   return (
-    <div>
-      <ListGroup>
-        { Object.values(props.data).map(data => (<VersionItem key={data.info.recipe_revision} recipe={data}/>)) }
-      </ListGroup>
-    </div>
+    <ListGroup>
+      { Object.values(props.data).map(data => (<VersionItem key={data.info.recipe_revision} recipe={data}/>)) }
+    </ListGroup>
   );
 }
 

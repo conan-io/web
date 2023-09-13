@@ -50,6 +50,12 @@ export async function getServerSideProps(context) {
 
 
 function truncate(text, n){
+  if(text.length > n) return text.slice(0, n-1) + "...";
+  return text;
+};
+
+
+function truncateTooltip(text, n){
   if(text.length > n) return (
     <>
       <Tooltip id={text}/>
@@ -59,7 +65,7 @@ function truncate(text, n){
         data-tooltip-place="top"
         style={{cursor: 'pointer'}}
       >
-        {text.slice(0, n-1)}...
+        {truncate(text, n)}
       </a>
     </>
   );
@@ -70,7 +76,7 @@ function truncate(text, n){
 function truncateAdnCopy(text, n){
   if(text.length > n) return (
     <>
-      {truncate(text, n)}
+      {truncateTooltip(text, n)}
       <ClipboardCopy
         copyText={text}
         isCopiedStyle={{color: 'green', verticalAlign: 'top', marginLeft:'1px', height: '15px', width: '15px'}}
@@ -167,7 +173,7 @@ export default function ConanPackage(props) {
           <Col xs lg>
             <Tooltip id="package-info"/>
             <a data-tooltip-id='package-info' data-tooltip-html="Licenses" data-tooltip-place="top">
-              <LiaBalanceScaleSolid className="conanIconBlue conanIcon22" style={{verticalAlign: "middle;"}}/>
+              <LiaBalanceScaleSolid className="conanIconBlue conanIcon22" style={{verticalAlign: "middle"}}/>
             </a> {recipeLicenses.map((license) => {
               if(valid_licenses.includes(license.toLowerCase())) return (
                 <a
@@ -185,7 +191,7 @@ export default function ConanPackage(props) {
           <Col xs lg>
             <Tooltip id="package-info"/>
             <a data-tooltip-id='package-info' data-tooltip-html="GitHub repository" data-tooltip-place="top">
-              <LiaGithub className="conanIconBlue conanIcon22" style={{verticalAlign: "middle;"}}/>
+              <LiaGithub className="conanIconBlue conanIcon22" style={{verticalAlign: "middle"}}/>
             </a> <Link href={recipeConanCenterUrl}>
               <a>View recipe on GitHub</a>
             </Link>
@@ -196,10 +202,8 @@ export default function ConanPackage(props) {
           <Col xs lg>
             <Tooltip id="package-info"/>
             <a data-tooltip-id='package-info' data-tooltip-html="Home page" data-tooltip-place="top">
-              <IoMdHome className="conanIconBlue conanIcon22" style={{verticalAlign: "middle;"}}/>
-            </a> <Link href={recipeHomepage}>
-              <a>{truncate(sanitizeURL(recipeHomepage), 22)}</a>
-            </Link>
+              <IoMdHome className="conanIconBlue conanIcon22" style={{verticalAlign: "middle"}}/>
+            </a> <a href={recipeHomepage}>{truncate(sanitizeURL(recipeHomepage), 22)}</a>
           </Col>
         </Row>)}
 
@@ -207,7 +211,7 @@ export default function ConanPackage(props) {
           <Col xs lg>
             <Tooltip id="package-info"/>
             <a data-tooltip-id='package-info' data-tooltip-html="Total downloads (current version downloads)" data-tooltip-place="top">
-              <IoMdDownload className="conanIconBlue  " style={{verticalAlign: "middle;"}}/>
+              <IoMdDownload className="conanIconBlue  " style={{verticalAlign: "middle"}}/>
             </a> {Object.values(props.data).map( (e) => e.info.downloads ).reduce((a, b) => a + b, 0)}({recipeTotalDownloads})
           </Col>
         </Row>)}
@@ -216,7 +220,7 @@ export default function ConanPackage(props) {
           <Col xs lg>
           <Tooltip id="package-info"/>
             <a data-tooltip-id='package-info' data-tooltip-html="Last updated date" data-tooltip-place="top">
-              <MdOutlineToday className="conanIconBlue conanIcon22" style={{verticalAlign: "middle;"}}/>
+              <MdOutlineToday className="conanIconBlue conanIcon22" style={{verticalAlign: "middle"}}/>
             </a> {recipeData.info.timestamp}
           </Col>
         </Row>)}
@@ -225,7 +229,7 @@ export default function ConanPackage(props) {
           <Col xs lg>
             <Tooltip id="package-info"/>
             <a data-tooltip-id='package-info' data-tooltip-html="Latest recipe revision" data-tooltip-place="top">
-              <AiOutlinePushpin className="conanIconBlue conanIcon22" style={{verticalAlign: "middle;"}}/>
+              <AiOutlinePushpin className="conanIconBlue conanIcon22" style={{verticalAlign: "middle"}}/>
             </a>{truncateAdnCopy(recipeRevision, 20)}</Col>
         </Row>)}
         {recipeDescription && (<hr/>)}
