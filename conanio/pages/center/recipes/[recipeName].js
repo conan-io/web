@@ -21,7 +21,12 @@ import { DefaultDescription } from '../recipes';
 import { LiaBalanceScaleSolid, LiaGithub } from "react-icons/lia";
 import { IoMdHome, IoMdDownload } from "react-icons/io";
 import hljs from "highlight.js";
-import { UseItTab, BadgesTab, DependenciesTab, VersionsTab, StatsTab } from "../../../components/recipeTabs";
+import { UseItTab,
+         BadgesTab,
+         DependenciesTab,
+         VersionsTab,
+         StatsTab,
+         PackagesTab } from "../../../components/recipeTabs";
 import { PiWarningBold } from "react-icons/pi";
 import { MdOutlineCheckCircleOutline, MdOutlineToday } from "react-icons/md";
 import { BiInfoCircle } from "react-icons/bi";
@@ -29,6 +34,7 @@ import { AiOutlinePushpin, AiOutlineBarChart } from "react-icons/ai";
 import { PiGraphDuotone, PiMedal } from "react-icons/pi";
 import { FaTags, FaHashtag } from "react-icons/fa";
 import { LuBinary } from "react-icons/lu";
+import { SiConan } from "react-icons/si";
 import { HiOutlineClipboardCopy, HiOutlineClipboardCheck, HiOutlineDocumentText } from "react-icons/hi";
 import { BasicSearchBar } from "../../../components/searchbar";
 import { Tooltip } from 'react-tooltip';
@@ -145,7 +151,7 @@ export default function ConanPackage(props) {
   if (!props.data) return (<div>Loading...</div>);
   const recipeData = props.data[indexSelectedVersion];
   const recipeStatus = recipeData.info.status;
-  const recipeProfileSetting = recipeData.info.settings;
+  const recipePackages = Object.values(recipeData.info.packages).map((value) => value);
   const recipeRevision = recipeData.info.recipe_revision;
   const recipeDescription = recipeData.info.description;
   const recipeHomepage = recipeData.info.homepage;
@@ -234,21 +240,21 @@ export default function ConanPackage(props) {
         </Row>)}
         {recipeDescription && (<hr/>)}
 
-        {recipeProfileSetting && recipeProfileSetting.length > 0 && (<Row className="mt-3">
+        {recipePackages && recipePackages.length > 0 && (<Row className="mt-3">
           <Col xs lg>
             <h5>Available packages</h5>
           </Col>
         </Row>)}
-        {recipeProfileSetting && recipeProfileSetting.length > 0 && (<Row>
+        {recipePackages && recipePackages.length > 0 && (<Row>
           <Col xs lg>
-            {prettyProfiles(recipeProfileSetting).map((item) => (<Row key={item.key}>
+            {prettyProfiles(recipePackages).map((item) => (<Row key={item.key}>
               <Col xs lg>
                 {item.badget}
               </Col>
             </Row>))}
           </Col>
         </Row>)}
-        {recipeProfileSetting && recipeProfileSetting.length > 0 && (<hr/>)}
+        {recipePackages && recipePackages.length > 0 && (<hr/>)}
 
         {recipeDescription && <Row xs lg className="mt-3"><Col xs lg><h5>Install</h5></Col></Row>}
         {recipeDescription && <Row xs lg>
@@ -275,6 +281,12 @@ export default function ConanPackage(props) {
           value="use_it"
           onClick={(e) => setSelectedTab(e.currentTarget.value)}
         ><HiOutlineDocumentText className="conanIcon18 mr-1"/> Use it</Button>}
+        <Button
+          id="packages"
+          className={"tabButton " + ((selectedTab == 'packages') && "tabButtonActive")}
+          value="packages"
+          onClick={(e) => setSelectedTab(e.currentTarget.value)}
+        ><SiConan className="conanIcon18 mr-1"/> Packages</Button>
         <Button
           id="dependencies"
           className={"tabButton " + ((selectedTab == 'dependencies') && "tabButtonActive")}
@@ -310,6 +322,12 @@ export default function ConanPackage(props) {
         {metadatsInfo && (<RecipeInfo/>)}
         <Col xs lg="9" className="mt-4 pl-4 pr-4 pt-4 recipeContentBox">
           <UseItTab info={recipeUseIt} recipeName={props.recipeName} recipeVersion={selectedVersion} />
+        </Col>
+      </Row>}
+      {selectedTab=='packages' && recipeDescription && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
+        {metadatsInfo && (<RecipeInfo/>)}
+        <Col xs lg="9" className="mt-4 pl-4 pr-4 pt-4 recipeContentBox">
+          <PackagesTab packages={recipePackages} recipeName={props.recipeName} recipeVersion={selectedVersion}/>
         </Col>
       </Row>}
       {selectedTab=='dependencies' && <Row style={{marginLeft: '0px', marginRight: '0px'}}>

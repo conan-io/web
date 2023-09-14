@@ -12,7 +12,8 @@ import { MdOutlineCheckCircleOutline, MdOutlineToday } from "react-icons/md";
 import { PiWarningBold } from "react-icons/pi";
 import { LiaBalanceScaleSolid } from "react-icons/lia";
 import { AiOutlinePushpin, AiFillCaretDown, AiFillCaretRight } from "react-icons/ai";
-import { FaTags } from "react-icons/fa";
+import { FaTags, FaWindows, FaLinux, FaApple } from "react-icons/fa";
+import { SiConan } from "react-icons/si";
 import ListGroup from 'react-bootstrap/ListGroup';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
@@ -321,6 +322,107 @@ function DependenciesTab(props) {
 }
 
 
+function PackagesTab(props) {
+  const hasPackages = props.packages && props.packages.length > 0;
+  const PackageItem = function({package_info}) {
+    const group_style = {
+      border: '0.05rem solid #FFFFFF',
+      backgroundColor: '#FFFFFF',
+      borderRadius: '10px',
+      margin:'15px 20px 15px 20px',
+      padding: '15px 40px 15px 40px',
+      boxShadow: '0px 9px 29px rgba(0, 0, 0, 0.07), 0px 1.12694px 3.63125px rgba(0, 0, 0, 0.035)',
+    }
+    const row_style = {
+      borderTop: '0.5px solid #21AFFF',
+      paddingTop: '5px',
+      marginTop: '5px',
+    }
+    const main_col_style = {
+      borderRight: '0.5px solid #21AFFF',
+    }
+    const os = {
+      'Windows': <FaWindows className="conanIcon18"/>,
+      'Linux': <FaLinux className="conanIcon18"/>,
+      'Macos': <FaApple className="conanIcon18"/>,
+    }
+
+
+    return (
+      <div>
+        <ListGroup.Item key={package_info.package_id} style={group_style}>
+          {package_info.package_id && (<h4 className="mb-3 mt-2">{os[package_info.os]} {package_info.package_id}</h4>)}
+          {package_info.os && (<Row>
+            <Col xs="12" md="4" lg="4" style={main_col_style}><strong>os</strong></Col>
+            <Col>{package_info.os}</Col>
+          </Row>)}
+          {package_info.arch && (<Row style={row_style}>
+            <Col xs="12" md="4" lg="4" style={main_col_style}><strong>arch</strong></Col>
+            <Col>{package_info.arch}</Col>
+          </Row>)}
+          {package_info.compiler && (<Row style={row_style}>
+            <Col xs="12" md="4" lg="4" style={main_col_style}><strong>compiler</strong></Col>
+            <Col>{package_info.compiler}</Col>
+          </Row>)}
+          {package_info.compiler_cppstd && (<Row>
+            <Col xs="12" md="4" lg="4" style={main_col_style}><strong>compiler.cppstd</strong></Col>
+            <Col>{package_info.compiler_cppstd}</Col>
+          </Row>)}
+          {package_info.compiler_version && (<Row>
+            <Col xs="12" md="4" lg="4" style={main_col_style}><strong>compiler.version</strong></Col>
+            <Col>{package_info.compiler_version}</Col>
+          </Row>)}
+          {package_info.compiler_runtime && (<Row>
+            <Col xs="12" md="4" lg="4" style={main_col_style}><strong>compiler.runtime</strong></Col>
+            <Col>{package_info.compiler_runtime}</Col>
+          </Row>)}
+          {package_info.compiler_runtime_type && (<Row>
+            <Col xs="12" md="4" lg="4" style={main_col_style}><strong>compiler.runtime_type</strong></Col>
+            <Col>{package_info.compiler_runtime_type}</Col>
+          </Row>)}
+          {package_info.build_type && (<Row style={row_style}>
+            <Col xs="12" md="4" lg="4" style={main_col_style}><strong>build_type</strong></Col>
+            <Col>{package_info.build_type}</Col>
+          </Row>)}
+          {Object.keys(package_info.options).length > 0 && (<Row style={row_style}>
+            <Col xs="12" md="4" lg="4" style={main_col_style}><strong>options</strong></Col>
+            <Col>{Object.keys(package_info.options).map(key => (
+              <Col key={key}><Row>{key}: {package_info.options[key]}</Row></Col>))}
+            </Col>
+          </Row>)}
+          {package_info.requires.length > 0 && (<Row style={row_style}>
+            <Col xs="12" md="4" lg="4" style={main_col_style}><strong>requires</strong></Col>
+            <Col>{package_info.requires.map(r => (
+              <Col key={r}><Row>{r}</Row></Col>))}
+            </Col>
+          </Row>)}
+        </ListGroup.Item>
+      </div>
+    )
+  }
+  if (hasPackages) {
+    return (
+      <div>
+        <h3>Packages</h3>
+        <br/>
+        <ListGroup className="mb-4">
+          { props.packages.filter(data => data.os == 'Linux').map(data => (<PackageItem key={data.package_id} package_info={data}/>)) }
+          { props.packages.filter(data => data.os == 'Windows').map(data => (<PackageItem key={data.package_id} package_info={data}/>)) }
+          { props.packages.filter(data => data.os == 'Macos').map(data => (<PackageItem key={data.package_id} package_info={data}/>)) }
+        </ListGroup>
+      </div>
+    );
+  }
+  return (
+    <div>
+      <h3>Packages</h3>
+      <br/>
+      <p>This recipe version (<strong>{props.recipeName}/{props.recipeVersion}</strong>) has no packages.</p>
+    </div>
+  );
+}
+
+
 function VersionsTab(props) {
   const VersionItem = function({recipe}) {
     const iconStatusColor = recipe.info.status === 'ok'? 'green': 'orange'
@@ -497,4 +599,4 @@ function StatsTab(props) {
 }
 
 
-export { UseItTab, BadgesTab, DependenciesTab, VersionsTab, StatsTab };
+export { UseItTab, BadgesTab, PackagesTab, DependenciesTab, VersionsTab, StatsTab };
