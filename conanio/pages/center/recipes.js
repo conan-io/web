@@ -109,6 +109,7 @@ export function DefaultDescription (props) {
 function PackageInfo(props) {
   const licenses = Object.keys(props.data.info.licenses)
   const labels = Object.keys(props.data.info.labels)
+  const packages = Object.values(props.data.info.packages).map((value) => value);
   return (
     <div className="m-2">
       <Row>
@@ -124,8 +125,8 @@ function PackageInfo(props) {
       <Row><Col xs lg className="mt-2">{props.data.info.description || (<DefaultDescription name={props.data.name}/>)}</Col></Row>
       <Row>
         <Col xs lg="6" className="mt-2">{labels.map((item) => (<Badge className="recipeTopics" key={item}>#{item}</Badge>))}</Col>
-        {props.data.info.settings && props.data.info.settings.length > 0 && (
-        <Col xs lg="6" className="mt-2">{prettyProfiles(props.data.info.settings).map(i => i.badget)}</Col>)}
+        {packages && packages.length > 0 && (
+        <Col xs lg="6" className="mt-2">{prettyProfiles(packages).map(i => i.badget)}</Col>)}
       </Row>
     </div>
   )
