@@ -11,7 +11,13 @@ import { BiSolidInfoCircle } from "react-icons/bi";
 import { MdOutlineCheckCircleOutline, MdOutlineToday } from "react-icons/md";
 import { PiWarningBold } from "react-icons/pi";
 import { LiaBalanceScaleSolid } from "react-icons/lia";
-import { AiOutlinePushpin, AiFillCaretDown, AiFillCaretRight } from "react-icons/ai";
+import {
+  AiOutlinePushpin,
+  AiFillCaretDown,
+  AiFillCaretRight,
+  AiOutlineMinusCircle
+} from "react-icons/ai";
+import { TfiMoreAlt } from "react-icons/tfi";
 import { FaTags, FaWindows, FaLinux, FaApple } from "react-icons/fa";
 import { SiConan } from "react-icons/si";
 import ListGroup from 'react-bootstrap/ListGroup';
@@ -329,9 +335,8 @@ function PackagesTab(props) {
       border: '0.05rem solid #FFFFFF',
       backgroundColor: '#FFFFFF',
       borderRadius: '10px',
-      margin:'15px 20px 15px 20px',
+      margin:'0px 20px 15px 20px',
       padding: '15px 40px 15px 40px',
-      boxShadow: '0px 9px 29px rgba(0, 0, 0, 0.07), 0px 1.12694px 3.63125px rgba(0, 0, 0, 0.035)',
     }
     const row_style = {
       borderTop: '0.5px solid #21AFFF',
@@ -341,18 +346,60 @@ function PackagesTab(props) {
     const main_col_style = {
       borderRight: '0.5px solid #21AFFF',
     }
+    const showStyle = {
+      cursor: 'pointer',
+    }
     const os = {
       'Windows': <FaWindows className="conanIcon18"/>,
       'Linux': <FaLinux className="conanIcon18"/>,
       'Macos': <FaApple className="conanIcon18"/>,
     }
 
+    const OptionList = () => {
+      const defaultOptionNumber = 5;
+      const optionsLength = Object.keys(package_info.options).length;
+      const [optionsNumber, setOptionsNumber] = useState(defaultOptionNumber);
+
+      if(Object.keys(package_info.options).length > 0) {
+        return (
+          <Row style={row_style}>
+            <Col xs="12" md="4" lg="4" style={main_col_style}><strong>options</strong></Col>
+            <Col>{Object.keys(package_info.options).slice(0, optionsNumber).map((key, index) => (
+              <Col key={key}><Row>{key}: {package_info.options[key]}</Row></Col>))}
+              {Object.keys(package_info.options).length > optionsNumber && <Col>
+                <Row><a onClick={()=>{setOptionsNumber(Object.keys(package_info.options).length);}} style={showStyle}>
+                    <TfiMoreAlt className="conanIcon26 conanIconBlue"/>
+                  </a>
+                </Row>
+              </Col>}
+              {Object.keys(package_info.options).length > defaultOptionNumber && optionsNumber == optionsLength && <Col>
+                <Row>
+                  <a onClick={()=>{setOptionsNumber(defaultOptionNumber);}} style={showStyle}>
+                    <AiOutlineMinusCircle className="conanIcon26 conanIconBlue"/>
+                  </a>
+                </Row>
+              </Col>}
+            </Col>
+          </Row>
+        );
+      }
+    }
 
     return (
       <div>
+        {package_info.package_id && (<div className="pl-3 ml-4 mt-2">
+          {os[package_info.os]}
+          <Badge className="ml-1 profileTopics">{package_info.os}</Badge>
+          <Badge className="profileTopics">{package_info.arch}</Badge>
+          <Badge className="profileTopics">{package_info.options.shared && package_info.options.shared == "True" && ("Shared")}</Badge>
+          <Badge className="profileTopics">{package_info.build_type}</Badge>
+        </div>)}
         <ListGroup.Item key={package_info.package_id} style={group_style}>
-          {package_info.package_id && (<h4 className="mb-3 mt-2">{os[package_info.os]} {package_info.package_id}</h4>)}
-          {package_info.os && (<Row>
+          {package_info.package_id && (<Row style={row_style}>
+            <Col xs="12" md="4" lg="4" style={main_col_style}><strong>package ID</strong></Col>
+            <Col>{package_info.package_id}</Col>
+          </Row>)}
+          {package_info.os && (<Row style={row_style}>
             <Col xs="12" md="4" lg="4" style={main_col_style}><strong>os</strong></Col>
             <Col>{package_info.os}</Col>
           </Row>)}
@@ -384,12 +431,7 @@ function PackagesTab(props) {
             <Col xs="12" md="4" lg="4" style={main_col_style}><strong>build_type</strong></Col>
             <Col>{package_info.build_type}</Col>
           </Row>)}
-          {Object.keys(package_info.options).length > 0 && (<Row style={row_style}>
-            <Col xs="12" md="4" lg="4" style={main_col_style}><strong>options</strong></Col>
-            <Col>{Object.keys(package_info.options).map(key => (
-              <Col key={key}><Row>{key}: {package_info.options[key]}</Row></Col>))}
-            </Col>
-          </Row>)}
+          <OptionList/>
           {package_info.requires.length > 0 && (<Row style={row_style}>
             <Col xs="12" md="4" lg="4" style={main_col_style}><strong>requires</strong></Col>
             <Col>{package_info.requires.map(r => (

@@ -12,19 +12,7 @@ import { BiPackage } from "react-icons/bi";
 import { PiNoteBold } from "react-icons/pi";
 import { CgFormatSlash } from "react-icons/cg";
 import { useRouter } from 'next/router';
-import {prettyProfileNames} from './utils';
 
-
-export function ProfileSettingsFilter(props) {
-  const [value, setValue] = useState(prettyProfileNames());
-  const handleChange = (val) => setValue(val);
-  const profiles = prettyProfileNames();
-  return (
-    <ButtonGroup size="sm" className="">
-      {Object.keys(profiles).map((key) => <Button key={key} value={key} className="filterButton">{profiles[key]}</Button>)}
-    </ButtonGroup>
-  );
-}
 
 function ConanFilter(props) {
   const [checked, setChecked] = useState(props.checked);
