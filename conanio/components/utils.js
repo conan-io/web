@@ -15,8 +15,10 @@ function prettyProfiles(profileSettings){
   const profileList = profileSettings.map((item) => item.os + "-" + item.arch);
   return Object.keys(prettyProfileNames()).map((i) => {
     let bagdetClass = profileList.includes(i)? "profileTopics": "profileEmptyTopics"
+    let bagdetStatus = profileList.includes(i)? true: false
     return {
       'key': i,
+      'status': bagdetStatus,
       'badget': (<Badge className={bagdetClass}>{prettyProfileNames()[i]}</Badge>)
     }
   });

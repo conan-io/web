@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Badge from 'react-bootstrap/Badge';
 import InputGroup from 'react-bootstrap/InputGroup';
-import { ConanSearchBar, ConanMultiSelectFilter, ProfileSettingsFilter } from "../../components/searchbar";
+import { ConanSearchBar, ConanMultiSelectFilter } from "../../components/searchbar";
 import ListGroup from 'react-bootstrap/ListGroup';
 import Alert from 'react-bootstrap/Alert';
 import Link from 'next/link';
@@ -16,6 +16,8 @@ import ConanFooter from '../../components/footer';
 import { prettyProfiles } from '../../components/utils';
 import { LiaBalanceScaleSolid, LiaGithub } from "react-icons/lia";
 import { IoMdDownload } from "react-icons/io";
+import { BsFilterCircleFill, BsFilterCircle } from "react-icons/bs";
+import { FaWindows, FaLinux, FaApple } from "react-icons/fa";
 import {get_json_list, get_urls, get_json_list_with_id} from '../../service/service';
 
 
@@ -133,12 +135,14 @@ function PackageInfo(props) {
 }
 
 function SearchList(props) {
-
+  const extraFilters = (item) => {
+    return true;
+  }
   return (
     <ListGroup>
-    {props.data && props.data.map(
+    {props.data && props.data.filter((info) => extraFilters(info)).map(
       (info) => (
-        <ListGroup.Item style={{borderRadius: '10px'}} className="mt-4" key={info.name}>
+        <ListGroup.Item className="conan-content-basic-card mt-4" key={info.name}>
           <PackageInfo data={info}/>
         </ListGroup.Item>)
       )
@@ -154,6 +158,10 @@ export default function ConanSearch(props) {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(props.data.packages);
   const [timer, setTimer] = useState(null);
+  const [showFilters, setShowFilters] = useState(false);
+  const [showWindows, setShowWindows] = useState(true);
+  const [showMacOS, setShowMacOS] = useState(true);
+  const [showLinux, setShowLinux] = useState(true);
 
   const getData = async (value, topiclist, licenseList) => {
     setLoading(true);
@@ -203,6 +211,11 @@ export default function ConanSearch(props) {
     event.preventDefault();
   }
 
+  const filterStyle = {
+    padding: "12px 0px 20px 0px",
+    marginTop: "20px",
+  }
+
   return (
     <React.StrictMode>
       <SSRProvider>
@@ -211,29 +224,35 @@ export default function ConanSearch(props) {
           <br/>
           <Container className="conancontainer">
             <Row className="justify-content-md-center">
-              <Col xs={{ span: 10, offset: 1 }} md={{ span: 10, offset: 1 }} lg={{ span: 8, offset: 0 }}>
+              <Col xs="12" md="12" lg="9">
                 <Form onSubmit={e => handleSubmit(e)}>
                     <div>
                     <ConanSearchBar value={value} handleChange={handleChange}/>
                   </div>
                 </Form>
               </Col>
-            </Row>
-            <Row className="justify-content-md-center">
-              <Col xs={{ span: 10, offset: 1 }} md={{ span: 10, offset: 1 }} lg={{span: 4, offset: 0}} className="mt-2"><ConanMultiSelectFilter title="Licenses" defaultValue={props.data.defaultLicenses} filters={props.data.licenses} handleFilter={handleLicenses}/></Col>
-              <Col xs={{ span: 10, offset: 1 }} md={{ span: 10, offset: 1 }} lg={{span: 4, offset: 0}} className="mt-2"><ConanMultiSelectFilter title="Topics" defaultValue={props.data.defaultTopics} filters={props.data.topics} handleFilter={handleTopics}/></Col>
-            </Row>
-            {/*<Row className="justify-content-md-center">
-              <Col xs="auto" md="auto" lg="auto" className="mt-2">
-                <ProfileSettingsFilter/>
+              <Col xs="1" md="1" lg="1">
+                {!showFilters && <BsFilterCircleFill style={{verticalAlign: 'text-top', cursor: 'pointer'}} className="conanIconBlue conanIcon34" onClick={() => setShowFilters(!showFilters)}/>}
+                {showFilters && <BsFilterCircle style={{backgroundColor: 'white', borderRadius: '16px', verticalAlign: 'text-top', cursor: 'pointer', transform: 'rotate(180deg)'}} className="conanIconBlue conanIcon34" onClick={() => setShowFilters(!showFilters)}/>}
               </Col>
-            </Row>*/}
+            </Row>
+            <Col lg={{span: 10, offset: 1}}>
+            {showFilters && <Row style={filterStyle} className="conan-content-basic-card">
+              <Col xs="12" md="12" lg="6" className="mt-2"><ConanMultiSelectFilter title="Licenses" defaultValue={licenses} filters={props.data.licenses} handleFilter={handleLicenses}/></Col>
+              <Col xs="12" md="12" lg="6" className="mt-2"><ConanMultiSelectFilter title="Topics" defaultValue={topics} filters={props.data.topics} handleFilter={handleTopics}/></Col>
+              {/*<Col xs="12" md="12" lg="12" className="mt-2">
+                <FaLinux style={{cursor: 'pointer'}} className={(showLinux? "conanIconBlue": "conanIconGrey") + " conanIcon26 ml-1"} onClick={() => setShowLinux(!showLinux)}/>
+                <FaWindows style={{cursor: 'pointer'}} className={(showWindows? "conanIconBlue": "conanIconGrey") + " conanIcon26 ml-1"} onClick={() => setShowWindows(!showWindows)}/>
+                <FaApple style={{cursor: 'pointer'}} className={(showMacOS? "conanIconBlue": "conanIconGrey") + " conanIcon26 ml-1"} onClick={() => setShowMacOS(!showMacOS)}/>
+              </Col>*/}
+            </Row>}
+            </Col>
             <br/>
             <div style={{width: "100%"}}>
               <h2 className="text-center">
               Recipes ({!loading && !data && 0}{!loading && data && data.length}{loading && <div className="spinner-grow"></div>})
               </h2>
-              <SearchList loading={loading} data={data}/>
+              <SearchList loading={loading} data={data} extra={{showLinux: showLinux, showWindows: showWindows, showMacOS: showMacOS}}/>
             </div>
           </Container>
           <br/>

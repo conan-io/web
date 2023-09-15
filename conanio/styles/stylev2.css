@@ -345,6 +345,13 @@ h4, .h4 {
   cursor: pointer;
 }
 
+.conan-content-basic-card {
+  border: 0.05rem solid #FFFFFF;
+  background-color: #FFFFFF;
+  border-radius: 10px;
+  box-shadow: 0px 9px 29px rgba(0, 0, 0, 0.07), 0px 1.12694px 3.63125px rgba(0, 0, 0, 0.035);
+}
+
 .recipeTopics {
     background-color: #21AFFF!important;
     margin-right: 6px;
@@ -470,7 +477,6 @@ select {
 .copyBadgesButton:focus {
   outline: none;
 }
-
 
 .conan-blue-gradient-bg {
   background: linear-gradient(92.17deg, #0086FD 6.81%, #21AFFF 83.22%);
