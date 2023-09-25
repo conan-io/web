@@ -64,7 +64,7 @@ function truncate(text, n){
 function truncateTooltip(text, n){
   if(text.length > n) return (
     <>
-      <Tooltip id={text}/>
+      <Tooltip style={{ zIndex: 99 }} id={text}/>
       <a
         data-tooltip-id={text}
         data-tooltip-html={text}
@@ -84,6 +84,7 @@ function truncateAdnCopy(text, n){
     <>
       {truncateTooltip(text, n)}
       <ClipboardCopy
+        tooltipStyle={{zIndex: 99}}
         copyText={text}
         isCopiedStyle={{color: 'green', verticalAlign: 'top', marginLeft:'1px', height: '15px', width: '15px'}}
         copyStyle={{verticalAlign: 'top', marginLeft:'1px', height: '15px', width: '15px'}}
@@ -148,6 +149,7 @@ export default function ConanPackage(props) {
   const isBigScreen = useMediaQuery({ query: '(min-width: 1824px)' })
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' })
   const [selectedTab, setSelectedTab] = useState(indexSelectedVersion && props.data[indexSelectedVersion].info.status === "ok"? 'use_it': 'versions');
+  const [packageOS, setPackageOS] = useState(null);
   if (!props.data) return (<div>Loading...</div>);
   const recipeData = props.data[indexSelectedVersion];
   const recipeStatus = recipeData.info.status;
@@ -177,7 +179,7 @@ export default function ConanPackage(props) {
         {recipeDescription && <Row xs lg className="mb-2"><Col xs lg><h5>Recipe info</h5></Col></Row>}
         {recipeLicenses && recipeLicenses.length > 0 && (<Row>
           <Col xs lg>
-            <Tooltip id="package-info"/>
+            <Tooltip style={{ zIndex: 99 }} id="package-info"/>
             <a data-tooltip-id='package-info' data-tooltip-html="Licenses" data-tooltip-place="top">
               <LiaBalanceScaleSolid className="conanIconBlue conanIcon22" style={{verticalAlign: "middle"}}/>
             </a> {recipeLicenses.map((license) => {
@@ -195,7 +197,7 @@ export default function ConanPackage(props) {
 
         {recipeDescription && (<Row>
           <Col xs lg>
-            <Tooltip id="package-info"/>
+            <Tooltip style={{ zIndex: 99 }} id="package-info"/>
             <a data-tooltip-id='package-info' data-tooltip-html="GitHub repository" data-tooltip-place="top">
               <LiaGithub className="conanIconBlue conanIcon22" style={{verticalAlign: "middle"}}/>
             </a> <Link href={recipeConanCenterUrl}>
@@ -206,7 +208,7 @@ export default function ConanPackage(props) {
 
         {(recipeHomepage) && (<Row>
           <Col xs lg>
-            <Tooltip id="package-info"/>
+            <Tooltip style={{ zIndex: 99 }} id="package-info"/>
             <a data-tooltip-id='package-info' data-tooltip-html="Home page" data-tooltip-place="top">
               <IoMdHome className="conanIconBlue conanIcon22" style={{verticalAlign: "middle"}}/>
             </a> <a href={recipeHomepage}>{truncate(sanitizeURL(recipeHomepage), 22)}</a>
@@ -215,7 +217,7 @@ export default function ConanPackage(props) {
 
         {recipeDescription && (<Row>
           <Col xs lg>
-            <Tooltip id="package-info"/>
+            <Tooltip style={{ zIndex: 99 }} id="package-info"/>
             <a data-tooltip-id='package-info' data-tooltip-html="Total downloads (current version downloads)" data-tooltip-place="top">
               <IoMdDownload className="conanIconBlue  " style={{verticalAlign: "middle"}}/>
             </a> {Object.values(props.data).map( (e) => e.info.downloads ).reduce((a, b) => a + b, 0)}({recipeTotalDownloads})
@@ -224,7 +226,7 @@ export default function ConanPackage(props) {
 
         {(recipeDescription && <Row>
           <Col xs lg>
-          <Tooltip id="package-info"/>
+          <Tooltip style={{ zIndex: 99 }} id="package-info"/>
             <a data-tooltip-id='package-info' data-tooltip-html="Last updated date" data-tooltip-place="top">
               <MdOutlineToday className="conanIconBlue conanIcon22" style={{verticalAlign: "middle"}}/>
             </a> {recipeData.info.timestamp}
@@ -233,7 +235,7 @@ export default function ConanPackage(props) {
 
         {recipeDescription && (<Row>
           <Col xs lg>
-            <Tooltip id="package-info"/>
+            <Tooltip style={{ zIndex: 99 }} id="package-info"/>
             <a data-tooltip-id='package-info' data-tooltip-html="Latest recipe revision" data-tooltip-place="top">
               <AiOutlinePushpin className="conanIconBlue conanIcon22" style={{verticalAlign: "middle"}}/>
             </a>{truncateAdnCopy(recipeRevision, 20)}</Col>
@@ -247,8 +249,14 @@ export default function ConanPackage(props) {
         </Row>)}
         {recipePackages && recipePackages.length > 0 && (<Row>
           <Col xs lg>
-            {prettyProfiles(recipePackages).map((item) => (<Row key={item.key}>
-              <Col xs lg>
+            {prettyProfiles(recipePackages, {cursor: 'pointer'}).map((item) => (<Row key={item.key}>
+              <Col xs='auto' lg='auto'
+                onClick={() => {
+                    setSelectedTab('packages');
+                    setPackageOS(item.os);
+                  }
+                }
+              >
                 {item.badget}
               </Col>
             </Row>))}
@@ -285,7 +293,10 @@ export default function ConanPackage(props) {
           id="packages"
           className={"tabButton " + ((selectedTab == 'packages') && "tabButtonActive")}
           value="packages"
-          onClick={(e) => setSelectedTab(e.currentTarget.value)}
+          onClick={(e) => {
+            setSelectedTab(e.currentTarget.value);
+            setPackageOS(null);
+          }}
         ><SiConan className="conanIcon18 mr-1"/> Packages</Button>
         <Button
           id="dependencies"
@@ -327,7 +338,7 @@ export default function ConanPackage(props) {
       {selectedTab=='packages' && recipeDescription && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
         {metadatsInfo && (<RecipeInfo/>)}
         <Col xs lg="9" className="mt-4 pl-4 pr-4 pt-4 recipeContentBox">
-          <PackagesTab packages={recipePackages} recipeName={props.recipeName} recipeVersion={selectedVersion}/>
+          <PackagesTab recipeRevision={recipeRevision} packages={recipePackages} recipeName={props.recipeName} recipeVersion={selectedVersion} packageOS={packageOS} setPackageOS={setPackageOS}/>
         </Col>
       </Row>}
       {selectedTab=='dependencies' && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
@@ -398,7 +409,7 @@ export default function ConanPackage(props) {
                       </h1><
                         ClipboardCopy
                           copyText={recipeData.name + "/" + selectedVersion}
-                          tooltipStyle={{marginTop: "-14px"}}
+                          tooltipStyle={{marginTop: "-14px", zIndex: 99}}
                           isCopiedStyle={{color: 'green', verticalAlign: 'top', marginLeft:'1px', marginTop:'7px', height: '20px', width: '20px'}}
                           copyStyle={{verticalAlign: 'top', marginLeft:'1px', marginTop:'7px', height: '20px', width: '20px'}}
                         /> <a data-tooltip-id='package-info' data-tooltip-html={extraInfo} data-tooltip-place="top">

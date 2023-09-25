@@ -343,6 +343,10 @@ function PackagesTab(props) {
       paddingTop: '5px',
       marginTop: '5px',
     }
+    const frist_row_style = {
+      paddingTop: '5px',
+      marginTop: '5px',
+    }
     const main_col_style = {
       borderRight: '0.5px solid #21AFFF',
     }
@@ -395,9 +399,13 @@ function PackagesTab(props) {
           <Badge className="profileTopics">{package_info.build_type}</Badge>
         </div>)}
         <ListGroup.Item key={package_info.package_id} style={group_style}>
-          {package_info.package_id && (<Row style={row_style}>
+          {package_info.package_id && (<Row style={frist_row_style}>
             <Col xs="12" md="4" lg="4" style={main_col_style}><strong>package ID</strong></Col>
             <Col>{package_info.package_id}</Col>
+          </Row>)}
+          {props.recipeRevision && (<Row style={row_style}>
+            <Col xs="12" md="4" lg="4" style={main_col_style}><strong>Recipe Revision</strong></Col>
+            <Col>{props.recipeRevision}</Col>
           </Row>)}
           {package_info.os && (<Row style={row_style}>
             <Col xs="12" md="4" lg="4" style={main_col_style}><strong>os</strong></Col>
@@ -445,12 +453,15 @@ function PackagesTab(props) {
   if (hasPackages) {
     return (
       <div>
-        <h3>Packages</h3>
+        <h3>Packages {props.packageOS && ("(" + props.packageOS + ")")}</h3>
+        {props.packageOS && (<a style={{color: '#007bff', cursor: 'pointer'}} onClick={() => props.setPackageOS(null)}>(Show all packages)</a>)}
         <br/>
         <ListGroup className="mb-4">
-          { props.packages.filter(data => data.os == 'Linux').map(data => (<PackageItem key={data.package_id} package_info={data}/>)) }
-          { props.packages.filter(data => data.os == 'Windows').map(data => (<PackageItem key={data.package_id} package_info={data}/>)) }
-          { props.packages.filter(data => data.os == 'Macos').map(data => (<PackageItem key={data.package_id} package_info={data}/>)) }
+
+          { ((!props.packageOS) || (props.packageOS && props.packageOS=='Linux')) && props.packages.filter(data => data.os == 'Linux').map(data => (<PackageItem key={data.package_id} package_info={data}/>)) }
+          { ((!props.packageOS) || (props.packageOS && props.packageOS=='Windows')) && props.packages.filter(data => data.os == 'Windows').map(data => (<PackageItem key={data.package_id} package_info={data}/>)) }
+          { ((!props.packageOS) || (props.packageOS && props.packageOS=='macOS')) && props.packages.filter(data => ((data.os == 'Macos') && (data.arch == 'x86_64'))).map(data => (<PackageItem key={data.package_id} package_info={data}/>)) }
+          { ((!props.packageOS) || (props.packageOS && props.packageOS=='macOS Silicon')) && props.packages.filter(data => ((data.os == 'Macos') && (data.arch == 'armv8'))).map(data => (<PackageItem key={data.package_id} package_info={data}/>)) }
         </ListGroup>
       </div>
     );
