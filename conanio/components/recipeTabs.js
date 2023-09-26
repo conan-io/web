@@ -397,6 +397,18 @@ function PackagesTab(props) {
           <Badge className="profileTopics">{package_info.arch}</Badge>
           <Badge className="profileTopics">{package_info.options.shared && package_info.options.shared == "True" && ("Shared")}</Badge>
           <Badge className="profileTopics">{package_info.build_type}</Badge>
+          {
+            props.packages.length==1 &&
+            !package_info.os &&
+            !package_info.arch &&
+            !package_info.compiler &&
+            !package_info.compiler_cppstd &&
+            !package_info.compiler_version &&
+            !package_info.compiler_runtime &&
+            !package_info.compiler_runtime_type &&
+            !package_info.build_type &&
+            (<Badge className="profileTopics">Header Only</Badge>)
+          }
         </div>)}
         <ListGroup.Item key={package_info.package_id} style={group_style}>
           {package_info.package_id && (<Row style={frist_row_style}>
@@ -457,11 +469,11 @@ function PackagesTab(props) {
         {props.packageOS && (<a style={{color: '#007bff', cursor: 'pointer'}} onClick={() => props.setPackageOS(null)}>(Show all packages)</a>)}
         <br/>
         <ListGroup className="mb-4">
-
-          { ((!props.packageOS) || (props.packageOS && props.packageOS=='Linux')) && props.packages.filter(data => data.os == 'Linux').map(data => (<PackageItem key={data.package_id} package_info={data}/>)) }
-          { ((!props.packageOS) || (props.packageOS && props.packageOS=='Windows')) && props.packages.filter(data => data.os == 'Windows').map(data => (<PackageItem key={data.package_id} package_info={data}/>)) }
-          { ((!props.packageOS) || (props.packageOS && props.packageOS=='macOS')) && props.packages.filter(data => ((data.os == 'Macos') && (data.arch == 'x86_64'))).map(data => (<PackageItem key={data.package_id} package_info={data}/>)) }
-          { ((!props.packageOS) || (props.packageOS && props.packageOS=='macOS Silicon')) && props.packages.filter(data => ((data.os == 'Macos') && (data.arch == 'armv8'))).map(data => (<PackageItem key={data.package_id} package_info={data}/>)) }
+          { ((!props.packageOS) || (props.packageOS=='Linux')) && props.packages.filter(data => data.os == 'Linux').map(data => (<PackageItem key={data.package_id} package_info={data}/>)) }
+          { ((!props.packageOS) || (props.packageOS=='Windows')) && props.packages.filter(data => data.os == 'Windows').map(data => (<PackageItem key={data.package_id} package_info={data}/>)) }
+          { ((!props.packageOS) || (props.packageOS=='macOS')) && props.packages.filter(data => ((data.os == 'Macos') && (data.arch == 'x86_64'))).map(data => (<PackageItem key={data.package_id} package_info={data}/>)) }
+          { ((!props.packageOS) || (props.packageOS=='macOS Apple Silicon')) && props.packages.filter(data => ((data.os == 'Macos') && (data.arch == 'armv8'))).map(data => (<PackageItem key={data.package_id} package_info={data}/>)) }
+          { ((!props.packageOS) || (props.packageOS=='Header Only')) && props.packages.filter(data => ((!data.os && !data.arch))).map(data => (<PackageItem key={data.package_id} package_info={data}/>)) }
         </ListGroup>
       </div>
     );
