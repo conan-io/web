@@ -17,7 +17,6 @@ import { prettyProfiles } from '../../components/utils';
 import { LiaBalanceScaleSolid, LiaGithub } from "react-icons/lia";
 import { IoMdDownload } from "react-icons/io";
 import { BsFilterCircleFill, BsFilterCircle } from "react-icons/bs";
-import { FaWindows, FaLinux, FaApple } from "react-icons/fa";
 import {get_json_list, get_urls, get_json_list_with_id} from '../../service/service';
 
 
@@ -136,12 +135,25 @@ function PackageInfo(props) {
 
 function SearchList(props) {
   const extraFilters = (item) => {
-    return true;
+    if (props.extra.showLinux && props.extra.showWindows && props.extra.showMacOS && props.extra.showMacOSSilicon){
+      return true;
+    }
+    else{
+      const rawPackages = Object.values(item.info.packages).map((value) => value)
+      if (rawPackages.length > 0){
+        const packages = prettyProfiles(rawPackages).reduce((a, p) => ({ ...a, [p.key]: p.status}), {})
+        if (props.extra.showWindows && packages['Windows-x86_64']) return true
+        if (props.extra.showLinux && packages['Linux-x86_64']) return true
+        if (props.extra.showMacOS && packages['Macos-x86_64']) return true
+        if (props.extra.showMacOSSilicon && packages['Macos-armv8']) return true
+      }
+      return false;
+    }
   }
   return (
     <ListGroup>
-    {props.data && props.data.filter((info) => extraFilters(info)).map(
-      (info) => (
+    {props.data && props.data.map(
+      (info) => extraFilters(info) && (
         <ListGroup.Item className="conan-content-basic-card mt-4" key={info.name}>
           <PackageInfo data={info}/>
         </ListGroup.Item>)
@@ -161,6 +173,7 @@ export default function ConanSearch(props) {
   const [showFilters, setShowFilters] = useState(false);
   const [showWindows, setShowWindows] = useState(true);
   const [showMacOS, setShowMacOS] = useState(true);
+  const [showMacOSSilicon, setShowMacOSSilicon] = useState(true);
   const [showLinux, setShowLinux] = useState(true);
 
   const getData = async (value, topiclist, licenseList) => {
@@ -220,7 +233,7 @@ export default function ConanSearch(props) {
     <React.StrictMode>
       <SSRProvider>
       <div className="flex-wrapper bg-conan-blue">
-        <ConanCenterHeader/>
+        <ConanCenterHeader titlePrefix={value? "Search Result for '" + value + "'": "Search Result"}/>
           <br/>
           <Container className="conancontainer">
             <Row className="justify-content-md-center">
@@ -240,11 +253,12 @@ export default function ConanSearch(props) {
             {showFilters && <Row style={filterStyle} className="conan-content-basic-card">
               <Col xs="12" md="12" lg="6" className="mt-2"><ConanMultiSelectFilter title="Licenses" defaultValue={licenses} filters={props.data.licenses} handleFilter={handleLicenses}/></Col>
               <Col xs="12" md="12" lg="6" className="mt-2"><ConanMultiSelectFilter title="Topics" defaultValue={topics} filters={props.data.topics} handleFilter={handleTopics}/></Col>
-              {/*<Col xs="12" md="12" lg="12" className="mt-2">
-                <FaLinux style={{cursor: 'pointer'}} className={(showLinux? "conanIconBlue": "conanIconGrey") + " conanIcon26 ml-1"} onClick={() => setShowLinux(!showLinux)}/>
-                <FaWindows style={{cursor: 'pointer'}} className={(showWindows? "conanIconBlue": "conanIconGrey") + " conanIcon26 ml-1"} onClick={() => setShowWindows(!showWindows)}/>
-                <FaApple style={{cursor: 'pointer'}} className={(showMacOS? "conanIconBlue": "conanIconGrey") + " conanIcon26 ml-1"} onClick={() => setShowMacOS(!showMacOS)}/>
-              </Col>*/}
+              {<Col xs="12" md="12" lg="12" className="mt-2">
+                <Badge style={{cursor: 'pointer'}} className={(showLinux? "profileTopics": "profileEmptyTopics")} onClick={() => setShowLinux(!showLinux)}>Linux</Badge>
+                <Badge style={{cursor: 'pointer'}} className={(showWindows? "profileTopics": "profileEmptyTopics")} onClick={() => setShowWindows(!showWindows)}>Windows</Badge>
+                <Badge style={{cursor: 'pointer'}} className={(showMacOS? "profileTopics": "profileEmptyTopics")} onClick={() => setShowMacOS(!showMacOS)}>macOS</Badge>
+                <Badge style={{cursor: 'pointer'}} className={(showMacOSSilicon? "profileTopics": "profileEmptyTopics")} onClick={() => setShowMacOSSilicon(!showMacOSSilicon)}>macOS Apple Silicon</Badge>
+              </Col>}
             </Row>}
             </Col>
             <br/>
@@ -252,7 +266,7 @@ export default function ConanSearch(props) {
               <h2 className="text-center">
               Recipes ({!loading && !data && 0}{!loading && data && data.length}{loading && <div className="spinner-grow"></div>})
               </h2>
-              <SearchList loading={loading} data={data} extra={{showLinux: showLinux, showWindows: showWindows, showMacOS: showMacOS}}/>
+              <SearchList loading={loading} data={data} extra={{showLinux: showLinux, showWindows: showWindows, showMacOS: showMacOS, showMacOSSilicon: showMacOSSilicon}}/>
             </div>
           </Container>
           <br/>

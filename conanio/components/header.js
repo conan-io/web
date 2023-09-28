@@ -7,7 +7,9 @@ import Navbar from 'react-bootstrap/Navbar';
 import { LuPackageSearch } from "react-icons/lu";
 
 
-function ConanHead() {
+function ConanHead(props) {
+  const defaultTitle = "Conan 2.0: C and C++ Open Source Package Manager";
+  const title = props.titlePrefix? props.titlePrefix + " - " + defaultTitle: defaultTitle;
   return (
     <Head>
       <meta charset="UTF-8"/>
@@ -19,7 +21,7 @@ function ConanHead() {
       />
       <link rel="shortcut icon" type="image/png" href="/favicon.png"/>
       <link rel="alternate" href="https://conan.io" hrefLang="en"/>
-      <title>Conan 2.0 - C and C++ Open Source Package Manager</title>
+      <title>{title}</title>
       <link rel="canonical" href="https://conan.io"/>
     </Head>
   );
@@ -86,10 +88,10 @@ export function ConanHeader(props) {
 }
 
 
-export function ConanCenterHeader() {
+export function ConanCenterHeader(props) {
   return (
     <div>
-      <ConanHead/>
+      <ConanHead titlePrefix={props.titlePrefix}/>
       <ConanHeader background="backgroundWhite"/>
       <BetaBanner/>
     </div>
@@ -97,10 +99,10 @@ export function ConanCenterHeader() {
 }
 
 
-export function ConanKitchenHeader() {
+export function ConanKitchenHeader(props) {
   return (
     <div>
-      <ConanHead/>
+      <ConanHead titlePrefix={props.titlePrefix}/>
       <div className="header-bg position-absolute"><img src="/kitchen-bg.svg" width="100%"></img></div>
       <ConanHeader/>
     </div>

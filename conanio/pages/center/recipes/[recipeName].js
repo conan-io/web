@@ -393,7 +393,7 @@ export default function ConanPackage(props) {
     <React.StrictMode>
       <SSRProvider>
       <div className="flex-wrapper bg-conan-blue">
-        <ConanCenterHeader/>
+        <ConanCenterHeader titlePrefix={recipeData.name}/>
         <Container className="conancontainer">
           <div className="mt-3 mb-3">
           <BasicSearchBar/>
