@@ -59,7 +59,7 @@ export function ConanHeader(props) {
       <Script id="ot-callback" type="text/javascript">{`function OptanonWrapper() {}`}</Script>
       <div className="container">
         <div className="row d-flex justify-content-between">
-          <Link href="/"><a className="col-6 col-lg-4 d-block"><img alt="Conan C++ Package Manager" className="header-logo" src="/conan-logo.svg"></img></a></Link>
+          <Link href="/"><a className="col-6 col-lg-4 d-block"><img alt="Conan C++ Package Manager" className="header-logo" style={{maxHeight: "83px"}} src="/conan-logo.png"></img></a></Link>
           <div className="col-6 col-lg-4 xs text-right d-flex align-items-center justify-content-end">
             <Navbar collapseOnSelect expand="lg">
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -69,7 +69,7 @@ export function ConanHeader(props) {
                       <Nav.Link href="/faq"><span className="btn navBtn black">FAQ</span></Nav.Link>
                       <Nav.Link href="https://docs.conan.io/"><span className="btn navBtn black">Docs</span></Nav.Link>
                       <Nav.Link href="https://blog.conan.io/"><span className="btn navBtn black">Blog</span></Nav.Link>
-                      <Nav.Link href="https://github.com/conan-io/conan" rel="nofollow noopener noreferrer" target="_blank"><span className="btn p-0 mr-3"><img height="85%" src="/small-github.svg" alt="Github"></img></span></Nav.Link>
+                      <Nav.Link href="https://github.com/conan-io/conan" rel="nofollow noopener noreferrer" target="_blank"><span className="btn p-0 mr-3"><img style={{maxHeight: "26px"}} src="/small-github.png" alt="Github"></img></span></Nav.Link>
                       <div className="downloads-cta arrow-cta">
                         <div className="button_cont">
                           <Nav.Link href="/downloads"><span className="btn conan-blue-gradient-bg white font-weight-bold" id="download_btn_header"><span>Downloads</span></span></Nav.Link>
