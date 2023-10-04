@@ -14,7 +14,12 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Link from 'next/link';
 import { ConanCenterHeader } from '../../../components/header';
-import { prettyProfiles } from '../../../components/utils';
+import { truncate,
+         truncateTooltip,
+         truncateAdnCopy,
+         sanitizeURL,
+         ClipboardCopy,
+         prettyProfiles } from '../../../components/utils';
 import ConanFooter from '../../../components/footer';
 import { get_json, get_urls } from '../../../service/service';
 import { DefaultDescription } from '../recipes';
@@ -35,7 +40,7 @@ import { PiGraphDuotone, PiMedal } from "react-icons/pi";
 import { FaTags, FaHashtag } from "react-icons/fa";
 import { LuBinary } from "react-icons/lu";
 import { SiConan } from "react-icons/si";
-import { HiOutlineClipboardCopy, HiOutlineClipboardCheck, HiOutlineDocumentText } from "react-icons/hi";
+import { HiOutlineDocumentText } from "react-icons/hi";
 import { BasicSearchBar } from "../../../components/searchbar";
 import { Tooltip } from 'react-tooltip';
 import { useMediaQuery } from 'react-responsive';
@@ -52,91 +57,6 @@ export async function getServerSideProps(context) {
       recipeVersion: context.query.version? context.query.version: null
     },
   };
-}
-
-
-function truncate(text, n){
-  if(text.length > n) return text.slice(0, n-1) + "...";
-  return text;
-};
-
-
-function truncateTooltip(text, n){
-  if(text.length > n) return (
-    <>
-      <Tooltip style={{ zIndex: 99 }} id={text}/>
-      <a
-        data-tooltip-id={text}
-        data-tooltip-html={text}
-        data-tooltip-place="top"
-        style={{cursor: 'pointer'}}
-      >
-        {truncate(text, n)}
-      </a>
-    </>
-  );
-  return text;
-};
-
-
-function truncateAdnCopy(text, n){
-  if(text.length > n) return (
-    <>
-      {truncateTooltip(text, n)}
-      <ClipboardCopy
-        tooltipStyle={{zIndex: 99}}
-        copyText={text}
-        isCopiedStyle={{color: 'green', verticalAlign: 'top', marginLeft:'1px', height: '15px', width: '15px'}}
-        copyStyle={{verticalAlign: 'top', marginLeft:'1px', height: '15px', width: '15px'}}
-      />
-    </>
-  );
-  return str;
-};
-
-function sanitizeURL(url) {
-  let protocol = new URL(url).protocol;
-  return url.replace(protocol + "//", "");
-}
-
-function ClipboardCopy({ copyText, tooltipStyle, isCopiedStyle, copyStyle }) {
-  const [isCopied, setIsCopied] = useState(false);
-  async function copyTextToClipboard(text) {
-    return await navigator.clipboard.writeText(text);
-  }
-  const handleCopyClick = () => {
-    copyTextToClipboard(copyText)
-      .then(() => {
-        setIsCopied(true);
-        setTimeout(() => {setIsCopied(false);}, 1500);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
-  return (
-    <>
-      <Tooltip id={"copy-" + copyText} style={tooltipStyle}/>
-      <a
-        onClick={handleCopyClick}
-        style={{cursor: 'pointer', display: 'inline'}}
-        data-tooltip-id={"copy-" + copyText}
-        data-tooltip-html={isCopied ? "Copied!" : "Copy to clipboard"}
-        data-tooltip-place="top"
-      >
-        <span>
-          {isCopied ? <
-              HiOutlineClipboardCheck
-              style={isCopiedStyle}
-            /> : <
-              HiOutlineClipboardCopy className="conanIconBlue"
-              style={copyStyle}
-            />}
-        </span>
-      </a>
-    </>
-  );
 }
 
 export default function ConanPackage(props) {
@@ -280,18 +200,18 @@ export default function ConanPackage(props) {
     )
   }
 
-  function TabButtons() {
+  function TabButtons(props) {
     return (
       <>
         {recipeStatus === "ok" && <Button
           id="use_it"
-          className={"tabButton " + ((selectedTab == 'use_it') && "tabButtonActive")}
+          className={props.buttonClass + " " + ((selectedTab == 'use_it') && "tabButtonActive")}
           value="use_it"
           onClick={(e) => setSelectedTab(e.currentTarget.value)}
         ><HiOutlineDocumentText className="conanIcon18 mr-1"/> Use it</Button>}
         <Button
           id="packages"
-          className={"tabButton " + ((selectedTab == 'packages') && "tabButtonActive")}
+          className={props.buttonClass + " " + ((selectedTab == 'packages') && "tabButtonActive")}
           value="packages"
           onClick={(e) => {
             setSelectedTab(e.currentTarget.value);
@@ -300,25 +220,25 @@ export default function ConanPackage(props) {
         ><SiConan className="conanIcon18 mr-1"/> Packages</Button>
         <Button
           id="dependencies"
-          className={"tabButton " + ((selectedTab == 'dependencies') && "tabButtonActive")}
+          className={props.buttonClass + " " + ((selectedTab == 'dependencies') && "tabButtonActive")}
           value="dependencies"
           onClick={(e) => setSelectedTab(e.currentTarget.value)}
         ><PiGraphDuotone className="conanIcon18 mr-1"/> Dependencies</Button>
         <Button
           id="versions"
-          className={"tabButton " + ((selectedTab == 'versions') && "tabButtonActive")}
+          className={props.buttonClass + " " + ((selectedTab == 'versions') && "tabButtonActive")}
           value="versions"
           onClick={(e) => setSelectedTab(e.currentTarget.value)}
         ><FaTags className="conanIcon18 mr-1"/> Versions</Button>
         <Button
           id="badges"
-          className={"tabButton " + ((selectedTab == 'badges') && "tabButtonActive")}
+          className={props.buttonClass + " " + ((selectedTab == 'badges') && "tabButtonActive")}
           value="badges"
           onClick={(e) => setSelectedTab(e.currentTarget.value)}
         ><PiMedal className="conanIcon18 mr-1"/> Badges</Button>
         <Button
           id="stats"
-          className={"tabButton " + ((selectedTab == 'stats') && "tabButtonActive")}
+          className={props.buttonClass + " " + ((selectedTab == 'stats') && "tabButtonActive")}
           value="stats"
           onClick={(e) => setSelectedTab(e.currentTarget.value)}
         ><AiOutlineBarChart className="conanIcon18 mr-1"/> Stats</Button>
@@ -437,12 +357,12 @@ export default function ConanPackage(props) {
 
 
           <div className="mt-4" style={{borderBottom: "2px solid #21AFFF"}}>
-            {/*isTabletOrMobile && (<ButtonGroup size="sm" className="tabButtonGroup" vertical>
-              <TabButtons/>
-            </ButtonGroup>)*/}
-            <ButtonGroup size="sm" className="tabButtonGroup">
-              <TabButtons/>
-            </ButtonGroup>
+            {isTabletOrMobile && (<ButtonGroup size="sm" className="tabButtonGroup" vertical>
+              <TabButtons buttonClass="tabVerticalButton"/>
+            </ButtonGroup>)}
+            {!isTabletOrMobile && (<ButtonGroup size="sm" className="tabButtonGroup">
+              <TabButtons buttonClass="tabButton"/>
+            </ButtonGroup>)}
           </div>
           <RecipeTabs/>
         </Container>

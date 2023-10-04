@@ -279,6 +279,43 @@ border-radius: 10px;
   box-shadow: none;
 }
 
+.tabVerticalButton {
+  color: black;
+  background-color: inherit;
+  height: fit-content !important;
+  margin-left: 0px !important;
+  border-radius: 10px 10px 10px 10px !important;
+  border-color: #EDF7FF;
+  min-width: 0px !important;
+}
+
+.tabVerticalButtonActive {
+  color: white!important;
+  background-color: #21AFFF!important;
+}
+
+.tabVerticalButtonGroup {
+  margin: 0px 0px 0px -1px;
+  display: flex;
+}
+
+.tabVerticalButton:hover {
+  color: #21AFFF;
+  background-color: inherit;
+  border-color: #EDF7FF;
+}
+
+.tabVerticalButton:active {
+  border-color: #21AFFF !important;
+  background-color: #21AFFF !important;
+}
+
+.tabVerticalButton:focus {
+  border-color: #21AFFF;
+  background-color: #21AFFF;
+  box-shadow: none;
+}
+
 .recipeContentBox {
   border-radius: 10px;
   background-color: white;

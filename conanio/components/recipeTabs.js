@@ -26,7 +26,8 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Button from 'react-bootstrap/Button';
 import Collapse from 'react-bootstrap/Collapse';
 import {LineChart, XAxis, YAxis, Tooltip, CartesianGrid, Line, Legend} from 'recharts';
-import { prettyProfiles } from './utils';
+import { prettyProfiles, truncateAdnCopy } from './utils';
+import { useMediaQuery } from 'react-responsive';
 
 {/* TODO: this function should go in a more common module. More configurable? */}
 function ClipboardCopy({ copyText }) {
@@ -329,6 +330,7 @@ function DependenciesTab(props) {
 
 
 function PackagesTab(props) {
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' })
   const hasPackages = props.packages && props.packages.length > 0;
   const PackageItem = function({package_info}) {
     const group_style = {
@@ -413,11 +415,11 @@ function PackagesTab(props) {
         <ListGroup.Item key={package_info.package_id} style={group_style}>
           {package_info.package_id && (<Row style={frist_row_style}>
             <Col xs="12" md="4" lg="4" style={main_col_style}><strong>package ID</strong></Col>
-            <Col>{package_info.package_id}</Col>
+            <Col>{isTabletOrMobile? truncateAdnCopy(package_info.package_id, 18): package_info.package_id}</Col>
           </Row>)}
           {props.recipeRevision && (<Row style={row_style}>
             <Col xs="12" md="4" lg="4" style={main_col_style}><strong>Recipe Revision</strong></Col>
-            <Col>{props.recipeRevision}</Col>
+            <Col>{isTabletOrMobile? truncateAdnCopy(props.recipeRevision,18): props.recipeRevision}</Col>
           </Row>)}
           {package_info.os && (<Row style={row_style}>
             <Col xs="12" md="4" lg="4" style={main_col_style}><strong>os</strong></Col>
