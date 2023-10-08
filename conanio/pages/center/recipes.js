@@ -134,30 +134,12 @@ function PackageInfo(props) {
 }
 
 function SearchList(props) {
-  const extraFilters = (item) => {
-    if (props.extra.showLinux && props.extra.showWindows && props.extra.showMacOS && props.extra.showMacOSSilicon){
-      return true;
-    }
-    else{
-      const rawPackages = Object.values(item.info.packages).map((value) => value)
-      if (rawPackages.length > 0){
-        const packages = prettyProfiles(rawPackages).reduce((a, p) => ({ ...a, [p.key]: p.status}), {})
-        if (props.extra.showWindows && packages['Windows-x86_64']) return true
-        if (props.extra.showLinux && packages['Linux-x86_64']) return true
-        if (props.extra.showMacOS && packages['Macos-x86_64']) return true
-        if (props.extra.showMacOSSilicon && packages['Macos-armv8']) return true
-      }
-      return false;
-    }
-  }
   return (
     <ListGroup>
-    {props.data && props.data.map(
-      (info) => extraFilters(info) && (
-        <ListGroup.Item className="conan-content-basic-card mt-4" key={info.name}>
-          <PackageInfo data={info}/>
-        </ListGroup.Item>)
-      )
+    {props.data && props.data.map((info) => (
+      <ListGroup.Item className="conan-content-basic-card mt-4" key={info.name}>
+        <PackageInfo data={info}/>
+      </ListGroup.Item>))
     }
     </ListGroup>
   )
@@ -229,6 +211,25 @@ export default function ConanSearch(props) {
     marginTop: "20px",
   }
 
+  const extraFilters = (item) => {
+    if (showLinux && showWindows && showMacOS && showMacOSSilicon){
+      return true;
+    }
+    else{
+      const rawPackages = Object.values(item.info.packages).map((value) => value)
+      if (rawPackages.length > 0){
+        const packages = prettyProfiles(rawPackages).reduce((a, p) => ({ ...a, [p.key]: p.status}), {})
+        if (showWindows && packages['Windows-x86_64']) return true
+        if (showLinux && packages['Linux-x86_64']) return true
+        if (showMacOS && packages['Macos-x86_64']) return true
+        if (showMacOSSilicon && packages['Macos-armv8']) return true
+      }
+      return false;
+    }
+  }
+
+  const filteredData = data.filter((info) => extraFilters(info))
+
   return (
     <React.StrictMode>
       <SSRProvider>
@@ -253,20 +254,20 @@ export default function ConanSearch(props) {
             {showFilters && <Row style={filterStyle} className="conan-content-basic-card">
               <Col xs="12" md="12" lg="6" className="mt-2"><ConanMultiSelectFilter title="Licenses" defaultValue={licenses} filters={props.data.licenses} handleFilter={handleLicenses}/></Col>
               <Col xs="12" md="12" lg="6" className="mt-2"><ConanMultiSelectFilter title="Topics" defaultValue={topics} filters={props.data.topics} handleFilter={handleTopics}/></Col>
-              {<Col xs="12" md="12" lg="12" className="mt-2">
+              <Col xs="12" md="12" lg="12" className="mt-2">
                 <Badge style={{cursor: 'pointer'}} className={(showLinux? "profileTopics": "profileEmptyTopics")} onClick={() => setShowLinux(!showLinux)}>Linux</Badge>
                 <Badge style={{cursor: 'pointer'}} className={(showWindows? "profileTopics": "profileEmptyTopics")} onClick={() => setShowWindows(!showWindows)}>Windows</Badge>
                 <Badge style={{cursor: 'pointer'}} className={(showMacOS? "profileTopics": "profileEmptyTopics")} onClick={() => setShowMacOS(!showMacOS)}>macOS</Badge>
                 <Badge style={{cursor: 'pointer'}} className={(showMacOSSilicon? "profileTopics": "profileEmptyTopics")} onClick={() => setShowMacOSSilicon(!showMacOSSilicon)}>macOS Apple Silicon</Badge>
-              </Col>}
+              </Col>
             </Row>}
             </Col>
             <br/>
             <div style={{width: "100%"}}>
               <h2 className="text-center">
-              Recipes ({!loading && !data && 0}{!loading && data && data.length}{loading && <div className="spinner-grow"></div>})
+              Recipes ({!loading && !data && 0}{!loading && filteredData && filteredData.length}{loading && <div className="spinner-grow"></div>})
               </h2>
-              <SearchList loading={loading} data={data} extra={{showLinux: showLinux, showWindows: showWindows, showMacOS: showMacOS, showMacOSSilicon: showMacOSSilicon}}/>
+              <SearchList loading={loading} data={filteredData}/>
             </div>
           </Container>
           <br/>
