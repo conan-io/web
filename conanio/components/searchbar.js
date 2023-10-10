@@ -171,10 +171,10 @@ export function ConanSearchBar(props) {
       {(props.recipes || props.references) && <Row className="justify-content-md-center mt-2">
         <div className="text-center" style={{color: '#21AFFF'}}>
           <PiNoteBold className="conanIconBlue conanIcon26"/>
-          {props.recipes} recipes
+          {props.recipes.toLocaleString()} recipes
           <CgFormatSlash className="conanIconBlue conanIcon34"/>
           <BiPackage style={{marginRight: '4px'}} className="conanIconBlue conanIcon26"/>
-          {props.references} references
+          {props.references.toLocaleString()} references
         </div>
       </Row>}
     </Col>

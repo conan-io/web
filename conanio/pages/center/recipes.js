@@ -335,7 +335,7 @@ export default function ConanSearch(props) {
             <br/>
             <div style={{width: "100%"}}>
               <h2 className="text-center">
-              Recipes ({!loading && !data && 0}{!loading && filteredData && filteredData.length}{loading && <div className="spinner-grow"></div>})
+              Recipes ({!loading && !data && 0}{!loading && filteredData && filteredData.length.toLocaleString()}{loading && <div className="spinner-grow"></div>})
               </h2>
               <SearchList loading={loading} data={filteredData}/>
             </div>
