@@ -138,7 +138,7 @@ function PackageInfo(props) {
       </Row>
       <Row>
       {licenses && licenses.length > 0 && <Col xs lg="auto"><LiaBalanceScaleSolid className="conanIconBlue"/> {licenses.join(", ")}</Col>}
-      {props.data.info.downloads > 0  && <Col xs lg="auto"><IoMdDownload className="conanIconBlue"/> {props.data.info.downloads}</Col>}
+      {props.data.info.downloads > 0  && <Col xs lg="auto"><IoMdDownload className="conanIconBlue"/> {props.data.info.downloads.toLocaleString()}</Col>}
       </Row>
       <Row><Col xs lg className="mt-2">{props.data.info.description || (<DefaultDescription name={props.data.name}/>)}</Col></Row>
       <Row>

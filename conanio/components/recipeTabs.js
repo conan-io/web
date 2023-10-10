@@ -623,12 +623,12 @@ function StatsTab(props) {
       <Row className="pl-1">
         <Col xs md lg="3"><b>Total downloads:</b></Col>
         <Col xs md lg="auto">
-          {Object.values(props.data).map((e) => e.info.downloads).reduce((a, b) => a + b, 0)}</Col>
+          {Object.values(props.data).map((e) => e.info.downloads).reduce((a, b) => a + b, 0).toLocaleString()}</Col>
       </Row>
       <hr/>
       <Row className="pl-1">
         <Col xs md lg="3"><b>Current version total downloads:</b></Col>
-        <Col xs md lg="auto">{props.currentVersionDownloads}</Col>
+        <Col xs md lg="auto">{props.currentVersionDownloads.toLocaleString()}</Col>
       </Row>
       <hr/>
       <Row className="pt-4 pl-3"><h4>Recipe downloads by version</h4></Row>

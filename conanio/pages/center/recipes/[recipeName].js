@@ -140,7 +140,7 @@ export default function ConanPackage(props) {
             <Tooltip style={{ zIndex: 99 }} id="package-info"/>
             <a data-tooltip-id='package-info' data-tooltip-html="Total downloads (current version downloads)" data-tooltip-place="top">
               <IoMdDownload className="conanIconBlue  " style={{verticalAlign: "middle"}}/>
-            </a> {Object.values(props.data).map( (e) => e.info.downloads ).reduce((a, b) => a + b, 0)}({recipeTotalDownloads})
+            </a> {Object.values(props.data).map( (e) => e.info.downloads ).reduce((a, b) => a + b, 0).toLocaleString()} ({recipeTotalDownloads.toLocaleString()})
           </Col>
         </Row>)}
 
