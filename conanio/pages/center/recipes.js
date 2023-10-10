@@ -7,7 +7,11 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Badge from 'react-bootstrap/Badge';
 import InputGroup from 'react-bootstrap/InputGroup';
-import { ConanSearchBar, ConanMultiSelectFilter } from "../../components/searchbar";
+import {
+  ConanSearchBar,
+  ConanMultiSelectFilter,
+  ConanSingleSelect
+} from "../../components/searchbar";
 import ListGroup from 'react-bootstrap/ListGroup';
 import Alert from 'react-bootstrap/Alert';
 import Link from 'next/link';
@@ -17,6 +21,19 @@ import { prettyProfiles } from '../../components/utils';
 import { LiaBalanceScaleSolid, LiaGithub } from "react-icons/lia";
 import { IoMdDownload } from "react-icons/io";
 import { BsFilterCircleFill, BsFilterCircle } from "react-icons/bs";
+import {
+  MdFilter1,
+  MdFilter2,
+  MdFilter3,
+  MdFilter4,
+  MdFilter5,
+  MdFilter6,
+  MdFilter7,
+  MdFilter8,
+  MdFilter9,
+  MdFilter9Plus,
+} from "react-icons/md";
+
 import {get_json_list, get_urls, get_json_list_with_id} from '../../service/service';
 
 
@@ -152,11 +169,12 @@ export default function ConanSearch(props) {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(props.data.packages);
   const [timer, setTimer] = useState(null);
-  const [showFilters, setShowFilters] = useState(false);
+  const [showFilters, setShowFilters] = useState(props.data.defaultTopics.length > 0);
   const [showWindows, setShowWindows] = useState(true);
   const [showMacOS, setShowMacOS] = useState(true);
   const [showMacOSSilicon, setShowMacOSSilicon] = useState(true);
   const [showLinux, setShowLinux] = useState(true);
+  const [sortDataBy, setSortDataBy] = useState('sortByName');
 
   const getData = async (value, topiclist, licenseList) => {
     setLoading(true);
@@ -206,6 +224,10 @@ export default function ConanSearch(props) {
     event.preventDefault();
   }
 
+  const handleSortFuction = (selectedOption) => {
+    setSortDataBy(selectedOption.value);
+  }
+
   const filterStyle = {
     padding: "12px 0px 20px 0px",
     marginTop: "20px",
@@ -228,7 +250,39 @@ export default function ConanSearch(props) {
     }
   }
 
-  const filteredData = data.filter((info) => extraFilters(info))
+  const sortByName = (a, b) => {
+    const nameA = a.name.toUpperCase(); // ignore upper and lowercase
+    const nameB = b.name.toUpperCase(); // ignore upper and lowercase
+    if (nameA < nameB) {
+      return -1;
+    }
+    if (nameA > nameB) {
+      return 1;
+    }
+  };
+
+  const sortByDownloads = (a, b) => {
+    return b.info.downloads - a.info.downloads
+  };
+
+  const sortByData = (a, b) => {
+    if (sortDataBy == "sortByName") return sortByName(a, b)
+    if (sortDataBy == "sortByDownloads") return sortByDownloads(a, b)
+    return 0
+  };
+
+  const filteredData = data.filter((info) => extraFilters(info)).sort(sortByData);
+
+  const filterNumber = () => {
+    const tags = {1: MdFilter1, 2: MdFilter2, 3: MdFilter3, 4: MdFilter4,
+      5: MdFilter5, 6: MdFilter6, 7: MdFilter7, 8: MdFilter8, 9: MdFilter9}
+    const style = {backgroundColor: 'white', verticalAlign: 'text-top'}
+    const _filterNumber = topics.length + licenses.length + !showWindows + !showLinux + !showMacOS + !showMacOSSilicon
+    if (!_filterNumber) return null
+    const Tag = _filterNumber>9? MdFilter9Plus: tags[_filterNumber];
+    return  (<Tag className="conanIconBlue" style={style}/>)
+    return null;
+  }
 
   return (
     <React.StrictMode>
@@ -238,23 +292,39 @@ export default function ConanSearch(props) {
           <br/>
           <Container className="conancontainer">
             <Row className="justify-content-md-center">
-              <Col xs="12" md="12" lg="9">
+              <Col xs="12" md="12" lg="7" className="mt-2">
                 <Form onSubmit={e => handleSubmit(e)}>
                     <div>
                     <ConanSearchBar value={value} handleChange={handleChange}/>
                   </div>
                 </Form>
               </Col>
-              <Col xs="1" md="1" lg="1">
-                {!showFilters && <BsFilterCircleFill style={{verticalAlign: 'text-top', cursor: 'pointer'}} className="conanIconBlue conanIcon34" onClick={() => setShowFilters(!showFilters)}/>}
-                {showFilters && <BsFilterCircle style={{backgroundColor: 'white', borderRadius: '16px', verticalAlign: 'text-top', cursor: 'pointer', transform: 'rotate(180deg)'}} className="conanIconBlue conanIcon34" onClick={() => setShowFilters(!showFilters)}/>}
+              <Col xs="12" md="12" lg="2" className="mt-2">
+                <ConanSingleSelect
+                  title="Sort by"
+                  defaultValue={{value: 'sortByName', label: 'by name'}}
+                  options={[{value: 'sortByName', label: 'by name'},{value: 'sortByDownloads', label: 'by downloads'}]}
+                  handleFilter={handleSortFuction}
+                />
+              </Col>
+              <Col xs={{span: 2, offset: 5}} md={{span: 2, offset: 5}} lg={{span: 1, offset: 0}} className="mt-2">
+                {!showFilters && <BsFilterCircleFill
+                  style={{verticalAlign: 'text-top', cursor: 'pointer'}}
+                  className="conanIconBlue conanIcon34" onClick={() => setShowFilters(!showFilters)}
+                />}
+                {showFilters && <BsFilterCircle
+                  style={{backgroundColor: 'white', borderRadius: '16px', verticalAlign: 'text-top', cursor: 'pointer', transform: 'rotate(180deg)'}}
+                  className="conanIconBlue conanIcon34"
+                  onClick={() => setShowFilters(!showFilters)}
+                />}
+                {filterNumber()}
               </Col>
             </Row>
             <Col lg={{span: 10, offset: 1}}>
             {showFilters && <Row style={filterStyle} className="conan-content-basic-card">
               <Col xs="12" md="12" lg="6" className="mt-2"><ConanMultiSelectFilter title="Licenses" defaultValue={licenses} filters={props.data.licenses} handleFilter={handleLicenses}/></Col>
               <Col xs="12" md="12" lg="6" className="mt-2"><ConanMultiSelectFilter title="Topics" defaultValue={topics} filters={props.data.topics} handleFilter={handleTopics}/></Col>
-              <Col xs="12" md="12" lg="12" className="mt-2">
+              <Col xs="12" md="12" lg="6" className="mt-2">
                 <Badge style={{cursor: 'pointer'}} className={(showLinux? "profileTopics": "profileEmptyTopics")} onClick={() => setShowLinux(!showLinux)}>Linux</Badge>
                 <Badge style={{cursor: 'pointer'}} className={(showWindows? "profileTopics": "profileEmptyTopics")} onClick={() => setShowWindows(!showWindows)}>Windows</Badge>
                 <Badge style={{cursor: 'pointer'}} className={(showMacOS? "profileTopics": "profileEmptyTopics")} onClick={() => setShowMacOS(!showMacOS)}>macOS</Badge>

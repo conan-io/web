@@ -42,6 +42,63 @@ export function ConanListFilter(props) {
     )
 }
 
+export function ConanSingleSelect(props) {
+  const options = props.options;
+  let defaultValues = []
+  if (props.defaultValue){
+    defaultValues = props.defaultValue;
+  }
+  const customStyles = {
+    option: (defaultStyles, state) => ({
+      ...defaultStyles,
+    }),
+
+    dropdownIndicator: (defaultStyles) => ({
+      ...defaultStyles,
+      color: "#21AFFF"
+    }),
+
+    control: (defaultStyles) => ({
+      ...defaultStyles,
+      borderColor: "#21AFFF",
+      borderRadius: "40px",
+      paddingLeft: "20px",
+      "&:hover": {
+        borderColor: "#21AFFF"
+      }
+    }),
+    multiValue: (defaultStyles, { data }) => {
+      return {
+        ...defaultStyles,
+        borderRadius: "0.25rem",
+        backgroundColor: "#EDF7FF",
+      };
+    },
+    multiValueLabel: (styles, { data }) => ({
+      ...styles,
+      color: data.color,
+    }),
+    multiValueRemove: (styles, { data }) => ({
+      ...styles,
+      color: "#21AFFF",
+      ':hover': {
+        backgroundColor: data.color,
+        color: 'white',
+      },
+    }),
+  };
+  return(
+    <div className="w-100">
+      <Select
+        styles={customStyles}
+        placeholder={props.title}
+        onChange={props.handleFilter}
+        defaultValue={defaultValues}
+        options={options} />
+    </div>
+  )
+}
+
 export function ConanMultiSelectFilter(props) {
   const options = props.filters.map(elem => {return {label: elem.filter, value: elem.id};});
   let defaultValues = []
