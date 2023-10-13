@@ -65,7 +65,7 @@ export default function Center(props) {
             <br/>
             <Row className="justify-content-md-center">
               {
-                props.data.popular.length > 0  && <Col xs lg="4">
+                props.data.popular.length > 0  && <Col xs="12" md="4" lg="4">
                   <CenterList
                     data={props.data.popular}
                     name="Popular recipes"
@@ -75,7 +75,7 @@ export default function Center(props) {
                   </Col>
               }
               {
-                props.data.updated.length > 0 && <Col xs lg="4">
+                props.data.updated.length > 0 && <Col xs="12" md="4" lg="4">
                   <CenterList
                     data={props.data.updated}
                     name="Just updated"
@@ -85,7 +85,7 @@ export default function Center(props) {
                 </Col>
               }
               {
-                props.data.new.length > 0 && <Col xs lg="4">
+                props.data.new.length > 0 && <Col xs="12" md="4" lg="4">
                   <CenterList
                    data={props.data.new}
                    name="New version"

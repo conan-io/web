@@ -299,7 +299,7 @@ export default function ConanSearch(props) {
                   </div>
                 </Form>
               </Col>
-              <Col xs="12" md="12" lg="2" className="mt-2">
+              <Col xs="10" md="10" lg="2" className="mt-2">
                 <ConanSingleSelect
                   title="Sort by"
                   defaultValue={{value: 'sortByName', label: 'by name'}}
@@ -307,7 +307,7 @@ export default function ConanSearch(props) {
                   handleFilter={handleSortFuction}
                 />
               </Col>
-              <Col xs={{span: 2, offset: 5}} md={{span: 2, offset: 5}} lg={{span: 1, offset: 0}} className="mt-2">
+              <Col xs="1" md="1" lg="1" className="mt-2">
                 {!showFilters && <BsFilterCircleFill
                   style={{verticalAlign: 'text-top', cursor: 'pointer'}}
                   className="conanIconBlue conanIcon34" onClick={() => setShowFilters(!showFilters)}
