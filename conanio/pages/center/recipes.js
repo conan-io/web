@@ -131,20 +131,19 @@ function PackageInfo(props) {
   return (
     <div className="m-2">
       <Row>
-        <Col xs lg="6"><Link href={{ pathname: "/center/recipes/" + props.data.name, query: { version: props.data.info.version } }}>
-          <a><h3>{props.data.name}</h3></a>
+        <Col xs="12" lg="auto"><Link href={{ pathname: "/center/recipes/" + props.data.name, query: { version: props.data.info.version } }}>
+          <a><h3>{props.data.name}/{props.data.info.version}</h3></a>
         </Link></Col>
-        <Col xs lg="6"><b>Latest version:</b> {props.data.info.version}</Col>
       </Row>
       <Row>
-      {licenses && licenses.length > 0 && <Col xs lg="auto"><LiaBalanceScaleSolid className="conanIconBlue"/> {licenses.join(", ")}</Col>}
-      {props.data.info.downloads > 0  && <Col xs lg="auto"><IoMdDownload className="conanIconBlue"/> {props.data.info.downloads.toLocaleString()}</Col>}
+      {licenses && licenses.length > 0 && <Col xs="12" lg="auto"><LiaBalanceScaleSolid className="conanIconBlue"/> {licenses.join(", ")}</Col>}
+      {props.data.info.downloads > 0  && <Col xs="12" lg="auto"><IoMdDownload className="conanIconBlue"/> {props.data.info.downloads.toLocaleString()}</Col>}
       </Row>
-      <Row><Col xs lg className="mt-2">{props.data.info.description || (<DefaultDescription name={props.data.name}/>)}</Col></Row>
+      <Row><Col xs="12" lg className="mt-2">{props.data.info.description || (<DefaultDescription name={props.data.name}/>)}</Col></Row>
       <Row>
-        <Col xs lg="6" className="mt-2">{labels.map((item) => (<Badge className="recipeTopics" key={item}>#{item}</Badge>))}</Col>
+        <Col xs="12" lg="6" className="mt-2">{labels.map((item) => (<Badge className="recipeTopics" key={item}>#{item}</Badge>))}</Col>
         {packages && packages.length > 0 && (
-        <Col xs lg="6" className="mt-2">{prettyProfiles(packages).map(i => i.badget)}</Col>)}
+        <Col xs="12" lg="6" className="mt-2">{prettyProfiles(packages).map(i => i.badget)}</Col>)}
       </Row>
     </div>
   )
