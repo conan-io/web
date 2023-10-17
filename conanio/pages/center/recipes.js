@@ -32,6 +32,7 @@ import {
   MdFilter8,
   MdFilter9,
   MdFilter9Plus,
+  MdOutlineToday
 } from "react-icons/md";
 
 import {get_json_list, get_urls, get_json_list_with_id} from '../../service/service';
@@ -128,18 +129,31 @@ function PackageInfo(props) {
   const licenses = Object.keys(props.data.info.licenses)
   const labels = Object.keys(props.data.info.labels)
   const packages = Object.values(props.data.info.packages).map((value) => value);
+  console.log(props)
   return (
     <div className="m-2">
       <Row>
-        <Col xs="12" lg="auto"><Link href={{ pathname: "/center/recipes/" + props.data.name, query: { version: props.data.info.version } }}>
-          <a><h3>{props.data.name}/{props.data.info.version}</h3></a>
-        </Link></Col>
+        <Col xs="12" lg="6" className="mt-2">
+          <Row>
+            <Col xs="12" lg="auto">
+              <Link href={{ pathname: "/center/recipes/" + props.data.name, query: { version: props.data.info.version } }}>
+                <a><h3>{props.data.name}/{props.data.info.version}</h3></a>
+              </Link>
+            </Col>
+          </Row>
+          <Row>
+            <Col xs="12" lg="auto">
+              {props.data.info.description || (<DefaultDescription name={props.data.name}/>)}
+            </Col>
+          </Row>
+        </Col>
+        <Col xs="12" lg="6">
+          <Row>{props.data.info.downloads > 0  && <Col xs="12" lg="auto"><IoMdDownload className="conanIconBlue"/> Daily average: {parseInt(props.data.info.downloads/props.data.info.age).toLocaleString()}</Col>}</Row>
+          <Row>{props.data.info.downloads > 0  && <Col xs="12" lg="auto"><IoMdDownload className="conanIconBlue"/> Last version: {props.data.info.downloads.toLocaleString()}</Col>}</Row>
+          <Row>{props.data.info.timestamp && <Col xs="12" lg="auto"><MdOutlineToday className="conanIconBlue"/> {props.data.info.timestamp}</Col>}</Row>
+          <Row>{licenses && licenses.length > 0 && <Col xs="12" lg="auto"><LiaBalanceScaleSolid className="conanIconBlue"/> {licenses.join(", ")}</Col>}</Row>
+        </Col>
       </Row>
-      <Row>
-      {licenses && licenses.length > 0 && <Col xs="12" lg="auto"><LiaBalanceScaleSolid className="conanIconBlue"/> {licenses.join(", ")}</Col>}
-      {props.data.info.downloads > 0  && <Col xs="12" lg="auto"><IoMdDownload className="conanIconBlue"/> {props.data.info.downloads.toLocaleString()}</Col>}
-      </Row>
-      <Row><Col xs="12" lg className="mt-2">{props.data.info.description || (<DefaultDescription name={props.data.name}/>)}</Col></Row>
       <Row>
         <Col xs="12" lg="6" className="mt-2">{labels.map((item) => (<Badge className="recipeTopics" key={item}>#{item}</Badge>))}</Col>
         {packages && packages.length > 0 && (
@@ -252,21 +266,28 @@ export default function ConanSearch(props) {
   const sortByName = (a, b) => {
     const nameA = a.name.toUpperCase(); // ignore upper and lowercase
     const nameB = b.name.toUpperCase(); // ignore upper and lowercase
-    if (nameA < nameB) {
-      return -1;
-    }
-    if (nameA > nameB) {
-      return 1;
-    }
+    if (nameA < nameB) {return -1;}
+    if (nameA > nameB) {return 1;}
   };
 
   const sortByDownloads = (a, b) => {
     return b.info.downloads - a.info.downloads
   };
 
+  const sortByDate = (a, b) => {
+    if (a.info.timestamp > b.info.timestamp) {return -1;}
+    if (a.info.timestamp < b.info.timestamp) {return 1;}
+  };
+
+  const sortByPopularity = (a, b) => {
+    return (b.info.downloads/b.info.age) - (a.info.downloads/a.info.age)
+  };
+
   const sortByData = (a, b) => {
     if (sortDataBy == "sortByName") return sortByName(a, b)
     if (sortDataBy == "sortByDownloads") return sortByDownloads(a, b)
+    if (sortDataBy == "sortByDate") return sortByDate(a, b)
+    if (sortDataBy == "sortByPopularity") return sortByPopularity(a, b)
     return 0
   };
 
@@ -302,7 +323,10 @@ export default function ConanSearch(props) {
                 <ConanSingleSelect
                   title="Sort by"
                   defaultValue={{value: 'sortByName', label: 'by name'}}
-                  options={[{value: 'sortByName', label: 'by name'},{value: 'sortByDownloads', label: 'by downloads'}]}
+                  options={[{value: 'sortByName', label: 'by name'},
+                            {value: 'sortByDownloads', label: 'by downloads'},
+                            {value: 'sortByDate', label: 'by date'},
+                            {value: 'sortByPopularity', label: 'by popularity'}]}
                   handleFilter={handleSortFuction}
                 />
               </Col>
