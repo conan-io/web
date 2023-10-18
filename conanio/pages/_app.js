@@ -1,5 +1,6 @@
 import React from "react";
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
+import Script from "next/script";
 
 import '../styles/bootstrap.min.css';
 import '../styles/style.css';
@@ -12,7 +13,7 @@ import 'slick-carousel/slick/slick-theme.css';
 
 import "highlight.js/styles/github.css";
 
-import Loader from '../components/loader'
+import Loader from '../components/loader';
 
 
 const MyApp = ({ Component, pageProps }) => {
@@ -37,6 +38,26 @@ const MyApp = ({ Component, pageProps }) => {
     }
   }, [router.events])
 
-  return <>{loading ? <Loader /> : <Component {...pageProps} />}</>
+  return (
+    <>
+      {/*https://www.mohammadfaisal.dev/blog/add-google-analytics-to-nextjs*/}
+      <Script
+        id="google-analytics-manager"
+        strategy="lazyOnload"
+        src="https://www.googletagmanager.com/gtag/js?id=GTM-WK44ZFM"
+      />
+      <Script id="google-analytics-script" strategy="lazyOnload">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'GTM-WK44ZFM', {
+          page_path: window.location.pathname,
+          });
+        `}
+      </Script>
+      {loading ? <Loader /> : <Component {...pageProps} />}
+    </>
+  )
 }
 export default MyApp
