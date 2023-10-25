@@ -33,14 +33,6 @@ function generateSiteMap(packages) {
         <loc>${URL}/why-conan</loc>
      </url>
      
-     
-     <url>
-        <loc>https://docs.conan.io</loc>
-     </url>
-     <url>
-        <loc>https://blog.conan.io</loc>
-     </url>
-     
      ${packages
         .map( (x) => {
             return `
