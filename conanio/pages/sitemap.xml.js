@@ -35,11 +35,14 @@ function generateSiteMap(packages) {
      
      ${packages
         .map( (x) => {
-            return `
-               <url>
-                   <loc>${`${URL}/center/recipes/${x.name}`}</loc>
-               </url>
-             `;
+            // Be super robust against malformed entries, just in case,
+            // as this file should always work
+            return x.hasOwnProperty("name") ? 
+                (`
+                   <url>
+                       <loc>${`${URL}/center/recipes/${x.name}`}</loc>
+                   </url>
+                `) : '';
         })
         .join('')}
    </urlset>
