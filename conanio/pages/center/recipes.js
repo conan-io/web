@@ -148,9 +148,7 @@ function PackageInfo(props) {
           </Row>
         </Col>
         <Col xs="12" lg="6">
-          <Row>{props.data.info.downloads > 0  && <Col xs="12" lg="auto"><IoMdDownload className="conanIconBlue"/> Daily average: {parseInt(props.data.info.downloads/props.data.info.age).toLocaleString()}</Col>}</Row>
-          <Row>{props.data.info.downloads > 0  && <Col xs="12" lg="auto"><IoMdDownload className="conanIconBlue"/> Last version: {props.data.info.downloads.toLocaleString()}</Col>}</Row>
-          <Row>{props.data.info.timestamp && <Col xs="12" lg="auto"><MdOutlineToday className="conanIconBlue"/> {props.data.info.timestamp}</Col>}</Row>
+          <Row className="mt-2">{props.data.info.timestamp && <Col xs="12" lg="auto"><MdOutlineToday className="conanIconBlue"/> {props.data.info.timestamp}</Col>}</Row>
           <Row>{licenses && licenses.length > 0 && <Col xs="12" lg="auto"><LiaBalanceScaleSolid className="conanIconBlue"/> {licenses.join(", ")}</Col>}</Row>
         </Col>
       </Row>
@@ -285,9 +283,7 @@ export default function ConanSearch(props) {
 
   const sortByData = (a, b) => {
     if (sortDataBy == "sortByName") return sortByName(a, b)
-    if (sortDataBy == "sortByDownloads") return sortByDownloads(a, b)
     if (sortDataBy == "sortByDate") return sortByDate(a, b)
-    if (sortDataBy == "sortByPopularity") return sortByPopularity(a, b)
     return 0
   };
 
@@ -324,9 +320,7 @@ export default function ConanSearch(props) {
                   title="Sort by"
                   defaultValue={{value: 'sortByName', label: 'by name'}}
                   options={[{value: 'sortByName', label: 'by name'},
-                            {value: 'sortByDownloads', label: 'by downloads'},
-                            {value: 'sortByDate', label: 'by date'},
-                            {value: 'sortByPopularity', label: 'by popularity'}]}
+                            {value: 'sortByDate', label: 'by date'}]}
                   handleFilter={handleSortFuction}
                 />
               </Col>

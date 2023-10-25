@@ -135,15 +135,6 @@ export default function ConanPackage(props) {
           </Col>
         </Row>)}
 
-        {recipeDescription && (<Row>
-          <Col xs lg>
-            <Tooltip style={{ zIndex: 99 }} id="package-info"/>
-            <a data-tooltip-id='package-info' data-tooltip-html="Total downloads (current version downloads)" data-tooltip-place="top">
-              <IoMdDownload className="conanIconBlue  " style={{verticalAlign: "middle"}}/>
-            </a> {Object.values(props.data).map( (e) => e.info.downloads ).reduce((a, b) => a + b, 0).toLocaleString()} ({recipeTotalDownloads.toLocaleString()})
-          </Col>
-        </Row>)}
-
         {(recipeDescription && <Row>
           <Col xs lg>
           <Tooltip style={{ zIndex: 99 }} id="package-info"/>
@@ -236,12 +227,6 @@ export default function ConanPackage(props) {
           value="badges"
           onClick={(e) => setSelectedTab(e.currentTarget.value)}
         ><PiMedal className="conanIcon18 mr-1"/> Badges</Button>
-        <Button
-          id="stats"
-          className={props.buttonClass + " " + ((selectedTab == 'stats') && "tabButtonActive")}
-          value="stats"
-          onClick={(e) => setSelectedTab(e.currentTarget.value)}
-        ><AiOutlineBarChart className="conanIcon18 mr-1"/> Stats</Button>
       </>
     )
   }
