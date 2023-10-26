@@ -56,7 +56,7 @@ export function ConanHeader(props) {
         src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js"
         type="text/javascript"
         charset="UTF-8"
-        data-domain-script="3aff98af-1ffa-49e8-a9f1-6024b60d0d7b">
+        data-domain-script="c09ecb7b-4483-4682-bf75-d47825308d51">
       </Script>
       <Script id="ot-callback" type="text/javascript">{`function OptanonWrapper() {}`}</Script>
       <div className="container">
