@@ -129,7 +129,6 @@ function PackageInfo(props) {
   const licenses = Object.keys(props.data.info.licenses)
   const labels = Object.keys(props.data.info.labels)
   const packages = Object.values(props.data.info.packages).map((value) => value);
-  console.log(props)
   return (
     <div className="m-2">
       <Row>
@@ -178,6 +177,7 @@ export default function ConanSearch(props) {
   const [topics, setTopics] = useState(props.data.defaultTopics);
   const [licenses, setLicenses] = useState(props.data.defaultLicenses);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [data, setData] = useState(props.data.packages);
   const [timer, setTimer] = useState(null);
   const [showFilters, setShowFilters] = useState(props.data.defaultTopics.length > 0);
@@ -185,7 +185,7 @@ export default function ConanSearch(props) {
   const [showMacOS, setShowMacOS] = useState(true);
   const [showMacOSSilicon, setShowMacOSSilicon] = useState(true);
   const [showLinux, setShowLinux] = useState(true);
-  const [sortDataBy, setSortDataBy] = useState('sortByName');
+  const [sortDataBy, setSortDataBy] = useState('sortByBestMatch');
 
   const getData = async (value, topiclist, licenseList) => {
     setLoading(true);
@@ -194,9 +194,9 @@ export default function ConanSearch(props) {
       let urls = get_urls({search: value, topics: topiclist, licenses: licenseList})
       const packages = await get_json_list(urls.search.package, urls.api.public);
       // bring the exact match to the front
-      if (packages && packages.length > 0 && value !== 'all') {
+      /*if (packages && packages.length > 0 && value !== 'all') {
         packages.sort((a, b) => levenshteinDistance(a.name, value) - levenshteinDistance(b.name, value))
-      }
+      }*/
       setData(packages);
     } catch(err) {
       setError(err.message);
@@ -264,8 +264,8 @@ export default function ConanSearch(props) {
   const sortByName = (a, b) => {
     const nameA = a.name.toUpperCase(); // ignore upper and lowercase
     const nameB = b.name.toUpperCase(); // ignore upper and lowercase
-    if (nameA < nameB) {return -1;}
-    if (nameA > nameB) {return 1;}
+    if (nameA < nameB) return -1;
+    if (nameA > nameB) return 1;
   };
 
   const sortByDownloads = (a, b) => {
@@ -273,19 +273,68 @@ export default function ConanSearch(props) {
   };
 
   const sortByDate = (a, b) => {
-    if (a.info.timestamp > b.info.timestamp) {return -1;}
-    if (a.info.timestamp < b.info.timestamp) {return 1;}
+    if (a.info.timestamp > b.info.timestamp) return -1;
+    if (a.info.timestamp < b.info.timestamp) return 1;
   };
 
   const sortByPopularity = (a, b) => {
     return (b.info.downloads/b.info.age) - (a.info.downloads/a.info.age)
   };
 
+  const sortByBestMatch = (a, b) => {
+    const matchScore = (elem) => {
+      let score = 0;
+      const tokens = value.split(' ');
+      if (elem.name.toLowerCase() == value.toLowerCase()) score += 9000
+      for (const token of tokens) {
+        if (elem.name.toLowerCase() == token.toLowerCase()) score += 8000;
+        if (elem.name.toLowerCase().includes(token.toLowerCase())) score += 1000;
+        if (elem.info.description && elem.info.description.toLowerCase().includes(token.toLowerCase())) score += 1000;
+        if (token.startsWith('#')) {
+            const topic_token = token.replace('#', '');
+            Object.keys(elem.info.labels).forEach((item) => {if (item.toLowerCase().includes(token.toLowerCase())) score += 1000;});
+        } else {
+          Object.keys(elem.info.labels).forEach((item) => {if (item == token || item.toLowerCase().includes(token.toLowerCase())) score += 3000;});
+        };
+      }
+      return score
+    }
+    if (matchScore(a) == matchScore(b)) return sortByName(a, b);
+    if(matchScore(a) > matchScore(b)) return -1;
+    if(matchScore(a) < matchScore(b)) return 1;
+  };
+
   const sortByData = (a, b) => {
     if (sortDataBy == "sortByName") return sortByName(a, b)
     if (sortDataBy == "sortByDate") return sortByDate(a, b)
+    if (sortDataBy == "sortByBestMatch") {
+      if (value) return sortByBestMatch(a, b);
+      else return sortByName(a, b);
+    }
     return 0
   };
+
+  /*if(error){
+    return (
+      <React.StrictMode>
+        <SSRProvider>
+        <div className="flex-wrapper bg-conan-blue">
+          <ConanCenterHeader titlePrefix={"Search Result"}/>
+            <br/>
+            <Container className="conancontainer">
+              <Row className="justify-content-md-center">
+              <Alert variant="warning">
+                 Something went wrong
+               </Alert>
+              </Row>
+            </Container>
+            <br/>
+          <ConanFooter/>
+        </div>
+        </SSRProvider>
+      </React.StrictMode>
+    )
+  }*/
 
   const filteredData = data.filter((info) => extraFilters(info)).sort(sortByData);
 
@@ -299,12 +348,11 @@ export default function ConanSearch(props) {
     return  (<Tag className="conanIconBlue" style={style}/>)
     return null;
   }
-
   return (
     <React.StrictMode>
       <SSRProvider>
       <div className="flex-wrapper bg-conan-blue">
-        <ConanCenterHeader titlePrefix={value? "Search Result for '" + value + "'": "Search Result"}/>
+        <ConanCenterHeader titlePrefix={"Search Result"}/>
           <br/>
           <Container className="conancontainer">
             <Row className="justify-content-md-center">
@@ -318,8 +366,9 @@ export default function ConanSearch(props) {
               <Col xs="10" md="10" lg="2" className="mt-2">
                 <ConanSingleSelect
                   title="Sort by"
-                  defaultValue={{value: 'sortByName', label: 'by name'}}
-                  options={[{value: 'sortByName', label: 'by name'},
+                  defaultValue={{value: 'sortByBestMatch', label: 'by best match'}}
+                  options={[{value: 'sortByBestMatch', label: 'by best match'},
+                            {value: 'sortByName', label: 'by name'},
                             {value: 'sortByDate', label: 'by date'}]}
                   handleFilter={handleSortFuction}
                 />
