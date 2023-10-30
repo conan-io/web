@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import Script from 'next/script';
+import { useRouter } from "next/router";
 
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -8,8 +9,10 @@ import { LuPackageSearch } from "react-icons/lu";
 
 
 function ConanHead(props) {
+  const router = useRouter();
   const defaultTitle = "Conan 2.0: C and C++ Open Source Package Manager";
   const title = props.titlePrefix? props.titlePrefix + " - " + defaultTitle: defaultTitle;
+  const canonicalUrl = (`https://conan.io` + (router.asPath === "/" ? "": router.asPath)).split("?")[0];
   return (
     <Head>
       <meta charset="UTF-8"/>
@@ -19,10 +22,11 @@ function ConanHead(props) {
         name="description"
         content="Conan is an open source, decentralized and multi-platform package manager for C and C++ that allows you to create and share all your native binaries."
       />
+      <meta name="google-site-verification" content="v3n-2fbFdumhO916PmSTXMRwVAeXMeBiZ_SK_M6vjgs"/>
       <link rel="shortcut icon" type="image/png" href="/favicon.png"/>
       <link rel="alternate" href="https://conan.io" hrefLang="en"/>
       <title>{title}</title>
-      <link rel="canonical" href="https://conan.io"/>
+      <link rel="canonical" href={canonicalUrl} />
     </Head>
   );
 }
@@ -46,7 +50,7 @@ function BetaBanner() {
 export function ConanHeader(props) {
   return (
     <header id="masthead" className={props.background}>
-      <Script
+      {/*<Script
         id="cdn-cookielaw-org-consent"
         type="text/javascript"
         src="https://cdn.cookielaw.org/consent/3aff98af-1ffa-49e8-a9f1-6024b60d0d7b/OtAutoBlock.js">
@@ -58,7 +62,7 @@ export function ConanHeader(props) {
         charset="UTF-8"
         data-domain-script="c09ecb7b-4483-4682-bf75-d47825308d51">
       </Script>
-      <Script id="ot-callback" type="text/javascript">{`function OptanonWrapper() {}`}</Script>
+      <Script id="ot-callback" type="text/javascript">{`function OptanonWrapper() {}`}</Script>*/}
       <div className="container">
         <div className="row d-flex justify-content-between">
           <Link href="/"><a className="col-6 col-lg-4 d-block"><img alt="Conan C++ Package Manager" className="header-logo" style={{maxHeight: "83px"}} src="/conan-logo.png"></img></a></Link>

@@ -19,7 +19,7 @@ import Loader from '../components/loader';
 const MyApp = ({ Component, pageProps }) => {
   const router = useRouter()
   const [loading, setLoading] = React.useState(false)
-
+  const GTM_ID = 'GTM-WK44ZFM'
   React.useEffect(() => {
     const handleRouteChange = (url) => {
       setLoading(true)
@@ -40,20 +40,13 @@ const MyApp = ({ Component, pageProps }) => {
 
   return (
     <>
-      {/*https://www.mohammadfaisal.dev/blog/add-google-analytics-to-nextjs*/}
-      <Script
-        id="google-analytics-manager"
-        strategy="lazyOnload"
-        src="https://www.googletagmanager.com/gtag/js?id=GTM-WK44ZFM"
-      />
-      <Script id="google-analytics-script" strategy="lazyOnload">
+      <Script id="google-tag-manager" strategy="afterInteractive">
         {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'GTM-WK44ZFM', {
-          page_path: window.location.pathname,
-          });
+          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','${GTM_ID}');
         `}
       </Script>
       {loading ? <Loader /> : <Component {...pageProps} />}
