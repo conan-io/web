@@ -16,18 +16,13 @@ import "highlight.js/styles/github.css";
 import Loader from '../components/loader';
 
 
-const MyApp = ({ Component, pageProps }) => {
+export default function  MyApp({ Component, pageProps }){
   const router = useRouter()
   const [loading, setLoading] = React.useState(false)
   const GTM_ID = 'GTM-WK44ZFM'
   React.useEffect(() => {
-    const handleRouteChange = (url) => {
-      setLoading(true)
-    }
-
-    const handleRouteChangeComplete = () => {
-      setLoading(false)
-    }
+    const handleRouteChange = (url) => {setLoading(true)}
+    const handleRouteChangeComplete = () => {setLoading(false)}
 
     router.events.on('routeChangeStart', handleRouteChange)
     router.events.on('routeChangeComplete', handleRouteChangeComplete)
@@ -52,5 +47,4 @@ const MyApp = ({ Component, pageProps }) => {
       {loading ? <Loader /> : <Component {...pageProps} />}
     </>
   )
-}
-export default MyApp
+};

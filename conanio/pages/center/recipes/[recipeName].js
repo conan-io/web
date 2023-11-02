@@ -19,10 +19,10 @@ import { truncate,
          truncateAdnCopy,
          sanitizeURL,
          ClipboardCopy,
-         prettyProfiles } from '../../../components/utils';
+         prettyProfiles,
+         DefaultDescription } from '../../../components/utils';
 import ConanFooter from '../../../components/footer';
 import { get_json, get_urls } from '../../../service/service';
-import { DefaultDescription } from '../recipes';
 import { LiaBalanceScaleSolid, LiaGithub } from "react-icons/lia";
 import { IoMdHome, IoMdDownload } from "react-icons/io";
 import hljs from "highlight.js";
@@ -287,10 +287,10 @@ export default function ConanPackage(props) {
       {
         pathname: '/center/recipes',
         query: {
-          defaultValue: '',
-          defaultTopics: topic}
+          value: '',
+          topics: topic}
       },
-      '/center/recipes'
+      undefined
     );
   }
 

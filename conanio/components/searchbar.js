@@ -195,9 +195,9 @@ export function BasicSearchBar(props) {
     router.push(
       {
         pathname: '/center/recipes',
-        query: { defaultValue: value }
+        query: { value: value }
       },
-      '/center/recipes'
+      undefined
     );
   }
 

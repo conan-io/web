@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { SSRProvider } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -7,22 +8,21 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Badge from 'react-bootstrap/Badge';
 import InputGroup from 'react-bootstrap/InputGroup';
-import {
-  ConanSearchBar,
-  ConanMultiSelectFilter,
-  ConanSingleSelect
-} from "../../components/searchbar";
+import { ConanSearchBar,
+         ConanMultiSelectFilter,
+         ConanSingleSelect } from "../../components/searchbar";
 import ListGroup from 'react-bootstrap/ListGroup';
 import Alert from 'react-bootstrap/Alert';
 import Link from 'next/link';
 import { ConanCenterHeader } from '../../components/header';
 import ConanFooter from '../../components/footer';
-import { prettyProfiles } from '../../components/utils';
+import { prettyProfiles,
+         levenshteinDistance,
+         DefaultDescription } from '../../components/utils';
 import { LiaBalanceScaleSolid, LiaGithub } from "react-icons/lia";
 import { IoMdDownload } from "react-icons/io";
 import { BsFilterCircleFill, BsFilterCircle } from "react-icons/bs";
-import {
-  MdFilter1,
+import { MdFilter1,
   MdFilter2,
   MdFilter3,
   MdFilter4,
@@ -32,96 +32,45 @@ import {
   MdFilter8,
   MdFilter9,
   MdFilter9Plus,
-  MdOutlineToday
-} from "react-icons/md";
+  MdOutlineToday } from "react-icons/md";
 
 import {get_json_list, get_urls, get_json_list_with_id} from '../../service/service';
 
 
 export async function getServerSideProps(context) {
-  let { defaultValue, defaultTopics, defaultLicenses } = context.query;
+  let { value, topics, licenses } = context.query;
 
-  let value = defaultValue || 'all';
-  defaultTopics = defaultTopics || [];
-  if (typeof defaultTopics === "string"){
-    defaultTopics = [defaultTopics]
+  let initialValue = value || 'all';
+  topics = topics || [];
+  if (typeof topics === "string"){
+    topics = [topics]
   }
-  defaultTopics = defaultTopics.map(e => parseInt(e))
-  defaultLicenses = defaultLicenses || [];
-  if (typeof defaultLicenses === "string"){
-    defaultLicenses = [defaultLicenses]
+  topics = topics.map(e => parseInt(e))
+  licenses = licenses || [];
+  if (typeof licenses === "string"){
+    licenses = [licenses]
   }
-  defaultValue = defaultValue || '';
-  let urls = get_urls({search: value, topics: defaultTopics})
+  licenses = licenses.map(e => parseInt(e))
+  value = value || '';
+  let urls = get_urls({search: initialValue, topics: topics})
   const topics_list = await get_json_list_with_id(urls.topics, urls.api.private);
   const licenses_list = await get_json_list_with_id(urls.licenses, urls.api.private);
   const packages = await get_json_list(urls.search.package, urls.api.private);
-  if (packages && packages.length > 0 && value !== 'all') {
-    packages.sort((a, b) => levenshteinDistance(a.name, value) - levenshteinDistance(b.name, value))
+  if (packages && packages.length > 0 && initialValue !== 'all') {
+    packages.sort((a, b) => levenshteinDistance(a.name, initialValue) - levenshteinDistance(b.name, initialValue))
   }
   return {
     props: {
       data: {
         licenses: licenses_list.map(elem => {return {filter: elem.value.filter, id: elem.value.id};}),
         topics: topics_list.map(elem => {return {filter: elem.value.filter, id: elem.value.id};}),
-        defaultValue: defaultValue,
-        defaultTopics: defaultTopics,
-        defaultLicenses: defaultLicenses,
+        defaultValue: value,
+        defaultTopics: topics,
+        defaultLicenses: licenses,
         packages: packages,
       },
     },
   }
-}
-
-// This comes from the wikipedia's pseudocode, I couldn't be bothered to do some dynamic programming of my own,
-// comments left to make it easier to double-check the transpilation
-function levenshteinDistance(s, t) {
-  const m = s.length;
-  const n = t.length;
-
-  // Create two work arrays of integer distances
-  const v0 = new Array(n + 1);
-  const v1 = new Array(n + 1);
-
-  // Initialize v0 (the previous row of distances)
-  for (let i = 0; i <= n; i++) {
-    v0[i] = i;
-  }
-
-  for (let i = 0; i < m; i++) {
-    // Calculate v1 (current row distances) from the previous row v0
-
-    // First element of v1 is A[i + 1][0]
-    v1[0] = i + 1;
-
-    // Use formula to fill in the rest of the row
-    for (let j = 0; j < n; j++) {
-      // Calculating costs for A[i + 1][j + 1]
-      const deletionCost = v0[j + 1] + 1;
-      const insertionCost = v1[j] + 1;
-      const substitutionCost = (s[i] === t[j]) ? v0[j] : v0[j] + 1;
-
-      v1[j + 1] = Math.min(deletionCost, insertionCost, substitutionCost);
-    }
-
-    // Copy v1 (current row) to v0 (previous row) for the next iteration
-    for (let j = 0; j <= n; j++) {
-      v0[j] = v1[j];
-    }
-  }
-  // After the last iteration, the results of v1 are now in v0
-  return v0[n];
-}
-
-export function DefaultDescription (props) {
-  return (
-    (<Alert className="text-center" variant="secondary">
-      It has not been possible to load this information.
-      Please, check if <Link href={"https://github.com/conan-io/conan-center-index/tree/master/recipes/" + props.name}>
-        <a>this recipe version</a>
-      </Link> is compatible with Conan v2.x.
-    </Alert>)
-  )
 }
 
 
@@ -187,16 +136,24 @@ export default function ConanSearch(props) {
   const [showLinux, setShowLinux] = useState(true);
   const [sortDataBy, setSortDataBy] = useState('sortByBestMatch');
 
+  let router = useRouter();
+
   const getData = async (value, topiclist, licenseList) => {
     setLoading(true);
+    // router.push(
+    //   {
+    //     pathname: '/center/recipes',
+    //     query: {
+    //       value: value,
+    //       topics: topiclist,
+    //       licenses: licenseList}
+    //   },
+    //   undefined
+    // );
     try {
       value = value || 'all';
       let urls = get_urls({search: value, topics: topiclist, licenses: licenseList})
       const packages = await get_json_list(urls.search.package, urls.api.public);
-      // bring the exact match to the front
-      /*if (packages && packages.length > 0 && value !== 'all') {
-        packages.sort((a, b) => levenshteinDistance(a.name, value) - levenshteinDistance(b.name, value))
-      }*/
       setData(packages);
     } catch(err) {
       setError(err.message);
@@ -313,28 +270,6 @@ export default function ConanSearch(props) {
     }
     return 0
   };
-
-  /*if(error){
-    return (
-      <React.StrictMode>
-        <SSRProvider>
-        <div className="flex-wrapper bg-conan-blue">
-          <ConanCenterHeader titlePrefix={"Search Result"}/>
-            <br/>
-            <Container className="conancontainer">
-              <Row className="justify-content-md-center">
-              <Alert variant="warning">
-                 Something went wrong
-               </Alert>
-              </Row>
-            </Container>
-            <br/>
-          <ConanFooter/>
-        </div>
-        </SSRProvider>
-      </React.StrictMode>
-    )
-  }*/
 
   const filteredData = data.filter((info) => extraFilters(info)).sort(sortByData);
 
