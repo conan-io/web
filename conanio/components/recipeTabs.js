@@ -69,7 +69,7 @@ function ClipboardCopy({ copyText }) {
 
 
 function BadgesTab({recipeName}) {
-  const mdMessage = `![Conan Center](https://img.shields.io/conan/v/${recipeName})`;
+  const mdMessage = `[![Conan Center](https://img.shields.io/conan/v/${recipeName})](https://conan.io/center/recipes/${recipeName})`;
   const resMessage = `.. image:: https://img.shields.io/conan/v/${recipeName}   :alt: Conan Center`;
   const asciiMessage = `image:https://img.shields.io/conan/v/${recipeName} [Conan Center]`;
   const htmlMessage = `<img alt="Conan Center" src="https://img.shields.io/conan/v/${recipeName}">`;
