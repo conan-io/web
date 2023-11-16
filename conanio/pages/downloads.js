@@ -6,6 +6,30 @@ import { Tooltip } from 'react-tooltip';
 import Link from 'next/link';
 import { BiInfoCircle } from "react-icons/bi";
 
+
+function gtmConanPush(eventType, product, platforms, purpose, description){
+  dataLayer.push({
+    'event': 'fireEvent',
+    'event_name': 'element_click',
+    'type': eventType,
+    'product': product,
+    'platforms': platforms,
+    'purpose': purpose,
+    'description': description
+  });
+}
+
+
+function gtmConanPushDownload(product, platforms, purpose, description){
+  gtmConanPush('download', product, platforms, 'get ' + product, description);
+}
+
+
+function gtmConanPushCopy(product, platforms, purpose, description){
+  gtmConanPush('copy', product, platforms, 'get ' + product, description);
+}
+
+
 function CopyToClipboard(props) {
   return (
     <div className="package-wrapper d-flex flex-no-wrap">
@@ -13,7 +37,10 @@ function CopyToClipboard(props) {
       <div className="cn-box cn-main copy-text">{props.textToShow}</div>
       <a
         className="cn-box cn-action cn-copy"
-        onClick={() => {navigator.clipboard.writeText(props.textToCopy)}}
+        onClick={() => {
+          gtmConanPushCopy(props.gtmProduct, props.gtmPlatforms, props.gtmCopyDescription);
+          navigator.clipboard.writeText(props.textToCopy);
+        }}
         data-tooltip-id="copy-to-clipboard"
         data-tooltip-content="Copy to clipboard"
         data-tooltip-place="top"
@@ -22,23 +49,29 @@ function CopyToClipboard(props) {
   )
 }
 
+
 function DownloadInstallerOrCopy(props) {
   return (
     <div className="package-wrapper d-flex flex-no-wrap">
       <div className="cn-box small"><img alt={props.imageAlt} className="lazy" src={props.imageSrc}></img></div>
       <div className="cn-box cn-main">{props.textToShow}</div>
-      <Link href={props.installerLink}>
-        <a
-          className="cn-box cn-action cn-download"
-          data-tooltip-id="download"
-          data-tooltip-content="Download"
-          data-tooltip-place="top"
-        ></a>
-      </Link>
+      <div onClick={() => {gtmConanPushDownload(props.gtmProduct, props.gtmPlatforms, props.gtmDownloadDescription)}}>
+        <Link href={props.installerLink}>
+          <a
+            className="cn-box cn-action cn-download"
+            data-tooltip-id="download"
+            data-tooltip-content="Download"
+            data-tooltip-place="top"
+          ></a>
+        </Link>
+      </div>
       <a
         className="cn-box cn-action cn-copy"
         style={{'margin': '0px 36px 0px 8px'}}
-        onClick={() => {navigator.clipboard.writeText(props.textToCopy)}}
+        onClick={() => {
+          gtmConanPushCopy(props.gtmProduct, props.gtmPlatforms, props.gtmCopyDescription);
+          navigator.clipboard.writeText(props.textToCopy);
+        }}
         data-tooltip-id="copy-to-clipboard"
         data-tooltip-content={props.textTooltip}
         data-tooltip-place="top"
@@ -52,20 +85,24 @@ function DownloadInstaller(props) {
     <div className="package-wrapper d-flex flex-no-wrap">
       <div className="cn-box small"><img alt={props.imageAlt} className="lazy" src={props.imageSrc}></img></div>
       <div className="cn-box cn-main">{props.textToShow}</div>
-      <Link href={props.installerLink}>
-        <a
-          className="cn-box cn-action cn-download"
-          data-tooltip-id="download"
-          data-tooltip-content="Download"
-          data-tooltip-place="top"
-        ></a>
-      </Link>
+      <div onClick={() => {gtmConanPushDownload(props.gtmProduct, props.gtmPlatforms, props.gtmDownloadDescription)}}>
+        <Link href={props.installerLink}>
+          <a
+            className="cn-box cn-action cn-download"
+            data-tooltip-id="download"
+            data-tooltip-content="Download"
+            data-tooltip-place="top"
+          ></a>
+        </Link>
+      </div>
     </div>
   )
 }
 
 function DownloadConanPackageManager() {
+
   const conanReleaseVersion = process.env.NEXT_PUBLIC_CONAN_VERSION
+  const gtmProduct = "conan"
   return (
     <div className="col-lg-6 blue-downloads colored-downloads">
       <div className="downloads-item-wrapper">
@@ -90,6 +127,9 @@ function DownloadConanPackageManager() {
                 imageSrc="/downloads/python-small-pack.svg"
                 textToShow="$ pip install conan"
                 textToCopy="pip install conan"
+                gtmProduct={gtmProduct}
+                gtmPlatforms="python"
+                gtmCopyDescription="pip install conan"
               />
             </div>
             <p>Other Installers:</p>
@@ -99,44 +139,61 @@ function DownloadConanPackageManager() {
                 imageSrc="/downloads/darwin-small-pack.svg"
                 textToShow="$ brew install conan"
                 textToCopy="brew install conan"
+                gtmProduct={gtmProduct}
+                gtmPlatforms="apple"
+                gtmCopyDescription="brew install conan"
               />
               <DownloadInstaller
                 imageAlt="Debian"
                 imageSrc="/downloads/debian-small-pack.svg"
                 textToShow="Ubuntu / Debian X64 Installer"
                 installerLink={"https://github.com/conan-io/conan/releases/download/"+ conanReleaseVersion +"/conan-ubuntu-64.deb"}
+                gtmProduct="conan"
+                gtmPlatforms="debian"
+                gtmDownloadDescription="Ubuntu / Debian X64 Installer"
               />
               <DownloadInstaller
                 imageAlt="Windows"
                 imageSrc="/downloads/windows-small-pack.svg"
                 textToShow="Download x86_64 Installer"
                 installerLink={"https://github.com/conan-io/conan/releases/download/"+ conanReleaseVersion +"/conan-win-64.exe"}
+                gtmProduct="conan"
+                gtmPlatforms="windows"
+                gtmDownloadDescription="Download x86_64 Installer"
               />
               <DownloadInstaller
                 imageAlt="Windows"
                 imageSrc="/downloads/windows-small-pack.svg"
                 textToShow="Download x86 Installer"
                 installerLink={"https://github.com/conan-io/conan/releases/download/"+ conanReleaseVersion +"/conan-win-32.exe"}
+                gtmProduct={gtmProduct}
+                gtmPlatforms="windows"
+                gtmDownloadDescription="Download x86 Installer"
               />
               <CopyToClipboard
                 imageAlt="Arch Linux"
                 imageSrc="/downloads/archlinux-small-pack.svg"
                 textToShow="$ yay -S conan"
                 textToCopy=" yay -S conan"
+                gtmProduct={gtmProduct}
+                gtmPlatforms="arch"
+                gtmCopyDescription="yay -S conan"
               />
               <div className="package-wrapper d-flex flex-no-wrap">
                 <div className="cn-box small"><img alt="Github" className="lazy" src="/downloads/github-small-pack.svg"></img></div>
                 <div className="cn-box cn-main">Any OS:From Source</div>
-                <Link href="https://github.com/conan-io/conan">
-                  <a
-                    className="cn-box cn-action cn-link"
-                    href="https://github.com/conan-io/conan"
-                    rel="nofollow"
-                    data-tooltip-id="go-to-conan-github"
-                    data-tooltip-content="Go to conan github repositoy"
-                    data-tooltip-place="top"
-                  ></a>
-                </Link>
+                <div onClick={() => {gtmConanPush(link, conan, 'any os from source', 'get conan', 'yay -S conan');}}>
+                  <Link href="https://github.com/conan-io/conan">
+                    <a
+                      className="cn-box cn-action cn-link"
+                      href="https://github.com/conan-io/conan"
+                      rel="nofollow"
+                      data-tooltip-id="go-to-conan-github"
+                      data-tooltip-content="Go to conan github repositoy"
+                      data-tooltip-place="top"
+                    ></a>
+                  </Link>
+                </div>
               </div>
             </div>
               <p>
@@ -153,6 +210,9 @@ function DownloadConanPackageManager() {
                 imageSrc="/downloads/darwin-small-pack.svg"
                 textToShow="wget and tar -xvf conan executable"
                 textToCopy={'wget https://github.com/conan-io/conan/releases/download/'+ conanReleaseVersion +'/conan-macos-arm64.tar.gz\ntar -xvf conan-macos-arm64.tar.gz'}
+                gtmProduct={gtmProduct}
+                gtmPlatforms="apple"
+                gtmCopyDescription="wget and tar -xvf conan executable"
               />
               <DownloadInstallerOrCopy
                 imageAlt="Windows"
@@ -161,20 +221,31 @@ function DownloadConanPackageManager() {
                 installerLink={"https://github.com/conan-io/conan/releases/download/"+ conanReleaseVersion +"/conan-win-64.zip"}
                 textTooltip="Copy powershell command"
                 textToCopy={'Invoke-WebRequest -Uri "https://github.com/conan-io/conan/releases/download/'+ conanReleaseVersion +'/conan-win-64.zip" -OutFile conan-win-64.zip\nExpand-Archive .\\conan-win-64.zip -DestinationPath .'}
+                gtmProduct={gtmProduct}
+                gtmPlatforms="windows"
+                gtmDownloadDescription="Download x64 Conan Bundle"
+                gtmCopyDescription="Copy powershell command"
               />
               <DownloadInstallerOrCopy
                 imageAlt="Windows"
                 imageSrc="/downloads/windows-small-pack.svg"
-                textToShow="Download x86 Conan Bundle"
+                textToShow="Download x86_64 Conan Bundle"
                 installerLink={"https://github.com/conan-io/conan/releases/download/"+ conanReleaseVersion +"/conan-win-32.zip"}
                 textTooltip="Copy powershell command"
                 textToCopy={'Invoke-WebRequest -Uri "https://github.com/conan-io/conan/releases/download/'+ conanReleaseVersion +'/conan-win-32.zip" -OutFile conan-win-32.zip\nExpand-Archive .\\conan-win-32.zip -DestinationPath .'}
+                gtmProduct={gtmProduct}
+                gtmPlatforms="windows"
+                gtmDownloadDescription="Download x86_64 Conan Bundle"
+                gtmCopyDescription="Copy powershell command"
               />
               <CopyToClipboard
                 imageAlt="Linux"
                 imageSrc="/downloads/linux-small-pack.svg"
                 textToShow="wget and tar -xvf conan executable"
                 textToCopy={'wget https://github.com/conan-io/conan/releases/download/'+ conanReleaseVersion +'/conan-linux-64.tar.gz\ntar -xvf conan-linux-64.tar.gz'}
+                gtmProduct={gtmProduct}
+                gtmPlatforms="linux"
+                gtmCopyDescription="wget and tar -xvf conan executable"
               />
             </div>
             <div className="left-downloads-spacer"></div>
@@ -194,6 +265,7 @@ function DownloadConanPackageManager() {
 
 function DownloadJFrogArtifactoryCommunityEditionForCpp() {
   const artifactoryReleaseVersion = "7.63.12"
+  const gtmProduct = "artifactory"
   return (
     <div className="col-lg-6 mt-3 mt-lg-0 green-downloads colored-downloads">
       <div className="downloads-item-wrapper">
@@ -216,6 +288,9 @@ function DownloadJFrogArtifactoryCommunityEditionForCpp() {
                 imageSrc="/downloads/jfrog-artifactory-small-pack.png"
                 textToShow="Download tar.gz"
                 installerLink={"https://releases.jfrog.io/artifactory/bintray-artifactory/org/artifactory/cpp/ce/jfrog-artifactory-cpp-ce/"+ artifactoryReleaseVersion +"/jfrog-artifactory-cpp-ce-"+ artifactoryReleaseVersion +"-linux.tar.gz"}
+                gtmProduct={gtmProduct}
+                gtmPlatforms="any os from source"
+                gtmDownloadDescription="Download tar.gz"
               />
             </div>
             <p>Other Installers:</p>
@@ -225,6 +300,9 @@ function DownloadJFrogArtifactoryCommunityEditionForCpp() {
                 imageSrc="/downloads/linux-small-pack.svg"
                 textToShow="Linux Installer"
                 installerLink={"https://releases.jfrog.io/artifactory/bintray-artifactory/org/artifactory/cpp/ce/jfrog-artifactory-cpp-ce/"+ artifactoryReleaseVersion +"/jfrog-artifactory-cpp-ce-"+ artifactoryReleaseVersion +"-linux.tar.gz"}
+                gtmProduct={gtmProduct}
+                gtmPlatforms="linux"
+                gtmDownloadDescription="Linux Installer"
               />
 
               <DownloadInstallerOrCopy
@@ -234,6 +312,10 @@ function DownloadJFrogArtifactoryCommunityEditionForCpp() {
                 installerLink={"https://releases.jfrog.io/artifactory/artifactory-rpms/jfrog-artifactory-cpp-ce/jfrog-artifactory-cpp-ce-"+ artifactoryReleaseVersion +".rpm"}
                 textTooltip="Copy install command"
                 textToCopy={'#Add artifactory.repo file to your yum repository listsudo vi /etc/yum.repos.d/artifactory.repo\n#Add the following content[Artifactory]name=Artifactorybaseurl=https://releases.jfrog.io/artifactory/artifactory-rpms/enabled=1gpgcheck=0\n#Optional - if you have GPG signing keys installed, use the below flags to verify the repository metadata signature:\n#gpgkey=https://releases.jfrog.io/artifactory/artifactory-rpms/<PATH_TO_REPODATA_FOLDER>/repomd.xml.key\n#repo_gpgcheck=1\n#Run the install commandyum update && yum install jfrog-artifactory-cpp-ce'}
+                gtmProduct={gtmProduct}
+                gtmPlatforms="rpm"
+                gtmDownloadDescription="RPM Installer"
+                gtmCopyDescription="Copy install command"
               />
               <DownloadInstallerOrCopy
                 imageAlt="debian"
@@ -242,30 +324,46 @@ function DownloadJFrogArtifactoryCommunityEditionForCpp() {
                 installerLink={"https://releases.jfrog.io/artifactory/artifactory-debs/pool/jfrog-artifactory-cpp-ce/jfrog-artifactory-cpp-ce-"+ artifactoryReleaseVersion +".deb"}
                 textTooltip="Copy install command"
                 textToCopy={'wget -qO - https://releases.jfrog.io/artifactory/api/gpg/key/public | apt-key add -;echo "deb https://releases.jfrog.io/artifactory/artifactory-debs{distribution} main" | sudo tee -a /etc/apt/sources.list;# To determine your distribution, run lsb_release -c or cat /etc/os-release# Example:echo "deb https://releases.jfrog.io/artifactory/artifactory-debs xenial main" | sudo tee -a /etc/apt/sources.list;apt-get update;sudo apt-get install jfrog-artifactory-cpp-ce'}
+                gtmProduct={gtmProduct}
+                gtmPlatforms="debian"
+                gtmDownloadDescription="Debian Installer"
+                gtmCopyDescription="Copy install command"
               />
               <DownloadInstaller
                 imageAlt="Windows"
                 imageSrc="/downloads/windows-small-pack.svg"
                 textToShow="Windows Installer"
                 installerLink={"https://releases.jfrog.io/artifactory/bintray-artifactory/org/artifactory/cpp/ce/jfrog-artifactory-cpp-ce/"+ artifactoryReleaseVersion +"/jfrog-artifactory-cpp-ce-"+ artifactoryReleaseVersion +"-windows.zip"}
+                gtmProduct={gtmProduct}
+                gtmPlatforms="windows"
+                gtmDownloadDescription="Windows Installer"
               />
               <DownloadInstaller
                 imageAlt="Docker"
                 imageSrc="/downloads/compose-small-pack.svg"
                 textToShow="Docker Compose Installer"
                 installerLink={"https://releases.jfrog.io/artifactory/bintray-artifactory/org/artifactory/cpp/ce/docker/jfrog-artifactory-cpp-ce/"+ artifactoryReleaseVersion +"/jfrog-artifactory-cpp-ce-"+ artifactoryReleaseVersion +"-compose.tar.gz"}
+                gtmProduct={gtmProduct}
+                gtmPlatforms="docker"
+                gtmDownloadDescription="Docker Compose Installer"
               />
               <CopyToClipboard
                 imageAlt="Docker"
                 imageSrc="/downloads/docker-small-pack.svg"
                 textToShow="$ docker run ..."
                 textToCopy={'docker run --name artifactory -d -p 8081:8081 -p 8082:8082 docker.bintray.io/jfrog/artifactory-cpp-ce:latest'}
+                gtmProduct={gtmProduct}
+                gtmPlatforms="docker"
+                gtmCopyDescription={'docker run --name artifactory -d -p 8081:8081 -p 8082:8082 docker.bintray.io/jfrog/artifactory-cpp-ce:latest'}
               />
               <DownloadInstaller
                 imageAlt="Darwin"
                 imageSrc="/downloads/darwin-small-pack.svg"
                 textToShow="Darwin Installer"
                 installerLink={"https://releases.jfrog.io/artifactory/bintray-artifactory/org/artifactory/cpp/ce/jfrog-artifactory-cpp-ce/"+ artifactoryReleaseVersion +"/jfrog-artifactory-cpp-ce-"+ artifactoryReleaseVersion +"-darwin.tar.gz"}
+                gtmProduct={gtmProduct}
+                gtmPlatforms="apple"
+                gtmDownloadDescription="Darwin Installer"
               />
             </div>
 
