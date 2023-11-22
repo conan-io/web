@@ -50,19 +50,6 @@ function BetaBanner() {
 export function ConanHeader(props) {
   return (
     <header id="masthead" className={props.background}>
-      {/*<Script
-        id="cdn-cookielaw-org-consent"
-        type="text/javascript"
-        src="https://cdn.cookielaw.org/consent/3aff98af-1ffa-49e8-a9f1-6024b60d0d7b/OtAutoBlock.js">
-      </Script>
-      <Script
-        id="cdn-cookielaw-org-scripttemplates"
-        src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js"
-        type="text/javascript"
-        charset="UTF-8"
-        data-domain-script="c09ecb7b-4483-4682-bf75-d47825308d51">
-      </Script>
-      <Script id="ot-callback" type="text/javascript">{`function OptanonWrapper() {}`}</Script>*/}
       <div className="container">
         <div className="row d-flex justify-content-between">
           <Link href="/"><a className="col-6 col-lg-4 d-block"><img alt="Conan C++ Package Manager" className="header-logo" style={{maxHeight: "83px"}} src="/conan-logo.png"></img></a></Link>

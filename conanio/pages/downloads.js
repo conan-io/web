@@ -65,6 +65,7 @@ function DownloadInstaller(props) {
 }
 
 function DownloadConanPackageManager() {
+  const conanReleaseVersion = process.env.NEXT_PUBLIC_CONAN_VERSION
   return (
     <div className="col-lg-6 blue-downloads colored-downloads">
       <div className="downloads-item-wrapper">
@@ -78,7 +79,7 @@ function DownloadConanPackageManager() {
               alt="Downlod Conan Open Source C and C++ Package Manager" className="mr-2 small-title-lazy"
               src="/conan-downloads-logo.svg"></img></div>
           <div className="text pb-1">
-            <p className="py-3 front-text">Install the latest version of the free and open Source Conan C and C++
+            <p className="py-3 front-text">Install the latest version ({conanReleaseVersion}) of the free and open Source Conan C and C++
               package manager, to start using Conan and downloading packages from the ConanCenter.</p>
             <p className="mb-2">Recommended install (need python in your system):</p>
           </div>
@@ -103,19 +104,19 @@ function DownloadConanPackageManager() {
                 imageAlt="Debian"
                 imageSrc="/downloads/debian-small-pack.svg"
                 textToShow="Ubuntu / Debian X64 Installer"
-                installerLink="https://github.com/conan-io/conan/releases/latest/download/conan-ubuntu-64.deb"
+                installerLink={"https://github.com/conan-io/conan/releases/download/"+ conanReleaseVersion +"/conan-ubuntu-64.deb"}
               />
               <DownloadInstaller
                 imageAlt="Windows"
                 imageSrc="/downloads/windows-small-pack.svg"
                 textToShow="Download x86_64 Installer"
-                installerLink="https://github.com/conan-io/conan/releases/latest/download/conan-win-64.exe"
+                installerLink={"https://github.com/conan-io/conan/releases/download/"+ conanReleaseVersion +"/conan-win-64.exe"}
               />
               <DownloadInstaller
                 imageAlt="Windows"
                 imageSrc="/downloads/windows-small-pack.svg"
                 textToShow="Download x86 Installer"
-                installerLink="https://github.com/conan-io/conan/releases/latest/download/conan-win-32.exe"
+                installerLink={"https://github.com/conan-io/conan/releases/download/"+ conanReleaseVersion +"/conan-win-32.exe"}
               />
               <CopyToClipboard
                 imageAlt="Arch Linux"
@@ -151,29 +152,29 @@ function DownloadConanPackageManager() {
                 imageAlt="Darwin"
                 imageSrc="/downloads/darwin-small-pack.svg"
                 textToShow="wget and tar -xvf conan executable"
-                textToCopy={'wget https://github.com/conan-io/conan/releases/latest/download/conan-macos-arm64.tar.gz\ntar -xvf conan-macos-arm64.tar.gz'}
+                textToCopy={'wget https://github.com/conan-io/conan/releases/download/'+ conanReleaseVersion +'/conan-macos-arm64.tar.gz\ntar -xvf conan-macos-arm64.tar.gz'}
               />
               <DownloadInstallerOrCopy
                 imageAlt="Windows"
                 imageSrc="/downloads/windows-small-pack.svg"
                 textToShow="Download x64 Conan Bundle"
-                installerLink="https://github.com/conan-io/conan/releases/latest/download/conan-win-64.zip"
+                installerLink={"https://github.com/conan-io/conan/releases/download/"+ conanReleaseVersion +"/conan-win-64.zip"}
                 textTooltip="Copy powershell command"
-                textToCopy={'Invoke-WebRequest -Uri "https://github.com/conan-io/conan/releases/latest/download/conan-win-64.zip" -OutFile conan-win-64.zip\nExpand-Archive .\\conan-win-64.zip -DestinationPath .'}
+                textToCopy={'Invoke-WebRequest -Uri "https://github.com/conan-io/conan/releases/download/'+ conanReleaseVersion +'/conan-win-64.zip" -OutFile conan-win-64.zip\nExpand-Archive .\\conan-win-64.zip -DestinationPath .'}
               />
               <DownloadInstallerOrCopy
                 imageAlt="Windows"
                 imageSrc="/downloads/windows-small-pack.svg"
                 textToShow="Download x86 Conan Bundle"
-                installerLink="https://github.com/conan-io/conan/releases/latest/download/conan-win-32.zip"
+                installerLink={"https://github.com/conan-io/conan/releases/download/"+ conanReleaseVersion +"/conan-win-32.zip"}
                 textTooltip="Copy powershell command"
-                textToCopy={'Invoke-WebRequest -Uri "https://github.com/conan-io/conan/releases/latest/download/conan-win-32.zip" -OutFile conan-win-32.zip\nExpand-Archive .\\conan-win-32.zip -DestinationPath .'}
+                textToCopy={'Invoke-WebRequest -Uri "https://github.com/conan-io/conan/releases/download/'+ conanReleaseVersion +'/conan-win-32.zip" -OutFile conan-win-32.zip\nExpand-Archive .\\conan-win-32.zip -DestinationPath .'}
               />
               <CopyToClipboard
                 imageAlt="Linux"
                 imageSrc="/downloads/linux-small-pack.svg"
                 textToShow="wget and tar -xvf conan executable"
-                textToCopy={'wget https://github.com/conan-io/conan/releases/latest/download/conan-linux-64.tar.gz\ntar -xvf conan-linux-64.tar.gz'}
+                textToCopy={'wget https://github.com/conan-io/conan/releases/download/'+ conanReleaseVersion +'/conan-linux-64.tar.gz\ntar -xvf conan-linux-64.tar.gz'}
               />
             </div>
             <div className="left-downloads-spacer"></div>
@@ -192,7 +193,7 @@ function DownloadConanPackageManager() {
 }
 
 function DownloadJFrogArtifactoryCommunityEditionForCpp() {
-  let releaseVersion = "7.63.12"
+  const artifactoryReleaseVersion = "7.63.12"
   return (
     <div className="col-lg-6 mt-3 mt-lg-0 green-downloads colored-downloads">
       <div className="downloads-item-wrapper">
@@ -214,7 +215,7 @@ function DownloadJFrogArtifactoryCommunityEditionForCpp() {
                 imageAlt="Linux"
                 imageSrc="/downloads/jfrog-artifactory-small-pack.png"
                 textToShow="Download tar.gz"
-                installerLink={"https://releases.jfrog.io/artifactory/bintray-artifactory/org/artifactory/cpp/ce/jfrog-artifactory-cpp-ce/"+ releaseVersion +"/jfrog-artifactory-cpp-ce-"+ releaseVersion +"-linux.tar.gz"}
+                installerLink={"https://releases.jfrog.io/artifactory/bintray-artifactory/org/artifactory/cpp/ce/jfrog-artifactory-cpp-ce/"+ artifactoryReleaseVersion +"/jfrog-artifactory-cpp-ce-"+ artifactoryReleaseVersion +"-linux.tar.gz"}
               />
             </div>
             <p>Other Installers:</p>
@@ -223,14 +224,14 @@ function DownloadJFrogArtifactoryCommunityEditionForCpp() {
                 imageAlt="Linux"
                 imageSrc="/downloads/linux-small-pack.svg"
                 textToShow="Linux Installer"
-                installerLink={"https://releases.jfrog.io/artifactory/bintray-artifactory/org/artifactory/cpp/ce/jfrog-artifactory-cpp-ce/"+ releaseVersion +"/jfrog-artifactory-cpp-ce-"+ releaseVersion +"-linux.tar.gz"}
+                installerLink={"https://releases.jfrog.io/artifactory/bintray-artifactory/org/artifactory/cpp/ce/jfrog-artifactory-cpp-ce/"+ artifactoryReleaseVersion +"/jfrog-artifactory-cpp-ce-"+ artifactoryReleaseVersion +"-linux.tar.gz"}
               />
 
               <DownloadInstallerOrCopy
                 imageAlt="rpm"
                 imageSrc="/downloads/rpm-small-pack.png"
                 textToShow="RPM Installer"
-                installerLink={"https://releases.jfrog.io/artifactory/artifactory-rpms/jfrog-artifactory-cpp-ce/jfrog-artifactory-cpp-ce-"+ releaseVersion +".rpm"}
+                installerLink={"https://releases.jfrog.io/artifactory/artifactory-rpms/jfrog-artifactory-cpp-ce/jfrog-artifactory-cpp-ce-"+ artifactoryReleaseVersion +".rpm"}
                 textTooltip="Copy install command"
                 textToCopy={'#Add artifactory.repo file to your yum repository listsudo vi /etc/yum.repos.d/artifactory.repo\n#Add the following content[Artifactory]name=Artifactorybaseurl=https://releases.jfrog.io/artifactory/artifactory-rpms/enabled=1gpgcheck=0\n#Optional - if you have GPG signing keys installed, use the below flags to verify the repository metadata signature:\n#gpgkey=https://releases.jfrog.io/artifactory/artifactory-rpms/<PATH_TO_REPODATA_FOLDER>/repomd.xml.key\n#repo_gpgcheck=1\n#Run the install commandyum update && yum install jfrog-artifactory-cpp-ce'}
               />
@@ -238,7 +239,7 @@ function DownloadJFrogArtifactoryCommunityEditionForCpp() {
                 imageAlt="debian"
                 imageSrc="/downloads/debian-small-pack.svg"
                 textToShow="Debian Installer"
-                installerLink={"https://releases.jfrog.io/artifactory/artifactory-debs/pool/jfrog-artifactory-cpp-ce/jfrog-artifactory-cpp-ce-"+ releaseVersion +".deb"}
+                installerLink={"https://releases.jfrog.io/artifactory/artifactory-debs/pool/jfrog-artifactory-cpp-ce/jfrog-artifactory-cpp-ce-"+ artifactoryReleaseVersion +".deb"}
                 textTooltip="Copy install command"
                 textToCopy={'wget -qO - https://releases.jfrog.io/artifactory/api/gpg/key/public | apt-key add -;echo "deb https://releases.jfrog.io/artifactory/artifactory-debs{distribution} main" | sudo tee -a /etc/apt/sources.list;# To determine your distribution, run lsb_release -c or cat /etc/os-release# Example:echo "deb https://releases.jfrog.io/artifactory/artifactory-debs xenial main" | sudo tee -a /etc/apt/sources.list;apt-get update;sudo apt-get install jfrog-artifactory-cpp-ce'}
               />
@@ -246,13 +247,13 @@ function DownloadJFrogArtifactoryCommunityEditionForCpp() {
                 imageAlt="Windows"
                 imageSrc="/downloads/windows-small-pack.svg"
                 textToShow="Windows Installer"
-                installerLink={"https://releases.jfrog.io/artifactory/bintray-artifactory/org/artifactory/cpp/ce/jfrog-artifactory-cpp-ce/"+ releaseVersion +"/jfrog-artifactory-cpp-ce-"+ releaseVersion +"-windows.zip"}
+                installerLink={"https://releases.jfrog.io/artifactory/bintray-artifactory/org/artifactory/cpp/ce/jfrog-artifactory-cpp-ce/"+ artifactoryReleaseVersion +"/jfrog-artifactory-cpp-ce-"+ artifactoryReleaseVersion +"-windows.zip"}
               />
               <DownloadInstaller
                 imageAlt="Docker"
                 imageSrc="/downloads/compose-small-pack.svg"
                 textToShow="Docker Compose Installer"
-                installerLink={"https://releases.jfrog.io/artifactory/bintray-artifactory/org/artifactory/cpp/ce/docker/jfrog-artifactory-cpp-ce/"+ releaseVersion +"/jfrog-artifactory-cpp-ce-"+ releaseVersion +"-compose.tar.gz"}
+                installerLink={"https://releases.jfrog.io/artifactory/bintray-artifactory/org/artifactory/cpp/ce/docker/jfrog-artifactory-cpp-ce/"+ artifactoryReleaseVersion +"/jfrog-artifactory-cpp-ce-"+ artifactoryReleaseVersion +"-compose.tar.gz"}
               />
               <CopyToClipboard
                 imageAlt="Docker"
@@ -264,7 +265,7 @@ function DownloadJFrogArtifactoryCommunityEditionForCpp() {
                 imageAlt="Darwin"
                 imageSrc="/downloads/darwin-small-pack.svg"
                 textToShow="Darwin Installer"
-                installerLink={"https://releases.jfrog.io/artifactory/bintray-artifactory/org/artifactory/cpp/ce/jfrog-artifactory-cpp-ce/"+ releaseVersion +"/jfrog-artifactory-cpp-ce-"+ releaseVersion +"-darwin.tar.gz"}
+                installerLink={"https://releases.jfrog.io/artifactory/bintray-artifactory/org/artifactory/cpp/ce/jfrog-artifactory-cpp-ce/"+ artifactoryReleaseVersion +"/jfrog-artifactory-cpp-ce-"+ artifactoryReleaseVersion +"-darwin.tar.gz"}
               />
             </div>
 
