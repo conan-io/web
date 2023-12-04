@@ -129,7 +129,6 @@ function PackageInfo(props) {
   const licenses = Object.keys(props.data.info.licenses)
   const labels = Object.keys(props.data.info.labels)
   const packages = Object.values(props.data.info.packages).map((value) => value);
-  console.log(props)
   return (
     <div className="m-2">
       <Row>
