@@ -192,6 +192,11 @@ export function BasicSearchBar(props) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    dataLayer.push({
+      'event': 'fireEvent',
+      'event_name': 'search',
+      'search_term': value
+    });
     router.push(
       {
         pathname: '/center/recipes',

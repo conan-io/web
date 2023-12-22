@@ -54,6 +54,7 @@ function BetaBanner() {
               <a onClick={
                   () => {
                     dataLayer.push({
+                      'event': 'fireEvent',
                       'event_name': 'element_click',
                       'type': 'ui',
                       'purpose': 'feedback',
