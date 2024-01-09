@@ -50,7 +50,7 @@ function CenterList(props) {
                     'event': 'fireEvent',
                     'event_name': 'element_click',
                     'type': 'ui',
-                    'purpose': props.name,
+                    'purpose': props.name.toLowerCase(),
                     'description': props.full_name ? info.name + "/" + info.version: info.name
                   });
                 }}

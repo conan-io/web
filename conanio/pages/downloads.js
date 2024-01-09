@@ -15,7 +15,7 @@ function gtmConanPush(eventType, product, platforms, purpose, description){
     'product': product,
     'platforms': platforms,
     'purpose': purpose,
-    'description': description
+    'description': description.toLowerCase()
   });
 }
 
@@ -182,12 +182,11 @@ function DownloadConanPackageManager() {
               <div className="package-wrapper d-flex flex-no-wrap">
                 <div className="cn-box small"><img alt="Github" className="lazy" src="/downloads/github-small-pack.svg"></img></div>
                 <div className="cn-box cn-main">Any OS:From Source</div>
-                <div onClick={() => {gtmConanPush('link', conan, 'any os from source', 'get conan', 'yay -S conan');}}>
+
+                <div onClick={() => {gtmConanPush('link', 'conan', 'any os from source', 'get conan', 'any os from source');}}>
                   <Link href="https://github.com/conan-io/conan">
                     <a
                       className="cn-box cn-action cn-link"
-                      href="https://github.com/conan-io/conan"
-                      rel="nofollow"
                       data-tooltip-id="go-to-conan-github"
                       data-tooltip-content="Go to conan github repositoy"
                       data-tooltip-place="top"
