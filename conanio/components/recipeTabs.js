@@ -19,7 +19,6 @@ import {
 } from "react-icons/ai";
 import { TfiMoreAlt } from "react-icons/tfi";
 import { FaTags, FaWindows, FaLinux, FaApple } from "react-icons/fa";
-import { SiConan } from "react-icons/si";
 import ListGroup from 'react-bootstrap/ListGroup';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';

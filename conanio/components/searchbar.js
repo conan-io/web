@@ -1,11 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
-import FormCheck from 'react-bootstrap/FormCheck';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Select from "react-select";
 import { LuPackageSearch } from "react-icons/lu";
 import { BiPackage } from "react-icons/bi";
@@ -158,11 +156,16 @@ export function ConanMultiSelectFilter(props) {
 }
 
 export function ConanSearchBar(props) {
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
   return (
     <Col>
       <Row className="justify-content-md-center">
         <InputGroup>
-          <Form.Control className="searchbarConan" type="text" placeholder="Search..." value={props.value} onChange={(e) => props.handleChange(e.target.value)}/>
+          <Form.Control ref={inputRef} className="searchbarConan" type="text" placeholder="Search..." value={props.value} onChange={(e) => props.handleChange(e.target.value)}/>
           <Button className="searchButtonConan" type="submit">
             <LuPackageSearch className="conanLogo"/>
           </Button>

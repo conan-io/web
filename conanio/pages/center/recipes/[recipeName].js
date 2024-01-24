@@ -5,17 +5,12 @@ import { SSRProvider } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Form from 'react-bootstrap/Form';
-import Tab from 'react-bootstrap/Tab';
-import Tabs from 'react-bootstrap/Tabs';
 import Badge from 'react-bootstrap/Badge';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
 import Link from 'next/link';
 import { ConanCenterHeader } from '../../../components/header';
 import { truncate,
-         truncateTooltip,
          truncateAdnCopy,
          sanitizeURL,
          ClipboardCopy,
@@ -24,7 +19,7 @@ import { truncate,
 import ConanFooter from '../../../components/footer';
 import { get_json, get_urls } from '../../../service/service';
 import { LiaBalanceScaleSolid, LiaGithub } from "react-icons/lia";
-import { IoMdHome, IoMdDownload } from "react-icons/io";
+import { IoMdHome } from "react-icons/io";
 import hljs from "highlight.js";
 import { UseItTab,
          BadgesTab,
@@ -33,12 +28,10 @@ import { UseItTab,
          StatsTab,
          PackagesTab } from "../../../components/recipeTabs";
 import { PiWarningBold } from "react-icons/pi";
-import { MdOutlineCheckCircleOutline, MdOutlineToday } from "react-icons/md";
-import { BiInfoCircle } from "react-icons/bi";
-import { AiOutlinePushpin, AiOutlineBarChart } from "react-icons/ai";
+import { MdOutlineToday } from "react-icons/md";
+import { AiOutlinePushpin } from "react-icons/ai";
 import { PiGraphDuotone, PiMedal } from "react-icons/pi";
 import { FaTags, FaHashtag } from "react-icons/fa";
-import { LuBinary } from "react-icons/lu";
 import { SiConan } from "react-icons/si";
 import { HiOutlineDocumentText } from "react-icons/hi";
 import { BasicSearchBar } from "../../../components/searchbar";

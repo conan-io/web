@@ -1,8 +1,6 @@
 import React from 'react';
 import { SSRProvider } from 'react-bootstrap';
 import { ConanCenterHeader } from './header';
-import ConanFooter from './footer';
-import Container from 'react-bootstrap/Container';
 
 
 // From: https://stackabuse.com/how-to-create-a-loading-animation-in-react-from-scratch/

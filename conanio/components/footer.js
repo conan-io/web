@@ -1,6 +1,5 @@
 import { useState } from "react";
-import Link from 'next/link'
-import Script from 'next/script'
+import Link from 'next/link';
 import MarketoForm from "./useMarketo";
 
 
