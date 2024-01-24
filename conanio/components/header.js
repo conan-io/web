@@ -1,8 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import Script from 'next/script';
 import { useRouter } from "next/router";
-
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { LuPackageSearch } from "react-icons/lu";

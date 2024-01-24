@@ -6,6 +6,8 @@ const nextConfig = {
   },
   env: {
     conanioServer: process.env.CONANIO_SERVER,
+    gtmURL: process.env.GTM_URL,
+    gtmID: process.env.GTM_ID
   },
   async redirects() {
     return [

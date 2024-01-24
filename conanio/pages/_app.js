@@ -17,9 +17,10 @@ import Loader from '../components/loader';
 
 
 export default function  MyApp({ Component, pageProps }){
-  const router = useRouter()
-  const [loading, setLoading] = React.useState(false)
-  const GTM_ID = 'GTM-WK44ZFM'
+  const router = useRouter();
+  const [loading, setLoading] = React.useState(false);
+  const GTM_ID = process.env.gtmID;
+  const GTM_URL = process.env.gtmURL;
   React.useEffect(() => {
     const handleRouteChange = (url) => {setLoading(true)}
     const handleRouteChangeComplete = () => {setLoading(false)}
@@ -32,7 +33,6 @@ export default function  MyApp({ Component, pageProps }){
       router.events.off('routeChangeComplete', handleRouteChangeComplete)
     }
   }, [router.events])
-
   return (
     <>
       <Script id="google-tag-manager" strategy="afterInteractive">
@@ -40,7 +40,7 @@ export default function  MyApp({ Component, pageProps }){
           (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
           new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
           j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          '${GTM_URL}?id='+i+dl;f.parentNode.insertBefore(j,f);
           })(window,document,'script','dataLayer','${GTM_ID}');
         `}
       </Script>

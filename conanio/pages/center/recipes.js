@@ -7,20 +7,16 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Badge from 'react-bootstrap/Badge';
-import InputGroup from 'react-bootstrap/InputGroup';
 import { ConanSearchBar,
          ConanMultiSelectFilter,
          ConanSingleSelect } from "../../components/searchbar";
 import ListGroup from 'react-bootstrap/ListGroup';
-import Alert from 'react-bootstrap/Alert';
 import Link from 'next/link';
 import { ConanCenterHeader } from '../../components/header';
 import ConanFooter from '../../components/footer';
 import { prettyProfiles,
-         levenshteinDistance,
          DefaultDescription } from '../../components/utils';
-import { LiaBalanceScaleSolid, LiaGithub } from "react-icons/lia";
-import { IoMdDownload } from "react-icons/io";
+import { LiaBalanceScaleSolid } from "react-icons/lia";
 import { BsFilterCircleFill, BsFilterCircle } from "react-icons/bs";
 import { MdFilter1,
   MdFilter2,
