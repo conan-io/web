@@ -33,7 +33,19 @@ function ConanFooter() {
     baseUrl: "https://leap.jfrog.com",
     munchkinId: "256-FNZ-187",
     formId: "1479",
-    callback: () => {}
+    callback: (form) => {
+      form.onSubmit(
+        (values, followUpUrl) => {
+          dataLayer.push({
+            'event': 'fireEvent',
+            'event_name': 'form_start',
+            'type': 'subscribe',
+            'purpose': 'social',
+            'description': 'subscribe for release update'
+          });
+        }
+      )
+    }
   });
 
   return (
