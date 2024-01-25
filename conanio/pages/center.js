@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { SSRProvider } from 'react-bootstrap';
+
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -68,7 +68,7 @@ function CenterList(props) {
 export default function Center(props) {
   return (
     <React.StrictMode>
-      <SSRProvider>
+
       <div className="flex-wrapper bg-conan-blue">
         <ConanCenterHeader/>
           <br/>
@@ -113,7 +113,7 @@ export default function Center(props) {
           <br/>
         <ConanFooter/>
       </div>
-      </SSRProvider>
+
     </React.StrictMode>
   )
 }

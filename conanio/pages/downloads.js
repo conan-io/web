@@ -1,5 +1,5 @@
 import React from 'react';
-import { SSRProvider } from 'react-bootstrap';
+
 import { ConanKitchenHeader } from '../components/header';
 import ConanFooter from '../components/footer';
 import { Tooltip } from 'react-tooltip';
@@ -379,7 +379,7 @@ function DownloadJFrogArtifactoryCommunityEditionForCpp() {
 function DownloadsPage() {
   return (
     <React.StrictMode>
-      <SSRProvider>
+
       <div className="flex-wrapper">
         <ConanKitchenHeader/>
         <section className="downloads-hero position-relative pb-5" id="downloadsHero">
@@ -420,7 +420,7 @@ function DownloadsPage() {
         </section>
         <ConanFooter/>
       </div>
-      </SSRProvider>
+
     </React.StrictMode>
   );
 }

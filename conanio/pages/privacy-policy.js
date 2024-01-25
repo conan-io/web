@@ -1,12 +1,12 @@
 import React from 'react';
-import { SSRProvider } from 'react-bootstrap';
+
 import { ConanKitchenHeader } from '../components/header';
 import ConanFooter from '../components/footer';
 
 function PrivacyPolicyPage() {
   return (
     <React.StrictMode>
-      <SSRProvider>
+
       <div className="flex-wrapper">
         <ConanKitchenHeader/>
         <section id="privacy-policy" className="py-5">
@@ -520,7 +520,7 @@ function PrivacyPolicyPage() {
         </section>
         <ConanFooter/>
       </div>
-      </SSRProvider>
+
     </React.StrictMode>
   );
 }

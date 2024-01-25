@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import React from 'react';
-import { SSRProvider } from 'react-bootstrap';
+
 import { ConanKitchenHeader } from '../components/header';
 import ConanFooter from '../components/footer';
 
@@ -507,7 +507,7 @@ function TribePage() {
 
   return (
     <React.StrictMode>
-      <SSRProvider>
+
       <div className="flex-wrapper">
         <ConanKitchenHeader/>
         <section id="tribrsHero" className="py-5 tribes-hero bg-cover bg-center">
@@ -550,7 +550,7 @@ function TribePage() {
         </section>
         <ConanFooter/>
       </div>
-      </SSRProvider>
+
     </React.StrictMode>
   );
 }
