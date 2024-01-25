@@ -182,8 +182,7 @@ function DownloadConanPackageManager() {
               <div className="package-wrapper d-flex flex-no-wrap">
                 <div className="cn-box small"><img alt="Github" className="lazy" src="/downloads/github-small-pack.svg"></img></div>
                 <div className="cn-box cn-main">Any OS:From Source</div>
-
-                <div onClick={() => {gtmConanPush('link', 'conan', 'any os from source', 'get conan', 'any os from source');}}>
+                <div onClick={() => {gtmConanPush('link', 'conan', 'github', 'get conan', 'any os from source');}}>
                   <Link href="https://github.com/conan-io/conan">
                     <a
                       className="cn-box cn-action cn-link"
