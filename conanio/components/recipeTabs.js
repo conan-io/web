@@ -18,6 +18,8 @@ import {
   AiOutlineMinusCircle
 } from "react-icons/ai";
 import { TfiMoreAlt } from "react-icons/tfi";
+import { FaPython } from "react-icons/fa";
+import { BsFiletypeTxt } from "react-icons/bs";
 import { FaTags, FaWindows, FaLinux, FaApple } from "react-icons/fa";
 import ListGroup from 'react-bootstrap/ListGroup';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
@@ -114,6 +116,7 @@ function CCIAssistanceLink() {
 
 function UseItFullContent({props}) {
   const reference = props.recipeName + "/" + props.recipeVersion;
+  const [conanfile, setConanfile] = useState('txt');
 
   const TargetsInfo = function(recipe_properties) {
     const [open, setOpen] = useState(false);
@@ -231,10 +234,22 @@ target_link_libraries(YOUR_TARGET ${cmakeTargetName.split(" (config),")[0].trim(
       </blockquote>
       Simplest use case consuming this recipe and assuming CMake as your local build tool:
       <br/><br/>
-      <h4>conanfile.txt</h4>
-      <pre><code className="language-ini">{"[requires]\n" + reference + "\n" + "[generators]\n" + "CMakeDeps\n" + "CMakeToolchain\n" + "[layout]\ncmake_layout"}</code></pre>
+      <Tabs
+        id="controlled-tab-example"
+        activeKey={conanfile}
+        onSelect={(k) => setConanfile(k)}
+        className="mb-3"
+      >
+        <Tab eventKey="txt" title={<span><BsFiletypeTxt className="conanIcon18 mr-1"/> conanfile.txt</span>}>
+        <pre><code className="language-ini">{"[requires]\n" + reference + "\n" + "[generators]\n" + "CMakeDeps\n" + "CMakeToolchain\n" + "[layout]\ncmake_layout"}</code></pre>
+        </Tab>
+        <Tab eventKey="py" title={<span><FaPython className="conanIcon18 mr-1"/> conanfile.py</span>}>
+          <pre><code className="language-python">{"from conan import ConanFile"}</code></pre>
+        </Tab>
+      </Tabs>
+      <br/>
       <p>Now, you can run this Conan command to locally install (and build if necessary) this recipe and its dependencies (if any):</p>
-      <pre><code className="language-bash">$ conan install conanfile.txt --build=missing</code></pre>
+      <pre><code className="language-bash">$ conan install conanfile.{conanfile} --build=missing</code></pre>
       <RecipeDetails />
       <br/>
     </div>
