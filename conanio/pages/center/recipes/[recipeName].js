@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/router';
-import { SSRProvider } from 'react-bootstrap';
+
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -57,6 +57,7 @@ export default function ConanPackage(props) {
   useEffect(() => {
     hljs.highlightAll();
   });
+
   const [selectedVersion, setSelectedVersion] = useState(props.recipeVersion !== null? props.recipeVersion: props.data[0].info.version);
   const indexSelectedVersion = Object.keys(props.data).filter(index => props.data[index].info.version === selectedVersion)[0];
   const isBigScreen = useMediaQuery({ query: '(min-width: 1824px)' })
@@ -289,7 +290,7 @@ export default function ConanPackage(props) {
 
   return (
     <React.StrictMode>
-      <SSRProvider>
+
       <div className="flex-wrapper bg-conan-blue">
         <ConanCenterHeader titlePrefix={recipeData.name}/>
         <Container className="conancontainer">
@@ -347,7 +348,7 @@ export default function ConanPackage(props) {
         <br/>
         <ConanFooter/>
       </div>
-      </SSRProvider>
+
     </React.StrictMode>
   );
 }

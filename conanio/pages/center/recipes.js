@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { SSRProvider } from 'react-bootstrap';
+
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -291,7 +291,7 @@ export default function ConanSearch(props) {
 
   return (
     <React.StrictMode>
-      <SSRProvider>
+
       <div className="flex-wrapper bg-conan-blue">
         <ConanCenterHeader titlePrefix={"Search Result"}/>
           <br/>
@@ -351,7 +351,7 @@ export default function ConanSearch(props) {
           <br/>
         <ConanFooter/>
       </div>
-      </SSRProvider>
+
     </React.StrictMode>
 
   );

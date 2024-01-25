@@ -1,5 +1,5 @@
 import React from 'react';
-import { SSRProvider } from 'react-bootstrap';
+
 import { ConanCenterHeader } from './header';
 
 
@@ -8,14 +8,14 @@ import { ConanCenterHeader } from './header';
 export default function Loader() {
   return (
     <React.StrictMode>
-      <SSRProvider>
+
       <div className="flex-wrapper">
         <ConanCenterHeader/>
           <div className="loader-container">
             <div className="spinner"></div>
           </div>
       </div>
-      </SSRProvider>
+
     </React.StrictMode>
   );
 }

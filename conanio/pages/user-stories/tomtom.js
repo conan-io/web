@@ -1,5 +1,5 @@
 import React from 'react';
-import { SSRProvider } from 'react-bootstrap';
+
 import { ConanKitchenHeader } from '../../components/header';
 import ConanFooter from '../../components/footer';
 import SingleUserStory from '../../components/user-story';
@@ -8,7 +8,7 @@ import Link from 'next/link'
 function UserStoriesTomtomPage() {
   return (
     <React.StrictMode>
-      <SSRProvider>
+
       <div className="flex-wrapper">
         <ConanKitchenHeader/>
         <SingleUserStory
@@ -147,7 +147,7 @@ function UserStoriesTomtomPage() {
         />
         <ConanFooter/>
       </div>
-      </SSRProvider>
+
     </React.StrictMode>
   );
 }

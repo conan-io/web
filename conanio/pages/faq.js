@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { SSRProvider } from 'react-bootstrap';
+
 import { ConanKitchenHeader } from '../components/header';
 import ConanFooter from '../components/footer';
 
@@ -83,7 +83,7 @@ function FaqPage() {
 
   return (
     <React.StrictMode>
-      <SSRProvider>
+
       <div className="flex-wrapper">
         <ConanKitchenHeader/>
           <section id="faqHero" className="position-relative sub-page-hero">
@@ -134,7 +134,7 @@ function FaqPage() {
 
         <ConanFooter/>
       </div>
-      </SSRProvider>
+
     </React.StrictMode>
   );
 }

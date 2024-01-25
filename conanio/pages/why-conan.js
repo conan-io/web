@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { SSRProvider } from 'react-bootstrap';
+
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -32,7 +32,7 @@ import Card from 'react-bootstrap/Card';
 function WhyConan() {
   return (
     <React.StrictMode>
-      <SSRProvider>
+
       <div className="flex-wrapper">
         <ConanKitchenHeader/>
         <img src="/conan-cubes.svg" className="d-none d-lg-block position-absolute hero-bg" alt="Conan C++ Package Manager"></img>
@@ -306,7 +306,7 @@ function WhyConan() {
         <br/>
         <ConanFooter/>
       </div>
-      </SSRProvider>
+
     </React.StrictMode>
   );
 }
