@@ -88,6 +88,9 @@ export default function ConanPackage(props) {
 
 
   function RecipeInfo() {
+    const isToolRequire = recipeUseIt && recipeUseIt.package_type == "application";
+    const fieldRequirements = isToolRequire? 'tool_requires': 'requires';
+
     return (
       <Col xs lg="3" className="pl-4 mt-4 pt-4">
         {recipeDescription && <Row xs lg className="mb-2"><Col xs lg><h5>Recipe info</h5></Col></Row>}
@@ -174,9 +177,9 @@ export default function ConanPackage(props) {
           <Col xs lg>
             Add the following line to your conanfile.txt:
             <pre>
-              <code style={{backgroundColor: "white"}} className="language-ini">{
-              "[requires]\n" +
-              recipeData.name + "/"+ selectedVersion + "\n"}
+              <code style={{backgroundColor: "white"}} className="language-ini">
+{`[${fieldRequirements}]
+${recipeData.name}/${selectedVersion}`}
               </code>
             </pre>
           </Col>

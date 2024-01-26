@@ -116,7 +116,6 @@ function CCIAssistanceLink() {
 
 function UseItFullContent({props}) {
   const reference = props.recipeName + "/" + props.recipeVersion;
-  const [conanfile, setConanfile] = useState('txt');
 
   const TargetsInfo = function(recipe_properties) {
     const [open, setOpen] = useState(false);
@@ -223,29 +222,16 @@ target_link_libraries(YOUR_TARGET ${cmakeTargetName.split(" (config),")[0].trim(
     return null;
   };
 
-  return (
-    <div>
-      <h3>Using {props.recipeName}</h3>
-      <blockquote>
-        <BiSolidInfoCircle/><strong> Note</strong>
-        <br/><br/>
-        If you are new with Conan, we recommend to read the section <Link href="https://docs.conan.io/2/tutorial/consuming_packages.html"><a>how to consume packages</a></Link>.
-        <CCIAssistanceLink />
-      </blockquote>
-      Simplest use case consuming this recipe and assuming CMake as your local build tool:
-      <br/><br/>
-      <Tabs
-        id="conanfile-tab-selection"
-        activeKey={conanfile}
-        onSelect={(k) => setConanfile(k)}
-        className="mb-3"
-      >
-        <Tab eventKey="txt" title={<span><BsFiletypeTxt className="conanIcon18 mr-1"/> conanfile.txt</span>}>
-          <pre><code className="language-ini">{"[requires]\n" + reference + "\n" + "[generators]\n" + "CMakeDeps\n" + "CMakeToolchain\n" + "[layout]\ncmake_layout"}</code></pre>
-        </Tab>
-        <Tab eventKey="py" title={<span><FaPython className="conanIcon18 mr-1"/> conanfile.py</span>}>
-          <pre><code className="language-python">
-            {`from conan import ConanFile
+  const ConanfileInfo = function() {
+    const [conanfile, setConanfile] = useState('txt');
+    const conanfileTxt = `[requires]
+${reference}
+[generators]
+CMakeDeps
+CMakeToolchain
+[layout]
+cmake_layout`;
+    const conanfilePy = `from conan import ConanFile
 from conan.tools.cmake import cmake_layout
 
 
@@ -257,13 +243,38 @@ class ExampleRecipe(ConanFile):
         self.requires("${reference}")
 
     def layout(self):
-        cmake_layout(self)`}</code></pre>
-        </Tab>
+        cmake_layout(self)`;
+      return (
+        <>
+          <Tabs id="conanfile-tab-selection" activeKey={conanfile} onSelect={(k) => setConanfile(k)} className="package-tabs">
+            <Tab eventKey="txt" title={<span><BsFiletypeTxt className="conanIcon18 mr-1"/> conanfile.txt</span>}>
+              <ClipboardCopy copyText={conanfileTxt}/>
+              <pre><code className="language-ini">{conanfileTxt}</code></pre>
+            </Tab>
+            <Tab eventKey="py" title={<span><FaPython className="conanIcon18 mr-1"/> conanfile.py</span>}>
+              <ClipboardCopy copyText={conanfilePy}/>
+              <pre><code className="language-python">{conanfilePy}</code></pre>
+            </Tab>
+          </Tabs>
+          <br/>
+          <p>Now, you can run this Conan command to locally install (and build if necessary) this recipe and its dependencies (if any):</p>
+          <pre><code className="language-bash">{`$ conan install conanfile.${conanfile} --build=missing`}</code></pre>
+        </>
+      );
+  };
 
-      </Tabs>
-      <br/>
-      <p>Now, you can run this Conan command to locally install (and build if necessary) this recipe and its dependencies (if any):</p>
-      <pre><code className="language-bash">{`$ conan install conanfile.${conanfile} --build=missing`}</code></pre>
+  return (
+    <div>
+      <h3>Using {props.recipeName}</h3>
+      <blockquote>
+        <BiSolidInfoCircle/><strong> Note</strong>
+        <br/><br/>
+        If you are new with Conan, we recommend to read the section <Link href="https://docs.conan.io/2/tutorial/consuming_packages.html"><a>how to consume packages</a></Link>.
+        <CCIAssistanceLink />
+      </blockquote>
+      Simplest use case consuming this recipe and assuming CMake as your local build tool:
+      <br/><br/>
+      <ConanfileInfo />
       <RecipeDetails />
       <br/>
     </div>
