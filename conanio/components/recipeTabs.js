@@ -235,21 +235,35 @@ target_link_libraries(YOUR_TARGET ${cmakeTargetName.split(" (config),")[0].trim(
       Simplest use case consuming this recipe and assuming CMake as your local build tool:
       <br/><br/>
       <Tabs
-        id="controlled-tab-example"
+        id="conanfile-tab-selection"
         activeKey={conanfile}
         onSelect={(k) => setConanfile(k)}
         className="mb-3"
       >
         <Tab eventKey="txt" title={<span><BsFiletypeTxt className="conanIcon18 mr-1"/> conanfile.txt</span>}>
-        <pre><code className="language-ini">{"[requires]\n" + reference + "\n" + "[generators]\n" + "CMakeDeps\n" + "CMakeToolchain\n" + "[layout]\ncmake_layout"}</code></pre>
+          <pre><code className="language-ini">{"[requires]\n" + reference + "\n" + "[generators]\n" + "CMakeDeps\n" + "CMakeToolchain\n" + "[layout]\ncmake_layout"}</code></pre>
         </Tab>
         <Tab eventKey="py" title={<span><FaPython className="conanIcon18 mr-1"/> conanfile.py</span>}>
-          <pre><code className="language-python">{"from conan import ConanFile"}</code></pre>
+          <pre><code className="language-python">
+            {`from conan import ConanFile
+from conan.tools.cmake import cmake_layout
+
+
+class ExampleRecipe(ConanFile):
+    settings = "os", "compiler", "build_type", "arch"
+    generators = "CMakeDeps", "CMakeToolchain"
+
+    def requirements(self):
+        self.requires("${reference}")
+
+    def layout(self):
+        cmake_layout(self)`}</code></pre>
         </Tab>
+
       </Tabs>
       <br/>
       <p>Now, you can run this Conan command to locally install (and build if necessary) this recipe and its dependencies (if any):</p>
-      <pre><code className="language-bash">$ conan install conanfile.{conanfile} --build=missing</code></pre>
+      <pre><code className="language-bash">{`$ conan install conanfile.${conanfile} --build=missing`}</code></pre>
       <RecipeDetails />
       <br/>
     </div>
