@@ -165,7 +165,7 @@ export function ConanSearchBar(props) {
     <Col>
       <Row className="justify-content-md-center">
         <InputGroup>
-          <Form.Control ref={inputRef} className="searchbarConan" type="text" placeholder="Search..." value={props.value} onChange={(e) => props.handleChange(e.target.value)}/>
+          <Form.Control ref={inputRef} className="searchbarConan" type="text" placeholder="Search..." value={props.value} onChange={(e) => props.handleChange(e.target.value.replace(" ", ""))}/>
           <Button className="searchButtonConan" type="submit">
             <LuPackageSearch className="conanLogo"/>
           </Button>

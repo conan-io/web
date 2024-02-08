@@ -154,10 +154,7 @@ function SearchList(props) {
       setLoading(true)
       const fetchData = async () => {
         try {
-          console.log("props.value", props.value)
-          console.log("props.value || 'all'", props.value || 'all')
           let value = props.value || 'all';
-          console.log("value", value)
           let urls = get_urls({search: value, topics: props.topics, licenses: props.licenses})
           const packages = await get_json_list(urls.search.package, urls.api.public);
           setData(packages);
