@@ -146,8 +146,8 @@ function DownloadConanPackageManager() {
               <DownloadInstaller
                 imageAlt="Debian"
                 imageSrc="/downloads/debian-small-pack.svg"
-                textToShow="Ubuntu / Debian X64 Installer"
-                installerLink={"https://github.com/conan-io/conan/releases/download/"+ conanReleaseVersion +"/conan-ubuntu-64.deb"}
+                textToShow="Ubuntu / Debian amd64 Installer"
+                installerLink={"https://github.com/conan-io/conan/releases/download/"+ conanReleaseVersion +"/conan-"+ conanReleaseVersion +"-amd64.deb"}
                 gtmProduct="conan"
                 gtmPlatforms="debian"
                 gtmDownloadDescription="Ubuntu / Debian X64 Installer"
@@ -156,7 +156,7 @@ function DownloadConanPackageManager() {
                 imageAlt="Windows"
                 imageSrc="/downloads/windows-small-pack.svg"
                 textToShow="Download x86_64 Installer"
-                installerLink={"https://github.com/conan-io/conan/releases/download/"+ conanReleaseVersion +"/conan-win-64.exe"}
+                installerLink={"https://github.com/conan-io/conan/releases/download/"+ conanReleaseVersion +"/conan-"+ conanReleaseVersion +"-windows-x86_64-installer.exe"}
                 gtmProduct="conan"
                 gtmPlatforms="windows"
                 gtmDownloadDescription="Download x86_64 Installer"
@@ -164,8 +164,8 @@ function DownloadConanPackageManager() {
               <DownloadInstaller
                 imageAlt="Windows"
                 imageSrc="/downloads/windows-small-pack.svg"
-                textToShow="Download x86 Installer"
-                installerLink={"https://github.com/conan-io/conan/releases/download/"+ conanReleaseVersion +"/conan-win-32.exe"}
+                textToShow="Download i686 Installer"
+                installerLink={"https://github.com/conan-io/conan/releases/download/"+ conanReleaseVersion +"/conan-"+ conanReleaseVersion +"-windows-i686-installer.exe"}
                 gtmProduct={gtmProduct}
                 gtmPlatforms="windows"
                 gtmDownloadDescription="Download x86 Installer"
@@ -206,8 +206,17 @@ function DownloadConanPackageManager() {
               <CopyToClipboard
                 imageAlt="Darwin"
                 imageSrc="/downloads/darwin-small-pack.svg"
-                textToShow="wget and tar -xvf conan executable"
-                textToCopy={'wget https://github.com/conan-io/conan/releases/download/'+ conanReleaseVersion +'/conan-macos-arm64.tar.gz\ntar -xvf conan-macos-arm64.tar.gz'}
+                textToShow="wget and tar -xvf conan arm64 executable"
+                textToCopy={'wget https://github.com/conan-io/conan/releases/download/'+ conanReleaseVersion +'/conan-'+ conanReleaseVersion +'-macos-arm64.tgz\ntar -xvf conan-'+ conanReleaseVersion +'-macos-arm64.tgz'}
+                gtmProduct={gtmProduct}
+                gtmPlatforms="apple"
+                gtmCopyDescription="wget and tar -xvf conan executable"
+              />
+              <CopyToClipboard
+                imageAlt="Darwin"
+                imageSrc="/downloads/darwin-small-pack.svg"
+                textToShow="wget and tar -xvf conan x86_64 executable"
+                textToCopy={'wget https://github.com/conan-io/conan/releases/download/'+ conanReleaseVersion +'/conan-'+ conanReleaseVersion +'-macos-x86_64.tgz\ntar -xvf conan-'+ conanReleaseVersion +'-macos-x86_64.tgz'}
                 gtmProduct={gtmProduct}
                 gtmPlatforms="apple"
                 gtmCopyDescription="wget and tar -xvf conan executable"
@@ -215,10 +224,10 @@ function DownloadConanPackageManager() {
               <DownloadInstallerOrCopy
                 imageAlt="Windows"
                 imageSrc="/downloads/windows-small-pack.svg"
-                textToShow="Download x64 Conan Bundle"
-                installerLink={"https://github.com/conan-io/conan/releases/download/"+ conanReleaseVersion +"/conan-win-64.zip"}
+                textToShow="Download x86_64 Conan Bundle"
+                installerLink={"https://github.com/conan-io/conan/releases/download/"+ conanReleaseVersion +"/conan-"+ conanReleaseVersion +"-windows-x86_64.zip"}
                 textTooltip="Copy powershell command"
-                textToCopy={'Invoke-WebRequest -Uri "https://github.com/conan-io/conan/releases/download/'+ conanReleaseVersion +'/conan-win-64.zip" -OutFile conan-win-64.zip\nExpand-Archive .\\conan-win-64.zip -DestinationPath .'}
+                textToCopy={'Invoke-WebRequest -Uri "https://github.com/conan-io/conan/releases/download/'+ conanReleaseVersion +'/conan-'+ conanReleaseVersion +'-windows-x86_64.zip" -OutFile conan-'+ conanReleaseVersion +'-windows-x86_64.zip\nExpand-Archive .\\conan-'+ conanReleaseVersion +'-windows-x86_64.zip -DestinationPath .'}
                 gtmProduct={gtmProduct}
                 gtmPlatforms="windows"
                 gtmDownloadDescription="Download x64 Conan Bundle"
@@ -227,10 +236,10 @@ function DownloadConanPackageManager() {
               <DownloadInstallerOrCopy
                 imageAlt="Windows"
                 imageSrc="/downloads/windows-small-pack.svg"
-                textToShow="Download x86_64 Conan Bundle"
-                installerLink={"https://github.com/conan-io/conan/releases/download/"+ conanReleaseVersion +"/conan-win-32.zip"}
+                textToShow="Download i686 Conan Bundle"
+                installerLink={"https://github.com/conan-io/conan/releases/download/"+ conanReleaseVersion +"/conan-"+ conanReleaseVersion +"-windows-i686.zip"}
                 textTooltip="Copy powershell command"
-                textToCopy={'Invoke-WebRequest -Uri "https://github.com/conan-io/conan/releases/download/'+ conanReleaseVersion +'/conan-win-32.zip" -OutFile conan-win-32.zip\nExpand-Archive .\\conan-win-32.zip -DestinationPath .'}
+                textToCopy={'Invoke-WebRequest -Uri "https://github.com/conan-io/conan/releases/download/'+ conanReleaseVersion +'/conan-'+ conanReleaseVersion +'-windows-i686.zip" -OutFile conan-'+ conanReleaseVersion +'-windows-i686.zip\nExpand-Archive .\\conan-'+ conanReleaseVersion +'-windows-i686.zip -DestinationPath .'}
                 gtmProduct={gtmProduct}
                 gtmPlatforms="windows"
                 gtmDownloadDescription="Download x86_64 Conan Bundle"
@@ -239,8 +248,8 @@ function DownloadConanPackageManager() {
               <CopyToClipboard
                 imageAlt="Linux"
                 imageSrc="/downloads/linux-small-pack.svg"
-                textToShow="wget and tar -xvf conan executable"
-                textToCopy={'wget https://github.com/conan-io/conan/releases/download/'+ conanReleaseVersion +'/conan-linux-64.tar.gz\ntar -xvf conan-linux-64.tar.gz'}
+                textToShow="wget and tar -xvf x86_64 conan executable"
+                textToCopy={'wget https://github.com/conan-io/conan/releases/download/'+ conanReleaseVersion +'/conan-'+ conanReleaseVersion +'-linux-x86_64.tar.gz\ntar -xvf conan-'+ conanReleaseVersion +'-linux-x86_64.tar.gz'}
                 gtmProduct={gtmProduct}
                 gtmPlatforms="linux"
                 gtmCopyDescription="wget and tar -xvf conan executable"
