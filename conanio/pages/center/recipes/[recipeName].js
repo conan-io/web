@@ -12,6 +12,7 @@ import Link from 'next/link';
 import { ConanCenterHeader } from '../../../components/header';
 import { truncate,
          truncateAdnCopy,
+         urlify,
          sanitizeURL,
          ClipboardCopy,
          prettyProfiles,
@@ -128,7 +129,7 @@ export default function ConanPackage(props) {
             <Tooltip style={{ zIndex: 99 }} id="package-info"/>
             <a data-tooltip-id='package-info' data-tooltip-html="Home page" data-tooltip-place="top">
               <IoMdHome className="conanIconBlue conanIcon22" style={{verticalAlign: "middle"}}/>
-            </a> <a href={recipeHomepage}>{truncate(sanitizeURL(recipeHomepage), 22)}</a>
+            </a> <a href={urlify(recipeHomepage)}>{truncate(sanitizeURL(recipeHomepage), 22)}</a>
           </Col>
         </Row>)}
 

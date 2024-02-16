@@ -46,8 +46,19 @@ function truncateAdnCopy(text, n){
 };
 
 
+function urlify(rawUrl) {
+  if (rawUrl.search(/^http[s]?\:\/\//) === -1) {
+    return 'http://' + rawUrl;
+  } else {
+    return rawUrl;
+  }
+}
+
+
 function sanitizeURL(url) {
+  url = urlify(url)
   let protocol = new URL(url).protocol;
+  console.log(url, protocol, url.replace(protocol + "//", ""))
   return url.replace(protocol + "//", "");
 }
 
@@ -181,4 +192,4 @@ function DefaultDescription (props) {
 }
 
 
-export { truncate, truncateTooltip, truncateAdnCopy, sanitizeURL, ClipboardCopy, prettyProfiles, prettyProfileNames, levenshteinDistance, DefaultDescription };
+export { truncate, truncateTooltip, truncateAdnCopy, urlify, sanitizeURL, ClipboardCopy, prettyProfiles, prettyProfileNames, levenshteinDistance, DefaultDescription };
