@@ -58,7 +58,6 @@ function urlify(rawUrl) {
 function sanitizeURL(url) {
   url = urlify(url)
   let protocol = new URL(url).protocol;
-  console.log(url, protocol, url.replace(protocol + "//", ""))
   return url.replace(protocol + "//", "");
 }
 
