@@ -269,7 +269,7 @@ class ExampleRecipe(ConanFile):
       <blockquote>
         <BiSolidInfoCircle/><strong> Note</strong>
         <br/><br/>
-        If you are new with Conan, we recommend to read the section <Link href="https://docs.conan.io/2/tutorial/consuming_packages.html"><a>how to consume packages</a></Link>.
+        If you are a new Conan user, we recommend reading the <Link href="https://docs.conan.io/2/tutorial/consuming_packages.html"><a>how to consume packages</a></Link> tutorial.
         <CCIAssistanceLink />
       </blockquote>
       Simplest use case consuming this recipe and assuming CMake as your local build tool:
