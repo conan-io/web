@@ -110,7 +110,7 @@ export function ConanCenterHeader(props) {
     <div>
       <ConanHead titlePrefix={props.titlePrefix}/>
       <ConanHeader background="backgroundWhite"/>
-      <BetaBanner/>
+      {/* <BetaBanner/> */}
     </div>
   );
 }
