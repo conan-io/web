@@ -249,7 +249,7 @@ function DownloadConanPackageManager() {
                 imageAlt="Linux"
                 imageSrc="/downloads/linux-small-pack.svg"
                 textToShow="wget and tar -xvf x86_64 conan executable"
-                textToCopy={'wget https://github.com/conan-io/conan/releases/download/'+ conanReleaseVersion +'/conan-'+ conanReleaseVersion +'-linux-x86_64.tar.gz\ntar -xvf conan-'+ conanReleaseVersion +'-linux-x86_64.tar.gz'}
+                textToCopy={'wget https://github.com/conan-io/conan/releases/download/'+ conanReleaseVersion +'/conan-'+ conanReleaseVersion +'-linux-x86_64.tgz\ntar -xvf conan-'+ conanReleaseVersion +'-linux-x86_64.tgz'}
                 gtmProduct={gtmProduct}
                 gtmPlatforms="linux"
                 gtmCopyDescription="wget and tar -xvf conan executable"
