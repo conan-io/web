@@ -16,6 +16,11 @@ const nextConfig = {
         destination: '/:slug*',
         permanent: true,
       },
+      {
+        source: '/center/:recipe((?!.*recipes).*$)',
+        destination: '/center/recipes/:recipe',
+        permanent: true,
+      },
     ]
   },
 }
