@@ -42,11 +42,17 @@ import { useMediaQuery } from 'react-responsive';
 
 export async function getServerSideProps(context) {
   let urls = get_urls({packageId: context.params.recipeName});
-  let data = await get_json(urls.package.info, urls.api.private);
+  let package_info_response = await get_json(urls.package.info, urls.api.private);
+  if (package_info_response.status == 404) {
+    return {
+      notFound: true,
+    }
+  }
+  let downloads_response = await get_json(urls.package.downloads, urls.api.private)
   return {
     props: {
-      data: data,
-      downloads: await get_json(urls.package.downloads, urls.api.private),
+      data: package_info_response.data,
+      downloads: downloads_response.data,
       recipeName: context.params.recipeName,
       recipeVersion: context.query.version? context.query.version: null
     },
