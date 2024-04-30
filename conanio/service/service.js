@@ -29,7 +29,7 @@ export function get_urls({packageId='', search='all', topics=[], licenses=[]} = 
 export async function get_json(url, api) {
   const response = await fetch(`${encodeURI(api)}/${encodeURI(url)}`);
   const data = await response.json();
-  return data
+  return {data: data, status: response.status}
 }
 
 export async function get_json_list(url, api) {
@@ -38,7 +38,7 @@ export async function get_json_list(url, api) {
   const data = await response.json();
   const data_list = [];
   Object.keys(data).forEach(function(key) {data_list.push(data[key]);});
-  return data_list
+  return {data: data_list, status: response.status}
 }
 
 export async function get_json_list_with_id(url, api) {
@@ -47,5 +47,5 @@ export async function get_json_list_with_id(url, api) {
   const data = await response.json();
   const data_list = [];
   Object.keys(data).forEach(function(key) {data_list.push({value: data[key], id: key});});
-  return data_list
+  return {data: data_list, status: response.status}
 }

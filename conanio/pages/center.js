@@ -15,16 +15,19 @@ import { BiInfoCircle } from "react-icons/bi";
 
 export async function getServerSideProps(context) {
   let urls = get_urls()
-  const reference_num = await get_json(urls.reference.num, urls.api.private);
+  const reference_num_response = await get_json(urls.reference.num, urls.api.private);
+  const popular_response = await get_json_list(urls.popular, urls.api.private)
+  const updated_response = await get_json_list(urls.updated, urls.api.private)
+  const new_response = await get_json_list(urls.new, urls.api.private)
 
   return {
     props: {
       data: {
-        popular: await get_json_list(urls.popular, urls.api.private),
-        updated: await get_json_list(urls.updated, urls.api.private),
-        new: await get_json_list(urls.new, urls.api.private),
-        reference_num: reference_num.references,
-        recipes_num: reference_num.recipes,
+        popular: popular_response.data,
+        updated: updated_response.data,
+        new: new_response.data,
+        reference_num: reference_num_response.data.references,
+        recipes_num: reference_num_response.data.recipes,
       },
     },
   }

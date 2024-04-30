@@ -35,17 +35,18 @@ import {get_json_list, get_urls, get_json_list_with_id} from '../../service/serv
 
 export async function getServerSideProps(context) {
   let urls = get_urls({search: '', topics: null})
-  const topics_list = await get_json_list_with_id(urls.topics, urls.api.private);
-  const licenses_list = await get_json_list_with_id(urls.licenses, urls.api.private);
-  // const packages = await get_json_list(urls.search.package, urls.api.private);
+  const topics_list_response = await get_json_list_with_id(urls.topics, urls.api.private);
+  const licenses_list_response = await get_json_list_with_id(urls.licenses, urls.api.private);
+  // const packages_response = await get_json_list(urls.search.package, urls.api.private);
+  // let  packages = packages_response.data;
   // if (packages && packages.length > 0 && initialValue !== 'all') {
   //   packages.sort((a, b) => levenshteinDistance(a.name, initialValue) - levenshteinDistance(b.name, initialValue))
   // }
   return {
     props: {
       data: {
-        licenses: licenses_list.map(elem => {return {filter: elem.value.filter, id: elem.value.id};}),
-        topics: topics_list.map(elem => {return {filter: elem.value.filter, id: elem.value.id};}),
+        licenses: licenses_list_response.data.map(elem => {return {filter: elem.value.filter, id: elem.value.id};}),
+        topics: topics_list_response.data.map(elem => {return {filter: elem.value.filter, id: elem.value.id};}),
         // defaultValue: value,
         // defaultTopics: topics,
         // defaultLicenses: licenses,
@@ -159,8 +160,8 @@ function SearchList(props) {
           let value = props.value || 'all';
           console.log("value", value)
           let urls = get_urls({search: value, topics: props.topics, licenses: props.licenses})
-          const packages = await get_json_list(urls.search.package, urls.api.public);
-          setData(packages);
+          const packages_response = await get_json_list(urls.search.package, urls.api.public);
+          setData(packages_response.data);
         } catch(err) {
           setError(err.message);
           setData(null);
