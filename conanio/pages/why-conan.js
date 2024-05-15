@@ -47,7 +47,7 @@ function WhyConan() {
             <Row className="justify-content-md-center">
               <Col>
                 <div className="mt-4 conan-card" style={{backgroundColor: "white"}}>
-                  <Row style={{justifyContent: "center !important;"}} className="mt-4 text-center justify-content-md-center">
+                  <Row style={{justifyContent: "center !important"}} className="mt-4 text-center justify-content-md-center">
                     <SiConan className="conanIconBlue conanIcon34 mr-1"/>
                     <FcAdvance className="conanIcon34"/>
                     <LuBinary className="conanIcon34"/>
@@ -76,7 +76,7 @@ function WhyConan() {
             <Row className="justify-content-md-center">
               <Col>
                 <div className="mt-4 conan-card" style={{backgroundColor: "white"}}>
-                  <Row style={{justifyContent: "center !important;"}} className="mt-4 text-center justify-content-md-center">
+                  <Row style={{justifyContent: "center !important"}} className="mt-4 text-center justify-content-md-center">
                     <FcMultipleDevices className="conanIcon34"/>
                   </Row>
                   <Row style={{margin: '40px 40px 0px 40px'}}>
@@ -91,7 +91,7 @@ function WhyConan() {
               </Col>
               <Col>
                 <div className="mt-4 conan-card" style={{backgroundColor: "white"}}>
-                  <Row style={{justifyContent: "center !important;"}} className="mt-4 text-center justify-content-md-center">
+                  <Row style={{justifyContent: "center !important"}} className="mt-4 text-center justify-content-md-center">
                     <FcSupport className="conanIcon34"/>
                   </Row>
                   <Row style={{margin: '40px 40px 0px 40px'}}>
@@ -111,7 +111,7 @@ function WhyConan() {
             <Row className="justify-content-md-center">
               <Col>
                 <div className="mt-4 conan-card" style={{backgroundColor: "white"}}>
-                  <Row style={{justifyContent: "center !important;"}} className="mt-4 text-center justify-content-md-center">
+                  <Row style={{justifyContent: "center !important"}} className="mt-4 text-center justify-content-md-center">
                     <FcPuzzle className="conanIcon34"/>
                   </Row>
                   <Row style={{margin: '40px 40px 0px 40px'}}>
@@ -139,7 +139,7 @@ function WhyConan() {
             <Row className="justify-content-md-center">
               <Col>
                 <div className="mt-4 conan-card" style={{backgroundColor: "white"}}>
-                  <Row style={{justifyContent: "center !important;"}} className="mt-4 text-center justify-content-md-center">
+                  <Row style={{justifyContent: "center !important"}} className="mt-4 text-center justify-content-md-center">
                     <FcMultipleInputs className="conanIcon34"/>
                   </Row>
                   <Row style={{margin: '40px 40px 0px 40px'}}>
@@ -150,7 +150,7 @@ function WhyConan() {
                   </Row>
                   <Row style={{margin: '0px 40px 0px 40px'}}>
                     <Col>
-                      <Row style={{justifyContent: "center !important;"}} className="mt-4 text-center justify-content-md-center">
+                      <Row style={{justifyContent: "center !important"}} className="mt-4 text-center justify-content-md-center">
                         <FcElectronics className="conanIcon34"/>
                       </Row>
                       <Row style={{margin: '0px 10px 0px 0px'}} className="mt-4 text-center justify-content-md-center">
@@ -160,7 +160,7 @@ function WhyConan() {
                       </Row>
                     </Col>
                     <Col>
-                      <Row style={{justifyContent: "center !important;"}} className="mt-4 text-center justify-content-md-center">
+                      <Row style={{justifyContent: "center !important"}} className="mt-4 text-center justify-content-md-center">
                         <FcMindMap className="conanIcon34"/>
                       </Row>
                       <Row style={{margin: '0px 00px 0px 10px'}} className="mt-4 text-center justify-content-md-center">
@@ -181,7 +181,7 @@ function WhyConan() {
             <Row className="justify-content-md-center">
               <Col>
                 <div className="mt-4 conan-card" style={{backgroundColor: "white"}}>
-                  <Row style={{justifyContent: "center !important;"}} className="mt-4 text-center justify-content-md-center">
+                  <Row style={{justifyContent: "center !important"}} className="mt-4 text-center justify-content-md-center">
                     <FcWorkflow className="conanIcon34"/>
                   </Row>
                   <Row style={{margin: '40px 40px 0px 40px'}}>
@@ -203,7 +203,7 @@ function WhyConan() {
             <Row className="justify-content-md-center">
               <Col>
                 <div className="mt-4 conan-card" style={{backgroundColor: "white"}}>
-                  <Row style={{justifyContent: "center !important;"}} className="mt-4 text-center justify-content-md-center">
+                  <Row style={{justifyContent: "center !important"}} className="mt-4 text-center justify-content-md-center">
                     <FcAcceptDatabase className="conanIcon34"/>
                   </Row>
                   <Row style={{margin: '40px 40px 0px 40px'}}>
@@ -215,7 +215,7 @@ function WhyConan() {
               </Col>
               <Col>
                 <div className="mt-4 conan-card" style={{backgroundColor: "white"}}>
-                  <Row style={{justifyContent: "center !important;"}} className="mt-4 text-center justify-content-md-center">
+                  <Row style={{justifyContent: "center !important"}} className="mt-4 text-center justify-content-md-center">
                     <FcTodoList className="conanIcon34"/>
                   </Row>
                   <Row style={{margin: '40px 40px 0px 40px'}}>
@@ -234,7 +234,7 @@ function WhyConan() {
             <Row className="justify-content-md-center">
               <Col>
                 <div className="mt-4 conan-card" style={{backgroundColor: "white"}}>
-                  <Row style={{justifyContent: "center !important;"}} className="mt-4 text-center justify-content-md-center">
+                  <Row style={{justifyContent: "center !important"}} className="mt-4 text-center justify-content-md-center">
                     <RiOpenSourceFill className="conanIconBlue conanIcon34"/>
                   </Row>
                   <Row style={{margin: '40px 40px 0px 40px'}}>
@@ -256,7 +256,7 @@ function WhyConan() {
             <Row className="justify-content-md-center">
               <Col>
                 <div className="mt-4 conan-card" style={{backgroundColor: "white"}}>
-                  <Row style={{justifyContent: "center !important;"}} className="mt-4 text-center justify-content-md-center">
+                  <Row style={{justifyContent: "center !important"}} className="mt-4 text-center justify-content-md-center">
                     <FcCollaboration className="conanIcon34"/>
                   </Row>
                   <Row style={{margin: '40px 40px 0px 40px'}}>
@@ -268,7 +268,7 @@ function WhyConan() {
               </Col>
               <Col>
                 <div className="mt-4 conan-card" style={{backgroundColor: "white"}}>
-                  <Row style={{justifyContent: "center !important;"}} className="mt-4 text-center justify-content-md-center">
+                  <Row style={{justifyContent: "center !important"}} className="mt-4 text-center justify-content-md-center">
                     <SiJfrog className="conanIconGreen conanIcon34"/>
                   </Row>
                   <Row style={{margin: '40px 40px 0px 40px'}}>
@@ -287,7 +287,7 @@ function WhyConan() {
             <Row className="justify-content-md-center">
               <Col>
                 <div className="mt-4 conan-card" style={{backgroundColor: "white"}}>
-                  <Row style={{justifyContent: "center !important;"}} className="mt-4 text-center justify-content-md-center">
+                  <Row style={{justifyContent: "center !important"}} className="mt-4 text-center justify-content-md-center">
                     <FcConferenceCall className="conanIcon34"/>
                   </Row>
                   <Row style={{margin: '40px 40px 0px 40px'}}>
