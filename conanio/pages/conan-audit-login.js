@@ -13,18 +13,15 @@ import { post_conan_audit_login } from '../service/service';
 
 
 function ConanAuditAccess() {
-
+  const [name, setName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
   const [validated, setValidated] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      
-      event.stopPropagation();
-    }
-    setValidated(true);
-    //let data = post_conan_audit_login();
+    // Post user information to send the token
+    post_conan_audit_login(name, lastName, email);
   };
 
   return (
@@ -54,6 +51,8 @@ function ConanAuditAccess() {
                     required
                     type="text"
                     placeholder="First name"
+                    value={name}
+                    onChange={(e) => { setName(e.target.value) }}
                 />
                 <Form.Control.Feedback type="invalid">
                 Please provide your first name.
@@ -65,6 +64,8 @@ function ConanAuditAccess() {
                     required
                     type="text"
                     placeholder="Last name"
+                    value={lastName}
+                    onChange={(e) => { setLastName(e.target.value) }}
                 />
                 <Form.Control.Feedback type="invalid">
                 Please provide your last name.
@@ -78,6 +79,8 @@ function ConanAuditAccess() {
                       type="text"
                       placeholder="Email"
                       aria-describedby="inputGroupPrepend"
+                      value={email}
+                      onChange={(e) => { setEmail(e.target.value) }}
                       required
                     />
                     <Form.Control.Feedback type="invalid">
