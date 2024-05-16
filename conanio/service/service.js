@@ -2,6 +2,7 @@ export function get_urls({packageId='', search='all', topics=[], licenses=[]} = 
   return {
     api: {
       private: (`${encodeURI(process.env.conanioServer)}`),
+      privateAuth: (`${encodeURI(process.env.conanioAuthServer)}`),
       public: '/api',
     },
     package: {
@@ -23,7 +24,7 @@ export function get_urls({packageId='', search='all', topics=[], licenses=[]} = 
     search: {
       package: (`search/${encodeURIComponent(search.toLowerCase())}?topics=${encodeURIComponent(topics)}&licenses=${encodeURIComponent(licenses)}`)
     },
-    audit_login: 'conan-audit/login'
+    auditLogin: 'conan-audit/login'
   }
 }
 
@@ -54,7 +55,7 @@ export async function get_json_list_with_id(url, api) {
 
 export async function post_conan_audit_login(name, last_name, email) {
   const urls = get_urls();
-  const response = await fetch(`${encodeURI(urls.api.private)}/${encodeURI(urls.audit_login)}?name=${encodeURIComponent(name)}&last_name=${encodeURIComponent(last_name)}&email=${encodeURIComponent(email)}`);
+  const response = await fetch(`${encodeURI(urls.api.privateAuth)}/${encodeURI(urls.auditLogin)}?name=${encodeURIComponent(name)}&last_name=${encodeURIComponent(last_name)}&email=${encodeURIComponent(email)}`);
   const data = await response.json();
   return {info: data, status: response.status};
 }

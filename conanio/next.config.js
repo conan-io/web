@@ -6,6 +6,7 @@ const nextConfig = {
   },
   env: {
     conanioServer: process.env.CONANIO_SERVER,
+    conanioAuthServer: process.env.CONANIO_AUTH_SERVER,
     gtmURL: process.env.GTM_URL,
     gtmID: process.env.GTM_ID
   },
