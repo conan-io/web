@@ -14,7 +14,7 @@ export default async function get(req: ApiSearchRequest, res: any) {
   let licenses = req.query.licenses || "";
   // TODO: avoid composing the request by creating better service methods
   const response = await fetch(
-    `${encodeURI(process.env.NEXT_PUBLIC_CONAN_CONANIO_SERVICE)}/search/${req.query.pattern}?topics=${topics}&licenses=${licenses}`,
+    `${encodeURI(process.env.conanioServer)}/search/${req.query.pattern}?topics=${topics}&licenses=${licenses}`,
   );
   if (!response.ok) {
     res.status(404).json({});
