@@ -1,6 +1,6 @@
 export default async function get(req, res){
     const response = await fetch(
-      `${encodeURI(process.env.NEXT_PUBLIC_CONAN_CONANIO_SERVICE)}/package/${encodeURIComponent(
+      `${encodeURI(process.env.conanioServer)}/package/${encodeURIComponent(
           (req.query.packageId).toLowerCase()
         )}/use_it`
     );
