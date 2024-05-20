@@ -23,6 +23,7 @@ interface ApiUrls {
   search: {
     package: string;
   };
+  signup: string;
 }
 
 interface GetUrlsParams {
@@ -41,7 +42,7 @@ export const getUrls = ({
 }: GetUrlsParams = {}): ApiUrls => {
   return {
     api: {
-      private: `${encodeURI(process.env.NEXT_PUBLIC_CONAN_CONANIO_SERVICE)}`,
+      private: `${encodeURI(process.env.conanioServer)}`,
       public: "/api",
     },
     package: {
@@ -64,6 +65,7 @@ export const getUrls = ({
     search: {
       package: `search/${encodeURIComponent(pattern.toLowerCase())}?topics=${encodeURIComponent(topics?.join(","))}&licenses=${encodeURIComponent(licenses?.join(","))}`,
     },
+    signup: 'conan-user/signup',
   };
 };
 
