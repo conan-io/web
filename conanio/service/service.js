@@ -21,7 +21,7 @@ export function get_urls({packageId='', search='all', topics=[], licenses=[]} = 
     reference: {
       num: 'reference/num',
     },
-    login: 'conan-user/login',
+    login: 'conan-user/signup',
     search: {
       package: (`search/${encodeURIComponent(search.toLowerCase())}?topics=${encodeURIComponent(topics)}&licenses=${encodeURIComponent(licenses)}`)
     }
