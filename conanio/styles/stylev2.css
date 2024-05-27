@@ -117,6 +117,30 @@ border-radius: 10px;
     box-shadow: 0 0 0 0 !important;
 }
 
+
+.InputGroupConanText:focus {
+    box-shadow: 0 0 0 0 !important;
+}
+
+
+.InputGroupConanText{
+  border-color: #21AFFF !important;
+}
+
+@media screen and (max-width: 991px) {
+  .InputGroupConanText{
+    width: 85% !important;
+  }
+}
+
+.InputGroupConanText:focus {
+    box-shadow: 0 0 0 0 !important;
+}
+
+.conanAlert{
+  border-radius: 10px;
+}
+
 .conanBlue{
   color: #21AFFF;
 }
