@@ -21,8 +21,8 @@ function ConanTokenGenerator() {
   const handleSubmit = (event) => {
     event.preventDefault();
     // Post user information to send the token
-    const token = post_conan_token_generator(name, lastName, email);
-    console.log(token)
+    const response = post_conan_token_generator(name, lastName, email);
+    console.log(response)
   };
 
   return (
