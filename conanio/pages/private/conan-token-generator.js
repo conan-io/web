@@ -14,11 +14,9 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import Link from 'next/link';
 
 function ConanTokenGenerator() {
-  const [name, setName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [info, setInfo] = useState(null);
-  const [validated, setValidated] = useState(false);
   const [termsAgree, setTermsAgree] = useState(false);
   const [show, setShow] = useState(false);
 
@@ -27,10 +25,8 @@ function ConanTokenGenerator() {
       // Post user information to send the token
       const fetchData = async () => {
         let urls = get_urls();
-        const response = await fetch(`${encodeURI(urls.api.public)}/${encodeURI(urls.signup)}?name=${encodeURIComponent(
-            name
-          )}&last_name=${encodeURIComponent(
-            lastName
+        const response = await fetch(`${encodeURI(urls.api.public)}/${encodeURI(urls.signup)}?full_name=${encodeURIComponent(
+            fullName
           )}&email=${encodeURIComponent(
             email
           )}`,
@@ -46,11 +42,10 @@ function ConanTokenGenerator() {
           }
         );
       };
-      fetchData();
-      setName('');
-      setLastName('');
-      setEmail('');
       setTermsAgree(false);
+      fetchData();
+      setFullName('');
+      setEmail('');
       setShow(true);
   };
 
@@ -88,31 +83,16 @@ function ConanTokenGenerator() {
           <Col md={{span: 6, offset: 3}} lg={{span: 6, offset: 3}}>
             <div className="recipeContentBox p-4">
               <Row>
-                <Form.Group as={Col} controlId="validationCustom01">
-                  <Form.Label><h4>Name</h4></Form.Label>
+                <Form.Group as={Col} controlId="validationFullName">
+                  <Form.Label><h4>Full name</h4></Form.Label>
                   <InputGroup hasValidation>
                     <Form.Control
-                        placeholder="First name"
+                        placeholder="Full name"
                         required
                         className="InputGroupConanText"
                         type="text"
-                        value={name}
-                        onChange={(e) => { setName(e.target.value) }}
-                    />
-                  </InputGroup>
-                </Form.Group>
-              </Row>
-              <Row className="mt-3">
-                <Form.Group as={Col} controlId="validationCustom02">
-                  <Form.Label><h4>Last name</h4></Form.Label>
-                  <InputGroup hasValidation>
-                    <Form.Control
-                        placeholder="Last name"
-                        required
-                        className="InputGroupConanText"
-                        type="text"
-                        value={lastName}
-                        onChange={(e) => { setLastName(e.target.value) }}
+                        value={fullName}
+                        onChange={(e) => { setFullName(e.target.value) }}
                     />
                   </InputGroup>
                 </Form.Group>

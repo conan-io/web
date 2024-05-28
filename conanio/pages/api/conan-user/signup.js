@@ -1,13 +1,10 @@
 export default async (req, res) => {
-    let name = req.query.name || ''
-    let last_name = req.query.last_name || ''
+    let full_name = req.query.full_name || ''
     let email = req.query.email || ''
 
     const response = await fetch(
-        `${encodeURI(process.env.conanioAuthServer)}/conan-user/signup?name=${encodeURIComponent(
-            name
-        )}&last_name=${encodeURIComponent(
-            last_name
+        `${encodeURI(process.env.conanioAuthServer)}/conan-user/signup?full_name=${encodeURIComponent(
+            full_name
         )}&email=${encodeURIComponent(
             email
         )}`,
