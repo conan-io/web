@@ -112,6 +112,7 @@ export default function ConanPackage(props) {
                   href={"https://choosealicense.com/licenses/" + license.toLowerCase()}
                   rel="noopener noreferrer"
                   target="_blank"
+                  key={license.toLowerCase()}
                 >{license}</a>
               );
               return license;
