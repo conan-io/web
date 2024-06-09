@@ -358,10 +358,10 @@ function DownloadJFrogArtifactoryCommunityEditionForCpp() {
                 imageAlt="Docker"
                 imageSrc="/downloads/docker-small-pack.svg"
                 textToShow="$ docker run ..."
-                textToCopy={'docker run --name artifactory -d -p 8081:8081 -p 8082:8082 releases-docker.jfrog.io/jfrog/artifactory-cpp-ce:latest'}
+                textToCopy={'docker run --name artifactory -d -p 8081:8081 -p 8082:8082 releases-docker.jfrog.io/jfrog/artifactory-cpp-ce:' + artifactoryReleaseVersion}
                 gtmProduct={gtmProduct}
                 gtmPlatforms="docker"
-                gtmCopyDescription={'docker run --name artifactory -d -p 8081:8081 -p 8082:8082 releases-docker.jfrog.io/jfrog/artifactory-cpp-ce:latest'}
+                gtmCopyDescription={'docker run --name artifactory -d -p 8081:8081 -p 8082:8082 releases-docker.jfrog.io/jfrog/artifactory-cpp-ce:' + artifactoryReleaseVersion}
               />
               <DownloadInstaller
                 imageAlt="Darwin"
