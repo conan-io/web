@@ -68,7 +68,7 @@ function PackageInfo(props) {
           <Row>
             <Col xs="12" lg="auto">
               <Link href={{ pathname: "/center/recipes/" + props.data.name, query: { version: props.data.info.version } }}>
-                <a><h3>{props.data.name}/{props.data.info.version}</h3></a>
+                <h3>{props.data.name}/{props.data.info.version}</h3>
               </Link>
             </Col>
           </Row>

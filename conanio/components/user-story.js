@@ -6,7 +6,7 @@ export default function SingleUserStory(props) {
       <section className="breadcrumbs pt-5">
         <div className="container conancontainer">
           <Link href="/user-stories">
-            <a className="dark-blue"> &lt; Back to all resources </a>
+            <div className="dark-blue"> &lt; Back to all resources </div>
           </Link>
         </div>
       </section>
@@ -32,8 +32,8 @@ export default function SingleUserStory(props) {
                         width="317"
                       ></img>
                     </div>
-                    <Link href={props.downloadFileURL}>
-                      <a className="btn conan-blue-gradient-bg" rel="noopener noreferrer" target="_blank"> Download </a>
+                    <Link href={props.downloadFileURL} rel="noopener noreferrer" target="_blank">
+                      <div className="btn conan-blue-gradient-bg"> Download </div>
                     </Link>
                   </div>
                 </div>
@@ -66,10 +66,10 @@ export default function SingleUserStory(props) {
                 <div className="image pb-3">
                   <img src={props.downloadFileImgSrc} alt="Download File" className="img-fluid"></img>
                 </div>
-                <Link href={props.downloadFileURL}>
-                  <a className="btn conan-blue-gradient-bg" rel="noopener noreferrer" target="_blank">
+                <Link href={props.downloadFileURL} rel="noopener noreferrer" target="_blank">
+                  <div className="btn conan-blue-gradient-bg">
                     Download
-                  </a>
+                  </div>
                 </Link>
               </div>
             </div>

@@ -57,12 +57,12 @@ function DownloadInstallerOrCopy(props) {
       <div className="cn-box cn-main">{props.textToShow}</div>
       <div onClick={() => {gtmConanPushDownload(props.gtmProduct, props.gtmPlatforms, props.gtmDownloadDescription)}}>
         <Link href={props.installerLink}>
-          <a
+          <div
             className="cn-box cn-action cn-download"
             data-tooltip-id="download"
             data-tooltip-content="Download"
             data-tooltip-place="top"
-          ></a>
+          ></div>
         </Link>
       </div>
       <a
@@ -87,12 +87,12 @@ function DownloadInstaller(props) {
       <div className="cn-box cn-main">{props.textToShow}</div>
       <div onClick={() => {gtmConanPushDownload(props.gtmProduct, props.gtmPlatforms, props.gtmDownloadDescription)}}>
         <Link href={props.installerLink}>
-          <a
+          <div
             className="cn-box cn-action cn-download"
             data-tooltip-id="download"
             data-tooltip-content="Download"
             data-tooltip-place="top"
-          ></a>
+          ></div>
         </Link>
       </div>
     </div>
@@ -184,12 +184,12 @@ function DownloadConanPackageManager() {
                 <div className="cn-box cn-main">Any OS:From Source</div>
                 <div onClick={() => {gtmConanPush('link', 'conan', 'github', 'get conan', 'any os from source');}}>
                   <Link href="https://github.com/conan-io/conan">
-                    <a
+                    <div
                       className="cn-box cn-action cn-link"
                       data-tooltip-id="go-to-conan-github"
                       data-tooltip-content="Go to conan github repositoy"
                       data-tooltip-place="top"
-                    ></a>
+                    ></div>
                   </Link>
                 </div>
               </div>

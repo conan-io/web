@@ -535,7 +535,12 @@ select {
 
 .conan-white-border {
   border: 2px solid white;
+  color: white;
   border-radius: 50px;
+}
+
+.conan-white-border:hover {
+  color: white;
 }
 
 .artifactory-green-gradient-bg {

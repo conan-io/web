@@ -91,7 +91,7 @@ function UserStoriesTomtomPage() {
               <p>
                 Conan is a free open source tool, <a href='https://conan.io/'>get started using Conan today</a>. If C++ is one
                 of the many languages you leverage at your organization, Artifactory can help you manage all the packages in
-                a single solution. <Link href='https://jfrog.com/start-free/'><a rel="noreferrer noopener" target='_blank'> Get started with Artifactory </a></Link> for free today.
+                a single solution. <Link href='https://jfrog.com/start-free/' rel="noreferrer noopener" target='_blank'> Get started with Artifactory</Link> for free today.
               </p>
               <span className="font-weight-bold">
                 About TomTom

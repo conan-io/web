@@ -71,47 +71,47 @@ function ConanFooter() {
             <ul className="d-md-flex justify-content-start pt-2 mt-1 list-unstyled footer-links">
               <li>
                 <Link href="/downloads">
-                  <a onClick={() => {gtmConanPush('downloads')}}id="downloads_btn_footer">Downloads</a>
+                  <div onClick={() => {gtmConanPush('downloads')}}id="downloads_btn_footer">Downloads</div>
                 </Link>
               </li>
               <li>
                 <Link href="/center">
-                  <a onClick={() => {gtmConanPush('conancenter')}}id="conancenter_btn_footer">ConanCenter</a>
+                  <div onClick={() => {gtmConanPush('conancenter')}}id="conancenter_btn_footer">ConanCenter</div>
                 </Link>
               </li>
               <li>
                 <Link href="https://github.com/conan-io/conan">
-                  <a onClick={() => {gtmConanPush('github')}}id="github_btn_footer">GitHub</a>
+                  <div onClick={() => {gtmConanPush('github')}}id="github_btn_footer">GitHub</div>
                 </Link>
               </li>
               <li>
                 <Link href="https://docs.conan.io/">
-                  <a onClick={() => {gtmConanPush('docs')}}id="docs_btn_footer">Docs</a>
+                  <div onClick={() => {gtmConanPush('docs')}}id="docs_btn_footer">Docs</div>
                 </Link>
               </li>
               <li>
                 <Link href="https://blog.conan.io/">
-                  <a onClick={() => {gtmConanPush('blog')}}id="blog_btn_footer">Blog</a>
+                  <div onClick={() => {gtmConanPush('blog')}}id="blog_btn_footer">Blog</div>
                 </Link>
               </li>
               <li>
                 <Link href="/faq">
-                  <a onClick={() => {gtmConanPush('faq')}}id="faq_btn_footer">FAQ</a>
+                  <div onClick={() => {gtmConanPush('faq')}}id="faq_btn_footer">FAQ</div>
                 </Link>
               </li>
               <li>
                 <Link href="/privacy-policy">
-                  <a onClick={() => {gtmConanPush('privacy policy')}}id="privacypolicy_btn_footer">Privacy Policy</a>
+                  <div onClick={() => {gtmConanPush('privacy policy')}}id="privacypolicy_btn_footer">Privacy Policy</div>
                 </Link>
               </li>
               <li>
                 <Link href="/terms-conditions">
-                  <a onClick={() => {gtmConanPush('terms')}}id="terms_btn_footer">Terms</a>
+                  <div onClick={() => {gtmConanPush('terms')}}id="terms_btn_footer">Terms</div>
                 </Link>
               </li>
               <li>
                 <Link href="#">
-                  <a onClick={() => {gtmConanPush('cookies')}}className="ot-sdk-show-settings" id="cookies_btn_footer">Cookies Settings</a>
+                  <div onClick={() => {gtmConanPush('cookies')}}className="ot-sdk-show-settings" id="cookies_btn_footer">Cookies Settings</div>
                 </Link>
               </li>
             </ul>

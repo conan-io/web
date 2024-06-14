@@ -261,7 +261,7 @@ function WhyConan() {
                   </Row>
                   <Row style={{margin: '40px 40px 0px 40px'}}>
                     <p className="text-justify">
-                    <Link href="/center"><a>ConanCenter</a></Link> is a great resource, with more than 1500 popular open source packages built for a wide range of configurations in different operating systems and compilers, with a very strict contribution process, in which every contribution is reviewed by humans, and building all the binaries in our own infrastructure. But many industries, company policies or regulations don&apos;t allow or recommend using packages from the internet.
+                    <Link href="/center">ConanCenter</Link> is a great resource, with more than 1500 popular open source packages built for a wide range of configurations in different operating systems and compilers, with a very strict contribution process, in which every contribution is reviewed by humans, and building all the binaries in our own infrastructure. But many industries, company policies or regulations don&apos;t allow or recommend using packages from the internet.
                     </p>
                   </Row>
                 </div>

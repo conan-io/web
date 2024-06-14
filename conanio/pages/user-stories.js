@@ -12,7 +12,7 @@ function UserStoryCards(props) {
         (info) => (
           <div key={info.title} className="col-md-3">
             <Link href={info.url}>
-              <a className="single-user-story">
+              <div className="single-user-story">
                 <div className="image p-3 d-flex justify-content-center align-items-center bg-bright-gray" style={{height:"200px"}}>
                   <img src={info.imgSrc} alt={info.title} className="w-auto mh-100 h-auto"></img>
                 </div>
@@ -22,7 +22,7 @@ function UserStoryCards(props) {
                 <p className="p-3 text-center">
                   {info.description}
                 </p>
-              </a>
+              </div>
             </Link>
           </div>)
         )

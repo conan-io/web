@@ -107,9 +107,9 @@ function BadgesTab({recipeName}) {
 
 function CCIAssistanceLink() {
   return (
-    <p>If you need additional assistance, please ask a
-      <Link href={{ pathname: "https://github.com/conan-io/conan-center-index/issues/new", query: { labels: "question", template: "question.yml", title: "[question] SHORT DESCRIPTION" }}}>
-        <a> question</a></Link> in the Conan Center Index repository.
+    <p>If you need additional assistance, please ask a <Link href={{ pathname: "https://github.com/conan-io/conan-center-index/issues/new", query: { labels: "question", template: "question.yml", title: "[question] SHORT DESCRIPTION" }}}>
+          question
+      </Link> in the Conan Center Index repository.
       </p>
   );
 }
@@ -269,7 +269,7 @@ class ExampleRecipe(ConanFile):
       <blockquote>
         <BiSolidInfoCircle/><strong> Note</strong>
         <br/><br/>
-        If you are a new Conan user, we recommend reading the <Link href="https://docs.conan.io/2/tutorial/consuming_packages.html"><a>how to consume packages</a></Link> tutorial.
+        If you are a new Conan user, we recommend reading the <Link href="https://docs.conan.io/2/tutorial/consuming_packages.html">how to consume packages</Link> tutorial.
         <CCIAssistanceLink />
       </blockquote>
       Simplest use case consuming this recipe and assuming CMake as your local build tool:
@@ -292,7 +292,7 @@ function UseItTab(props) {
             <p>This recipe belongs to the family of the Conan build tools.</p>
             <p>Please, have a look at the Conan documentation about
             <Link href={{ pathname: "https://docs.conan.io/2/tutorial/consuming_packages/use_tools_as_conan_packages.html"}}>
-              <a> how to use build tools as Conan packages</a>
+              how to use build tools as Conan packages
             </Link>
             .</p>
             <CCIAssistanceLink />
@@ -309,7 +309,7 @@ function UseItTab(props) {
     <div>
       <p>Please, have a look at the Conan documentation about
       <Link href={{ pathname: "https://docs.conan.io/2/tutorial/consuming_packages/build_simple_cmake_project.html"}}>
-        <a> how to use a library in your project</a>
+        how to use a library in your project
       </Link>
       .</p>
       <CCIAssistanceLink />
@@ -332,7 +332,7 @@ function DependenciesTab(props) {
             let ref = require.split("/");
             let name = ref[0];
             let version = ref[1];
-            return <Link key={ require + "deps"} href={{ pathname: "/center/recipes/" + name, query: { version: version } }} passHref><a onClick={() => props.setRecipeVersion(version)}><h5>{require}</h5></a></Link>;
+            return <Link key={ require + "deps"} href={{ pathname: "/center/recipes/" + name, query: { version: version } }} passHref><div onClick={() => props.setRecipeVersion(version)}><h5>{require}</h5></div></Link>;
             })
           }
           </div>)}
@@ -344,7 +344,7 @@ function DependenciesTab(props) {
             let ref = require.split("/");
             let name = ref[0];
             let version = ref[1];
-            return <Link key={require + "tool_deps"} href={{ pathname: "/center/recipes/" + name, query: { version: version } }} passHref><a onClick={() => props.setRecipeVersion(version)}><h5>{require}</h5></a></Link>;
+            return <Link key={require + "tool_deps"} href={{ pathname: "/center/recipes/" + name, query: { version: version } }} passHref><div onClick={() => props.setRecipeVersion(version)}><h5>{require}</h5></div></Link>;
             })
           }
           </div>)}

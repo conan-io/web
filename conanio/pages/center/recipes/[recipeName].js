@@ -112,6 +112,7 @@ export default function ConanPackage(props) {
                   href={"https://choosealicense.com/licenses/" + license.toLowerCase()}
                   rel="noopener noreferrer"
                   target="_blank"
+                  key={license.toLowerCase()}
                 >{license}</a>
               );
               return license;
@@ -125,7 +126,7 @@ export default function ConanPackage(props) {
             <a data-tooltip-id='package-info' data-tooltip-html="GitHub repository" data-tooltip-place="top">
               <LiaGithub className="conanIconBlue conanIcon22" style={{verticalAlign: "middle"}}/>
             </a> <Link href={recipeConanCenterUrl}>
-              <a>View recipe on GitHub</a>
+              View recipe on GitHub
             </Link>
           </Col>
         </Row>)}

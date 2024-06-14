@@ -184,7 +184,7 @@ function DefaultDescription (props) {
     (<Alert className="text-center" variant="secondary">
       It has not been possible to load this information.
       Please, check if <Link href={"https://github.com/conan-io/conan-center-index/tree/master/recipes/" + props.name}>
-        <a>this recipe version</a>
+        this recipe version
       </Link> is compatible with Conan v2.x.
     </Alert>)
   )

@@ -22,10 +22,10 @@ function TribeCards(props) {
                 <div className="content-bottom">
                   <ul className="socials d-flex mt-1 mb-0 pt-2 pl-0 list-unstyled">
                     {info.linkedin && <li>
-                      <Link href={info.linkedin}><a className="mr-2"><img alt="linkedin" src="/social/linkedin.svg"></img></a></Link>
+                      <Link href={info.linkedin}><div className="mr-2"><img alt="linkedin" src="/social/linkedin.svg"></img></div></Link>
                     </li>}
                     {info.twitter && <li>
-                      <Link href={info.twitter}><a className="mr-2"><img alt="linkedin" src="/social/twitter.svg"></img></a></Link>
+                      <Link href={info.twitter}><div className="mr-2"><img alt="linkedin" src="/social/twitter.svg"></img></div></Link>
                     </li>}
                   </ul>
                 </div>
@@ -530,15 +530,15 @@ function TribePage() {
             </p>
             <h2>How does the Conan tribe work?</h2>
             <p className="pb-3">
-              Most of the interactions of the tribe are open and take place in the <Link href="https://github.com/conan-io/tribe" ><a target="_blank" rel="noopener noreferrer">Conan Tribe Github</a></Link> repository. Here, the issues regarding vital decisions for the future of Conan have been be discussed and voted upon. Although anyone could to comment, the number of upvotes and downvotes of only the members of the tribe is heavily weighted towards the final decision. We discussed items of impact in Conan 2.0, such as improving Conan’s graph model, changing defaults, or modernizing build system toolchains and practices.
+              Most of the interactions of the tribe are open and take place in the <Link href="https://github.com/conan-io/tribe" target="_blank" rel="noopener noreferrer">Conan Tribe Github</Link> repository. Here, the issues regarding vital decisions for the future of Conan have been be discussed and voted upon. Although anyone could to comment, the number of upvotes and downvotes of only the members of the tribe is heavily weighted towards the final decision. We discussed items of impact in Conan 2.0, such as improving Conan’s graph model, changing defaults, or modernizing build system toolchains and practices.
             </p>
             <h2>Is it possible to become a member of the tribe?</h2>
             <p className="pb-3">
               Now that Conan 2.0 is GA, we will discuss with the Tribe the way going forward for strategic changes to Conan,
               future major 3.0, 4.0 versions, etc. We will also talk about the Tribe itself and there will be opportunities to join.
               In the meantime, everybody is welcome to give feedback in the
-              <Link href="https://github.com/conan-io/tribe"><a target="_blank" rel="noopener noreferrer">Conan Tribe Github</a></Link> repository
-              and contact the maintainers at <Link href="mailto:tribe-maintainers@conan.io"><a target="_blank" rel="noopener noreferrer">tribe-maintainers@conan.io</a></Link>.
+              <Link href="https://github.com/conan-io/tribe" target="_blank" rel="noopener noreferrer">Conan Tribe Github</Link> repository
+              and contact the maintainers at <Link href="mailto:tribe-maintainers@conan.io" target="_blank" rel="noopener noreferrer">tribe-maintainers@conan.io</Link>.
             </p>
           </div>
         </section>

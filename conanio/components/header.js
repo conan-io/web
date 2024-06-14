@@ -48,18 +48,19 @@ function BetaBanner() {
       <div className="container">
         <div className="row d-flex justify-content-around align-items-center">
           <div className="col-auto mt-1 mb-1 text-center text-white beta-links">
-            Conancenter web BETA version - <Link href="https://github.com/conan-io/web/issues">
-              <a onClick={
-                  () => {
-                    dataLayer.push({
-                      'event': 'fireEvent',
-                      'event_name': 'element_click',
-                      'type': 'ui',
-                      'purpose': 'feedback',
-                      'description': 'conancenter web beta version feedback'
-                    });
-                  }
-                } style={{textDecoration: 'underline'}} className="white"><b>your feedback</b></a>
+            Conancenter web BETA version - <Link
+              href="https://github.com/conan-io/web/issues"
+              onClick={
+                () => {
+                  dataLayer.push({
+                    'event': 'fireEvent',
+                    'event_name': 'element_click',
+                    'type': 'ui',
+                    'purpose': 'feedback',
+                    'description': 'conancenter web beta version feedback'
+                  });
+                }
+              } style={{textDecoration: 'underline'}} className="white"><b>your feedback</b>
             </Link> will help us to improve it!
           </div>
         </div>
@@ -74,10 +75,8 @@ export function ConanHeader(props) {
     <header id="masthead" className={props.background}>
       <div className="container">
         <div className="row d-flex justify-content-between">
-          <Link href="/">
-            <a onClick={() => {gtmConanPush('conan logo')}} className="col-6 col-lg-4 d-block">
-              <img alt="Conan C++ Package Manager" className="header-logo" style={{maxHeight: "83px"}} src="/conan-logo.png"></img>
-            </a>
+          <Link href="/" onClick={() => {gtmConanPush('conan logo')}} className="col-6 col-lg-4 d-block">
+            <img alt="Conan C++ Package Manager" className="header-logo" style={{maxHeight: "83px"}} src="/conan-logo.png"></img>
           </Link>
           <div className="col-6 col-lg-4 xs text-right d-flex align-items-center justify-content-end">
             <Navbar collapseOnSelect expand="lg">

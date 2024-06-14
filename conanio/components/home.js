@@ -7,7 +7,7 @@ function ConanHomeHero() {
     <section id="hero" className="position-relative">
         <img src="/conan-cubes.svg" className="d-none d-lg-block position-absolute hero-bg" alt="Conan C++ Package Manager"></img>
 
-        <Link href="#mktoForm_1479"><a className="btn conan-blue-gradient-bg position-fixed get-involved-btn pl-3 pr-3 d-none d-lg-block">Get involved</a></Link>
+        <Link href="#mktoForm_1479"><div className="btn conan-blue-gradient-bg position-fixed get-involved-btn pl-3 pr-3 d-none d-lg-block">Get involved</div></Link>
 
         <div className="container py-5">
             <div className="row d-flex justify-content-center">
@@ -19,9 +19,9 @@ function ConanHomeHero() {
                             manager to create and share all your native binaries.
                         </h2>
                         <div className="d-inline">
-                            <Link href="/downloads" ><a className="btn conan-blue-gradient-bg ml-0" id="download_btn_top"><span>Downloads</span></a></Link>
-                            <Link href="https://docs.conan.io/2/tutorial.html"><a className="btn conan-blue-border bg-white ml-lg-4" id="get_started_btn_top"><span>Get Started</span></a></Link>
-                            <Link href="/why-conan"><a className="btn conan-blue-border bg-white ml-lg-4" id="why_use_conan"><span>Why use Conan?</span></a></Link>
+                            <Link href="/downloads" ><div className="btn conan-blue-gradient-bg ml-0" id="download_btn_top"><span>Downloads</span></div></Link>
+                            <Link href="https://docs.conan.io/2/tutorial.html"><div className="btn conan-blue-border bg-white ml-lg-4" id="get_started_btn_top"><span>Get Started</span></div></Link>
+                            <Link href="/why-conan"><div className="btn conan-blue-border bg-white ml-lg-4" id="why_use_conan"><span>Why use Conan?</span></div></Link>
                         </div>
                     </div>
                 </div>
@@ -42,16 +42,16 @@ function Conan2OutNow() {
             <h1>Conan 2.0 Is Out Now</h1>
             <div className="d-inline">
               <Link href="https://docs.conan.io/2/whatsnew.html">
-                <a className="btn conan-blue-border bg-white font-weight-bold" id="whats_new_btn_middle">
+                <div className="btn conan-blue-border bg-white font-weight-bold" id="whats_new_btn_middle">
                   <span>What&apos;s new in 2.0</span>
-                </a>
+                </div>
               </Link>
             </div>
             <div className="d-inline">
               <Link href="https://blog.conan.io/2023/02/22/Conan-2.0.html">
-                <a className="btn conan-white-border white ml-lg-2" id="read_blogpost_btn_middle">
+                <div className="btn conan-white-border ml-lg-2" id="read_blogpost_btn_middle">
                   <span>Read our blog post</span>
-                </a>
+                </div>
               </Link>
             </div>
           </div>
@@ -114,7 +114,7 @@ function ConanHomeAdvantages() {
         </div>
         <img src="conan-single-cube.svg" className="d-none d-lg-block position-absolute" style={{right: 0}}></img>
         <div className="row d-flex py-md-5 align-items-stretch justify-content-center">
-          <Link href="https://docs.conan.io/2/introduction.html"><a className="learn-more-ce-link" id="learn_more_btn_middle">Learn more about Conan</a></Link>
+          <Link href="https://docs.conan.io/2/introduction.html"><div className="learn-more-ce-link" id="learn_more_btn_middle">Learn more about Conan</div></Link>
         </div>
       </div>
     </section>
@@ -138,7 +138,7 @@ function ConanHomePlaces() {
             </p>
             <div className="d-inline">
               <Link href="/downloads">
-                <a className="btn artifactory-green-gradient-bg mt-2"id="artifactory_btn_middle"><span>Download Artifactory CE</span></a>
+                <div className="btn artifactory-green-gradient-bg mt-2"id="artifactory_btn_middle"><span>Download Artifactory CE</span></div>
               </Link>
             </div>
           </div>
@@ -155,7 +155,7 @@ function ConanHomePlaces() {
             </p>
             <div className="d-inline">
               <Link href="/center">
-                <a className="btn conan-blue-gradient-bg white font-weight-bold" id="conancenter_btn_middle"><span>Explore Conan libraries and tools</span></a>
+                <div className="btn conan-blue-gradient-bg white font-weight-bold" id="conancenter_btn_middle"><span>Explore Conan libraries and tools</span></div>
               </Link>
             </div>
           </div>
@@ -188,7 +188,7 @@ function ConanHomeTribe() {
         </div>
         <div className="row d-inline d-lg-none">
           <div className="col-12 d-flex justify-content-center">
-            <Link href="/tribe"><a className="btn conan-blue-gradient-bg">Learn more</a></Link>
+            <Link href="/tribe"><div className="btn conan-blue-gradient-bg">Learn more</div></Link>
           </div>
         </div>
         <div className="row d-flex justify-content-around">
@@ -201,7 +201,7 @@ function ConanHomeTribe() {
               A group of more than 70 Conan expert users and contributors that helped to define Conan 2.0.
             </p>
             <div className="d-lg-block d-flex justify-content-center">
-              <Link href="/tribe"><a className="btn conan-blue-gradient-bg">Learn more</a></Link>
+              <Link href="/tribe"><div className="btn conan-blue-gradient-bg">Learn more</div></Link>
             </div>
           </div>
         </div>
@@ -263,7 +263,7 @@ function ConanHomeCustomerSuccess() {
                           <p className="text text-left">
                             TomTom fast tracks their delivery cycle with Conan
                           </p>
-                          <Link href="/user-stories/tomtom"><a className="btn conan-blue-gradient-bg" id="download_tomtom"><span>Download</span></a></Link>
+                          <Link href="/user-stories/tomtom"><div className="btn conan-blue-gradient-bg" id="download_tomtom"><span>Download</span></div></Link>
                         </div>
                         <div className="col-4 pr-5">
                           <img className="success-icon-bg mx-auto" src="https://media.jfrog.com/wp-content/uploads/2022/04/20102313/tomtom-page1.png"></img>
@@ -278,7 +278,7 @@ function ConanHomeCustomerSuccess() {
                           <p className="text text-left">
                             Speeding Multi-Platform Releases for Industrial IoT with Conan and Artifactory
                           </p>
-                          <Link href="/user-stories/rti"><a className="btn conan-blue-gradient-bg" id="download_rti"><span>Download</span></a></Link>
+                          <Link href="/user-stories/rti"><div className="btn conan-blue-gradient-bg" id="download_rti"><span>Download</span></div></Link>
                         </div>
                         <div className="col-4 pr-5">
                           <img className="success-icon-bg mx-auto" src="https://media.jfrog.com/wp-content/uploads/2021/09/02140348/conan-rti-pdf-cover.png"></img>
