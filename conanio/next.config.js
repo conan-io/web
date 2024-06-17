@@ -1,11 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-    experimental: {
-    outputStandalone: true,
-  },
+  output: 'standalone',
   env: {
-    conanioServer: process.env.CONANIO_SERVER,
     gtmURL: process.env.GTM_URL,
     gtmID: process.env.GTM_ID
   },

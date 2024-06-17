@@ -1,8 +1,8 @@
-export default async (req, res) => {
+export default async function get(req, res){
   let topics = req.query.topics || ''
   let licenses = req.query.licenses || ''
   const response = await fetch(
-    `${encodeURI(process.env.conanioServer)}/search/${encodeURIComponent(
+    `${encodeURI(process.env.NEXT_PUBLIC_CONAN_CONANIO_SERVICE)}/search/${encodeURIComponent(
         (req.query.pattern).toLowerCase()
       )}?topics=${encodeURIComponent(
         topics.split(',')

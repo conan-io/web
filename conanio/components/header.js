@@ -25,7 +25,7 @@ function ConanHead(props) {
   const canonicalUrl = (`https://conan.io` + (router.asPath === "/" ? "": router.asPath)).split("?")[0];
   return (
     <Head>
-      <meta charset="UTF-8"/>
+      <meta charSet="UTF-8"/>
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
       <meta name="title" content="Conan.io - the Open Source C and C++ Package Manager for Developers"/>
       <meta
@@ -119,7 +119,7 @@ export function ConanKitchenHeader(props) {
   return (
     <div>
       <ConanHead titlePrefix={props.titlePrefix}/>
-      <div className="header-bg position-absolute"><img src="/kitchen-bg.svg" width="100%"></img></div>
+      <div className="header-bg position-absolute"><img src="/kitchen-bg.svg" alt="" width="100%"></img></div>
       <ConanHeader/>
     </div>
   );

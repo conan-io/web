@@ -73,9 +73,7 @@ function ClipboardCopy({ copyText, tooltipStyle, isCopiedStyle, copyStyle }) {
         setIsCopied(true);
         setTimeout(() => {setIsCopied(false);}, 1500);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   }
 
   return (
