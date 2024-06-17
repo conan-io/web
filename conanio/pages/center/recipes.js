@@ -220,17 +220,16 @@ export default function ConanSearch(props) {
         query: {value: value, topics: topiclist, licenses: licenseList}
       }, undefined, {shallow: true})
   }
-  let timerId = null;
   const handleChange = (e) => {
     const typingSearch = (v) => {
       getData(v, topics, licenses);
     };
     setValue(e);
-    clearTimeout(timerId);
-    timerId = setTimeout(() => {
+    clearTimeout(timer);
+    newTimer = setTimeout(() => {
       typingSearch(e);
     }, 500);
-    setTimer(timerId);
+    setTimer(newTimer);
   }
 
   var handleTopics = (selectedOption) => {
