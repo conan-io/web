@@ -152,22 +152,22 @@ function SearchList(props) {
   };
 
   useEffect(() => {
-      setLoading(true)
-      const fetchData = async () => {
-        try {
-          let value = props.value || 'all';
-          let urls = get_urls({search: value, topics: props.topics, licenses: props.licenses})
-          const packages_response = await get_json_list(urls.search.package, urls.api.public);
-          setData(packages_response.data);
-        } catch(err) {
-          setError(err.message);
-          setData(null);
-        } finally {
-          setLoading(false);
-        }
-      };
-      fetchData();
-    }, [props.value, props.topics, props.licenses])
+    setLoading(true)
+    const fetchData = async () => {
+      try {
+        let value = props.value || 'all';
+        let urls = get_urls({search: value, topics: props.topics, licenses: props.licenses})
+        const packages_response = await get_json_list(urls.search.package, urls.api.public);
+        setData(packages_response.data);
+      } catch(err) {
+        setError(err.message);
+        setData(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [props.value, props.topics, props.licenses])
   return (
     <div style={{width: "100%"}}>
       <h2 className="text-center">
@@ -202,6 +202,7 @@ export default function ConanSearch(props) {
   defaultLicenses = defaultLicenses.map(e => parseInt(e))
   defaultValue = defaultValue || '';
 
+  const [textSearchBar, setTextSearchBar] = useState(defaultValue);
   const [value, setValue] = useState(defaultValue);
   const [topics, setTopics] = useState(defaultTopics);
   const [licenses, setLicenses] = useState(defaultLicenses);
@@ -222,13 +223,14 @@ export default function ConanSearch(props) {
   }
   const handleChange = (e) => {
     const typingSearch = (v) => {
+      setValue(e);
       getData(v, topics, licenses);
     };
-    setValue(e);
+    setTextSearchBar(e)
     clearTimeout(timer);
-    newTimer = setTimeout(() => {
+    const newTimer = setTimeout(() => {
       typingSearch(e);
-    }, 500);
+    }, 1000);
     setTimer(newTimer);
   }
 
@@ -266,7 +268,6 @@ export default function ConanSearch(props) {
     if (!_filterNumber) return null
     const Tag = _filterNumber>9? MdFilter9Plus: tags[_filterNumber];
     return  (<Tag className="conanIconBlue" style={style}/>)
-    return null;
   }
 
   const extraFilters = (item) => {
@@ -297,7 +298,7 @@ export default function ConanSearch(props) {
               <Col xs="12" md="12" lg="7" className="mt-2">
                 <Form onSubmit={e => handleSubmit(e)}>
                     <div>
-                    <ConanSearchBar value={value} handleChange={handleChange}/>
+                    <ConanSearchBar value={textSearchBar} handleChange={handleChange}/>
                   </div>
                 </Form>
               </Col>
@@ -348,8 +349,6 @@ export default function ConanSearch(props) {
           <br/>
         <ConanFooter/>
       </div>
-
     </React.StrictMode>
-
   );
 }
