@@ -20,12 +20,12 @@ function TribeCards(props) {
                   <p className="short-description">{info.description}</p>
                 </div>
                 <div className="content-bottom">
-                  <ul className="socials d-flex mt-1 mb-0 pt-2 pl-0 list-unstyled">
+                  <ul className="socials d-flex mt-1 mb-0 pt-2 ps-0 list-unstyled">
                     {info.linkedin && <li>
-                      <Link href={info.linkedin}><div className="mr-2"><img alt="linkedin" src="/social/linkedin.svg"></img></div></Link>
+                      <Link href={info.linkedin}><div className="me-2"><img alt="linkedin" src="/social/linkedin.svg"></img></div></Link>
                     </li>}
                     {info.twitter && <li>
-                      <Link href={info.twitter}><div className="mr-2"><img alt="linkedin" src="/social/twitter.svg"></img></div></Link>
+                      <Link href={info.twitter}><div className="me-2"><img alt="linkedin" src="/social/twitter.svg"></img></div></Link>
                     </li>}
                   </ul>
                 </div>

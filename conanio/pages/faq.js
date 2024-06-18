@@ -66,7 +66,7 @@ function FaqPage() {
     }
     answers.push(<li className="faq-element">
       <div className="top d-flex justify-content-between" id={"faq-"+i}>
-        <h3 className="question pt-1 pr-2">{faq.question}</h3>
+        <h3 className="question pt-1 pe-2">{faq.question}</h3>
         <div className="arrow d-none">
           <svg fill="none" height="21" viewBox="0 0 21 21" width="21" xmlns="http://www.w3.org/2000/svg">
             <path d="M7.49986 18.3722L17.0002 11.8722L7.49998 5.30793" stroke="#A5A5A5" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"></path>

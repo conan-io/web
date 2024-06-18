@@ -113,7 +113,7 @@ function DownloadConanPackageManager() {
           <Tooltip id="go-to-conan-github" />
           <Tooltip id="extra-info" />
           <div className="small-title d-flex align-items-center"><img
-              alt="Downlod Conan Open Source C and C++ Package Manager" className="mr-2 small-title-lazy"
+              alt="Downlod Conan Open Source C and C++ Package Manager" className="me-2 small-title-lazy"
               src="/conan-downloads-logo.svg"></img></div>
           <div className="text pb-1">
             <p className="py-3 front-text">Install the latest version ({conanReleaseVersion}) of the free and open Source Conan C and C++
@@ -262,7 +262,7 @@ function DownloadConanPackageManager() {
                 </a></p>
             </div>
           </div>
-          <div className="cta-wrapper"><a className="btn conan-blue-gradient-bg white font-weight-bold"
+          <div className="cta-wrapper"><a className="btn conan-blue-gradient-bg white fw-bold"
               href="https://docs.conan.io/2.0/tutorial.html">Getting Started With Conan</a></div>
         </div>
       </div>
@@ -281,7 +281,7 @@ function DownloadJFrogArtifactoryCommunityEditionForCpp() {
           <Tooltip id="copy-to-clipboard" />
           <Tooltip id="download" />
           <div className="small-title d-flex align-items-center"><img
-              alt="Downlod JFrog Artifactory Community Edition for C and C++" className="mr-2 lazy"
+              alt="Downlod JFrog Artifactory Community Edition for C and C++" className="me-2 lazy"
               src="/jfrog-artifactory-ce-download-banner.svg"></img></div>
           <div className="text pb-1">
             <p className="py-3 front-text">Download the latest version of JFrog Artifactory Community Edition to host
@@ -404,13 +404,13 @@ function DownloadsPage() {
         </section>
         <section className="pt-5 pb-5" id="downloads">
           <div className="container">
-            <div className="row pb-3 main-downloads-row ml-auto mr-auto">
+            <div className="row pb-3 main-downloads-row ms-auto me-auto">
               <DownloadConanPackageManager />
               <DownloadJFrogArtifactoryCommunityEditionForCpp />
             </div>
             <div className="mb-5 download-questions">
               <div className="col-12 text-center">
-                <h2 className="font-weight-bold pb-3">Questions about Installation?</h2>
+                <h2 className="fw-bold pb-3">Questions about Installation?</h2>
                 <p>Check the Docs, contact the community on Slack, or ask for support in Github</p>
                 <div className="d-flex justify-content-center mt-4"><a className="q-box d-block" href="https://docs.conan.io/">
                     <div className="q-top"><img alt="Docs" src="/docs.svg"></img></div>

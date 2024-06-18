@@ -79,7 +79,7 @@ function UserStoriesTomtomPage() {
                 through Jenkin, accelerated. &quot;Lead times are actually going down as well in that regard,&quot; he noted. &quot;That is,
                 I think, one of the key things that we have achieved by adopting Conan.&quot;
               </p>
-              <div className='w-100 d-flex flex-column justify-content-center  pl-5 pt-4 pb-3'>
+              <div className='w-100 d-flex flex-column justify-content-center  ps-5 pt-4 pb-3'>
                 <p className="font-italic">&quot;We started to see that we could speed up our development chain by producing
                   binary artifacts that could be shared across developers - we could actually shorten the build times
                   because they don&apos;t have to be built over again.&quot;
@@ -93,7 +93,7 @@ function UserStoriesTomtomPage() {
                 of the many languages you leverage at your organization, Artifactory can help you manage all the packages in
                 a single solution. <Link href='https://jfrog.com/start-free/' rel="noreferrer noopener" target='_blank'> Get started with Artifactory</Link> for free today.
               </p>
-              <span className="font-weight-bold">
+              <span className="fw-bold">
                 About TomTom
               </span>
               <p>
@@ -107,13 +107,13 @@ function UserStoriesTomtomPage() {
                 Headquartered in Amsterdam with offices worldwide, TomTom&apos;s technologies are trusted by hundreds of millions of drivers,
                 businesses and governments worldwide.
               </p>
-              <span className="font-weight-bold">
+              <span className="fw-bold">
                 INDUSTRY
               </span>
               <p>
                 Location Technology<br/>Consumer Electronics
               </p>
-              <span className="font-weight-bold">
+              <span className="fw-bold">
                 PROBLEM
               </span>
               <ul>
@@ -125,7 +125,7 @@ function UserStoriesTomtomPage() {
                 <li>Poor developer productivity</li>
                 <li>Unable to sustain a continuous delivery cycle</li>
               </ul>
-                <span className="font-weight-bold">
+                <span className="fw-bold">
                   RESULTS
                 </span>
               <ul>
@@ -136,7 +136,7 @@ function UserStoriesTomtomPage() {
                 <li>Improved developer productivity</li>
                 <li>Accelerated release times for continuous delivery</li>
               </ul>
-              <span className="font-weight-bold">
+              <span className="fw-bold">
                 SOLUTIONS
               </span>
               <p>

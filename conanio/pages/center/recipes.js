@@ -11,6 +11,7 @@ import { ConanSearchBar,
          ConanMultiSelectFilter,
          ConanSingleSelect } from "../../components/searchbar";
 import ListGroup from 'react-bootstrap/ListGroup';
+import Pagination from 'react-bootstrap/Pagination';
 import Link from 'next/link';
 import { ConanCenterHeader } from '../../components/header';
 import ConanFooter from '../../components/footer';
@@ -18,6 +19,7 @@ import { prettyProfiles,
          DefaultDescription } from '../../components/utils';
 import { LiaBalanceScaleSolid } from "react-icons/lia";
 import { BsFilterCircleFill, BsFilterCircle } from "react-icons/bs";
+import { LuArrowBigUpDash } from "react-icons/lu";
 import { MdFilter1,
   MdFilter2,
   MdFilter3,
@@ -29,7 +31,6 @@ import { MdFilter1,
   MdFilter9,
   MdFilter9Plus,
   MdOutlineToday } from "react-icons/md";
-
 import {get_json_list, get_urls, get_json_list_with_id} from '../../service/service';
 
 
@@ -97,6 +98,7 @@ function SearchList(props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
+  const [pageNumber, setPageNumber] = useState(1);
 
   const sortByName = (a, b) => {
     const nameA = a.name.toUpperCase(); // ignore upper and lowercase
@@ -168,18 +170,54 @@ function SearchList(props) {
     };
     fetchData();
   }, [props.value, props.topics, props.licenses])
+
+  function renderPagination(filteredData, pageSize){
+    let pages = []
+    let pageButtoms = []
+    for (let i = 0; i < filteredData.length; i += pageSize) {
+      pages.push(filteredData.slice(i, i + pageSize))
+        // do whatever
+    }
+    for (let number = 1; number <= pages.length; number++) {
+      pageButtoms.push(
+        <Pagination.Item key={number} active={number === pageNumber} onClick={() => setPageNumber(number)}>
+          {number}
+        </Pagination.Item>
+      );
+    }
+    return (
+      <ListGroup className="mt-4">
+       {pages.length > 1 && (<Pagination size="sm" style={{    "margin": "10px auto -10px auto"}}>
+          <Pagination.First onClick={() => setPageNumber(1)}/>
+          <Pagination.Prev onClick={() => {if(pageNumber > 1) setPageNumber(pageNumber - 1);}}/>
+          {pageButtoms.slice(Math.max(0, Math.min(pageNumber-5, pages.length-10)), Math.max(10, pageNumber+5)).map((item) => (item)) }
+          <Pagination.Next onClick={() => {if(pageNumber < pages.length) setPageNumber(pageNumber + 1);}}/>
+          <Pagination.Last onClick={() => setPageNumber(pages.length)}/>
+        </Pagination>)}
+        {
+          pages.length > 0 && pages[pageNumber-1].map((info) => (
+            <ListGroup.Item className="conan-content-basic-card mt-4" key={info.name}>
+              <PackageInfo data={info}/>
+            </ListGroup.Item>))
+        }
+        {pages.length > 1 && (<Pagination size="sm" style={{    "margin": "17px auto 0px auto"}}>
+          <Pagination.First onClick={() => setPageNumber(1)}/>
+          <Pagination.Prev onClick={() => {if(pageNumber > 1) setPageNumber(pageNumber - 1);}}/>
+          {pageButtoms.slice(Math.max(0, Math.min(pageNumber-5, pages.length-10)), Math.max(10, pageNumber+5)).map((item) => (item)) }
+          <Pagination.Next onClick={() => {if(pageNumber < pages.length) setPageNumber(pageNumber + 1);}}/>
+          <Pagination.Last onClick={() => setPageNumber(pages.length)}/>
+          <Pagination.Item key="top" onClick={() => window.scrollTo(0, 0)}><LuArrowBigUpDash/></Pagination.Item>
+        </Pagination>)}
+      </ListGroup>
+    )
+  }
+
   return (
     <div style={{width: "100%"}}>
       <h2 className="text-center">
         Recipes ({!loading && !data && 0}{!loading && data && data.length.toLocaleString()}{loading && <div className="spinner-grow"></div>})
       </h2>
-      <ListGroup>
-      {data && data.filter((info) => props.extraFilters(info)).sort(sortByData).map((info) => (
-        <ListGroup.Item className="conan-content-basic-card mt-4" key={info.name}>
-          <PackageInfo data={info}/>
-        </ListGroup.Item>))
-      }
-      </ListGroup>
+      {data && renderPagination(data.filter((info) => props.extraFilters(info)).sort(sortByData), 100)}
     </div>
   )
 }
@@ -230,7 +268,7 @@ export default function ConanSearch(props) {
     clearTimeout(timer);
     const newTimer = setTimeout(() => {
       typingSearch(e);
-    }, 1000);
+    }, 500);
     setTimer(newTimer);
   }
 
@@ -247,7 +285,8 @@ export default function ConanSearch(props) {
   }
 
   const handleSubmit = (event) => {
-    getData(value, topics, licenses);
+    setValue(textSearchBar)
+    getData(textSearchBar, topics, licenses);
     event.preventDefault();
   }
 

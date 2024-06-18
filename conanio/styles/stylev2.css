@@ -79,8 +79,9 @@ border-radius: 10px;
   align-items: flex-end !important;
 }
 
-.navbar-light .navbar-toggler-icon {
-
+.page-item {
+  min-width: 40px;
+  text-align: center;
 }
 
 .navBtn {

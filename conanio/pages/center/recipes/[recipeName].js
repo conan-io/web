@@ -99,7 +99,7 @@ export default function ConanPackage(props) {
     const fieldRequirements = isToolRequire? 'tool_requires': 'requires';
 
     return (
-      <Col xs lg="3" className="pl-4 mt-4 pt-4">
+      <Col xs lg="3" className="ps-4 mt-4 pt-4">
         {recipeDescription && <Row xs lg className="mb-2"><Col xs lg><h5>Recipe info</h5></Col></Row>}
         {recipeLicenses && recipeLicenses.length > 0 && (<Row>
           <Col xs lg>
@@ -204,7 +204,7 @@ ${recipeData.name}/${selectedVersion}`}
           className={props.buttonClass + " " + ((selectedTab == 'use_it') && "tabButtonActive")}
           value="use_it"
           onClick={(e) => setSelectedTab(e.currentTarget.value)}
-        ><HiOutlineDocumentText className="conanIcon18 mr-1"/> Use it</Button>}
+        ><HiOutlineDocumentText className="conanIcon18 me-1"/> Use it</Button>}
         <Button
           id="packages"
           className={props.buttonClass + " " + ((selectedTab == 'packages') && "tabButtonActive")}
@@ -213,25 +213,25 @@ ${recipeData.name}/${selectedVersion}`}
             setSelectedTab(e.currentTarget.value);
             setPackageOS(null);
           }}
-        ><SiConan className="conanIcon18 mr-1"/> Packages</Button>
+        ><SiConan className="conanIcon18 me-1"/> Packages</Button>
         <Button
           id="dependencies"
           className={props.buttonClass + " " + ((selectedTab == 'dependencies') && "tabButtonActive")}
           value="dependencies"
           onClick={(e) => setSelectedTab(e.currentTarget.value)}
-        ><PiGraphDuotone className="conanIcon18 mr-1"/> Dependencies</Button>
+        ><PiGraphDuotone className="conanIcon18 me-1"/> Dependencies</Button>
         <Button
           id="versions"
           className={props.buttonClass + " " + ((selectedTab == 'versions') && "tabButtonActive")}
           value="versions"
           onClick={(e) => setSelectedTab(e.currentTarget.value)}
-        ><FaTags className="conanIcon18 mr-1"/> Versions</Button>
+        ><FaTags className="conanIcon18 me-1"/> Versions</Button>
         <Button
           id="badges"
           className={props.buttonClass + " " + ((selectedTab == 'badges') && "tabButtonActive")}
           value="badges"
           onClick={(e) => setSelectedTab(e.currentTarget.value)}
-        ><PiMedal className="conanIcon18 mr-1"/> Badges</Button>
+        ><PiMedal className="conanIcon18 me-1"/> Badges</Button>
       </>
     )
   }
@@ -241,28 +241,28 @@ ${recipeData.name}/${selectedVersion}`}
       <>
       {selectedTab=='use_it' && recipeDescription && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
         {metadatsInfo && (<RecipeInfo/>)}
-        <Col xs lg="9" className="mt-4 pl-4 pr-4 pt-4 recipeContentBox">
+        <Col xs lg="9" className="mt-4 ps-4 pe-4 pt-4 recipeContentBox">
           <UseItTab info={recipeUseIt} recipeName={props.recipeName} recipeVersion={selectedVersion} />
         </Col>
       </Row>}
       {selectedTab=='packages' && recipeDescription && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
         {metadatsInfo && (<RecipeInfo/>)}
-        <Col xs lg="9" className="mt-4 pl-4 pr-4 pt-4 recipeContentBox">
+        <Col xs lg="9" className="mt-4 ps-4 pe-4 pt-4 recipeContentBox">
           <PackagesTab recipeRevision={recipeRevision} packages={recipePackages} recipeName={props.recipeName} recipeVersion={selectedVersion} packageOS={packageOS} setPackageOS={setPackageOS}/>
         </Col>
       </Row>}
       {selectedTab=='dependencies' && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
         {metadatsInfo && (<RecipeInfo/>)}
-        <Col xs lg="9" className="mt-4 pl-4 pr-4 pt-4 recipeContentBox"><DependenciesTab info={recipeUseIt} recipeName={props.recipeName} recipeVersion={selectedVersion}/></Col>
+        <Col xs lg="9" className="mt-4 ps-4 pe-4 pt-4 recipeContentBox"><DependenciesTab info={recipeUseIt} recipeName={props.recipeName} recipeVersion={selectedVersion}/></Col>
       </Row>}
       {selectedTab=='versions' && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
-        <Col xs lg className="pb-4 mt-4 pl-4 pr-4 pt-4 recipeContentBox"><VersionsTab selector={setSelectedVersion} data={props.data} /></Col>
+        <Col xs lg className="pb-4 mt-4 ps-4 pe-4 pt-4 recipeContentBox"><VersionsTab selector={setSelectedVersion} data={props.data} /></Col>
       </Row>}
       {selectedTab=='badges' && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
-        <Col xs lg className="mt-4 pl-4 pr-4 pt-4 recipeContentBox"><BadgesTab recipeName={props.recipeName} /></Col>
+        <Col xs lg className="mt-4 ps-4 pe-4 pt-4 recipeContentBox"><BadgesTab recipeName={props.recipeName} /></Col>
       </Row>}
       {selectedTab=='stats' && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
-        <Col xs lg className="mt-4 pl-4 pr-4 pt-4 recipeContentBox">
+        <Col xs lg className="mt-4 ps-4 pe-4 pt-4 recipeContentBox">
           <StatsTab
             maintainedVersions={maintainedVersions}
             recipeName={props.recipeName}
@@ -308,7 +308,7 @@ ${recipeData.name}/${selectedVersion}`}
           <div className="mt-3 mb-3">
           <BasicSearchBar/>
           </div>
-            <div className="pt-4 pl-2 pr-2 pb-4 recipeContentBox">
+            <div className="pt-4 ps-4 pe-4 pb-4 recipeContentBox">
               <Col>
               <Row >
                 <Col xs lg>

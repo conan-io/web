@@ -83,14 +83,14 @@ export function ConanHeader(props) {
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                   <Nav className="me-auto">
-                      <Nav.Link onClick={() => {gtmConanPush('conancenter')}} href="/center"><span className="btn navBtn black">ConanCenter<LuPackageSearch className="ml-1"/></span></Nav.Link>
+                      <Nav.Link onClick={() => {gtmConanPush('conancenter')}} href="/center"><span className="btn navBtn black">ConanCenter<LuPackageSearch className="ms-1"/></span></Nav.Link>
                       <Nav.Link onClick={() => {gtmConanPush('faq')}} href="/faq"><span className="btn navBtn black">FAQ</span></Nav.Link>
                       <Nav.Link onClick={() => {gtmConanPush('docs')}} href="https://docs.conan.io/"><span className="btn navBtn black">Docs</span></Nav.Link>
                       <Nav.Link onClick={() => {gtmConanPush('blog')}} href="https://blog.conan.io/"><span className="btn navBtn black">Blog</span></Nav.Link>
-                      <Nav.Link onClick={() => {gtmConanPush('github')}} href="https://github.com/conan-io/conan" rel="nofollow noopener noreferrer" target="_blank"><span className="btn p-0 mr-3"><img style={{maxHeight: "26px"}} src="/small-github.png" alt="Github"></img></span></Nav.Link>
+                      <Nav.Link onClick={() => {gtmConanPush('github')}} href="https://github.com/conan-io/conan" rel="nofollow noopener noreferrer" target="_blank"><span className="btn p-0 me-3"><img style={{maxHeight: "26px"}} src="/small-github.png" alt="Github"></img></span></Nav.Link>
                       <div className="downloads-cta arrow-cta">
                         <div className="button_cont">
-                          <Nav.Link onClick={() => {gtmConanPush('downloads')}} href="/downloads"><span className="btn conan-blue-gradient-bg white font-weight-bold" id="download_btn_header"><span>Downloads</span></span></Nav.Link>
+                          <Nav.Link onClick={() => {gtmConanPush('downloads')}} href="/downloads"><span className="btn conan-blue-gradient-bg white fw-bold" id="download_btn_header"><span>Downloads</span></span></Nav.Link>
                         </div>
                       </div>
                   </Nav>

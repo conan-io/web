@@ -245,11 +245,11 @@ class ExampleRecipe(ConanFile):
       return (
         <>
           <Tabs id="conanfile-tab-selection" activeKey={conanfile} onSelect={(k) => setConanfile(k)} className="package-tabs">
-            <Tab eventKey="txt" title={<span><BsFiletypeTxt className="conanIcon18 mr-1"/> conanfile.txt</span>}>
+            <Tab eventKey="txt" title={<span><BsFiletypeTxt className="conanIcon18 me-1"/> conanfile.txt</span>}>
               <ClipboardCopy copyText={conanfileTxt}/>
               <pre><code className="language-ini">{conanfileTxt}</code></pre>
             </Tab>
-            <Tab eventKey="py" title={<span><FaPython className="conanIcon18 mr-1"/> conanfile.py</span>}>
+            <Tab eventKey="py" title={<span><FaPython className="conanIcon18 me-1"/> conanfile.py</span>}>
               <ClipboardCopy copyText={conanfilePy}/>
               <pre><code className="language-python">{conanfilePy}</code></pre>
             </Tab>
@@ -430,9 +430,9 @@ function PackagesTab(props) {
 
     return (
       <div>
-        {package_info.package_id && (<div className="pl-3 ml-4 mt-2">
+        {package_info.package_id && (<div className="ps-3 ms-4 mt-2">
           {os[package_info.os]}
-          <Badge className="ml-1 profileTopics">{package_info.os}</Badge>
+          <Badge className="ms-1 profileTopics">{package_info.os}</Badge>
           <Badge className="profileTopics">{package_info.arch}</Badge>
           <Badge className="profileTopics">{package_info.options.shared && package_info.options.shared == "True" && ("Shared")}</Badge>
           <Badge className="profileTopics">{package_info.build_type}</Badge>
@@ -543,7 +543,7 @@ function VersionsTab(props) {
           </Col>
           <Col md="2">
             <a data-tooltip-id='extra-info' data-tooltip-html="Reference version" data-tooltip-place="top">
-              <FaTags className="mr-2" style={{verticalAlign:'text-top',color: '#21AFFF', height: '21px', width: '21px'}}/>
+              <FaTags className="me-2" style={{verticalAlign:'text-top',color: '#21AFFF', height: '21px', width: '21px'}}/>
             </a>
             <a key={recipe.info.version} style={{color: '#007bff',cursor: 'pointer'}} onClick={()=>{props.selector(recipe.info.version);window.scrollTo(0, 0);}}>
               {recipe.info.version}
@@ -655,20 +655,20 @@ function StatsTab(props) {
 
   return (
     <div>
-      <Row className="pl-3 pb-3"><h3>{props.recipeName} stats</h3></Row>
+      <Row className="ps-3 pb-3"><h3>{props.recipeName} stats</h3></Row>
       <hr/>
-      <Row className="pl-1">
+      <Row className="ps-1">
         <Col xs md lg="3"><b>Total downloads:</b></Col>
         <Col xs md lg="auto">
           {Object.values(props.data).map((e) => e.info.downloads).reduce((a, b) => a + b, 0).toLocaleString()}</Col>
       </Row>
       <hr/>
-      <Row className="pl-1">
+      <Row className="ps-1">
         <Col xs md lg="3"><b>Current version total downloads:</b></Col>
         <Col xs md lg="auto">{props.currentVersionDownloads.toLocaleString()}</Col>
       </Row>
       <hr/>
-      <Row className="pt-4 pl-3"><h4>Recipe downloads by version</h4></Row>
+      <Row className="pt-4 ps-3"><h4>Recipe downloads by version</h4></Row>
       <Row>
         <LineChart width={Math.min(1100, window.innerWidth*0.8)} height={400} data={props.recipeDownloadsAll} margin={{ top: 10, right: 10, left: 10, bottom: 10 }}>
           <XAxis dataKey="date" stroke="#808080"/>

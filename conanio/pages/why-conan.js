@@ -48,7 +48,7 @@ function WhyConan() {
               <Col>
                 <div className="mt-4 conan-card" style={{backgroundColor: "white"}}>
                   <Row style={{justifyContent: "center !important;"}} className="mt-4 text-center justify-content-md-center">
-                    <SiConan className="conanIconBlue conanIcon34 mr-1"/>
+                    <SiConan className="conanIconBlue conanIcon34 me-1"/>
                     <FcAdvance className="conanIcon34"/>
                     <LuBinary className="conanIcon34"/>
                     <FcAdvance className="conanIcon34"/>

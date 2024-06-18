@@ -7,7 +7,7 @@ function ConanHomeHero() {
     <section id="hero" className="position-relative">
         <img src="/conan-cubes.svg" className="d-none d-lg-block position-absolute hero-bg" alt="Conan C++ Package Manager"></img>
 
-        <Link href="#mktoForm_1479"><div className="btn conan-blue-gradient-bg position-fixed get-involved-btn pl-3 pr-3 d-none d-lg-block">Get involved</div></Link>
+        <Link href="#mktoForm_1479"><div className="btn conan-blue-gradient-bg position-fixed get-involved-btn ps-3 pe-3 d-none d-lg-block">Get involved</div></Link>
 
         <div className="container py-5">
             <div className="row d-flex justify-content-center">
@@ -19,9 +19,9 @@ function ConanHomeHero() {
                             manager to create and share all your native binaries.
                         </h2>
                         <div className="d-inline">
-                            <Link href="/downloads" ><div className="btn conan-blue-gradient-bg ml-0" id="download_btn_top"><span>Downloads</span></div></Link>
-                            <Link href="https://docs.conan.io/2/tutorial.html"><div className="btn conan-blue-border bg-white ml-lg-4" id="get_started_btn_top"><span>Get Started</span></div></Link>
-                            <Link href="/why-conan"><div className="btn conan-blue-border bg-white ml-lg-4" id="why_use_conan"><span>Why use Conan?</span></div></Link>
+                            <Link href="/downloads" ><div className="btn conan-blue-gradient-bg ms-0" id="download_btn_top"><span>Downloads</span></div></Link>
+                            <Link href="https://docs.conan.io/2/tutorial.html"><div className="btn conan-blue-border bg-white ms-lg-4" id="get_started_btn_top"><span>Get Started</span></div></Link>
+                            <Link href="/why-conan"><div className="btn conan-blue-border bg-white ms-lg-4" id="why_use_conan"><span>Why use Conan?</span></div></Link>
                         </div>
                     </div>
                 </div>
@@ -37,25 +37,25 @@ function Conan2OutNow() {
     <section id="conan-2-out-now" className="conan-blue-to-dark-gradient-bg py-3">
       <div className="container">
         <div className="row p-2 d-flex justify-content-around align-items-center">
-          <div className="d-none d-md-inline"><img src="/sparks_left.svg"></img></div>
+          <div className="col-auto d-none d-md-inline d-lg-inline"><img src="/sparks_left.svg"></img></div>
           <div className="col-auto text-center text-white">
             <h1>Conan 2.0 Is Out Now</h1>
             <div className="d-inline">
               <Link href="https://docs.conan.io/2/whatsnew.html">
-                <div className="btn conan-blue-border bg-white font-weight-bold" id="whats_new_btn_middle">
+                <div className="btn conan-blue-border bg-white fw-bold" id="whats_new_btn_middle">
                   <span>What&apos;s new in 2.0</span>
                 </div>
               </Link>
             </div>
             <div className="d-inline">
               <Link href="https://blog.conan.io/2023/02/22/Conan-2.0.html">
-                <div className="btn conan-white-border ml-lg-2" id="read_blogpost_btn_middle">
+                <div className="btn conan-white-border ms-lg-2" id="read_blogpost_btn_middle">
                   <span>Read our blog post</span>
                 </div>
               </Link>
             </div>
           </div>
-          <div className="d-none d-md-inline"><img src="/sparks_right.svg"></img></div>
+          <div className="col-auto d-none d-md-inline"><img src="/sparks_right.svg"></img></div>
         </div>
       </div>
     </section>
@@ -68,8 +68,8 @@ function ConanHomeAdvantages() {
       <div className="container py-0 pt-5">
         <div className="row justify-content-center">
           <div className="col-lg-3 pb-3 pb-lg-0">
-            <div className="advantage text-center black text-center conan-card">
-              <h4 className="mt-3 text-left font-weight-bold">Conan is universal and portable.</h4>
+            <div className="advantage black conan-card">
+              <h4 className="mt-3 text-left fw-bold">Conan is universal and portable.</h4>
               <div className="advantage-text text-left pb-2">
                 <p className="mt-3 line-1">
                   It works in all operating systems including Windows, Linux, OSX, FreeBSD, and others,
@@ -83,8 +83,8 @@ function ConanHomeAdvantages() {
             </div>
           </div>
           <div className="col-lg-3 pb-3 pb-lg-0">
-            <div className="advantage text-center black text-center conan-card">
-              <h4 className="mt-3 text-left font-weight-bold">Conan is open source and completely free.</h4>
+            <div className="advantage black conan-card">
+              <h4 className="mt-3 text-left fw-bold">Conan is open source and completely free.</h4>
               <div className="advantage-text text-left pb-2">
                 <p className="mt-3 line-1">
                   It has native integration with JFrog Artifactory,
@@ -97,8 +97,8 @@ function ConanHomeAdvantages() {
             </div>
           </div>
           <div className="col-lg-3 pb-3 pb-lg-0">
-            <div className="advantage text-center black text-center conan-card">
-              <h4 className="mt-3 text-left font-weight-bold">Conan can manage any number of different binaries.</h4>
+            <div className="advantage black conan-card">
+              <h4 className="mt-3 text-left fw-bold">Conan can manage any number of different binaries.</h4>
               <div className="advantage-text text-left pb-2">
                 <p className="mt-3 line-1">
                   Not only different binaries but also different build configurations,
@@ -113,7 +113,7 @@ function ConanHomeAdvantages() {
           </div>
         </div>
         <img src="conan-single-cube.svg" className="d-none d-lg-block position-absolute" style={{right: 0}}></img>
-        <div className="row d-flex py-md-5 align-items-stretch justify-content-center">
+        <div className="row d-flex py-md-5 align-items-stretch text-center">
           <Link href="https://docs.conan.io/2/introduction.html"><div className="learn-more-ce-link" id="learn_more_btn_middle">Learn more about Conan</div></Link>
         </div>
       </div>
@@ -128,7 +128,7 @@ function ConanHomePlaces() {
         <div className="row d-flex justify-content-center pb-5">
           <div className="col-md-auto py-3 d-flex justify-content-center"><img src="/artifactory-logo.svg"></img></div>
           <div className="col-8 col-md-6 text-left places-wrapper">
-            <h4 className="font-weight-bold">Artifactory Community Edition for C and C++</h4>
+            <h4 className="fw-bold">Artifactory Community Edition for C and C++</h4>
             <p>
               Artifactory Community Edition (CE) for C and C++ is the recommended server
               for development and hosting private packages for a team or company.
@@ -146,7 +146,7 @@ function ConanHomePlaces() {
         <div className="row d-flex justify-content-center mt-5">
           <div className="col-md-auto py-3 d-flex justify-content-center"><img src="/conancenter-logo.svg"></img></div>
           <div className="col-8 col-md-6 text-left places-wrapper">
-            <h4 className="font-weight-bold">ConanCenter, the place to find and share popular C and C++ Conan packages</h4>
+            <h4 className="fw-bold">ConanCenter, the place to find and share popular C and C++ Conan packages</h4>
             <p>
               ConanCenter is the central repository where you can search and discover all the available
               open source Conan packages created by the community. It includes recipe and configuration information,
@@ -155,7 +155,7 @@ function ConanHomePlaces() {
             </p>
             <div className="d-inline">
               <Link href="/center">
-                <div className="btn conan-blue-gradient-bg white font-weight-bold" id="conancenter_btn_middle"><span>Explore Conan libraries and tools</span></div>
+                <div className="btn conan-blue-gradient-bg white fw-bold" id="conancenter_btn_middle"><span>Explore Conan libraries and tools</span></div>
               </Link>
             </div>
           </div>
@@ -176,7 +176,7 @@ function ConanHomeTribe() {
         </div>
         <div className="row d-inline d-lg-none">
           <div className="col-12 d-flex justify-content-center">
-            <h2 className="text-uppercase text-center text-lg-left">Meet the CONAN 2.0&nbsp;TRIBE</h2>
+            <h2 className="text-uppercase text-lg-left">Meet the CONAN 2.0&nbsp;TRIBE</h2>
           </div>
         </div>
         <div className="row d-inline d-lg-none">
@@ -248,16 +248,16 @@ function ConanHomeCustomerSuccess() {
       <div className="container py-5">
         <div className="row">
           <div className="col-12">
-            <h4 className="text-center mt-2 mb-4 font-weight-bold">CUSTOMER SUCCESS STORIES</h4>
+            <h4 className="text-center mt-2 mb-4 fw-bold">CUSTOMER SUCCESS STORIES</h4>
           </div>
         </div>
-        <div className="row">
+        <div className="row mt-4">
           <div className="col-12">
             <div className="testi-cartousel-wrapper">
               <div className="testis-carousel success-stories">
                 <Slider {...settings}>
                     <div className="testi" >
-                      <div className="inner row">
+                      <div className="inner row" style={{'marginRight': '0', 'marginLeft': '0'}}>
                         <div className="col-8">
                           <h5>TomTom Navigation</h5>
                           <p className="text text-left">
@@ -265,14 +265,14 @@ function ConanHomeCustomerSuccess() {
                           </p>
                           <Link href="/user-stories/tomtom"><div className="btn conan-blue-gradient-bg" id="download_tomtom"><span>Download</span></div></Link>
                         </div>
-                        <div className="col-4 pr-5">
+                        <div className="col-4 pe-5">
                           <img className="success-icon-bg mx-auto" src="https://media.jfrog.com/wp-content/uploads/2022/04/20102313/tomtom-page1.png"></img>
                         </div>
                       </div>
                     </div>
 
                     <div className="testi">
-                      <div className="inner row">
+                      <div className="inner row" style={{'marginRight': '0', 'marginLeft': '0'}}>
                         <div className="col-8">
                           <h5>Real-Time Innovations</h5>
                           <p className="text text-left">
@@ -280,7 +280,7 @@ function ConanHomeCustomerSuccess() {
                           </p>
                           <Link href="/user-stories/rti"><div className="btn conan-blue-gradient-bg" id="download_rti"><span>Download</span></div></Link>
                         </div>
-                        <div className="col-4 pr-5">
+                        <div className="col-4 pe-5">
                           <img className="success-icon-bg mx-auto" src="https://media.jfrog.com/wp-content/uploads/2021/09/02140348/conan-rti-pdf-cover.png"></img>
                         </div>
                       </div>
@@ -301,7 +301,7 @@ function ConanHomeUsers() {
       <div className="container">
         <div className="row">
           <div className="col-12">
-            <h4 className="text-center py-2 mb-4 mb-md-5 font-weight-bold">OUR USERS</h4>
+            <h4 className="text-center py-2 mb-4 mb-md-5 fw-bold">OUR USERS</h4>
           </div>
         </div>
 
@@ -372,7 +372,7 @@ function ConanHomeUsersVoices() {
                           <span className="line"></span>
                         </div>
                         <div className="name text-center">Maikel van den Hurk</div>
-                        <div className="position text-center font-weight-bold">
+                        <div className="position text-center fw-bold">
                           Principal Software Engineer at TomTom
                         </div>
                       </div>
@@ -396,7 +396,7 @@ function ConanHomeUsersVoices() {
                           <span className="line"></span>
                         </div>
                         <div className="name text-center">Johannes Nicolai</div>
-                        <div className="position text-center font-weight-bold">
+                        <div className="position text-center fw-bold">
                           Enterprise Solutions Engineer at GitHub
                         </div>
                       </div>
@@ -425,7 +425,7 @@ function ConanHomeUsersVoices() {
                         <span className="line"></span>
                       </div>
                       <div className="name text-center">Nenad Mikša</div>
-                      <div className="position text-center font-weight-bold">
+                      <div className="position text-center fw-bold">
                         Compiler Whisperer at Microblink
                       </div>
                     </div>
@@ -448,7 +448,7 @@ function ConanHomeUsersVoices() {
                         <span className="line"></span>
                       </div>
                       <div className="name text-center">Theo Delrieu</div>
-                      <div className="position text-center font-weight-bold">
+                      <div className="position text-center fw-bold">
                         R&D Engineer at Tanker
                       </div>
                     </div>
@@ -470,7 +470,7 @@ function ConanHomeUsersVoices() {
                         <span className="line"></span>
                       </div>
                       <div className="name text-center">Rene Rivera</div>
-                      <div className="position text-center font-weight-bold">
+                      <div className="position text-center fw-bold">
                         Boost.Build and Boost.Predef author and lead programmer at
                         Disbelief LLC
                       </div>
@@ -493,7 +493,7 @@ function ConanHomeUsersVoices() {
                         <span className="line"></span>
                       </div>
                       <div className="name text-center">Daniel Greidinger</div>
-                      <div className="position text-center font-weight-bold">
+                      <div className="position text-center fw-bold">
                         Software Architect at Keysight Technologies
                       </div>
                     </div>
@@ -516,7 +516,7 @@ function ConanHomeUsersVoices() {
                         <span className="line"></span>
                       </div>
                       <div className="name text-center">Siva Mandadi</div>
-                      <div className="position text-center font-weight-bold">
+                      <div className="position text-center fw-bold">
                         Sr Devops Lead Engineer at Mercedes-Benz R&D
                       </div>
                     </div>
@@ -542,7 +542,7 @@ function ConanHomeUsersVoices() {
                         <span className="line"></span>
                       </div>
                       <div className="name text-center">Peter Tillemans</div>
-                      <div className="position text-center font-weight-bold">
+                      <div className="position text-center fw-bold">
                         IT Manager at Melexis
                       </div>
                     </div>
@@ -564,7 +564,7 @@ function ConanHomeUsersVoices() {
                         <span className="line"></span>
                       </div>
                       <div className="name text-center">Derian Reuss</div>
-                      <div className="position text-center font-weight-bold">
+                      <div className="position text-center fw-bold">
                         DevOps Lead at Arxan Technologies
                       </div>
                     </div>
@@ -593,7 +593,7 @@ function ConanHomeUsersVoices() {
                         <span className="line"></span>
                       </div>
                       <div className="name text-center">Luis Díaz Más</div>
-                      <div className="position text-center font-weight-bold">
+                      <div className="position text-center fw-bold">
                         C++ Software Developer at Pix4D
                       </div>
                     </div>
@@ -619,7 +619,7 @@ function ConanHomeUsersVoices() {
                         <span className="line"></span>
                       </div>
                       <div className="name text-center">Gerald R. Wiltse</div>
-                      <div className="position text-center font-weight-bold">
+                      <div className="position text-center fw-bold">
                         Manager of AppAnywhere Technology Strategy
                       </div>
                     </div>
@@ -643,7 +643,7 @@ function ConanHomeUsersVoices() {
                         <span className="line"></span>
                       </div>
                       <div className="name text-center">Nathanael Jones</div>
-                      <div className="position text-center font-weight-bold">
+                      <div className="position text-center fw-bold">
                         Owner & Lead Software Engineer at Imazen
                       </div>
                     </div>

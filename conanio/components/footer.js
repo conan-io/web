@@ -67,7 +67,7 @@ function ConanFooter() {
       </div>
       <div className="container">
         <div className="row d-flex justify-content-center px-0 px-md-3" style={{borderTop: '1px solid #404040',textAlign: 'center'}}>
-          <div className="col-md-10 px-md-0 pl-3 pt-2">
+          <div className="col-md-10 px-md-0 ps-3 pt-2">
             <ul className="d-md-flex justify-content-start pt-2 mt-1 list-unstyled footer-links">
               <li>
                 <Link href="/downloads">
@@ -116,20 +116,20 @@ function ConanFooter() {
               </li>
             </ul>
           </div>
-          <div className="col-md-2 pr-0">
-            <ul className="socials d-flex mt-1 mb-0 pt-2 pl-0 justify-content-center list-unstyled">
+          <div className="col-md-2 pe-0">
+            <ul className="socials d-flex mt-1 mb-0 pt-2 ps-0 justify-content-center list-unstyled">
               <li>
-                <a onClick={() => {gtmConanPushSocial('twitter')}} className="mr-2" href="https://twitter.com/conan_io">
+                <a onClick={() => {gtmConanPushSocial('twitter')}} className="me-2" href="https://twitter.com/conan_io">
                   <img alt="twitter" className="lazy" src="/social/twitter.svg"></img>
                 </a>
               </li>
               <li>
-                <a onClick={() => {gtmConanPushSocial('slack')}} className="mr-2" href="https://cpplang.​slack.​com/?id=conan">
+                <a onClick={() => {gtmConanPushSocial('slack')}} className="me-2" href="https://cpplang.​slack.​com/?id=conan">
                   <img alt="slack" className="lazy" src="/social/slack.svg"></img>
                 </a>
               </li>
               <li>
-                <a onClick={() => {gtmConanPushSocial('github')}} className="mr-2" href="https://github.com/conan-io">
+                <a onClick={() => {gtmConanPushSocial('github')}} className="me-2" href="https://github.com/conan-io">
                   <img alt="github" className="lazy" src="/social/github.svg" style={{filter: 'invert(100%)'}}></img>
                 </a>
               </li>

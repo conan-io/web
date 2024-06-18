@@ -2,7 +2,7 @@ import React from "react";
 import { useRouter } from 'next/router';
 import Script from "next/script";
 
-import '../styles/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/style.css';
 import '../styles/stylev2.css';
 import '../styles/font.css';
