@@ -567,9 +567,11 @@ function VersionsTab(props) {
           </Col>
           <Col className="text-center" md="6">
             <Row>
-              <a data-tooltip-id='extra-info' data-tooltip-html="Latest recipe revision" data-tooltip-place="top">
-                <AiOutlinePushpin style={{verticalAlign:'text-top',color: '#21AFFF', height: '21px', width: '21px'}}/>
-              </a> {recipe.info.recipe_revision}
+            <div className="d-inline">
+                <a data-tooltip-id='extra-info' data-tooltip-html="Latest recipe revision" data-tooltip-place="top">
+                  <AiOutlinePushpin style={{verticalAlign:'text-top',color: '#21AFFF', height: '21px', width: '21px'}}/>
+                </a> {recipe.info.recipe_revision}
+            </div>
             </Row>
             {recipe.info.settings && recipe.info.settings.length > 0 && <Row className="mt-2">
               {prettyProfiles(recipe.info.settings).map((item) => (item.badget))}
