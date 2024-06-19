@@ -99,6 +99,7 @@ function SearchList(props) {
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
+  const [showAll, setShowAll] = useState(false);
 
   const sortByName = (a, b) => {
     const nameA = a.name.toUpperCase(); // ignore upper and lowercase
@@ -186,13 +187,14 @@ function SearchList(props) {
       );
     }
     return (
-      <ListGroup className="mt-4">
+      <>
        {pages.length > 1 && (<Pagination size="sm" style={{    "margin": "10px auto -10px auto"}}>
           <Pagination.First onClick={() => setPageNumber(1)}/>
           <Pagination.Prev onClick={() => {if(pageNumber > 1) setPageNumber(pageNumber - 1);}}/>
           {pageButtoms.slice(Math.max(0, Math.min(pageNumber-5, pages.length-10)), Math.max(10, pageNumber+5)).map((item) => (item)) }
           <Pagination.Next onClick={() => {if(pageNumber < pages.length) setPageNumber(pageNumber + 1);}}/>
           <Pagination.Last onClick={() => setPageNumber(pages.length)}/>
+          <Pagination.Item key="all" onClick={() => setShowAll(true)}>Show All</Pagination.Item>
         </Pagination>)}
         {
           pages.length > 0 && pages[pageNumber-1].map((info) => (
@@ -208,7 +210,7 @@ function SearchList(props) {
           <Pagination.Last onClick={() => setPageNumber(pages.length)}/>
           <Pagination.Item key="top" onClick={() => window.scrollTo(0, 0)}><LuArrowBigUpDash/></Pagination.Item>
         </Pagination>)}
-      </ListGroup>
+      </>
     )
   }
 
@@ -217,7 +219,17 @@ function SearchList(props) {
       <h2 className="text-center">
         Recipes ({!loading && !data && 0}{!loading && data && data.length.toLocaleString()}{loading && <div className="spinner-grow"></div>})
       </h2>
-      {data && renderPagination(data.filter((info) => props.extraFilters(info)).sort(sortByData), 100)}
+      <ListGroup className="mt-4">
+        {data && !showAll && renderPagination(data.filter((info) => props.extraFilters(info)).sort(sortByData), 100)}
+        {data && showAll && (
+        <Pagination size="sm" style={{    "margin": "10px auto -10px auto"}}>
+          <Pagination.Item key="show less" onClick={() => setShowAll(false)}>Show Less</Pagination.Item>
+        </Pagination>)}
+        {data && showAll && data.filter((info) => props.extraFilters(info)).sort(sortByData).map((info) => (
+        <ListGroup.Item className="conan-content-basic-card mt-4" key={info.name}>
+          <PackageInfo data={info}/>
+        </ListGroup.Item>))}
+      </ListGroup>
     </div>
   )
 }
