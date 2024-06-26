@@ -31,9 +31,9 @@ import { prettyProfiles, truncateAdnCopy } from './utils';
 import { useMediaQuery } from 'react-responsive';
 
 {/* TODO: this function should go in a more common module. More configurable? */}
-function ClipboardCopy({ copyText }) {
+function ClipboardCopy({ copyText }: {copyText: string}) {
   const [isCopied, setIsCopied] = useState(false);
-  async function copyTextToClipboard(text) {
+  async function copyTextToClipboard(text: string) {
     return await navigator.clipboard.writeText(text);
   }
   // onClick handler function for the copy button
@@ -67,7 +67,7 @@ function ClipboardCopy({ copyText }) {
 }
 
 
-function BadgesTab({recipeName}) {
+function BadgesTab({recipeName}: {recipeName: string}) {
   const mdMessage = `[![Conan Center](https://img.shields.io/conan/v/${recipeName})](https://conan.io/center/recipes/${recipeName})`;
   const resMessage = `.. image:: https://img.shields.io/conan/v/${recipeName}   :alt: Conan Center`;
   const asciiMessage = `image:https://img.shields.io/conan/v/${recipeName} [Conan Center]`;
@@ -112,15 +112,25 @@ function CCIAssistanceLink() {
   );
 }
 
-function UseItFullContent({props}) {
+interface RecipeInfo {
+    properties: any;
+    requires: string[];
+    build_requires: string[];
+    package_type: string;
+    headers: string[];
+    status: string;
+    recipe_revision: string;
+}
+
+function UseItFullContent(props: {recipeName: string, recipeVersion: string}) {
   const reference = props.recipeName + "/" + props.recipeVersion;
 
-  const TargetsInfo = function(recipe_properties) {
+  const TargetsInfo = (recipe_properties: {root: any, components: any}) => {
     const [open, setOpen] = useState(false);
     const [open2, setOpen2] = useState(false);
     const root = recipe_properties.root? recipe_properties.root: Object();
     const components = recipe_properties.components? recipe_properties.components: Object();
-    const getCMakePropertyValue = function(config_property, module_property) {
+    const getCMakePropertyValue = (config_property: string, module_property: string) => {
       let defaultName = config_property == "cmake_target_name"? `${props.recipeName}::${props.recipeName}`: props.recipeName;
       let name = root[config_property]? root[config_property]: defaultName;
       if (root.cmake_find_mode == "module" && root[module_property]) {
@@ -299,7 +309,7 @@ function UseItTab(props) {
     }
     else {
       // if it's a normal library
-      return <UseItFullContent props={props}></UseItFullContent>
+      return <UseItFullContent {...props}></UseItFullContent>
     }
   }
   return (

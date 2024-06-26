@@ -6,7 +6,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import { LuPackageSearch } from "react-icons/lu";
 
 
-function gtmConanPush(description){
+function gtmConanPush(description: string){
   dataLayer.push({
     'event': 'fireEvent',
     'event_name': 'element_click',
@@ -18,7 +18,7 @@ function gtmConanPush(description){
 }
 
 
-function ConanHead(props) {
+function ConanHead(props: {titlePrefix?: string}){
   const router = useRouter();
   const defaultTitle = "Conan 2.0: C and C++ Open Source Package Manager";
   const title = props.titlePrefix? props.titlePrefix + " - " + defaultTitle: defaultTitle;
@@ -70,7 +70,7 @@ function BetaBanner() {
 }
 
 
-export function ConanHeader(props) {
+export function ConanHeader(props: {background?: string}){
   return (
     <header id="masthead" className={props.background}>
       <div className="container">
@@ -104,7 +104,7 @@ export function ConanHeader(props) {
 }
 
 
-export function ConanCenterHeader(props) {
+export function ConanCenterHeader(props: {titlePrefix?: string}) {
   return (
     <div>
       <ConanHead titlePrefix={props.titlePrefix}/>
@@ -115,7 +115,7 @@ export function ConanCenterHeader(props) {
 }
 
 
-export function ConanKitchenHeader(props) {
+export function ConanKitchenHeader(props: {titlePrefix?: string}){
   return (
     <div>
       <ConanHead titlePrefix={props.titlePrefix}/>

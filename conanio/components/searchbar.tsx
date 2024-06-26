@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, JSXElementConstructor, PromiseLikeOfReactNode, ReactElement, ReactNode } from "react";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -12,7 +12,7 @@ import { CgFormatSlash } from "react-icons/cg";
 import { useRouter } from 'next/router';
 
 
-function ConanFilter(props) {
+function ConanFilter(props: { checked: boolean; handleFilter: any; filter: string; filter_id: any; }) {
   const [checked, setChecked] = useState(props.checked);
 
   const handleChange = () => {

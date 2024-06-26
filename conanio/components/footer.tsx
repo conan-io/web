@@ -3,7 +3,7 @@ import Link from 'next/link';
 import MarketoForm from "./useMarketo";
 
 
-function gtmConanPush(description){
+function gtmConanPush(description: string){
   dataLayer.push({
     'event': 'fireEvent',
     'event_name': 'element_click',
@@ -15,7 +15,7 @@ function gtmConanPush(description){
 }
 
 
-function gtmConanPushSocial(description){
+function gtmConanPushSocial(description: string){
   dataLayer.push({
     'event': 'fireEvent',
     'event_name': 'element_click',
