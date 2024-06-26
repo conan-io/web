@@ -1,10 +1,7 @@
 import React from 'react';
+import { ConanKitchenHeader, ConanFooter } from '@/components';
 
-import { ConanKitchenHeader } from '../components/header';
-import ConanFooter from '../components/footer';
-
-function PrivacyPolicyPage() {
-  return (
+const PrivacyPolicyPage = () => (
     <React.StrictMode>
 
       <div className="flex-wrapper">
@@ -523,6 +520,5 @@ function PrivacyPolicyPage() {
 
     </React.StrictMode>
   );
-}
 
 export default PrivacyPolicyPage
