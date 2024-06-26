@@ -6,13 +6,13 @@ import { Tooltip } from 'react-tooltip';
 import { HiOutlineClipboardCopy, HiOutlineClipboardCheck } from "react-icons/hi";
 
 
-function truncate(text, n){
+function truncate(text: string, n: number){
   if(text.length > n) return text.slice(0, n-1) + "...";
   return text;
 };
 
 
-function truncateTooltip(text, n){
+function truncateTooltip(text: string, n: number){
   if(text.length > n) return (
     <>
       <Tooltip style={{ zIndex: 99 }} id={text}/>
@@ -30,7 +30,7 @@ function truncateTooltip(text, n){
 };
 
 
-function truncateAdnCopy(text, n){
+function truncateAdnCopy(text: string, n: number){
   if(text.length > n) return (
     <>
       {truncateTooltip(text, n)}
@@ -42,11 +42,11 @@ function truncateAdnCopy(text, n){
       />
     </>
   );
-  return str;
+  return text;
 };
 
 
-function urlify(rawUrl) {
+function urlify(rawUrl: string) {
   if (rawUrl.search(/^http[s]?\:\/\//) === -1) {
     return 'http://' + rawUrl;
   } else {
@@ -55,7 +55,7 @@ function urlify(rawUrl) {
 }
 
 
-function sanitizeURL(url) {
+function sanitizeURL(url: string) {
   url = urlify(url)
   let protocol = new URL(url).protocol;
   return url.replace(protocol + "//", "");
@@ -177,7 +177,7 @@ function levenshteinDistance(s, t) {
 };
 
 
-function DefaultDescription (props) {
+function DefaultDescription (props: { name: string; }) {
   return (
     (<Alert className="text-center" variant="secondary">
       It has not been possible to load this information.

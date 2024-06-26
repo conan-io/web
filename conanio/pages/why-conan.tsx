@@ -1,14 +1,10 @@
 import React from "react";
-import { useState, useEffect } from "react";
-
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { ConanKitchenHeader } from '../components/header';
 import ConanFooter from '../components/footer';
-import useSWR from 'swr';
 import {
   FcWorkflow,
   FcMultipleDevices,
@@ -26,7 +22,6 @@ import {
 import { LuBinary } from "react-icons/lu";
 import { SiConan, SiJfrog } from "react-icons/si";
 import { RiOpenSourceFill } from "react-icons/ri";
-import Card from 'react-bootstrap/Card';
 
 
 function WhyConan() {

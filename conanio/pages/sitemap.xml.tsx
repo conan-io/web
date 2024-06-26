@@ -1,6 +1,6 @@
 //pages/sitemap.xml.js
 
-import {get_json_list, get_json_list_with_id, get_urls} from "../service/service";
+import {getJsonList, getUrls} from "../service/service";
 
 const URL = "https://conan.io"
 
@@ -55,8 +55,8 @@ function SiteMap() {
 
 export async function getServerSideProps({ res }) {
     // We make an API call to gather the URLs for our site
-    let urls = get_urls({search: "all", topics: []})
-    const packages = await get_json_list(urls.search.package, urls.api.private);
+    let urls = getUrls({search: "all", topics: []})
+    const packages = await getJsonList(urls.search.package, urls.api.private);
 
     // We generate the XML sitemap with the posts data
     const sitemap = generateSiteMap(packages.data);

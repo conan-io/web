@@ -18,7 +18,7 @@ import { truncate,
          prettyProfiles,
          DefaultDescription } from '../../../components/utils';
 import ConanFooter from '../../../components/footer';
-import { get_json, get_urls } from '../../../service/service';
+import { getJson, getUrls } from '../../../service/service';
 import { LiaBalanceScaleSolid, LiaGithub } from "react-icons/lia";
 import { IoMdHome } from "react-icons/io";
 import hljs from "highlight.js";
@@ -41,14 +41,14 @@ import { useMediaQuery } from 'react-responsive';
 
 
 export async function getServerSideProps(context) {
-  let urls = get_urls({packageId: context.params.recipeName});
-  let package_info_response = await get_json(urls.package.info, urls.api.private);
+  let urls = getUrls({packageId: context.params.recipeName});
+  let package_info_response = await getJson(urls.package.info, urls.api.private);
   if (package_info_response.status == 404) {
     return {
       notFound: true,
     }
   }
-  let downloads_response = await get_json(urls.package.downloads, urls.api.private)
+  let downloads_response = await getJson(urls.package.downloads, urls.api.private)
   return {
     props: {
       data: package_info_response.data,
@@ -60,6 +60,7 @@ export async function getServerSideProps(context) {
 }
 
 export default function ConanPackage(props) {
+    console.log("props", props);
   let router = useRouter();
   useEffect(() => {
     hljs.highlightAll();

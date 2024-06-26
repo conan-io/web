@@ -1,6 +1,4 @@
 import React from "react";
-import { useState } from "react";
-
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -10,15 +8,15 @@ import { Tooltip } from 'react-tooltip';
 import { BasicSearchBar } from "../components/searchbar";
 import { ConanCenterHeader } from '../components/header';
 import ConanFooter from '../components/footer';
-import {get_json, get_json_list, get_urls} from '../service/service';
+import {getJson, getJsonList, getUrls} from '../service/service';
 import { BiInfoCircle } from "react-icons/bi";
 
 export async function getServerSideProps(context) {
-  let urls = get_urls()
-  const reference_num_response = await get_json(urls.reference.num, urls.api.private);
-  const popular_response = await get_json_list(urls.popular, urls.api.private)
-  const updated_response = await get_json_list(urls.updated, urls.api.private)
-  const new_response = await get_json_list(urls.new, urls.api.private)
+  let urls = getUrls()
+  const reference_num_response = await getJson(urls.reference.num, urls.api.private);
+  const popular_response = await getJsonList(urls.popular, urls.api.private)
+  const updated_response = await getJsonList(urls.updated, urls.api.private)
+  const new_response = await getJsonList(urls.new, urls.api.private)
 
   return {
     props: {
@@ -34,7 +32,7 @@ export async function getServerSideProps(context) {
 }
 
 
-function CenterList(props) {
+function CenterList(props: { name: string; extraInfo: string; data: any[]; full_name: boolean }) {
   return (
     <div className="text-center">
       <Tooltip id="extra-info" />

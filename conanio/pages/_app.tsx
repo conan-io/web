@@ -14,9 +14,10 @@ import 'slick-carousel/slick/slick-theme.css';
 import "highlight.js/styles/github.css";
 
 import Loader from '../components/loader';
+import { AppProps } from "next/app";
 
 
-export default function  MyApp({ Component, pageProps }){
+export default function MyApp({ Component, pageProps }: AppProps){
   const router = useRouter();
   const [loading, setLoading] = React.useState(false);
   const GTM_ID = process.env.gtmID;

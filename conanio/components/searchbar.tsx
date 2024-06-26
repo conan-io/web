@@ -32,7 +32,7 @@ function ConanFilter(props: { checked: boolean; handleFilter: any; filter: strin
   )
 }
 
-export function ConanListFilter(props) {
+export function ConanListFilter(props: { filters: any[]; handleFilter: any; }) {
   return(
     <div key="custom-inline-checkbox" className="mb-3">
     {props.filters && props.filters.map((info) => (<Row key={info.id} style={{marginLeft: 15}}><ConanFilter filter_id={info.id} filter={info.filter} checked={info.checked} handleFilter={props.handleFilter}/></Row>))}

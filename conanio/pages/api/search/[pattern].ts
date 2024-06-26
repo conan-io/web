@@ -1,4 +1,12 @@
-export default async function get(req, res){
+interface ApiSearchRequest {
+    query: {
+        pattern: string;
+        topics: string;
+        licenses: string;
+    };
+}
+
+export default async function get(req: ApiSearchRequest, res: any){
   let topics = req.query.topics || ''
   let licenses = req.query.licenses || ''
   const response = await fetch(

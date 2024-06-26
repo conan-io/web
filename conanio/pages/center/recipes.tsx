@@ -31,13 +31,13 @@ import { MdFilter1,
   MdFilter9,
   MdFilter9Plus,
   MdOutlineToday } from "react-icons/md";
-import {get_json_list, get_urls, get_json_list_with_id} from '../../service/service';
+import {getJsonListWithId, getJsonList, getUrls} from '../../service/service';
 
 
 export async function getServerSideProps(context) {
-  let urls = get_urls({search: '', topics: null})
-  const topics_list_response = await get_json_list_with_id(urls.topics, urls.api.private);
-  const licenses_list_response = await get_json_list_with_id(urls.licenses, urls.api.private);
+  let urls = getUrls({search: '', topics: null})
+  const topics_list_response = await getJsonListWithId(urls.topics, urls.api.private);
+  const licenses_list_response = await getJsonListWithId(urls.licenses, urls.api.private);
   // const packages_response = await get_json_list(urls.search.package, urls.api.private);
   // let  packages = packages_response.data;
   // if (packages && packages.length > 0 && initialValue !== 'all') {
@@ -159,8 +159,8 @@ function SearchList(props) {
     const fetchData = async () => {
       try {
         let value = props.value || 'all';
-        let urls = get_urls({search: value, topics: props.topics, licenses: props.licenses})
-        const packages_response = await get_json_list(urls.search.package, urls.api.public);
+        let urls = getUrls({search: value, topics: props.topics, licenses: props.licenses})
+        const packages_response = await getJsonList(urls.search.package, urls.api.public);
         setData(packages_response.data);
       } catch(err) {
         setError(err.message);

@@ -1,4 +1,42 @@
-export function get_urls({packageId='', search='all', topics=[], licenses=[]} = {}) {
+interface ApiUrls {
+    api: {
+        private: string,
+        public: string,
+    },
+    package: {
+        info: string,
+        md: string,
+        example: string,
+        options: string,
+        packages: string,
+        downloads: string,
+    },
+    popular: string,
+    updated: string,
+    new: string,
+    topics: string,
+    licenses: string,
+    reference: {
+        num: string,
+    },
+    search: {
+        package: string,
+    }
+}
+
+interface GetUrlsParams {
+    packageId?: string,
+    search?: string,
+    topics?: string[],
+    licenses?: string[],
+}
+
+export const getUrls = ({
+    packageId = '',
+    search = 'all',
+    topics = [],
+    licenses = []
+}: GetUrlsParams = {}): ApiUrls => {
   return {
     api: {
       private: (`${encodeURI(process.env.NEXT_PUBLIC_CONAN_CONANIO_SERVICE)}`),
@@ -26,13 +64,14 @@ export function get_urls({packageId='', search='all', topics=[], licenses=[]} = 
   }
 }
 
-export async function get_json(url, api) {
+
+export async function getJson(url: string, api: string) {
   const response = await fetch(`${encodeURI(api)}/${encodeURI(url)}`);
   const data = await response.json();
   return {data: data, status: response.status}
 }
 
-export async function get_json_list(url, api) {
+export async function getJsonList(url: string, api: string) {
   const response = await fetch(`${encodeURI(api)}/${encodeURI(url)}`);
 
   const data = await response.json();
@@ -41,7 +80,7 @@ export async function get_json_list(url, api) {
   return {data: data_list, status: response.status}
 }
 
-export async function get_json_list_with_id(url, api) {
+export async function getJsonListWithId(url: string, api: string) {
   const response = await fetch(`${encodeURI(api)}/${encodeURI(url)}`);
 
   const data = await response.json();
