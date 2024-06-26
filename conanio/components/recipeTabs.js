@@ -29,6 +29,7 @@ import Collapse from 'react-bootstrap/Collapse';
 import {LineChart, XAxis, YAxis, Tooltip, CartesianGrid, Line, Legend} from 'recharts';
 import { prettyProfiles, truncateAdnCopy } from './utils';
 import { useMediaQuery } from 'react-responsive';
+import Markdown from 'react-markdown'
 
 {/* TODO: this function should go in a more common module. More configurable? */}
 function ClipboardCopy({ copyText }) {
@@ -110,6 +111,13 @@ function CCIAssistanceLink() {
       </Link> in the Conan Center Index repository.
       </p>
   );
+}
+
+function ReadmeTab(props) {
+  if (props.readme) {
+      return <Markdown>{props.readme}</Markdown>
+  }
+  return null;
 }
 
 function UseItFullContent({props}) {
@@ -705,4 +713,4 @@ function StatsTab(props) {
 }
 
 
-export { UseItTab, BadgesTab, PackagesTab, DependenciesTab, VersionsTab, StatsTab };
+export { ReadmeTab, UseItTab, BadgesTab, PackagesTab, DependenciesTab, VersionsTab, StatsTab };

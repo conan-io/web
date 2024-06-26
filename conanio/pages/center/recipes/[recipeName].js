@@ -27,12 +27,13 @@ import { UseItTab,
          DependenciesTab,
          VersionsTab,
          StatsTab,
-         PackagesTab } from "../../../components/recipeTabs";
+         PackagesTab, 
+         ReadmeTab} from "../../../components/recipeTabs";
 import { PiWarningBold } from "react-icons/pi";
 import { MdOutlineToday } from "react-icons/md";
 import { AiOutlinePushpin } from "react-icons/ai";
 import { PiGraphDuotone, PiMedal } from "react-icons/pi";
-import { FaTags, FaHashtag } from "react-icons/fa";
+import { FaReadme, FaTags, FaHashtag } from "react-icons/fa";
 import { SiConan } from "react-icons/si";
 import { HiOutlineDocumentText } from "react-icons/hi";
 import { BasicSearchBar } from "../../../components/searchbar";
@@ -69,7 +70,16 @@ export default function ConanPackage(props) {
   const indexSelectedVersion = Object.keys(props.data).filter(index => props.data[index].info.version === selectedVersion)[0];
   const isBigScreen = useMediaQuery({ query: '(min-width: 1824px)' })
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' })
-  const [selectedTab, setSelectedTab] = useState(indexSelectedVersion && props.data[indexSelectedVersion].info.status === "ok"? 'use_it': 'versions');
+
+  const getSelectedTab = () => {
+    if (indexSelectedVersion){
+      if (props.data[indexSelectedVersion].info.readme) return "readme";
+      else if (props.data[indexSelectedVersion].info.status === "ok") return "use_it";
+    } 
+    return "versions";
+  }
+  const [selectedTab, setSelectedTab] = useState(getSelectedTab());
+
   const [packageOS, setPackageOS] = useState(null);
   if (!props.data) return (<div>Loading...</div>);
   const recipeData = props.data[indexSelectedVersion];
@@ -81,6 +91,7 @@ export default function ConanPackage(props) {
   const recipeLabels = recipeData.info.labels;
   const recipeLicenses = Object.keys(recipeData.info.licenses);
   const recipeConanCenterUrl = "https://github.com/conan-io/conan-center-index/tree/master/recipes/" + recipeData.name;
+  const recipeReadme = recipeData.info.readme
   const recipeUseIt = recipeData.info.use_it;
   const recipeTotalDownloads = recipeData.info.downloads;
   const recipeDownloads = props.downloads[selectedVersion].downloads;
@@ -199,6 +210,17 @@ ${recipeData.name}/${selectedVersion}`}
   function TabButtons(props) {
     return (
       <>
+        {recipeReadme && 
+        <Button
+          id="readme"
+          className={props.buttonClass + " " + ((selectedTab == 'readme') && "tabButtonActive")}
+          value="readme"
+          onClick={(e) => {
+            setSelectedTab(e.currentTarget.value);
+            setPackageOS(null);
+          }}
+        ><FaReadme className="conanIcon18 me-1"/> Readme</Button>
+        }
         {recipeStatus === "ok" && <Button
           id="use_it"
           className={props.buttonClass + " " + ((selectedTab == 'use_it') && "tabButtonActive")}
@@ -239,6 +261,12 @@ ${recipeData.name}/${selectedVersion}`}
   function RecipeTabs() {
     return (
       <>
+      {selectedTab=='readme' && recipeDescription && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
+        {metadatsInfo && (<RecipeInfo/>)}
+        <Col xs lg="9" className="mt-4 ps-4 pe-4 pt-4 recipeContentBox">
+          <ReadmeTab readme={recipeReadme} />
+        </Col>
+      </Row>}
       {selectedTab=='use_it' && recipeDescription && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
         {metadatsInfo && (<RecipeInfo/>)}
         <Col xs lg="9" className="mt-4 ps-4 pe-4 pt-4 recipeContentBox">
