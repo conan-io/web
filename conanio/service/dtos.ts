@@ -27,7 +27,6 @@ export interface RecipeInfo {
     labels: string[];
     licenses: string[];
     packages?: { [key: string]: PackageInfo };
-    readme?: string;
     recipe_revision?: string;
     status: string;
     timestamp: string;
