@@ -1,8 +1,5 @@
 import React from 'react';
-
-import { ConanKitchenHeader } from '../../components/header';
-import ConanFooter from '../../components/footer';
-import SingleUserStory from '../../components/user-story';
+import { ConanKitchenHeader, ConanFooter, SingleUserStory } from '@/components';
 
 function UserStoriesRTIPage() {
   return (
@@ -11,14 +8,13 @@ function UserStoriesRTIPage() {
       <div className="flex-wrapper">
         <ConanKitchenHeader/>
         <SingleUserStory
-          companyNameSlug="rti"
+          companyName="rti"
           metaTitle="[Use Case] How Conan Enables C/C++ DevOps for RTI IoT | JFrog"
           metaDescription="Learn how the Conan C/C++ package manager and Artifactory helped Real-Time Innovations (RTI) speed multi-platform releases for Industrial IoT from days to minutes."
           pageTitle="Speeding Multi-Platform Releases for Industrial IoT with Conan and Artifactory"
           imgSrc="/user-stories/rti-s.png"
           downloadFileURL="https://media.jfrog.com/wp-content/uploads/2021/06/15183931/USE-CASE-RTI.pdf"
           downloadFileImgSrc="https://media.jfrog.com/wp-content/uploads/2021/09/02140348/conan-rti-pdf-cover.png"
-          fullPageURL="https://conan.io/user-stories/rti.html"
           contentHTML={
             <div>
               <h2>Company</h2>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { CSSProperties, useState } from "react";
 import Badge from 'react-bootstrap/Badge';
 import Alert from 'react-bootstrap/Alert';
 import Link from 'next/link';
@@ -6,13 +6,13 @@ import { Tooltip } from 'react-tooltip';
 import { HiOutlineClipboardCopy, HiOutlineClipboardCheck } from "react-icons/hi";
 
 
-function truncate(text, n){
+export function truncate(text: string, n: number){
   if(text.length > n) return text.slice(0, n-1) + "...";
   return text;
 };
 
 
-function truncateTooltip(text, n){
+export function truncateTooltip(text: string, n: number){
   if(text.length > n) return (
     <>
       <Tooltip style={{ zIndex: 99 }} id={text}/>
@@ -30,23 +30,24 @@ function truncateTooltip(text, n){
 };
 
 
-function truncateAdnCopy(text, n){
+export function truncateAndCopy(text: string, n: number){
   if(text.length > n) return (
     <>
       {truncateTooltip(text, n)}
       <ClipboardCopy
         tooltipStyle={{zIndex: 99}}
         copyText={text}
+        buttonStyle={{cursor: 'pointer', display: 'inline'}}
         isCopiedStyle={{color: 'green', verticalAlign: 'top', marginLeft:'1px', height: '15px', width: '15px'}}
         copyStyle={{verticalAlign: 'top', marginLeft:'1px', height: '15px', width: '15px'}}
       />
     </>
   );
-  return str;
+  return text;
 };
 
 
-function urlify(rawUrl) {
+export function urlify(rawUrl: string) {
   if (rawUrl.search(/^http[s]?\:\/\//) === -1) {
     return 'http://' + rawUrl;
   } else {
@@ -55,34 +56,53 @@ function urlify(rawUrl) {
 }
 
 
-function sanitizeURL(url) {
+export function sanitizeURL(url: string) {
   url = urlify(url)
   let protocol = new URL(url).protocol;
   return url.replace(protocol + "//", "");
 }
 
-
-function ClipboardCopy({ copyText, tooltipStyle, isCopiedStyle, copyStyle }) {
+interface ClipboardCopyProps {
+    copyText: string;
+    buttonStyle?: CSSProperties;
+    tooltipStyle?: CSSProperties;
+    isCopiedStyle?: CSSProperties;
+    copyStyle?: CSSProperties;
+}
+export const ClipboardCopy = ({
+  copyText,
+  buttonStyle = { cursor: 'pointer', display: 'inline', position: 'absolute', top: 0, right: 0},
+  tooltipStyle = { zIndex: 99 },
+  isCopiedStyle = {color: 'green', verticalAlign: 'baseline', height: '20px', width: '20px'},
+  copyStyle = { verticalAlign: 'baseline', height: '20px', width: '20px'},
+}: ClipboardCopyProps) => {
   const [isCopied, setIsCopied] = useState(false);
-  async function copyTextToClipboard(text) {
+  async function copyTextToClipboard(text: string) {
     return await navigator.clipboard.writeText(text);
   }
+  // onClick handler function for the copy button
   const handleCopyClick = () => {
+    // Asynchronously call copyTextToClipboard
     copyTextToClipboard(copyText)
       .then(() => {
+        // If successful, update the isCopied state value
         setIsCopied(true);
-        setTimeout(() => {setIsCopied(false);}, 1500);
+        setTimeout(() => {
+          setIsCopied(false);
+        }, 1500);
       })
       .catch((err) => {});
   }
 
+  // Ids cant have new lines
+  const id = "copy-" + copyText.substring(0, copyText.indexOf('\n') !== -1 ? copyText.indexOf('\n') : copyText.length)
   return (
     <>
-      <Tooltip id={"copy-" + copyText} style={tooltipStyle}/>
+      <Tooltip id={id} style={tooltipStyle}/>
       <a
         onClick={handleCopyClick}
-        style={{cursor: 'pointer', display: 'inline'}}
-        data-tooltip-id={"copy-" + copyText}
+        style={buttonStyle}
+        data-tooltip-id={id}
         data-tooltip-html={isCopied ? "Copied!" : "Copy to clipboard"}
         data-tooltip-place="top"
       >
@@ -101,7 +121,7 @@ function ClipboardCopy({ copyText, tooltipStyle, isCopiedStyle, copyStyle }) {
 }
 
 
-function prettyProfileNames(){
+export function prettyProfileNames(){
   return {
     'Linux-x86_64': 'Linux',
     'Windows-x86_64': 'Windows',
@@ -111,7 +131,7 @@ function prettyProfileNames(){
 }
 
 
-function prettyProfiles(profileSettings, style){
+export function prettyProfiles(profileSettings: any[], style?: CSSProperties){
   const profileList = profileSettings.map((item) => item.os + "-" + item.arch);
   if (profileList.filter(item => (item=='null-null')).length == profileList.length){
     return [
@@ -138,7 +158,7 @@ function prettyProfiles(profileSettings, style){
 
 // This comes from the wikipedia's pseudocode, I couldn't be bothered to do some dynamic programming of my own,
 // comments left to make it easier to double-check the transpilation
-function levenshteinDistance(s, t) {
+export function levenshteinDistance(s: string, t: string) {
   const m = s.length;
   const n = t.length;
 
@@ -177,7 +197,7 @@ function levenshteinDistance(s, t) {
 };
 
 
-function DefaultDescription (props) {
+export function DefaultDescription (props: { name: string; }) {
   return (
     (<Alert className="text-center" variant="secondary">
       It has not been possible to load this information.
@@ -187,6 +207,3 @@ function DefaultDescription (props) {
     </Alert>)
   )
 }
-
-
-export { truncate, truncateTooltip, truncateAdnCopy, urlify, sanitizeURL, ClipboardCopy, prettyProfiles, prettyProfileNames, levenshteinDistance, DefaultDescription };

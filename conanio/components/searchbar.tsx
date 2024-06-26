@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, JSXElementConstructor, PromiseLikeOfReactNode, ReactElement, ReactNode, ReactPortal } from "react";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -10,9 +10,10 @@ import { BiPackage } from "react-icons/bi";
 import { PiNoteBold } from "react-icons/pi";
 import { CgFormatSlash } from "react-icons/cg";
 import { useRouter } from 'next/router';
+import { ConanFilterResponse, ConanResponse } from "@/service";
 
 
-function ConanFilter(props) {
+const ConanFilter = (props: { checked: boolean; handleFilter: any; filter: string; filter_id: any; }) => {
   const [checked, setChecked] = useState(props.checked);
 
   const handleChange = () => {
@@ -32,7 +33,7 @@ function ConanFilter(props) {
   )
 }
 
-export function ConanListFilter(props) {
+const ConanListFilter = (props: { filters: any[]; handleFilter: any; }) => {
   return(
     <div key="custom-inline-checkbox" className="mb-3">
     {props.filters && props.filters.map((info) => (<Row key={info.id} style={{marginLeft: 15}}><ConanFilter filter_id={info.id} filter={info.filter} checked={info.checked} handleFilter={props.handleFilter}/></Row>))}
@@ -40,7 +41,20 @@ export function ConanListFilter(props) {
     )
 }
 
-export function ConanSingleSelect(props) {
+export interface FilterOption  {label: string, value: number | string};
+
+export interface ConanSelectProps {
+  title: string;
+  defaultValue: any;
+  options: FilterOption[];
+  handleFilter: any;
+}
+
+export const toFilterOptions = (options: ConanResponse<ConanFilterResponse>): FilterOption[] => 
+    Object.values(options).map(elem => {return {label: elem.filter, value: elem.id};});
+
+
+export const ConanSingleSelect = (props: ConanSelectProps) => {
   const options = props.options;
   let defaultValues = []
   if (props.defaultValue){
@@ -97,11 +111,11 @@ export function ConanSingleSelect(props) {
   )
 }
 
-export function ConanMultiSelectFilter(props) {
-  const options = props.filters.map(elem => {return {label: elem.filter, value: elem.id};});
+export const ConanMultiSelectFilter = (props: ConanSelectProps) => {
+  const options = props.options;
   let defaultValues = []
   if (props.defaultValue){
-    defaultValues = options.filter((elem) => props.defaultValue.includes(elem.value));
+    defaultValues = props.options.filter((elem) => props.defaultValue.includes(elem.value));
   }
   const customStyles = {
     option: (defaultStyles, state) => ({
@@ -155,7 +169,7 @@ export function ConanMultiSelectFilter(props) {
   )
 }
 
-export function ConanSearchBar(props) {
+export const ConanSearchBar = (props: { value: string ; handleChange: any; recipes?: number; references?: number; }) => {
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -174,10 +188,10 @@ export function ConanSearchBar(props) {
       {(props.recipes || props.references) && <Row className="justify-content-md-center mt-2">
         <div className="text-center" style={{color: '#21AFFF'}}>
           <PiNoteBold className="conanIconBlue conanIcon26"/>
-          {props.recipes.toLocaleString()} recipes
+          <text suppressHydrationWarning>{props.recipes.toLocaleString()} recipes</text>
           <CgFormatSlash className="conanIconBlue conanIcon34"/>
           <BiPackage style={{marginRight: '4px'}} className="conanIconBlue conanIcon26"/>
-          {props.references.toLocaleString()} references
+          <text suppressHydrationWarning>{props.references.toLocaleString()} references</text>
         </div>
       </Row>}
     </Col>
@@ -185,7 +199,7 @@ export function ConanSearchBar(props) {
 }
 
 
-export function BasicSearchBar(props) {
+export const BasicSearchBar = (props: { recipes?: number; references?: number; }) => {
 
   let router = useRouter();
   const [value, setValue] = useState('');
@@ -195,7 +209,7 @@ export function BasicSearchBar(props) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    dataLayer.push({
+    window.dataLayer.push({
       'event': 'fireEvent',
       'event_name': 'search',
       'search_term': value

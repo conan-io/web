@@ -1,14 +1,12 @@
 import React from 'react';
-
-import { ConanKitchenHeader } from '../components/header';
-import ConanFooter from '../components/footer';
+import { ConanKitchenHeader, ConanFooter } from '@/components';
 import { Tooltip } from 'react-tooltip';
 import Link from 'next/link';
 import { BiInfoCircle } from "react-icons/bi";
 
 
-function gtmConanPush(eventType, product, platforms, purpose, description){
-  dataLayer.push({
+function gtmConanPush(eventType: string, product: string, platforms: string, purpose: string, description: string){
+  window.dataLayer.push({
     'event': 'fireEvent',
     'event_name': 'element_click',
     'type': eventType,
@@ -20,18 +18,42 @@ function gtmConanPush(eventType, product, platforms, purpose, description){
 }
 
 
-function gtmConanPushDownload(product, platforms, description){
+function gtmConanPushDownload(product: string, platforms: string, description: string){
   gtmConanPush('download', product, platforms, 'get ' + product, description);
 }
 
 
-function gtmConanPushCopy(product, platforms, description){
+function gtmConanPushCopy(product: string, platforms: string, description: string){
   gtmConanPush('copy', product, platforms, 'get ' + product, description);
 }
 
+interface GtmProps {
+    gtmProduct: string;
+    gtmPlatforms: string;
+    gtmDownloadDescription?: string;
+    gtmCopyDescription?: string;
+}
 
-function CopyToClipboard(props) {
-  return (
+interface CopyToClipboardProps extends GtmProps {
+    imageAlt: string;
+    imageSrc: string;
+    textToShow: string;
+    textToCopy: string;
+}
+
+interface DownloadInstallerProps extends GtmProps {
+    imageAlt: string;
+    imageSrc: string;
+    textToShow: string;
+    installerLink: string;
+}
+
+interface DownloadInstallerOrCopyProps extends DownloadInstallerProps {
+    textTooltip: string;
+    textToCopy: string;
+}
+
+const CopyToClipboard = (props: CopyToClipboardProps) => (
     <div className="package-wrapper d-flex flex-no-wrap">
       <div className="cn-box small"><img alt={props.imageAlt} className="lazy" src={props.imageSrc}></img></div>
       <div className="cn-box cn-main copy-text">{props.textToShow}</div>
@@ -47,11 +69,9 @@ function CopyToClipboard(props) {
       ></a>
     </div>
   )
-}
 
 
-function DownloadInstallerOrCopy(props) {
-  return (
+const DownloadInstallerOrCopy = (props: DownloadInstallerOrCopyProps) => (
     <div className="package-wrapper d-flex flex-no-wrap">
       <div className="cn-box small"><img alt={props.imageAlt} className="lazy" src={props.imageSrc}></img></div>
       <div className="cn-box cn-main">{props.textToShow}</div>
@@ -78,10 +98,8 @@ function DownloadInstallerOrCopy(props) {
       ></a>
     </div>
   )
-}
 
-function DownloadInstaller(props) {
-  return (
+const DownloadInstaller = (props: DownloadInstallerProps) => (
     <div className="package-wrapper d-flex flex-no-wrap">
       <div className="cn-box small"><img alt={props.imageAlt} className="lazy" src={props.imageSrc}></img></div>
       <div className="cn-box cn-main">{props.textToShow}</div>
@@ -97,9 +115,8 @@ function DownloadInstaller(props) {
       </div>
     </div>
   )
-}
 
-function DownloadConanPackageManager() {
+const DownloadConanPackageManager = () => {
 
   const conanReleaseVersion = process.env.NEXT_PUBLIC_CONAN_VERSION
   const gtmProduct = "conan"
@@ -148,7 +165,7 @@ function DownloadConanPackageManager() {
                 imageSrc="/downloads/debian-small-pack.svg"
                 textToShow="Ubuntu / Debian amd64 Installer"
                 installerLink={"https://github.com/conan-io/conan/releases/download/"+ conanReleaseVersion +"/conan-"+ conanReleaseVersion +"-amd64.deb"}
-                gtmProduct="conan"
+                gtmProduct={gtmProduct}
                 gtmPlatforms="debian"
                 gtmDownloadDescription="Ubuntu / Debian X64 Installer"
               />
@@ -157,7 +174,7 @@ function DownloadConanPackageManager() {
                 imageSrc="/downloads/windows-small-pack.svg"
                 textToShow="Download x86_64 Installer"
                 installerLink={"https://github.com/conan-io/conan/releases/download/"+ conanReleaseVersion +"/conan-"+ conanReleaseVersion +"-windows-x86_64-installer.exe"}
-                gtmProduct="conan"
+                gtmProduct={gtmProduct}
                 gtmPlatforms="windows"
                 gtmDownloadDescription="Download x86_64 Installer"
               />
@@ -174,7 +191,7 @@ function DownloadConanPackageManager() {
                 imageAlt="Arch Linux"
                 imageSrc="/downloads/archlinux-small-pack.svg"
                 textToShow="$ yay -S conan"
-                textToCopy=" yay -S conan"
+                textToCopy="yay -S conan"
                 gtmProduct={gtmProduct}
                 gtmPlatforms="arch"
                 gtmCopyDescription="yay -S conan"
@@ -270,7 +287,7 @@ function DownloadConanPackageManager() {
   )
 }
 
-function DownloadJFrogArtifactoryCommunityEditionForCpp() {
+const DownloadJFrogArtifactoryCommunityEditionForCpp = () => {
   const artifactoryReleaseVersion = "7.63.12"
   const gtmProduct = "artifactory"
   return (
@@ -384,8 +401,7 @@ function DownloadJFrogArtifactoryCommunityEditionForCpp() {
   )
 }
 
-function DownloadsPage() {
-  return (
+const DownloadsPage = () => (
     <React.StrictMode>
 
       <div className="flex-wrapper">
@@ -431,6 +447,5 @@ function DownloadsPage() {
 
     </React.StrictMode>
   );
-}
 
 export default DownloadsPage
