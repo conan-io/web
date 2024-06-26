@@ -16,6 +16,7 @@ import { ConanCenterHeader,
          VersionsTab,
          PackagesTab,
          BasicSearchBar,
+         ReadmeTab,
          truncate,
          truncateAndCopy,
          urlify,
@@ -31,7 +32,7 @@ import { PiWarningBold } from "react-icons/pi";
 import { MdOutlineToday } from "react-icons/md";
 import { AiOutlinePushpin } from "react-icons/ai";
 import { PiGraphDuotone, PiMedal } from "react-icons/pi";
-import { FaTags, FaHashtag } from "react-icons/fa";
+import { FaReadme, FaTags, FaHashtag } from "react-icons/fa";
 import { SiConan } from "react-icons/si";
 import { HiOutlineDocumentText } from "react-icons/hi";
 import { Tooltip } from 'react-tooltip';
@@ -42,6 +43,7 @@ interface PageProps  {
     notFound?: boolean,
     data?: ConanResponse<RecipeInfo>,
     //downloads?: ConanResponse<PackageDownloadsDTO>,
+    readme?: string,
     recipeName?: string,
     recipeVersion?: string
 }
@@ -66,12 +68,24 @@ export const getServerSideProps: GetServerSideProps<PageProps, Params> = async (
   return {
     props: {
       data: package_info_response.data,
+      readme: await fetchReadme(recipeName),
       //downloads: downloadsResponse.data,
       recipeName: recipeName,
       recipeVersion: context.query.version? context.query.version as string: null
     },
   };
 }
+
+const fetchReadme = async (recipeName: string) => {
+  const url = `https://raw.githubusercontent.com/conan-io/conan-center-index/master/recipes/${recipeName}/README.md`
+  try {
+    const response = await fetch(url);
+    if (response.ok) {
+      return await response.text();
+    }
+  } catch (error) { /* do nothing */ }
+  return null;
+};
 
 const ConanPackage: NextPage<PageProps> = (props) => {
   let router = useRouter();
@@ -81,7 +95,16 @@ const ConanPackage: NextPage<PageProps> = (props) => {
   const [selectedVersion, setSelectedVersion] = useState(props.recipeVersion !== null? props.recipeVersion: props.data[0].info.version);
   const indexSelectedVersion = Object.keys(props.data).filter(index => props.data[index].info.version === selectedVersion)[0];
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' })
-  const [selectedTab, setSelectedTab] = useState(indexSelectedVersion && props.data[indexSelectedVersion].info.status === "ok"? 'use_it': 'versions');
+
+  const getSelectedTab = () => {
+    if (indexSelectedVersion){
+      if (props.readme) return "readme";
+      else if (props.data[indexSelectedVersion].info.status === "ok") return "use_it";
+    } 
+    return "versions";
+  }
+  const [selectedTab, setSelectedTab] = useState(getSelectedTab());
+
   const [packageOS, setPackageOS] = useState(null);
   const [useItLoading, setUseItLoading] = useState(true);
 
@@ -120,6 +143,7 @@ const ConanPackage: NextPage<PageProps> = (props) => {
   const recipeLabels = recipeData.info.labels;
   const recipeLicenses = Object.keys(recipeData.info.licenses);
   const recipeConanCenterUrl = "https://github.com/conan-io/conan-center-index/tree/master/recipes/" + recipeData.name;
+  const recipeReadme = props.readme
   const metadatsInfo = (recipeDescription && true)
 
   const iconStatusColor = recipeStatus === 'ok'? 'green': 'orange'
@@ -232,6 +256,17 @@ const ConanPackage: NextPage<PageProps> = (props) => {
 
   const TabButtons = (props: { buttonClass: string; }) => (
       <>
+        {recipeReadme && 
+        <Button
+          id="readme"
+          className={props.buttonClass + " " + ((selectedTab == 'readme') && "tabButtonActive")}
+          value="readme"
+          onClick={(e) => {
+            setSelectedTab(e.currentTarget.value);
+            setPackageOS(null);
+          }}
+        ><FaReadme className="conanIcon18 me-1"/> Readme</Button>
+        }
         {recipeStatus === "ok" && <Button
           id="use_it"
           className={props.buttonClass + " " + ((selectedTab == 'use_it') && "tabButtonActive")}
@@ -265,17 +300,17 @@ const ConanPackage: NextPage<PageProps> = (props) => {
           value="badges"
           onClick={(e) => setSelectedTab(e.currentTarget.value)}
         ><PiMedal className="conanIcon18 me-1"/> Badges</Button>
-        {/*<Button
-          id="stats"
-          className={props.buttonClass + " " + ((selectedTab == 'stats') && "tabButtonActive")}
-          value="stats"
-          onClick={(e) => setSelectedTab(e.currentTarget.value)}
-        ><PiMedal className="conanIcon18 me-1"/> Stats</Button> */}
       </>
     )
 
   const RecipeTabs = () => (
       <>
+      {selectedTab=='readme' && recipeDescription && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
+        {metadatsInfo && (<RecipeAside/>)}
+        <Col xs lg="9" className="mt-4 ps-4 pe-4 pt-4 recipeContentBox">
+          <ReadmeTab readme={recipeReadme} />
+        </Col>
+      </Row>}
       {selectedTab=='use_it' && recipeDescription && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
         {metadatsInfo && (<RecipeAside/>)}
         <Col xs lg="9" className="mt-4 ps-4 pe-4 pt-4 recipeContentBox">

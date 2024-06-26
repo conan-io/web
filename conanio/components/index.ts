@@ -8,6 +8,7 @@ export {
   PackagesTab,
   DependenciesTab,
   VersionsTab,
+  ReadmeTab,
   StatsTab,
 } from "./recipeTabs";
 export type { FilterOption, ConanSelectProps } from "./searchbar";
