@@ -1,7 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/router';
-
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -9,25 +8,25 @@ import Badge from 'react-bootstrap/Badge';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Button from 'react-bootstrap/Button';
 import Link from 'next/link';
-import { ConanCenterHeader } from '../../../components/header';
-import { truncate,
-         truncateAdnCopy,
+import { ConanCenterHeader,
+         ConanFooter,
+         UseItTab,
+         BadgesTab,
+         DependenciesTab,
+         VersionsTab,
+         PackagesTab,
+         BasicSearchBar,
+         truncate,
+         truncateAndCopy,
          urlify,
          sanitizeURL,
          ClipboardCopy,
          prettyProfiles,
-         DefaultDescription } from '../../../components/utils';
-import ConanFooter from '../../../components/footer';
-import { get_json, get_urls } from '../../../service/service';
+         DefaultDescription } from '@/components';
+import { getJson, getUrls, ConanResponse, RecipeInfo, RecipeUseIt} from '@/service';
 import { LiaBalanceScaleSolid, LiaGithub } from "react-icons/lia";
 import { IoMdHome } from "react-icons/io";
 import hljs from "highlight.js";
-import { UseItTab,
-         BadgesTab,
-         DependenciesTab,
-         VersionsTab,
-         StatsTab,
-         PackagesTab } from "../../../components/recipeTabs";
 import { PiWarningBold } from "react-icons/pi";
 import { MdOutlineToday } from "react-icons/md";
 import { AiOutlinePushpin } from "react-icons/ai";
@@ -35,56 +34,77 @@ import { PiGraphDuotone, PiMedal } from "react-icons/pi";
 import { FaTags, FaHashtag } from "react-icons/fa";
 import { SiConan } from "react-icons/si";
 import { HiOutlineDocumentText } from "react-icons/hi";
-import { BasicSearchBar } from "../../../components/searchbar";
 import { Tooltip } from 'react-tooltip';
 import { useMediaQuery } from 'react-responsive';
+import { GetServerSideProps, GetServerSidePropsContext, GetServerSidePropsResult, NextPage } from 'next';
 
+interface PageProps  {
+    notFound?: boolean,
+    data?: ConanResponse<RecipeInfo>,
+    //downloads?: ConanResponse<PackageDownloadsDTO>,
+    recipeName?: string,
+    recipeVersion?: string
+}
 
-export async function getServerSideProps(context) {
-  let urls = get_urls({packageId: context.params.recipeName});
-  let package_info_response = await get_json(urls.package.info, urls.api.private);
+type Params = {
+    recipeName: string
+}
+
+export const getServerSideProps: GetServerSideProps<PageProps, Params> = async (
+  context: GetServerSidePropsContext<Params>
+): Promise<GetServerSidePropsResult<PageProps>> => {
+
+  const recipeName = context.params?.recipeName
+  let urls = getUrls({packageId: recipeName});
+  let package_info_response = await getJson<ConanResponse<RecipeInfo>>(urls.package.info, urls.api.private);
   if (package_info_response.status == 404) {
     return {
       notFound: true,
     }
   }
-  let downloads_response = await get_json(urls.package.downloads, urls.api.private)
+  //let downloadsResponse = await getJson<ConanResponse<PackageDownloadsDTO>>(urls.package.downloads, urls.api.private)
   return {
     props: {
       data: package_info_response.data,
-      downloads: downloads_response.data,
-      recipeName: context.params.recipeName,
-      recipeVersion: context.query.version? context.query.version: null
+      //downloads: downloadsResponse.data,
+      recipeName: recipeName,
+      recipeVersion: context.query.version? context.query.version as string: null
     },
   };
 }
 
-export default function ConanPackage(props) {
+const ConanPackage: NextPage<PageProps> = (props) => {
   let router = useRouter();
 
   useEffect(() => {hljs.highlightAll();});
 
   const [selectedVersion, setSelectedVersion] = useState(props.recipeVersion !== null? props.recipeVersion: props.data[0].info.version);
   const indexSelectedVersion = Object.keys(props.data).filter(index => props.data[index].info.version === selectedVersion)[0];
-  const isBigScreen = useMediaQuery({ query: '(min-width: 1824px)' })
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' })
   const [selectedTab, setSelectedTab] = useState(indexSelectedVersion && props.data[indexSelectedVersion].info.status === "ok"? 'use_it': 'versions');
   const [packageOS, setPackageOS] = useState(null);
   const [useItLoading, setUseItLoading] = useState(true);
-  const [recipeUseIt, setRecipeUseIt] = useState(null);
 
   useEffect(() => {
     hljs.highlightAll();
     setUseItLoading(true)
     const fetchData = async () => {
       try {
-        let urls = get_urls({packageId: props.recipeName})
-        const use_it_response = await get_json(urls.package.use_it, urls.api.public);
-        setRecipeUseIt(use_it_response.data);
+        let urls = getUrls({packageId: props.recipeName})
+        const useItResponse = await getJson<ConanResponse<RecipeUseIt>>(urls.package.useIt, urls.api.public);
+        // Inflate data with use_it information
+        // TODO: improve
+        for (const [key, value] of Object.entries(useItResponse.data)) {
+            for (const [dataKey, dataValue] of Object.entries(props.data)) {
+                if (dataValue.info.version === key) {
+                    props.data[dataKey].use_it = value.use_it;
+                }
+            }
+        }
       } catch(err) {
         console.log(err.message)
       } finally {
-        setUseItLoading(false);
+        setUseItLoading(false)
       }
     };
     fetchData();
@@ -100,24 +120,19 @@ export default function ConanPackage(props) {
   const recipeLabels = recipeData.info.labels;
   const recipeLicenses = Object.keys(recipeData.info.licenses);
   const recipeConanCenterUrl = "https://github.com/conan-io/conan-center-index/tree/master/recipes/" + recipeData.name;
-  const recipeTotalDownloads = recipeData.info.downloads;
-  const recipeDownloads = props.downloads[selectedVersion].downloads;
-  const recipeDownloadsAll = props.downloads.all.downloads;
-  const recipeDownloadsVersions = props.downloads.all.versions;
-  const maintainedVersions = Object.values(props.data).filter(data => data.info.status === "ok").map(data => data.info.version);
-  const unmaintainedVersions = Object.values(props.data).filter(data => data.info.status !== "ok").map(data => data.info.version);
   const metadatsInfo = (recipeDescription && true)
 
   const iconStatusColor = recipeStatus === 'ok'? 'green': 'orange'
   const extraInfo = recipeStatus === 'ok'? 'maintained version': recipeStatus + ' version'
 
-  function RecipeInfo() {
-    const isToolRequire = recipeUseIt && recipeUseIt[selectedVersion].use_it.package_type == "application";
+  const RecipeAside = () => {
+    const isToolRequire = recipeData.use_it?.package_type == "application";
     const fieldRequirements = isToolRequire? 'tool_requires': 'requires';
 
+    const installCodeContent = `[requires]\n${recipeData.name}/${selectedVersion}`;
     return (
       <Col xs lg="3" className="ps-4 mt-4 pt-4">
-        {recipeDescription && <Row xs lg className="mb-2"><Col xs lg><h5>Recipe info</h5></Col></Row>}
+        {recipeDescription && <Row className="mb-2"><Col><h5>Recipe info</h5></Col></Row>}
         {recipeLicenses && recipeLicenses.length > 0 && (<Row>
           <Col xs lg>
             <Tooltip style={{ zIndex: 99 }} id="package-info"/>
@@ -133,7 +148,10 @@ export default function ConanPackage(props) {
                 >{license}</a>
               );
               return license;
-            }).reduce((prev, curr) => [prev, ', ', curr])}
+            }).reduce<React.ReactNode[]>((prev, curr, index) => {
+              if (index === 0) return [curr];
+              return [...prev, ', ', curr];
+            }, [])}
           </Col>
         </Row>)}
 
@@ -171,7 +189,7 @@ export default function ConanPackage(props) {
             <Tooltip style={{ zIndex: 99 }} id="package-info"/>
             <a data-tooltip-id='package-info' data-tooltip-html="Latest recipe revision" data-tooltip-place="top">
               <AiOutlinePushpin className="conanIconBlue conanIcon22" style={{verticalAlign: "middle"}}/>
-            </a>{truncateAdnCopy(recipeRevision, 20)}</Col>
+            </a>{truncateAndCopy(recipeRevision, 20)}</Col>
         </Row>)}
         {recipeDescription && (<hr/>)}
 
@@ -197,14 +215,13 @@ export default function ConanPackage(props) {
         </Row>)}
         {recipePackages && recipePackages.length > 0 && (<hr/>)}
 
-        {recipeDescription && <Row xs lg className="mt-3"><Col xs lg><h5>Install</h5></Col></Row>}
-        {recipeDescription && <Row xs lg>
-          <Col xs lg>
+        {recipeDescription && <Row className="mt-3"><Col><h5>Install</h5></Col></Row>}
+        {recipeDescription && <Row>
+          <Col>
             Add the following line to your conanfile.txt:
             <pre>
-              <code style={{backgroundColor: "white"}} className="language-ini">
-{`[${fieldRequirements}]
-${recipeData.name}/${selectedVersion}`}
+              <code style={{backgroundColor: "white"}} className="language-ini" >
+                {installCodeContent}
               </code>
             </pre>
           </Col>
@@ -213,8 +230,7 @@ ${recipeData.name}/${selectedVersion}`}
     )
   }
 
-  function TabButtons(props) {
-    return (
+  const TabButtons = (props: { buttonClass: string; }) => (
       <>
         {recipeStatus === "ok" && <Button
           id="use_it"
@@ -249,28 +265,32 @@ ${recipeData.name}/${selectedVersion}`}
           value="badges"
           onClick={(e) => setSelectedTab(e.currentTarget.value)}
         ><PiMedal className="conanIcon18 me-1"/> Badges</Button>
+        {/*<Button
+          id="stats"
+          className={props.buttonClass + " " + ((selectedTab == 'stats') && "tabButtonActive")}
+          value="stats"
+          onClick={(e) => setSelectedTab(e.currentTarget.value)}
+        ><PiMedal className="conanIcon18 me-1"/> Stats</Button> */}
       </>
     )
-  }
 
-  function RecipeTabs() {
-    return (
+  const RecipeTabs = () => (
       <>
       {selectedTab=='use_it' && recipeDescription && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
-        {metadatsInfo && (<RecipeInfo/>)}
+        {metadatsInfo && (<RecipeAside/>)}
         <Col xs lg="9" className="mt-4 ps-4 pe-4 pt-4 recipeContentBox">
-          <UseItTab info={recipeUseIt} recipeVersion={selectedVersion} recipeName={props.recipeName} loading={useItLoading}/>
+          <UseItTab recipe={recipeData} isLoading={useItLoading}/>
         </Col>
       </Row>}
       {selectedTab=='packages' && recipeDescription && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
-        {metadatsInfo && (<RecipeInfo/>)}
+        {metadatsInfo && (<RecipeAside/>)}
         <Col xs lg="9" className="mt-4 ps-4 pe-4 pt-4 recipeContentBox">
-          <PackagesTab recipeRevision={recipeRevision} packages={recipePackages} recipeName={props.recipeName} recipeVersion={selectedVersion} packageOS={packageOS} setPackageOS={setPackageOS}/>
+          <PackagesTab recipe={recipeData} packageOS={packageOS} setPackageOS={setPackageOS}/>
         </Col>
       </Row>}
       {selectedTab=='dependencies' && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
-        {metadatsInfo && (<RecipeInfo/>)}
-        <Col xs lg="9" className="mt-4 ps-4 pe-4 pt-4 recipeContentBox"><DependenciesTab info={recipeUseIt} recipeName={props.recipeName} recipeVersion={selectedVersion} loading={useItLoading}/></Col>
+        {metadatsInfo && (<RecipeAside/>)}
+        <Col xs lg="9" className="mt-4 ps-4 pe-4 pt-4 recipeContentBox"><DependenciesTab recipe={recipeData} loading={useItLoading}/></Col>
       </Row>}
       {selectedTab=='versions' && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
         <Col xs lg className="pb-4 mt-4 ps-4 pe-4 pt-4 recipeContentBox"><VersionsTab selector={setSelectedVersion} data={props.data} /></Col>
@@ -278,21 +298,8 @@ ${recipeData.name}/${selectedVersion}`}
       {selectedTab=='badges' && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
         <Col xs lg className="mt-4 ps-4 pe-4 pt-4 recipeContentBox"><BadgesTab recipeName={props.recipeName} /></Col>
       </Row>}
-      {selectedTab=='stats' && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
-        <Col xs lg className="mt-4 ps-4 pe-4 pt-4 recipeContentBox">
-          <StatsTab
-            maintainedVersions={maintainedVersions}
-            recipeName={props.recipeName}
-            recipeDownloadsAll={recipeDownloadsAll}
-            selectedVersion={selectedVersion}
-            data={props.data}
-            currentVersionDownloads={recipeTotalDownloads}
-          />
-        </Col>
-      </Row>}
       </>
     )
-  }
 
   const valid_licenses = [
     '0bsd', 'afl-3.0', 'agpl-3.0', 'apache-2.0', 'artistic-2.0', 'bsd-2-clause',
@@ -304,7 +311,7 @@ ${recipeData.name}/${selectedVersion}`}
     'ofl-1.1', 'osl-3.0', 'postgresql', 'unlicense', 'upl-1.0', 'vim', 'wtfpl', 'zlib'
   ];
 
-  const onClickTopics = (topic) => {
+  const onClickTopics = (topic: string) => {
     router.push(
       {
         pathname: '/center/recipes',
@@ -336,6 +343,7 @@ ${recipeData.name}/${selectedVersion}`}
                       </h1><
                         ClipboardCopy
                           copyText={recipeData.name + "/" + selectedVersion}
+                          buttonStyle={{cursor: 'pointer', display: 'inline'}}
                           tooltipStyle={{marginTop: "-14px", zIndex: 99}}
                           isCopiedStyle={{color: 'green', verticalAlign: 'top', marginLeft:'1px', marginTop:'7px', height: '20px', width: '20px'}}
                           copyStyle={{verticalAlign: 'top', marginLeft:'1px', marginTop:'7px', height: '20px', width: '20px'}}
@@ -380,3 +388,5 @@ ${recipeData.name}/${selectedVersion}`}
     </React.StrictMode>
   );
 }
+
+export default ConanPackage;

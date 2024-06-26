@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { ConanHeader } from '@/components/header'
+import { ConanHeader } from '@/components'
 
 describe('ConanHeader Elements', () => {
 

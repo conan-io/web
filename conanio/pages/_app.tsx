@@ -3,20 +3,21 @@ import { useRouter } from 'next/router';
 import Script from "next/script";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../styles/style.css';
-import '../styles/stylev2.css';
-import '../styles/font.css';
-import '../styles/index.css';
+import '@/styles/style.css';
+import '@/styles/stylev2.css';
+import '@/styles/font.css';
+import '@/styles/index.css';
 
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 import "highlight.js/styles/github.css";
 
-import Loader from '../components/loader';
+import { Loader } from '@/components';
+import { AppProps } from "next/app";
 
 
-export default function  MyApp({ Component, pageProps }){
+export default function MyApp({ Component, pageProps }: AppProps){
   const router = useRouter();
   const [loading, setLoading] = React.useState(false);
   const GTM_ID = process.env.gtmID;

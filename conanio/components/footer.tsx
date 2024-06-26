@@ -1,10 +1,10 @@
 import { useState } from "react";
 import Link from 'next/link';
-import MarketoForm from "./useMarketo";
+import { MarketoForm, MarketoProps } from "@/components";
 
 
-function gtmConanPush(description){
-  dataLayer.push({
+function gtmConanPush(description: string){
+  window.dataLayer.push({
     'event': 'fireEvent',
     'event_name': 'element_click',
     'type': 'navigation',
@@ -15,8 +15,8 @@ function gtmConanPush(description){
 }
 
 
-function gtmConanPushSocial(description){
-  dataLayer.push({
+function gtmConanPushSocial(description: string){
+  window.dataLayer.push({
     'event': 'fireEvent',
     'event_name': 'element_click',
     'type': 'social',
@@ -27,15 +27,15 @@ function gtmConanPushSocial(description){
 }
 
 
-function ConanFooter() {
-  const [inputs, setInputs] = useState({
+export const ConanFooter = () => {
+  const [inputs, _setInputs] = useState<MarketoProps>({
     baseUrl: "https://leap.jfrog.com",
     munchkinId: "256-FNZ-187",
     formId: "1479",
-    callback: (form) => {
+    callback: (form: any) => {
       form.onSubmit(
-        (values, followUpUrl) => {
-          dataLayer.push({
+        (_values: any, _followUpUrl: any) => {
+          window.dataLayer.push({
             'event': 'fireEvent',
             'event_name': 'form_start',
             'type': 'subscribe',
@@ -140,5 +140,3 @@ function ConanFooter() {
     </footer>
   )
 }
-
-export default ConanFooter

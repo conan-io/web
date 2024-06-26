@@ -1,47 +1,51 @@
 import Link from 'next/link'
 import React from 'react';
+import { ConanKitchenHeader, ConanFooter } from '@/components';
 
-import { ConanKitchenHeader } from '../components/header';
-import ConanFooter from '../components/footer';
-
-function TribeCards(props) {
-
-  return (
-    <div className="row">
-      {props.data && props.data.map(
-        (info) => (
-          <div key={info.name} className="col-sm-6 col-md-4 col-lg-3 mb-4  one-tribe-member oneTribeMember" id="tribeMember_0" data-json-id="0">
-            <div className="p-3 bg-bright-gray h-100 tm_Id">
-              <div className="d-flex flex-column justify-content-between h-100">
-                <div className="content-top mb-1">
-                  <img className="w-100 object-cover text-center bg-gray tm_Image" alt={info.name} width="278" height="252" src={info.image || "/conan-tribe/anonymous.png"}></img>
-                  <h3 className="mt-3 tm_Name">{info.name}</h3>
-                  <p className="company py-2"> {info.company}</p>
-                  <p className="short-description">{info.description}</p>
-                </div>
-                <div className="content-bottom">
-                  <ul className="socials d-flex mt-1 mb-0 pt-2 ps-0 list-unstyled">
-                    {info.linkedin && <li>
-                      <Link href={info.linkedin}><div className="me-2"><img alt="linkedin" src="/social/linkedin.svg"></img></div></Link>
-                    </li>}
-                    {info.twitter && <li>
-                      <Link href={info.twitter}><div className="me-2"><img alt="linkedin" src="/social/twitter.svg"></img></div></Link>
-                    </li>}
-                  </ul>
-                </div>
-              </div>
-
-            </div>
-          </div>)
-        )
-      }
-    </div>
-  )
+interface TribeMember {
+    name: string,
+    image?: string,
+    description: string,
+    linkedin?: string,
+    twitter?: string,
+    company?: string
 }
 
-function TribePage() {
+const TribeCards = (props: { data: TribeMember[] }) => (
+  <div className="row">
+    {props.data && props.data.map(
+      (info) => (
+        <div key={info.name} className="col-sm-6 col-md-4 col-lg-3 mb-4  one-tribe-member oneTribeMember" id="tribeMember_0" data-json-id="0">
+          <div className="p-3 bg-bright-gray h-100 tm_Id">
+            <div className="d-flex flex-column justify-content-between h-100">
+              <div className="content-top mb-1">
+                <img className="w-100 object-cover text-center bg-gray tm_Image" alt={info.name} width="278" height="252" src={info.image || "/conan-tribe/anonymous.png"}></img>
+                <h3 className="mt-3 tm_Name">{info.name}</h3>
+                <p className="company py-2"> {info.company}</p>
+                <p className="short-description">{info.description}</p>
+              </div>
+              <div className="content-bottom">
+                <ul className="socials d-flex mt-1 mb-0 pt-2 ps-0 list-unstyled">
+                  {info.linkedin && <li>
+                    <Link href={info.linkedin}><div className="me-2"><img alt="linkedin" src="/social/linkedin.svg"></img></div></Link>
+                  </li>}
+                  {info.twitter && <li>
+                    <Link href={info.twitter}><div className="me-2"><img alt="linkedin" src="/social/twitter.svg"></img></div></Link>
+                  </li>}
+                </ul>
+              </div>
+            </div>
 
-  const tribeMembers = [
+          </div>
+        </div>)
+      )
+    }
+  </div>
+)
+
+const TribePage = () => {
+
+  const tribeMembers: TribeMember[] = [
     {
         name: 'Nenad Miksa',
         image: '/conan-tribe/trollface_med_-_Nenad_Miksa.png',
@@ -95,6 +99,7 @@ function TribePage() {
     },
     {
         name: 'Daniel Heater',
+        description: 'A software developer with experience spanning from device drivers to cybersecurity to complex systems with hard real-time and safety-critical requirements',
         linkedin: 'https://www.linkedin.com/in/danielheater/',
         company: 'VMware'
     },
