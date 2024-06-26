@@ -29,6 +29,7 @@ import {LineChart, XAxis, YAxis, Tooltip, CartesianGrid, Line, Legend} from 'rec
 import { truncateAndCopy, ClipboardCopy } from '@/components/utils';
 import { useMediaQuery } from 'react-responsive';
 import { ConanResponse, RecipeDownloadsResponse, PackageInfo, RecipeInfo } from '@/service';
+import Markdown from 'react-markdown'
 
 export const BadgesTab = ({recipeName}: {recipeName: string}) => {
   const mdMessage = `[![Conan Center](https://img.shields.io/conan/v/${recipeName})](https://conan.io/center/recipes/${recipeName})`;
@@ -80,6 +81,13 @@ const Loading = () => (
     Loading ... <div className="spinner-border spinner-border-sm" role="status"><span className="visually-hidden">Loading...</span></div>
   </div>
 )
+
+export const ReadmeTab = (props: {readme: string}) => {
+  if (props.readme) {
+      return <Markdown>{props.readme}</Markdown>
+  }
+  return null;
+}
 
 const UseItFullContent = ({recipe}: {recipe: RecipeInfo}) => {
   const reference = recipe.name + "/" + recipe.info.version;
