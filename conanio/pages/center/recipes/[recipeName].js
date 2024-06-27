@@ -61,9 +61,8 @@ export async function getServerSideProps(context) {
 
 export default function ConanPackage(props) {
   let router = useRouter();
-  useEffect(() => {
-    hljs.highlightAll();
-  });
+
+  useEffect(() => {hljs.highlightAll();});
 
   const [selectedVersion, setSelectedVersion] = useState(props.recipeVersion !== null? props.recipeVersion: props.data[0].info.version);
   const indexSelectedVersion = Object.keys(props.data).filter(index => props.data[index].info.version === selectedVersion)[0];
@@ -71,6 +70,26 @@ export default function ConanPackage(props) {
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' })
   const [selectedTab, setSelectedTab] = useState(indexSelectedVersion && props.data[indexSelectedVersion].info.status === "ok"? 'use_it': 'versions');
   const [packageOS, setPackageOS] = useState(null);
+  const [useItLoading, setUseItLoading] = useState(true);
+  const [recipeUseIt, setRecipeUseIt] = useState(null);
+
+  useEffect(() => {
+    hljs.highlightAll();
+    setUseItLoading(true)
+    const fetchData = async () => {
+      try {
+        let urls = get_urls({packageId: props.recipeName})
+        const use_it_response = await get_json(urls.package.use_it, urls.api.public);
+        setRecipeUseIt(use_it_response.data);
+      } catch(err) {
+        console.log(err.message)
+      } finally {
+        setUseItLoading(false);
+      }
+    };
+    fetchData();
+  },[]);
+
   if (!props.data) return (<div>Loading...</div>);
   const recipeData = props.data[indexSelectedVersion];
   const recipeStatus = recipeData.info.status;
@@ -81,7 +100,6 @@ export default function ConanPackage(props) {
   const recipeLabels = recipeData.info.labels;
   const recipeLicenses = Object.keys(recipeData.info.licenses);
   const recipeConanCenterUrl = "https://github.com/conan-io/conan-center-index/tree/master/recipes/" + recipeData.name;
-  const recipeUseIt = recipeData.info.use_it;
   const recipeTotalDownloads = recipeData.info.downloads;
   const recipeDownloads = props.downloads[selectedVersion].downloads;
   const recipeDownloadsAll = props.downloads.all.downloads;
@@ -93,9 +111,8 @@ export default function ConanPackage(props) {
   const iconStatusColor = recipeStatus === 'ok'? 'green': 'orange'
   const extraInfo = recipeStatus === 'ok'? 'maintained version': recipeStatus + ' version'
 
-
   function RecipeInfo() {
-    const isToolRequire = recipeUseIt && recipeUseIt.package_type == "application";
+    const isToolRequire = recipeUseIt && recipeUseIt[selectedVersion].use_it.package_type == "application";
     const fieldRequirements = isToolRequire? 'tool_requires': 'requires';
 
     return (
@@ -204,7 +221,7 @@ ${recipeData.name}/${selectedVersion}`}
           className={props.buttonClass + " " + ((selectedTab == 'use_it') && "tabButtonActive")}
           value="use_it"
           onClick={(e) => setSelectedTab(e.currentTarget.value)}
-        ><HiOutlineDocumentText className="conanIcon18 me-1"/> Use it</Button>}
+        ><HiOutlineDocumentText className="conanIcon18 me-1"/> Use it {(useItLoading && <div className="ms-1 spinner-border spinner-border-sm" role="status"><span className="visually-hidden">Loading...</span></div>)}</Button>}
         <Button
           id="packages"
           className={props.buttonClass + " " + ((selectedTab == 'packages') && "tabButtonActive")}
@@ -219,7 +236,7 @@ ${recipeData.name}/${selectedVersion}`}
           className={props.buttonClass + " " + ((selectedTab == 'dependencies') && "tabButtonActive")}
           value="dependencies"
           onClick={(e) => setSelectedTab(e.currentTarget.value)}
-        ><PiGraphDuotone className="conanIcon18 me-1"/> Dependencies</Button>
+        ><PiGraphDuotone className="conanIcon18 me-1"/> Dependencies {(useItLoading && <div className="ms-1 spinner-border spinner-border-sm" role="status"><span className="visually-hidden">Loading...</span></div>)}</Button>
         <Button
           id="versions"
           className={props.buttonClass + " " + ((selectedTab == 'versions') && "tabButtonActive")}
@@ -242,7 +259,7 @@ ${recipeData.name}/${selectedVersion}`}
       {selectedTab=='use_it' && recipeDescription && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
         {metadatsInfo && (<RecipeInfo/>)}
         <Col xs lg="9" className="mt-4 ps-4 pe-4 pt-4 recipeContentBox">
-          <UseItTab info={recipeUseIt} recipeName={props.recipeName} recipeVersion={selectedVersion} />
+          <UseItTab info={recipeUseIt} recipeVersion={selectedVersion} recipeName={props.recipeName} loading={useItLoading}/>
         </Col>
       </Row>}
       {selectedTab=='packages' && recipeDescription && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
@@ -253,7 +270,7 @@ ${recipeData.name}/${selectedVersion}`}
       </Row>}
       {selectedTab=='dependencies' && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
         {metadatsInfo && (<RecipeInfo/>)}
-        <Col xs lg="9" className="mt-4 ps-4 pe-4 pt-4 recipeContentBox"><DependenciesTab info={recipeUseIt} recipeName={props.recipeName} recipeVersion={selectedVersion}/></Col>
+        <Col xs lg="9" className="mt-4 ps-4 pe-4 pt-4 recipeContentBox"><DependenciesTab info={recipeUseIt} recipeName={props.recipeName} recipeVersion={selectedVersion} loading={useItLoading}/></Col>
       </Row>}
       {selectedTab=='versions' && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
         <Col xs lg className="pb-4 mt-4 ps-4 pe-4 pt-4 recipeContentBox"><VersionsTab selector={setSelectedVersion} data={props.data} /></Col>
