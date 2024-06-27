@@ -11,6 +11,7 @@ export function get_urls({packageId='', search='all', topics=[], licenses=[]} = 
       options: (`package/${encodeURIComponent(packageId.toLowerCase())}/options`),
       packages: (`package/${encodeURIComponent(packageId.toLowerCase())}/packages`),
       downloads: (`package/${encodeURIComponent(packageId.toLowerCase())}/downloads`),
+      use_it: (`package/${encodeURIComponent(packageId.toLowerCase())}/use_it`),
     },
     popular: 'popular',
     updated: 'updated',

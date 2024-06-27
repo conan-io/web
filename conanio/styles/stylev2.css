@@ -274,6 +274,13 @@ border-radius: 10px;
   background-color: #21AFFF !important;
 }
 
+.tabButton:disabled {
+  color: grey;
+  background-color: inherit;
+  border-color: #EDF7FF;
+  border-bottom: 0px;
+}
+
 .tabButton:focus {
   border-color: #21AFFF;
   background-color: #21AFFF;
