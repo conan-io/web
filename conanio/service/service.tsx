@@ -27,8 +27,8 @@ interface ApiUrls {
 interface GetUrlsParams {
     packageId?: string,
     search?: string,
-    topics?: string[],
-    licenses?: string[],
+    topics?: number[],   // ids
+    licenses?: number[], // ids
 }
 
 export const getUrls = ({
@@ -64,27 +64,65 @@ export const getUrls = ({
   }
 }
 
+export interface PackageBasicDTO {
+    name: string
+    version: string
+}
 
-export async function getJson(url: string, api: string) {
+export interface PackageInfoDTO {
+    name: string,
+    info: {
+      age?: string
+      description?: string,
+      downloads?: number,
+      homepage?: string,
+      labels?: string[],
+      licenses?: string[],
+      packages?: any
+      readme?: string
+      recipe_revision?: string,
+      status?: string,
+      timestamp?: string,
+      use_it?: any,
+      version?: string,
+    }
+}
+
+export interface PackageDownloadsDTO {
+    downloads: {
+        date: string,
+        downloads: number
+    }
+    versions?: string[] // Only 'all' key will have versions available
+}
+
+export interface ConanFilterResponseDTO {
+    id: number,
+    filter: string
+}
+
+export interface ReferenceNumDTO {
+    references: number
+    recipes: number
+}
+
+export type ConanResponse<T> = {[key: string]: T};
+
+interface ApiResponse<T> {
+    data: T,
+    status: number,
+}
+export async function getJson<T>(url: string, api: string): Promise<ApiResponse<T>> {
   const response = await fetch(`${encodeURI(api)}/${encodeURI(url)}`);
   const data = await response.json();
   return {data: data, status: response.status}
 }
 
-export async function getJsonList(url: string, api: string) {
-  const response = await fetch(`${encodeURI(api)}/${encodeURI(url)}`);
-
-  const data = await response.json();
-  const data_list = [];
-  Object.keys(data).forEach(function(key) {data_list.push(data[key]);});
-  return {data: data_list, status: response.status}
+interface ApiResponseList<T> {
+    data: T[],
+    status: number,
 }
-
-export async function getJsonListWithId(url: string, api: string) {
-  const response = await fetch(`${encodeURI(api)}/${encodeURI(url)}`);
-
-  const data = await response.json();
-  const data_list = [];
-  Object.keys(data).forEach(function(key) {data_list.push({value: data[key], id: key});});
-  return {data: data_list, status: response.status}
+export async function getJsonList<T>(url: string, api: string): Promise<ApiResponseList<T>> {
+  const response = await getJson(url, api);
+  return {data: Object.values(response.data), status: response.status}
 }

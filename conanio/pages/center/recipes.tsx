@@ -9,7 +9,8 @@ import Form from 'react-bootstrap/Form';
 import Badge from 'react-bootstrap/Badge';
 import { ConanSearchBar,
          ConanMultiSelectFilter,
-         ConanSingleSelect } from "../../components/searchbar";
+         ConanSingleSelect, 
+         toFilterOptions} from "../../components/searchbar";
 import ListGroup from 'react-bootstrap/ListGroup';
 import Pagination from 'react-bootstrap/Pagination';
 import Link from 'next/link';
@@ -31,27 +32,26 @@ import { MdFilter1,
   MdFilter9,
   MdFilter9Plus,
   MdOutlineToday } from "react-icons/md";
-import {getJsonListWithId, getJsonList, getUrls} from '../../service/service';
+import {getJsonList, getUrls, getJson, ConanResponse, ConanFilterResponseDTO, PackageInfoDTO} from '../../service/service';
+import { NextPage } from 'next';
 
+interface PageProps  {
+    data: {
+        licenses: ConanResponse<ConanFilterResponseDTO>,
+        topics: ConanResponse<ConanFilterResponseDTO>,
+    }
+}
 
 export async function getServerSideProps(context) {
   let urls = getUrls({search: '', topics: null})
-  const topics_list_response = await getJsonListWithId(urls.topics, urls.api.private);
-  const licenses_list_response = await getJsonListWithId(urls.licenses, urls.api.private);
-  // const packages_response = await get_json_list(urls.search.package, urls.api.private);
-  // let  packages = packages_response.data;
-  // if (packages && packages.length > 0 && initialValue !== 'all') {
-  //   packages.sort((a, b) => levenshteinDistance(a.name, initialValue) - levenshteinDistance(b.name, initialValue))
-  // }
+  let licenses = await getJson<ConanResponse<ConanFilterResponseDTO>>(urls.licenses, urls.api.private)
+  let topics = await getJson<ConanResponse<ConanFilterResponseDTO>>(urls.topics, urls.api.private)
+
   return {
     props: {
       data: {
-        licenses: licenses_list_response.data.map(elem => {return {filter: elem.value.filter, id: elem.value.id};}),
-        topics: topics_list_response.data.map(elem => {return {filter: elem.value.filter, id: elem.value.id};}),
-        // defaultValue: value,
-        // defaultTopics: topics,
-        // defaultLicenses: licenses,
-        // packages: packages,
+        licenses: licenses.data,
+        topics: topics.data
       },
     },
   }
@@ -93,11 +93,22 @@ function PackageInfo(props) {
   )
 }
 
-function SearchList(props) {
+enum SortBy {
+    Name = 'sortByName',
+    Date = 'sortByDate',
+    BestMatch = 'sortByBestMatch',
+}
 
+function SearchList(props: {
+  value: string;
+  sortDataBy: SortBy,
+  topics: number[];
+  licenses: number[];
+  extraFilters: any;
+}) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<PackageInfoDTO[]>(null);
   const [pageNumber, setPageNumber] = useState(1);
   const [showAll, setShowAll] = useState(false);
 
@@ -145,9 +156,9 @@ function SearchList(props) {
   };
 
   const sortByData = (a, b) => {
-    if (props.sortDataBy == "sortByName") return sortByName(a, b)
-    if (props.sortDataBy == "sortByDate") return sortByDate(a, b)
-    if (props.sortDataBy == "sortByBestMatch") {
+    if (props.sortDataBy == SortBy.Name) return sortByName(a, b)
+    if (props.sortDataBy == SortBy.Date) return sortByDate(a, b)
+    if (props.sortDataBy == SortBy.BestMatch) {
       if (props.value) return sortByBestMatch(a, b);
       else return sortByName(a, b);
     }
@@ -160,8 +171,8 @@ function SearchList(props) {
       try {
         let value = props.value || 'all';
         let urls = getUrls({search: value, topics: props.topics, licenses: props.licenses})
-        const packages_response = await getJsonList(urls.search.package, urls.api.public);
-        setData(packages_response.data);
+        const packagesResponse = await getJsonList<PackageInfoDTO>(urls.search.package, urls.api.public);
+        setData(packagesResponse.data);
       } catch(err) {
         setError(err.message);
         setData(null);
@@ -234,7 +245,7 @@ function SearchList(props) {
   )
 }
 
-export default function ConanSearch(props) {
+const ConanSearch: NextPage<PageProps> = (props) => {
   const router = useRouter();
   let defaultValue = router.query.value;
   let defaultTopics = router.query.topics;
@@ -253,16 +264,16 @@ export default function ConanSearch(props) {
   defaultValue = defaultValue || '';
 
   const [textSearchBar, setTextSearchBar] = useState(defaultValue);
-  const [value, setValue] = useState(defaultValue);
-  const [topics, setTopics] = useState(defaultTopics);
-  const [licenses, setLicenses] = useState(defaultLicenses);
+  const [value, setValue] = useState<string>(defaultValue);
+  const [topics, setTopics] = useState<number[]>(defaultTopics);
+  const [licenses, setLicenses] = useState<number[]>(defaultLicenses);
   const [timer, setTimer] = useState(null);
   const [showFilters, setShowFilters] = useState(defaultTopics.length > 0);
   const [showWindows, setShowWindows] = useState(true);
   const [showMacOS, setShowMacOS] = useState(true);
   const [showMacOSSilicon, setShowMacOSSilicon] = useState(true);
   const [showLinux, setShowLinux] = useState(true);
-  const [sortDataBy, setSortDataBy] = useState('sortByBestMatch');
+  const [sortDataBy, setSortDataBy] = useState(SortBy.BestMatch);
 
   const getData = async (value, topiclist, licenseList) => {
     router.push(
@@ -356,10 +367,10 @@ export default function ConanSearch(props) {
               <Col xs="10" md="10" lg="2" className="mt-2">
                 <ConanSingleSelect
                   title="Sort by"
-                  defaultValue={{value: 'sortByBestMatch', label: 'by best match'}}
-                  options={[{value: 'sortByBestMatch', label: 'by best match'},
-                            {value: 'sortByName', label: 'by name'},
-                            {value: 'sortByDate', label: 'by date'}]}
+                  defaultValue={{value: SortBy.BestMatch, label: 'by best match'}}
+                  options={[{value: SortBy.BestMatch, label: 'by best match'},
+                            {value: SortBy.Name, label: 'by name'},
+                            {value: SortBy.Date, label: 'by date'}]}
                   handleFilter={handleSortFuction}
                 />
               </Col>
@@ -378,8 +389,8 @@ export default function ConanSearch(props) {
             </Row>
             <Col lg={{span: 10, offset: 1}}>
             {showFilters && <Row style={filterStyle} className="conan-content-basic-card">
-              <Col xs="12" md="12" lg="6" className="mt-2"><ConanMultiSelectFilter title="Licenses" defaultValue={licenses} filters={props.data.licenses} handleFilter={handleLicenses}/></Col>
-              <Col xs="12" md="12" lg="6" className="mt-2"><ConanMultiSelectFilter title="Topics" defaultValue={topics} filters={props.data.topics} handleFilter={handleTopics}/></Col>
+              <Col xs="12" md="12" lg="6" className="mt-2"><ConanMultiSelectFilter title="Licenses" defaultValue={licenses} options={toFilterOptions(props.data.licenses)} handleFilter={handleLicenses}/></Col>
+              <Col xs="12" md="12" lg="6" className="mt-2"><ConanMultiSelectFilter title="Topics" defaultValue={topics} options={toFilterOptions(props.data.topics)} handleFilter={handleTopics}/></Col>
               <Col xs="12" md="12" lg="6" className="mt-2">
                 <Badge style={{cursor: 'pointer'}} className={(showLinux? "profileTopics": "profileEmptyTopics")} onClick={() => setShowLinux(!showLinux)}>Linux</Badge>
                 <Badge style={{cursor: 'pointer'}} className={(showWindows? "profileTopics": "profileEmptyTopics")} onClick={() => setShowWindows(!showWindows)}>Windows</Badge>
@@ -403,3 +414,4 @@ export default function ConanSearch(props) {
     </React.StrictMode>
   );
 }
+export default ConanSearch;

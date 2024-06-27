@@ -1,10 +1,10 @@
 //pages/sitemap.xml.js
 
-import {getJsonList, getUrls} from "../service/service";
+import {getJsonList, getUrls, PackageInfoDTO} from "../service/service";
 
 const URL = "https://conan.io"
 
-function generateSiteMap(packages) {
+function generateSiteMap(packages: PackageInfoDTO[]){
     return `<?xml version="1.0" encoding="UTF-8"?>
    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
      <!--We manually set the URLs we know already-->
@@ -56,7 +56,8 @@ function SiteMap() {
 export async function getServerSideProps({ res }) {
     // We make an API call to gather the URLs for our site
     let urls = getUrls({search: "all", topics: []})
-    const packages = await getJsonList(urls.search.package, urls.api.private);
+    // TODO ineficient, we are requesting all the packages information, we should only get the names
+    const packages = await getJsonList<PackageInfoDTO>(urls.search.package, urls.api.private);
 
     // We generate the XML sitemap with the posts data
     const sitemap = generateSiteMap(packages.data);

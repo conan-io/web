@@ -18,7 +18,7 @@ import { truncate,
          prettyProfiles,
          DefaultDescription } from '../../../components/utils';
 import ConanFooter from '../../../components/footer';
-import { getJson, getUrls } from '../../../service/service';
+import { getJson, getUrls, PackageInfoDTO, ConanResponse, PackageDownloadsDTO } from '../../../service/service';
 import { LiaBalanceScaleSolid, LiaGithub } from "react-icons/lia";
 import { IoMdHome } from "react-icons/io";
 import hljs from "highlight.js";
@@ -38,17 +38,18 @@ import { HiOutlineDocumentText } from "react-icons/hi";
 import { BasicSearchBar } from "../../../components/searchbar";
 import { Tooltip } from 'react-tooltip';
 import { useMediaQuery } from 'react-responsive';
+import { NextPage } from 'next';
 
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: { params: { recipeName: string; }; query: { version: any; }; }) {
   let urls = getUrls({packageId: context.params.recipeName});
-  let package_info_response = await getJson(urls.package.info, urls.api.private);
+  let package_info_response = await getJson<ConanResponse<PackageInfoDTO>>(urls.package.info, urls.api.private);
   if (package_info_response.status == 404) {
     return {
       notFound: true,
     }
   }
-  let downloads_response = await getJson(urls.package.downloads, urls.api.private)
+  let downloads_response = await getJson<ConanResponse<PackageDownloadsDTO>>(urls.package.downloads, urls.api.private)
   return {
     props: {
       data: package_info_response.data,
@@ -59,8 +60,15 @@ export async function getServerSideProps(context) {
   };
 }
 
-export default function ConanPackage(props) {
-    console.log("props", props);
+interface PageProps  {
+    notFound?: boolean,
+    data?: ConanResponse<PackageInfoDTO>,
+    downloads?: ConanResponse<PackageDownloadsDTO>,
+    recipeName?: string,
+    recipeVersion?: string
+}
+
+const ConanPackage: NextPage<PageProps> = (props) => {
   let router = useRouter();
   useEffect(() => {
     hljs.highlightAll();
@@ -364,3 +372,5 @@ ${recipeData.name}/${selectedVersion}`}
     </React.StrictMode>
   );
 }
+
+export default ConanPackage;

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, JSXElementConstructor, PromiseLikeOfReactNode, ReactElement, ReactNode } from "react";
+import { useState, useEffect, useRef, JSXElementConstructor, PromiseLikeOfReactNode, ReactElement, ReactNode, ReactPortal } from "react";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -10,6 +10,7 @@ import { BiPackage } from "react-icons/bi";
 import { PiNoteBold } from "react-icons/pi";
 import { CgFormatSlash } from "react-icons/cg";
 import { useRouter } from 'next/router';
+import { ConanFilterResponseDTO, ConanResponse } from "../service/service";
 
 
 function ConanFilter(props: { checked: boolean; handleFilter: any; filter: string; filter_id: any; }) {
@@ -40,7 +41,20 @@ export function ConanListFilter(props: { filters: any[]; handleFilter: any; }) {
     )
 }
 
-export function ConanSingleSelect(props) {
+export interface FilterOption  {label: string, value: number | string};
+
+export interface ConanSelectProps {
+  title: string;
+  defaultValue: any;
+  options: FilterOption[];
+  handleFilter: any;
+}
+
+export const toFilterOptions = (options: ConanResponse<ConanFilterResponseDTO>): FilterOption[] => 
+    Object.values(options).map(elem => {return {label: elem.filter, value: elem.id};});
+
+
+export function ConanSingleSelect(props: ConanSelectProps) {
   const options = props.options;
   let defaultValues = []
   if (props.defaultValue){
@@ -97,11 +111,11 @@ export function ConanSingleSelect(props) {
   )
 }
 
-export function ConanMultiSelectFilter(props) {
-  const options = props.filters.map(elem => {return {label: elem.filter, value: elem.id};});
+export function ConanMultiSelectFilter(props: ConanSelectProps) {
+  const options = props.options;
   let defaultValues = []
   if (props.defaultValue){
-    defaultValues = options.filter((elem) => props.defaultValue.includes(elem.value));
+    defaultValues = props.options.filter((elem) => props.defaultValue.includes(elem.value));
   }
   const customStyles = {
     option: (defaultStyles, state) => ({
@@ -155,7 +169,7 @@ export function ConanMultiSelectFilter(props) {
   )
 }
 
-export function ConanSearchBar(props) {
+export function ConanSearchBar(props: { value: string ; handleChange: any; recipes?: number; references?: number; }) {
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -185,7 +199,7 @@ export function ConanSearchBar(props) {
 }
 
 
-export function BasicSearchBar(props) {
+export function BasicSearchBar(props: { recipes: number; references: number; }) {
 
   let router = useRouter();
   const [value, setValue] = useState('');

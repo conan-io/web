@@ -8,31 +8,41 @@ import { Tooltip } from 'react-tooltip';
 import { BasicSearchBar } from "../components/searchbar";
 import { ConanCenterHeader } from '../components/header';
 import ConanFooter from '../components/footer';
-import {getJson, getJsonList, getUrls} from '../service/service';
+import {getJson, getJsonList, getUrls, PackageBasicDTO, ReferenceNumDTO} from '../service/service';
 import { BiInfoCircle } from "react-icons/bi";
+import { NextPage } from "next";
 
-export async function getServerSideProps(context) {
+interface PageProps  {
+    data: {
+        popular: PackageBasicDTO[],
+        updated: PackageBasicDTO[],
+        new: PackageBasicDTO[],
+        referenceNum: number,
+        recipesNum: number,
+    }
+}
+
+export async function getServerSideProps() {
   let urls = getUrls()
-  const reference_num_response = await getJson(urls.reference.num, urls.api.private);
-  const popular_response = await getJsonList(urls.popular, urls.api.private)
-  const updated_response = await getJsonList(urls.updated, urls.api.private)
-  const new_response = await getJsonList(urls.new, urls.api.private)
+  const referenceNumResponse = await getJson<ReferenceNumDTO>(urls.reference.num, urls.api.private);
+  const popularResponse = await getJsonList<PackageBasicDTO>(urls.popular, urls.api.private)
+  const updatedResponse = await getJsonList<PackageBasicDTO>(urls.updated, urls.api.private)
+  const newResponse = await getJsonList<PackageBasicDTO>(urls.new, urls.api.private)
 
-  return {
-    props: {
-      data: {
-        popular: popular_response.data,
-        updated: updated_response.data,
-        new: new_response.data,
-        reference_num: reference_num_response.data.references,
-        recipes_num: reference_num_response.data.recipes,
-      },
-    },
+  const _props: PageProps = {
+    data: {
+      popular: popularResponse.data,
+      updated: updatedResponse.data,
+      new: newResponse.data,
+      referenceNum: referenceNumResponse.data.references,
+      recipesNum: referenceNumResponse.data.recipes,
+    }
   }
+  return { props: _props}
 }
 
 
-function CenterList(props: { name: string; extraInfo: string; data: any[]; full_name: boolean }) {
+function CenterList(props: { name: string; extraInfo: string; data: PackageBasicDTO[]; isFullName: boolean }) {
   return (
     <div className="text-center">
       <Tooltip id="extra-info" />
@@ -52,11 +62,11 @@ function CenterList(props: { name: string; extraInfo: string; data: any[]; full_
                     'event_name': 'element_click',
                     'type': 'ui',
                     'purpose': props.name.toLowerCase(),
-                    'description': props.full_name ? info.name + "/" + info.version: info.name
+                    'description': props.isFullName ? info.name + "/" + info.version: info.name
                   });
                 }}
               >
-                {info.name}{props.full_name && "/" + info.version}
+                {info.name}{props.isFullName && "/" + info.version}
               </div>
             </Link>
           </ListGroup.Item>
@@ -66,55 +76,56 @@ function CenterList(props: { name: string; extraInfo: string; data: any[]; full_
   )
 }
 
-export default function Center(props) {
-  return (
-    <React.StrictMode>
+const Center: NextPage<PageProps> = (props) => (
+  <React.StrictMode>
 
-      <div className="flex-wrapper bg-conan-blue">
-        <ConanCenterHeader/>
+    <div className="flex-wrapper bg-conan-blue">
+      <ConanCenterHeader/>
+        <br/>
+        <Container className="conancontainer">
+          <Container><h1 className="text-center">The Conan libraries and tools central repository</h1></Container>
           <br/>
-          <Container className="conancontainer">
-            <Container><h1 className="text-center">The Conan libraries and tools central repository</h1></Container>
-            <br/>
-            <BasicSearchBar recipes={props.data.recipes_num} references={props.data.reference_num}/>
-            <br/>
-            <Row className="justify-content-md-center">
-              {
-                props.data.popular.length > 0  && <Col xs="12" md="4" lg="4">
-                  <CenterList
-                    data={props.data.popular}
-                    name="Popular recipes"
-                    full_name={false}
-                    extraInfo='The most downloaded recipes in the last 30 days'
-                  />
-                  </Col>
-              }
-              {
-                props.data.updated.length > 0 && <Col xs="12" md="4" lg="4">
-                  <CenterList
-                    data={props.data.updated}
-                    name="Just updated"
-                    full_name={false}
-                    extraInfo='Last updated recipes'
-                  />
-                </Col>
-              }
-              {
-                props.data.new.length > 0 && <Col xs="12" md="4" lg="4">
-                  <CenterList
-                   data={props.data.new}
-                   name="New version"
-                   full_name={true}
-                   extraInfo='Latest indexed versions'
-                  />
-                </Col>
-              }
-            </Row>
-          </Container>
+          <BasicSearchBar recipes={props.data.recipesNum} references={props.data.referenceNum}/>
           <br/>
-        <ConanFooter/>
-      </div>
+          <Row className="justify-content-md-center">
+            {
+              props.data.popular.length > 0  && <Col xs="12" md="4" lg="4">
+                <CenterList
+                  data={props.data.popular}
+                  name="Popular recipes"
+                  isFullName={false}
+                  extraInfo='The most downloaded recipes in the last 30 days'
+                />
+                </Col>
+            }
+            {
+              props.data.updated.length > 0 && <Col xs="12" md="4" lg="4">
+                <CenterList
+                  data={props.data.updated}
+                  name="Just updated"
+                  isFullName={false}
+                  extraInfo='Last updated recipes'
+                />
+              </Col>
+            }
+            {
+              props.data.new.length > 0 && <Col xs="12" md="4" lg="4">
+                <CenterList
+                 data={props.data.new}
+                 name="New version"
+                 isFullName={true}
+                 extraInfo='Latest indexed versions'
+                />
+              </Col>
+            }
+          </Row>
+        </Container>
+        <br/>
+      <ConanFooter/>
+    </div>
 
-    </React.StrictMode>
-  )
-}
+  </React.StrictMode>
+)
+ 
+
+export default Center;
