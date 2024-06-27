@@ -112,8 +112,17 @@ function CCIAssistanceLink() {
   );
 }
 
+function UseItinfoLoading() {
+  return (
+    <div>
+      Loading ... <div className="spinner-border spinner-border-sm" role="status"><span className="visually-hidden">Loading...</span></div>
+    </div>
+  );
+}
+
 function UseItFullContent({props}) {
   const reference = props.recipeName + "/" + props.recipeVersion;
+  const use_it_info = props.info[props.recipeVersion].use_it
 
   const TargetsInfo = function(recipe_properties) {
     const [open, setOpen] = useState(false);
@@ -200,19 +209,19 @@ target_link_libraries(YOUR_TARGET ${cmakeTargetName.split(" (config),")[0].trim(
   };
 
   const RecipeDetails = function(){
-    if (props.info.hasOwnProperty("properties") || props.info.headers) {
+    if (use_it_info.hasOwnProperty("properties") || use_it_info.headers) {
       let cmakeFindModeNone = false;
-      if (props.info.properties) {
-          if (props.info.properties.hasOwnProperty("cmake_find_mode")) {
-            cmakeFindModeNone = props.info.properties.cmake_find_mode == "none";
+      if (use_it_info.properties) {
+          if (use_it_info.properties.hasOwnProperty("cmake_find_mode")) {
+            cmakeFindModeNone = use_it_info.properties.cmake_find_mode == "none";
           }
       }
       return (
         <div>
           <p>Useful information to take into account to consume this library:</p>
           <Tabs className="package-tabs mt-2" id="uncontrolled">
-            {props.info.hasOwnProperty("properties") && !cmakeFindModeNone && (<Tab eventKey="targets" title="Targets"><br/><TargetsInfo root={props.info.properties} components={props.info.components_properties} /></Tab>)}
-            {props.info.headers && (<Tab eventKey="headers" title="Headers"><br/><HeadersInfo headers={props.info.headers} /></Tab>)}
+            {use_it_info.hasOwnProperty("properties") && !cmakeFindModeNone && (<Tab eventKey="targets" title="Targets"><br/><TargetsInfo root={use_it_info.properties} components={use_it_info.components_properties} /></Tab>)}
+            {use_it_info.headers && (<Tab eventKey="headers" title="Headers"><br/><HeadersInfo headers={use_it_info.headers} /></Tab>)}
           </Tabs>
         </div>
         );
@@ -280,8 +289,15 @@ class ExampleRecipe(ConanFile):
 }
 
 function UseItTab(props) {
+  if (props.loading) return (
+    <div>
+      <h3 className="mb-4 inline">Using {props.recipeName}</h3>
+      <UseItinfoLoading />
+    </div>
+  );
   if (props.info) {
-    const isToolRequire = props.info.package_type && props.info.package_type == "application";
+    const use_it_info = props.info[props.recipeVersion].use_it
+    const isToolRequire = use_it_info.package_type && use_it_info.package_type == "application";
     // If it's a tool requirement
     if (isToolRequire) {
         return (
@@ -317,16 +333,23 @@ function UseItTab(props) {
 
 
 function DependenciesTab(props) {
+  if (props.loading) return (
+    <div>
+      <h3 className="mb-4">Dependencies</h3>
+      <UseItinfoLoading />
+    </div>
+  );
   if (props.info) {
-    const hasRequires = props.info.requires && props.info.requires.length > 0;
-    const hasBuildRequires = props.info.build_requires && props.info.build_requires.length > 0;
+    const use_it_info = props.info[props.recipeVersion].use_it
+    const hasRequires = use_it_info.requires && use_it_info.requires.length > 0;
+    const hasBuildRequires = use_it_info.build_requires && use_it_info.build_requires.length > 0;
     if (hasRequires || hasBuildRequires) {
       return (
         <div>
           {hasRequires && (<div>
           <h3>Dependencies</h3>
           <br/>
-          {props.info.requires.map( function(require) {
+          {use_it_info.requires.map( function(require) {
             let ref = require.split("/");
             let name = ref[0];
             let version = ref[1];
@@ -338,7 +361,7 @@ function DependenciesTab(props) {
           <br/>
           <h3>Dependencies (tool requirements)</h3>
           <br/>
-          {props.info.build_requires.map( function(require) {
+          {use_it_info.build_requires.map( function(require) {
             let ref = require.split("/");
             let name = ref[0];
             let version = ref[1];
