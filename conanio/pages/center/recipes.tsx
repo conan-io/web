@@ -10,7 +10,8 @@ import Badge from 'react-bootstrap/Badge';
 import { ConanSearchBar,
          ConanMultiSelectFilter,
          ConanSingleSelect, 
-         toFilterOptions} from "../../components/searchbar";
+         toFilterOptions,
+         FilterOption} from "../../components/searchbar";
 import ListGroup from 'react-bootstrap/ListGroup';
 import Pagination from 'react-bootstrap/Pagination';
 import Link from 'next/link';
@@ -32,13 +33,17 @@ import { MdFilter1,
   MdFilter9,
   MdFilter9Plus,
   MdOutlineToday } from "react-icons/md";
-import {getJsonList, getUrls, getJson, ConanResponse, ConanFilterResponseDTO, PackageInfoDTO} from '../../service/service';
+import {getJsonList, getUrls, getJson} from '../../service/service';
 import { NextPage } from 'next';
+import { FilterOptions } from 'react-markdown/lib/react-markdown';
+import { ConanFilterResponseDTO, ConanResponse, PackageInfoDTO } from '../../service/dtos';
+
+type NewType = ConanFilterResponseDTO;
 
 interface PageProps  {
     data: {
         licenses: ConanResponse<ConanFilterResponseDTO>,
-        topics: ConanResponse<ConanFilterResponseDTO>,
+        topics: ConanResponse<NewType>,
     }
 }
 
@@ -58,29 +63,29 @@ export async function getServerSideProps(context) {
 }
 
 
-function PackageInfo(props) {
-  const licenses = Object.keys(props.data.info.licenses)
-  const labels = Object.keys(props.data.info.labels)
-  const packages = Object.values(props.data.info.packages).map((value) => value);
+const PackageInfo = (props: {package: PackageInfoDTO}) => {
+  const licenses = Object.keys(props.package.info.licenses)
+  const labels = Object.keys(props.package.info.labels)
+  const packages = Object.values(props.package.info.packages).map((value) => value);
   return (
     <div className="m-2">
       <Row>
         <Col xs="12" lg="6" className="mt-2">
           <Row>
             <Col xs="12" lg="auto">
-              <Link href={{ pathname: "/center/recipes/" + props.data.name, query: { version: props.data.info.version } }}>
-                <h3>{props.data.name}/{props.data.info.version}</h3>
+              <Link href={{ pathname: "/center/recipes/" + props.package.name, query: { version: props.package.info.version } }}>
+                <h3>{props.package.name}/{props.package.info.version}</h3>
               </Link>
             </Col>
           </Row>
           <Row>
             <Col xs="12" lg="auto">
-              {props.data.info.description || (<DefaultDescription name={props.data.name}/>)}
+              {props.package.info.description || (<DefaultDescription name={props.package.name}/>)}
             </Col>
           </Row>
         </Col>
         <Col xs="12" lg="6">
-          <Row className="mt-2">{props.data.info.timestamp && <Col xs="12" lg="auto"><MdOutlineToday className="conanIconBlue"/> {props.data.info.timestamp}</Col>}</Row>
+          <Row className="mt-2">{props.package.info.timestamp && <Col xs="12" lg="auto"><MdOutlineToday className="conanIconBlue"/> {props.package.info.timestamp}</Col>}</Row>
           <Row>{licenses && licenses.length > 0 && <Col xs="12" lg="auto"><LiaBalanceScaleSolid className="conanIconBlue"/> {licenses.join(", ")}</Col>}</Row>
         </Col>
       </Row>
@@ -183,8 +188,8 @@ function SearchList(props: {
     fetchData();
   }, [props.value, props.topics, props.licenses])
 
-  function renderPagination(filteredData, pageSize){
-    let pages = []
+  const renderPagination = (filteredData: PackageInfoDTO[], pageSize: number) => {
+    let pages: PackageInfoDTO[][] = []
     let pageButtoms = []
     for (let i = 0; i < filteredData.length; i += pageSize) {
       pages.push(filteredData.slice(i, i + pageSize))
@@ -210,7 +215,7 @@ function SearchList(props: {
         {
           pages.length > 0 && pages[pageNumber-1].map((info) => (
             <ListGroup.Item className="conan-content-basic-card mt-4" key={info.name}>
-              <PackageInfo data={info}/>
+              <PackageInfo package={info}/>
             </ListGroup.Item>))
         }
         {pages.length > 1 && (<Pagination size="sm" style={{    "margin": "17px auto 0px auto"}}>
@@ -238,7 +243,7 @@ function SearchList(props: {
         </Pagination>)}
         {data && showAll && data.filter((info) => props.extraFilters(info)).sort(sortByData).map((info) => (
         <ListGroup.Item className="conan-content-basic-card mt-4" key={info.name}>
-          <PackageInfo data={info}/>
+          <PackageInfo package={info}/>
         </ListGroup.Item>))}
       </ListGroup>
     </div>
@@ -247,26 +252,21 @@ function SearchList(props: {
 
 const ConanSearch: NextPage<PageProps> = (props) => {
   const router = useRouter();
-  let defaultValue = router.query.value;
-  let defaultTopics = router.query.topics;
-  let defaultLicenses = router.query.licenses;
+  let defaultValue = router.query.value?.toString() || '';
+  let defaultTopics = router.query.topics || [];
+  let defaultLicenses = router.query.licenses || [];
 
-  defaultTopics = defaultTopics || [];
   if (typeof defaultTopics === "string"){
     defaultTopics = [defaultTopics]
   }
-  defaultTopics = defaultTopics.map(e => parseInt(e))
-  defaultLicenses = defaultLicenses || [];
   if (typeof defaultLicenses === "string"){
     defaultLicenses = [defaultLicenses]
   }
-  defaultLicenses = defaultLicenses.map(e => parseInt(e))
-  defaultValue = defaultValue || '';
 
   const [textSearchBar, setTextSearchBar] = useState(defaultValue);
   const [value, setValue] = useState<string>(defaultValue);
-  const [topics, setTopics] = useState<number[]>(defaultTopics);
-  const [licenses, setLicenses] = useState<number[]>(defaultLicenses);
+  const [topics, setTopics] = useState<number[]>(defaultTopics.map(e => parseInt(e)));
+  const [licenses, setLicenses] = useState<number[]>(defaultLicenses.map(e => parseInt(e)));
   const [timer, setTimer] = useState(null);
   const [showFilters, setShowFilters] = useState(defaultTopics.length > 0);
   const [showWindows, setShowWindows] = useState(true);
@@ -275,45 +275,45 @@ const ConanSearch: NextPage<PageProps> = (props) => {
   const [showLinux, setShowLinux] = useState(true);
   const [sortDataBy, setSortDataBy] = useState(SortBy.BestMatch);
 
-  const getData = async (value, topiclist, licenseList) => {
+  const getData = async (value: string, topicList: number[], licenseList: number[]) => {
     router.push(
       {
         pathname: '/center/recipes',
-        query: {value: value, topics: topiclist, licenses: licenseList}
+        query: {value: value, topics: topicList, licenses: licenseList}
       }, undefined, {shallow: true})
   }
-  const handleChange = (e) => {
-    const typingSearch = (v) => {
-      setValue(e);
-      getData(v, topics, licenses);
+  const handleChange = (event: string) => {
+    const typingSearch = (value: string) => {
+      setValue(event);
+      getData(value, topics, licenses);
     };
-    setTextSearchBar(e)
+    setTextSearchBar(event)
     clearTimeout(timer);
     const newTimer = setTimeout(() => {
-      typingSearch(e);
+      typingSearch(event);
     }, 500);
     setTimer(newTimer);
   }
 
-  var handleTopics = (selectedOption) => {
-    let newTopics = selectedOption.map(elem => {return elem.value})
+  var handleTopics = (selectedOption: FilterOption[]) => {
+    const newTopics = selectedOption.map(elem => {return elem.value as number})
     setTopics(newTopics);
     getData(value, newTopics, licenses);
   }
 
-  var handleLicenses = (selectedOption) => {
-    let newLicenses = selectedOption.map(elem => {return elem.value})
+  var handleLicenses = (selectedOption: FilterOption[]) => {
+    const newLicenses = selectedOption.map(elem => {return elem.value as number})
     setLicenses(newLicenses);
     getData(value, topics, newLicenses);
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     setValue(textSearchBar)
     getData(textSearchBar, topics, licenses);
     event.preventDefault();
   }
 
-  const handleSortFuction = (selectedOption) => {
+  const handleSortFuction = (selectedOption: { value: React.SetStateAction<SortBy> }) => {
     setSortDataBy(selectedOption.value);
   }
 
@@ -332,7 +332,7 @@ const ConanSearch: NextPage<PageProps> = (props) => {
     return  (<Tag className="conanIconBlue" style={style}/>)
   }
 
-  const extraFilters = (item) => {
+  const extraFilters = (item: PackageInfoDTO) => {
     if (showLinux && showWindows && showMacOS && showMacOSSilicon){
       return true;
     }

@@ -45,7 +45,7 @@ const TribeCards = (props: { data: TribeMember[] }) => (
   </div>
 )
 
-function TribePage() {
+const TribePage = () => {
 
   const tribeMembers: TribeMember[] = [
     {

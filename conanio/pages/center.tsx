@@ -8,9 +8,10 @@ import { Tooltip } from 'react-tooltip';
 import { BasicSearchBar } from "../components/searchbar";
 import { ConanCenterHeader } from '../components/header';
 import ConanFooter from '../components/footer';
-import {getJson, getJsonList, getUrls, PackageBasicDTO, ReferenceNumDTO} from '../service/service';
+import {getJson, getJsonList, getUrls} from '../service/service';
 import { BiInfoCircle } from "react-icons/bi";
-import { NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
+import { PackageBasicDTO, ReferenceNumDTO } from "../service/dtos";
 
 interface PageProps  {
     data: {
@@ -22,7 +23,7 @@ interface PageProps  {
     }
 }
 
-export async function getServerSideProps() {
+export const getServerSideProps: GetServerSideProps = async () => {
   let urls = getUrls()
   const referenceNumResponse = await getJson<ReferenceNumDTO>(urls.reference.num, urls.api.private);
   const popularResponse = await getJsonList<PackageBasicDTO>(urls.popular, urls.api.private)
@@ -42,8 +43,7 @@ export async function getServerSideProps() {
 }
 
 
-function CenterList(props: { name: string; extraInfo: string; data: PackageBasicDTO[]; isFullName: boolean }) {
-  return (
+const CenterList = (props: { name: string; extraInfo: string; data: PackageBasicDTO[]; isFullName: boolean }) => (
     <div className="text-center">
       <Tooltip id="extra-info" />
       <h2>
@@ -74,7 +74,6 @@ function CenterList(props: { name: string; extraInfo: string; data: PackageBasic
       </ListGroup>
     </div>
   )
-}
 
 const Center: NextPage<PageProps> = (props) => (
   <React.StrictMode>

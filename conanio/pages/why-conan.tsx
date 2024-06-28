@@ -24,8 +24,7 @@ import { SiConan, SiJfrog } from "react-icons/si";
 import { RiOpenSourceFill } from "react-icons/ri";
 
 
-function WhyConan() {
-  return (
+const WhyConan = () => (
     <React.StrictMode>
 
       <div className="flex-wrapper">
@@ -304,6 +303,5 @@ function WhyConan() {
 
     </React.StrictMode>
   );
-}
 
 export default WhyConan

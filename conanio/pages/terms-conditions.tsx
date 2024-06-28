@@ -3,8 +3,7 @@ import React from 'react';
 import { ConanKitchenHeader } from '../components/header';
 import ConanFooter from '../components/footer';
 
-function TermsConditionPage() {
-  return (
+const TermsConditionPage = () => (
     <React.StrictMode>
 
       <div className="flex-wrapper">
@@ -131,6 +130,5 @@ function TermsConditionPage() {
 
     </React.StrictMode>
   );
-}
 
 export default TermsConditionPage

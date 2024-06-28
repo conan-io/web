@@ -10,7 +10,7 @@ import { BiPackage } from "react-icons/bi";
 import { PiNoteBold } from "react-icons/pi";
 import { CgFormatSlash } from "react-icons/cg";
 import { useRouter } from 'next/router';
-import { ConanFilterResponseDTO, ConanResponse } from "../service/service";
+import { ConanFilterResponseDTO, ConanResponse } from "../service/dtos";
 
 
 function ConanFilter(props: { checked: boolean; handleFilter: any; filter: string; filter_id: any; }) {
@@ -199,7 +199,7 @@ export function ConanSearchBar(props: { value: string ; handleChange: any; recip
 }
 
 
-export function BasicSearchBar(props: { recipes: number; references: number; }) {
+export function BasicSearchBar(props: { recipes?: number; references?: number; }) {
 
   let router = useRouter();
   const [value, setValue] = useState('');

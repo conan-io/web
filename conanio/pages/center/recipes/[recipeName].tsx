@@ -18,7 +18,8 @@ import { truncate,
          prettyProfiles,
          DefaultDescription } from '../../../components/utils';
 import ConanFooter from '../../../components/footer';
-import { getJson, getUrls, PackageInfoDTO, ConanResponse, PackageDownloadsDTO } from '../../../service/service';
+import { getJson, getUrls} from '../../../service/service';
+import { ConanResponse, PackageDownloadsDTO, PackageInfoDTO } from '../../../service/dtos';
 import { LiaBalanceScaleSolid, LiaGithub } from "react-icons/lia";
 import { IoMdHome } from "react-icons/io";
 import hljs from "highlight.js";
@@ -38,11 +39,26 @@ import { HiOutlineDocumentText } from "react-icons/hi";
 import { BasicSearchBar } from "../../../components/searchbar";
 import { Tooltip } from 'react-tooltip';
 import { useMediaQuery } from 'react-responsive';
-import { NextPage } from 'next';
+import { GetServerSideProps, GetServerSidePropsContext, GetServerSidePropsResult, NextPage } from 'next';
 
+interface PageProps  {
+    notFound?: boolean,
+    data?: ConanResponse<PackageInfoDTO>,
+    downloads?: ConanResponse<PackageDownloadsDTO>,
+    recipeName?: string,
+    recipeVersion?: string
+}
 
-export async function getServerSideProps(context: { params: { recipeName: string; }; query: { version: any; }; }) {
-  let urls = getUrls({packageId: context.params.recipeName});
+type Params = {
+    recipeName: string
+}
+
+export const getServerSideProps: GetServerSideProps<PageProps, Params> = async (
+  context: GetServerSidePropsContext<Params>
+): Promise<GetServerSidePropsResult<PageProps>> => {
+
+  const recipeName = context.params?.recipeName
+  let urls = getUrls({packageId: recipeName});
   let package_info_response = await getJson<ConanResponse<PackageInfoDTO>>(urls.package.info, urls.api.private);
   if (package_info_response.status == 404) {
     return {
@@ -54,18 +70,10 @@ export async function getServerSideProps(context: { params: { recipeName: string
     props: {
       data: package_info_response.data,
       downloads: downloads_response.data,
-      recipeName: context.params.recipeName,
+      recipeName: recipeName,
       recipeVersion: context.query.version? context.query.version: null
     },
   };
-}
-
-interface PageProps  {
-    notFound?: boolean,
-    data?: ConanResponse<PackageInfoDTO>,
-    downloads?: ConanResponse<PackageDownloadsDTO>,
-    recipeName?: string,
-    recipeVersion?: string
 }
 
 const ConanPackage: NextPage<PageProps> = (props) => {
@@ -103,7 +111,7 @@ const ConanPackage: NextPage<PageProps> = (props) => {
   const extraInfo = recipeStatus === 'ok'? 'maintained version': recipeStatus + ' version'
 
 
-  function RecipeInfo() {
+  const RecipeInfo = () => {
     const isToolRequire = recipeUseIt && recipeUseIt.package_type == "application";
     const fieldRequirements = isToolRequire? 'tool_requires': 'requires';
 
@@ -205,8 +213,7 @@ ${recipeData.name}/${selectedVersion}`}
     )
   }
 
-  function TabButtons(props) {
-    return (
+  const TabButtons = (props: { buttonClass: string; }) => (
       <>
         {recipeStatus === "ok" && <Button
           id="use_it"
@@ -243,10 +250,8 @@ ${recipeData.name}/${selectedVersion}`}
         ><PiMedal className="conanIcon18 me-1"/> Badges</Button>
       </>
     )
-  }
 
-  function RecipeTabs() {
-    return (
+  const RecipeTabs = () => (
       <>
       {selectedTab=='use_it' && recipeDescription && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
         {metadatsInfo && (<RecipeInfo/>)}
@@ -284,7 +289,6 @@ ${recipeData.name}/${selectedVersion}`}
       </Row>}
       </>
     )
-  }
 
   const valid_licenses = [
     '0bsd', 'afl-3.0', 'agpl-3.0', 'apache-2.0', 'artistic-2.0', 'bsd-2-clause',
@@ -296,7 +300,7 @@ ${recipeData.name}/${selectedVersion}`}
     'ofl-1.1', 'osl-3.0', 'postgresql', 'unlicense', 'upl-1.0', 'vim', 'wtfpl', 'zlib'
   ];
 
-  const onClickTopics = (topic) => {
+  const onClickTopics = (topic: string) => {
     router.push(
       {
         pathname: '/center/recipes',

@@ -1,6 +1,8 @@
 //pages/sitemap.xml.js
 
-import {getJsonList, getUrls, PackageInfoDTO} from "../service/service";
+import { GetServerSideProps } from "next";
+import { PackageInfoDTO } from "../service/dtos";
+import {getJsonList, getUrls} from "../service/service";
 
 const URL = "https://conan.io"
 
@@ -49,11 +51,11 @@ function generateSiteMap(packages: PackageInfoDTO[]){
  `;
 }
 
-function SiteMap() {
+const SiteMap = () => {
     // getServerSideProps will do the heavy lifting
 }
 
-export async function getServerSideProps({ res }) {
+export const getServerSideProps: GetServerSideProps = async ({res}) => {
     // We make an API call to gather the URLs for our site
     let urls = getUrls({search: "all", topics: []})
     // TODO ineficient, we are requesting all the packages information, we should only get the names

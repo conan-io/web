@@ -36,7 +36,7 @@ const UserStoryCards = (props: { data: UserStory[] }) => (
   </div>
 )
 
-function UserStoriesPage() {
+const UserStoriesPage = () => {
 
   const data: UserStory[] = [
     {
