@@ -6,19 +6,19 @@ export interface PackageBasicDTO {
 export interface PackageInfoDTO {
   name: string;
   info: {
-    age?: string;
-    description?: string;
-    downloads?: number;
-    homepage?: string;
-    labels?: string[];
-    licenses?: string[];
-    packages?: any;
+    age: number;
+    description: string;
+    downloads: number;
+    homepage: string;
+    labels: string[];
+    licenses: string[];
+    packages: any;
     readme?: string;
     recipe_revision?: string;
-    status?: string;
-    timestamp?: string;
+    status: string;
+    timestamp: string;
     use_it?: any;
-    version?: string;
+    version: string;
   };
 }
 

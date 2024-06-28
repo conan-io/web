@@ -35,7 +35,6 @@ import { MdFilter1,
   MdOutlineToday } from "react-icons/md";
 import {getJsonList, getUrls, getJson} from '../../service/service';
 import { NextPage } from 'next';
-import { FilterOptions } from 'react-markdown/lib/react-markdown';
 import { ConanFilterResponseDTO, ConanResponse, PackageInfoDTO } from '../../service/dtos';
 
 type NewType = ConanFilterResponseDTO;
@@ -64,8 +63,8 @@ export async function getServerSideProps(context) {
 
 
 const PackageInfo = (props: {package: PackageInfoDTO}) => {
-  const licenses = Object.keys(props.package.info.licenses)
-  const labels = Object.keys(props.package.info.labels)
+  const licenses = Object.keys(props.package.info.licenses!)
+  const labels = Object.keys(props.package.info.labels!)
   const packages = Object.values(props.package.info.packages).map((value) => value);
   return (
     <div className="m-2">
@@ -124,21 +123,21 @@ function SearchList(props: {
     if (nameA > nameB) return 1;
   };
 
-  const sortByDownloads = (a, b) => {
+  const sortByDownloads = (a: PackageInfoDTO, b: PackageInfoDTO) => {
     return b.info.downloads - a.info.downloads
   };
 
-  const sortByDate = (a, b) => {
+  const sortByDate = (a: PackageInfoDTO, b: PackageInfoDTO) => {
     if (a.info.timestamp > b.info.timestamp) return -1;
     if (a.info.timestamp < b.info.timestamp) return 1;
   };
 
-  const sortByPopularity = (a, b) => {
+  const sortByPopularity = (a: PackageInfoDTO, b: PackageInfoDTO) => {
     return (b.info.downloads/b.info.age) - (a.info.downloads/a.info.age)
   };
 
-  const sortByBestMatch = (a, b) => {
-    const matchScore = (elem) => {
+  const sortByBestMatch = (a: PackageInfoDTO, b: PackageInfoDTO) => {
+    const matchScore = (elem: PackageInfoDTO) => {
       let score = 0;
       const tokens = props.value.split(' ');
       if (elem.name.toLowerCase() == props.value.toLowerCase()) score += 9000
@@ -160,7 +159,7 @@ function SearchList(props: {
     if(matchScore(a) < matchScore(b)) return 1;
   };
 
-  const sortByData = (a, b) => {
+  const sortByData = (a: PackageInfoDTO, b: PackageInfoDTO) => {
     if (props.sortDataBy == SortBy.Name) return sortByName(a, b)
     if (props.sortDataBy == SortBy.Date) return sortByDate(a, b)
     if (props.sortDataBy == SortBy.BestMatch) {
