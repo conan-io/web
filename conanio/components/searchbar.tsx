@@ -209,7 +209,7 @@ export function BasicSearchBar(props: { recipes?: number; references?: number; }
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    dataLayer.push({
+    window.dataLayer.push({
       'event': 'fireEvent',
       'event_name': 'search',
       'search_term': value

@@ -57,7 +57,7 @@ const SiteMap = () => {
 
 export const getServerSideProps: GetServerSideProps = async ({res}) => {
     // We make an API call to gather the URLs for our site
-    let urls = getUrls({search: "all", topics: []})
+    let urls = getUrls({pattern: "all", topics: []})
     // TODO ineficient, we are requesting all the packages information, we should only get the names
     const packages = await getJsonList<PackageInfoDTO>(urls.search.package, urls.api.private);
 

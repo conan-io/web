@@ -7,7 +7,7 @@ import { LuPackageSearch } from "react-icons/lu";
 
 
 function gtmConanPush(description: string){
-  dataLayer.push({
+  window.dataLayer.push({
     'event': 'fireEvent',
     'event_name': 'element_click',
     'type': 'navigation',
@@ -52,7 +52,7 @@ function BetaBanner() {
               href="https://github.com/conan-io/web/issues"
               onClick={
                 () => {
-                  dataLayer.push({
+                  window.dataLayer.push({
                     'event': 'fireEvent',
                     'event_name': 'element_click',
                     'type': 'ui',

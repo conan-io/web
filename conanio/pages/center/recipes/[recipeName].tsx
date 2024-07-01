@@ -71,7 +71,7 @@ export const getServerSideProps: GetServerSideProps<PageProps, Params> = async (
       data: package_info_response.data,
       downloads: downloads_response.data,
       recipeName: recipeName,
-      recipeVersion: context.query.version? context.query.version: null
+      recipeVersion: context.query.version? context.query.version as string: null
     },
   };
 }

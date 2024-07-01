@@ -7,7 +7,7 @@ import { BiInfoCircle } from "react-icons/bi";
 
 
 function gtmConanPush(eventType: string, product: string, platforms: string, purpose: string, description: string){
-  dataLayer.push({
+  window.dataLayer.push({
     'event': 'fireEvent',
     'event_name': 'element_click',
     'type': eventType,

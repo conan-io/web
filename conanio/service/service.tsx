@@ -26,14 +26,15 @@ interface ApiUrls {
 
 interface GetUrlsParams {
   packageId?: string;
-  search?: string;
+  pattern?: string;
   topics?: number[]; // ids
   licenses?: number[]; // ids
 }
 
+// TODO: create better service methods to avoid calling getUrls
 export const getUrls = ({
   packageId = "",
-  search = "all",
+  pattern = "all",
   topics = [],
   licenses = [],
 }: GetUrlsParams = {}): ApiUrls => {
@@ -59,7 +60,7 @@ export const getUrls = ({
       num: "reference/num",
     },
     search: {
-      package: `search/${encodeURIComponent(search.toLowerCase())}?topics=${encodeURIComponent(topics)}&licenses=${encodeURIComponent(licenses)}`,
+      package: `search/${encodeURIComponent(pattern.toLowerCase())}?topics=${encodeURIComponent(topics?.join(","))}&licenses=${encodeURIComponent(licenses?.join(","))}`,
     },
   };
 };

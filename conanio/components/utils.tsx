@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { CSSProperties, useState } from "react";
 import Badge from 'react-bootstrap/Badge';
 import Alert from 'react-bootstrap/Alert';
 import Link from 'next/link';
@@ -111,7 +111,7 @@ function prettyProfileNames(){
 }
 
 
-function prettyProfiles(profileSettings, style){
+function prettyProfiles(profileSettings: any[], style?: CSSProperties){
   const profileList = profileSettings.map((item) => item.os + "-" + item.arch);
   if (profileList.filter(item => (item=='null-null')).length == profileList.length){
     return [
@@ -138,7 +138,7 @@ function prettyProfiles(profileSettings, style){
 
 // This comes from the wikipedia's pseudocode, I couldn't be bothered to do some dynamic programming of my own,
 // comments left to make it easier to double-check the transpilation
-function levenshteinDistance(s, t) {
+function levenshteinDistance(s: string, t: string) {
   const m = s.length;
   const n = t.length;
 

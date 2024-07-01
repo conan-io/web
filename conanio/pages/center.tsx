@@ -57,7 +57,7 @@ const CenterList = (props: { name: string; extraInfo: string; data: PackageBasic
             <Link href={{ pathname: "/center/recipes/" + info.name, query: { version: info.version } }}>
               <div onClick={
                 () => {
-                  dataLayer.push({
+                  window.dataLayer.push({
                     'event': 'fireEvent',
                     'event_name': 'element_click',
                     'type': 'ui',

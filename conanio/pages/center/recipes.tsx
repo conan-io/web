@@ -47,7 +47,7 @@ interface PageProps  {
 }
 
 export async function getServerSideProps(context) {
-  let urls = getUrls({search: '', topics: null})
+  let urls = getUrls({pattern: '', topics: null})
   let licenses = await getJson<ConanResponse<ConanFilterResponseDTO>>(urls.licenses, urls.api.private)
   let topics = await getJson<ConanResponse<ConanFilterResponseDTO>>(urls.topics, urls.api.private)
 
@@ -174,7 +174,8 @@ function SearchList(props: {
     const fetchData = async () => {
       try {
         let value = props.value || 'all';
-        let urls = getUrls({search: value, topics: props.topics, licenses: props.licenses})
+        let urls = getUrls({pattern: value, topics: props.topics, licenses: props.licenses})
+                console.log(urls.search.package)
         const packagesResponse = await getJsonList<PackageInfoDTO>(urls.search.package, urls.api.public);
         setData(packagesResponse.data);
       } catch(err) {

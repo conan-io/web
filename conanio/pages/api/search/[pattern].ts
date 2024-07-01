@@ -1,21 +1,24 @@
 interface ApiSearchRequest {
     query: {
-        pattern: string;
-        topics: string;
-        licenses: string;
+        pattern?: string;
+        topics?: number[];
+        licenses?: number[];
     };
 }
 
+// This is endpoint acts like a proxy to access backend from `useEffect` (client side)
+// which by default has no access to the backend cluster
 export default async function get(req: ApiSearchRequest, res: any){
-  let topics = req.query.topics || ''
-  let licenses = req.query.licenses || ''
+  let topics = req.query.topics || []
+  let licenses = req.query.licenses || []
+  // TODO: avoid composing the request by creating better service methods
   const response = await fetch(
     `${encodeURI(process.env.NEXT_PUBLIC_CONAN_CONANIO_SERVICE)}/search/${encodeURIComponent(
         (req.query.pattern).toLowerCase()
       )}?topics=${encodeURIComponent(
-        topics.split(',')
+        topics.join(',')
       )}&licenses=${encodeURIComponent(
-        licenses.split(',')
+        licenses.join(',')
       )}`
   );
   if (!response.ok) {
