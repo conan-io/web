@@ -30,7 +30,7 @@ function truncateTooltip(text: string, n: number){
 };
 
 
-function truncateAdnCopy(text: string, n: number){
+function truncateAndCopy(text: string, n: number){
   if(text.length > n) return (
     <>
       {truncateTooltip(text, n)}
@@ -189,4 +189,4 @@ function DefaultDescription (props: { name: string; }) {
 }
 
 
-export { truncate, truncateTooltip, truncateAdnCopy, urlify, sanitizeURL, ClipboardCopy, prettyProfiles, prettyProfileNames, levenshteinDistance, DefaultDescription };
+export { truncate, truncateTooltip, truncateAndCopy, urlify, sanitizeURL, ClipboardCopy, prettyProfiles, prettyProfileNames, levenshteinDistance, DefaultDescription };

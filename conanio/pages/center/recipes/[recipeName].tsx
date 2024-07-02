@@ -11,7 +11,7 @@ import Button from 'react-bootstrap/Button';
 import Link from 'next/link';
 import { ConanCenterHeader } from '../../../components/header';
 import { truncate,
-         truncateAdnCopy,
+         truncateAndCopy,
          urlify,
          sanitizeURL,
          ClipboardCopy,
@@ -19,7 +19,7 @@ import { truncate,
          DefaultDescription } from '../../../components/utils';
 import ConanFooter from '../../../components/footer';
 import { getJson, getUrls} from '../../../service/service';
-import { ConanResponse, RecipeDownloads, RecipeInfo } from '../../../service/dtos';
+import { ConanResponse, RecipeInfo } from '../../../service/dtos';
 import { LiaBalanceScaleSolid, LiaGithub } from "react-icons/lia";
 import { IoMdHome } from "react-icons/io";
 import hljs from "highlight.js";
@@ -83,7 +83,6 @@ const ConanPackage: NextPage<PageProps> = (props) => {
 
   const [selectedVersion, setSelectedVersion] = useState(props.recipeVersion !== null? props.recipeVersion: props.data[0].info.version);
   const indexSelectedVersion = Object.keys(props.data).filter(index => props.data[index].info.version === selectedVersion)[0];
-  const isBigScreen = useMediaQuery({ query: '(min-width: 1824px)' })
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' })
   const [selectedTab, setSelectedTab] = useState(indexSelectedVersion && props.data[indexSelectedVersion].info.status === "ok"? 'use_it': 'versions');
   const [packageOS, setPackageOS] = useState(null);
@@ -111,7 +110,7 @@ const ConanPackage: NextPage<PageProps> = (props) => {
 
     return (
       <Col xs lg="3" className="ps-4 mt-4 pt-4">
-        {recipeDescription && <Row xs lg className="mb-2"><Col xs lg><h5>Recipe info</h5></Col></Row>}
+        {recipeDescription && <Row className="mb-2"><Col><h5>Recipe info</h5></Col></Row>}
         {recipeLicenses && recipeLicenses.length > 0 && (<Row>
           <Col xs lg>
             <Tooltip style={{ zIndex: 99 }} id="package-info"/>
@@ -127,7 +126,10 @@ const ConanPackage: NextPage<PageProps> = (props) => {
                 >{license}</a>
               );
               return license;
-            }).reduce((prev, curr) => [prev, ', ', curr])}
+            }).reduce<React.ReactNode[]>((prev, curr, index) => {
+              if (index === 0) return [curr];
+              return [...prev, ', ', curr];
+            }, [])}
           </Col>
         </Row>)}
 
@@ -165,7 +167,7 @@ const ConanPackage: NextPage<PageProps> = (props) => {
             <Tooltip style={{ zIndex: 99 }} id="package-info"/>
             <a data-tooltip-id='package-info' data-tooltip-html="Latest recipe revision" data-tooltip-place="top">
               <AiOutlinePushpin className="conanIconBlue conanIcon22" style={{verticalAlign: "middle"}}/>
-            </a>{truncateAdnCopy(recipeRevision, 20)}</Col>
+            </a>{truncateAndCopy(recipeRevision, 20)}</Col>
         </Row>)}
         {recipeDescription && (<hr/>)}
 
@@ -191,9 +193,9 @@ const ConanPackage: NextPage<PageProps> = (props) => {
         </Row>)}
         {recipePackages && recipePackages.length > 0 && (<hr/>)}
 
-        {recipeDescription && <Row xs lg className="mt-3"><Col xs lg><h5>Install</h5></Col></Row>}
-        {recipeDescription && <Row xs lg>
-          <Col xs lg>
+        {recipeDescription && <Row className="mt-3"><Col><h5>Install</h5></Col></Row>}
+        {recipeDescription && <Row>
+          <Col>
             Add the following line to your conanfile.txt:
             <pre>
               <code style={{backgroundColor: "white"}} className="language-ini">
@@ -262,7 +264,6 @@ ${recipeData.name}/${selectedVersion}`}
       {selectedTab=='packages' && recipeDescription && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
         {metadatsInfo && (<RecipeAside/>)}
         <Col xs lg="9" className="mt-4 ps-4 pe-4 pt-4 recipeContentBox">
-          {/*<PackagesTab recipeRevision={recipeRevision} packages={recipePackages} recipeName={props.recipeName} recipeVersion={selectedVersion} packageOS={packageOS} setPackageOS={setPackageOS}/>*/}
           <PackagesTab recipe={recipeData} packageOS={packageOS} setPackageOS={setPackageOS}/>
         </Col>
       </Row>}

@@ -34,7 +34,7 @@ import { MdFilter1,
   MdFilter9Plus,
   MdOutlineToday } from "react-icons/md";
 import {getJsonList, getUrls, getJson} from '../../service/service';
-import { NextPage } from 'next';
+import { GetServerSideProps, GetServerSidePropsResult, NextPage } from 'next';
 import { ConanFilterResponse, ConanResponse, RecipeInfo } from '../../service/dtos';
 
 type NewType = ConanFilterResponse;
@@ -46,20 +46,28 @@ interface PageProps  {
     }
 }
 
-export async function getServerSideProps(context) {
-  let urls = getUrls({pattern: '', topics: null})
-  let licenses = await getJson<ConanResponse<ConanFilterResponse>>(urls.licenses, urls.api.private)
-  let topics = await getJson<ConanResponse<ConanFilterResponse>>(urls.topics, urls.api.private)
+export const getServerSideProps: GetServerSideProps<
+  PageProps
+> = async (): Promise<GetServerSidePropsResult<PageProps>> => {
+  let urls = getUrls({ pattern: "", topics: null });
+  let licenses = await getJson<ConanResponse<ConanFilterResponse>>(
+    urls.licenses,
+    urls.api.private,
+  );
+  let topics = await getJson<ConanResponse<ConanFilterResponse>>(
+    urls.topics,
+    urls.api.private,
+  );
 
   return {
     props: {
       data: {
         licenses: licenses.data,
-        topics: topics.data
+        topics: topics.data,
       },
     },
-  }
-}
+  };
+};
 
 
 const PackageInfo = (props: {package: RecipeInfo}) => {
@@ -103,20 +111,20 @@ enum SortBy {
     BestMatch = 'sortByBestMatch',
 }
 
-function SearchList(props: {
+const SearchList = (props: {
   value: string;
   sortDataBy: SortBy,
   topics: number[];
   licenses: number[];
   extraFilters: any;
-}) {
+}) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [data, setData] = useState<RecipeInfo[]>(null);
   const [pageNumber, setPageNumber] = useState(1);
   const [showAll, setShowAll] = useState(false);
 
-  const sortByName = (a, b) => {
+  const sortByName = (a: RecipeInfo, b: RecipeInfo) => {
     const nameA = a.name.toUpperCase(); // ignore upper and lowercase
     const nameB = b.name.toUpperCase(); // ignore upper and lowercase
     if (nameA < nameB) return -1;
@@ -155,8 +163,8 @@ function SearchList(props: {
       return score
     }
     if (matchScore(a) == matchScore(b)) return sortByName(a, b);
-    if(matchScore(a) > matchScore(b)) return -1;
-    if(matchScore(a) < matchScore(b)) return 1;
+    if (matchScore(a) > matchScore(b)) return -1;
+    if (matchScore(a) < matchScore(b)) return 1;
   };
 
   const sortByData = (a: RecipeInfo, b: RecipeInfo) => {
@@ -175,7 +183,6 @@ function SearchList(props: {
       try {
         let value = props.value || 'all';
         let urls = getUrls({pattern: value, topics: props.topics, licenses: props.licenses})
-                console.log(urls.search.package)
         const packagesResponse = await getJsonList<RecipeInfo>(urls.search.package, urls.api.public);
         setData(packagesResponse.data);
       } catch(err) {
@@ -326,7 +333,13 @@ const ConanSearch: NextPage<PageProps> = (props) => {
     const tags = {1: MdFilter1, 2: MdFilter2, 3: MdFilter3, 4: MdFilter4,
       5: MdFilter5, 6: MdFilter6, 7: MdFilter7, 8: MdFilter8, 9: MdFilter9}
     const style = {backgroundColor: 'white', verticalAlign: 'text-top'}
-    const _filterNumber = topics.length + licenses.length + !showWindows + !showLinux + !showMacOS + !showMacOSSilicon
+    const _filterNumber =
+      topics.length +
+      licenses.length +
+      (showWindows ? 0 : 1) +
+      (showLinux ? 0 : 1) +
+      (showMacOS ? 0 : 1) +
+      (showMacOSSilicon ? 0 : 1);
     if (!_filterNumber) return null
     const Tag = _filterNumber>9? MdFilter9Plus: tags[_filterNumber];
     return  (<Tag className="conanIconBlue" style={style}/>)

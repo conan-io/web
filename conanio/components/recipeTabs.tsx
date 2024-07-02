@@ -27,7 +27,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Button from 'react-bootstrap/Button';
 import Collapse from 'react-bootstrap/Collapse';
 import {LineChart, XAxis, YAxis, Tooltip, CartesianGrid, Line, Legend} from 'recharts';
-import { prettyProfiles, truncateAdnCopy } from './utils';
+import { truncateAndCopy } from './utils';
 import { useMediaQuery } from 'react-responsive';
 import { ConanResponse, RecipeDownloads, PackageInfo, RecipeInfo } from '../service/dtos';
 
@@ -453,11 +453,11 @@ const PackagesTab = ({recipe, packageOS, setPackageOS}: {recipe: RecipeInfo, pac
         <ListGroup.Item key={packageInfo.package_id} style={group_style}>
           {packageInfo.package_id && (<Row style={frist_row_style}>
             <Col xs="12" md="4" lg="4" style={main_col_style}><strong>package ID</strong></Col>
-            <Col>{isTabletOrMobile? truncateAdnCopy(packageInfo.package_id, 18): packageInfo.package_id}</Col>
+            <Col>{isTabletOrMobile? truncateAndCopy(packageInfo.package_id, 18): packageInfo.package_id}</Col>
           </Row>)}
           {recipe.info.recipe_revision && (<Row style={row_style}>
             <Col xs="12" md="4" lg="4" style={main_col_style}><strong>Recipe Revision</strong></Col>
-            <Col>{isTabletOrMobile? truncateAdnCopy(recipe.info.recipe_revision,18): recipe.info.recipe_revision}</Col>
+            <Col>{isTabletOrMobile? truncateAndCopy(recipe.info.recipe_revision,18): recipe.info.recipe_revision}</Col>
           </Row>)}
           {packageInfo.os && (<Row style={row_style}>
             <Col xs="12" md="4" lg="4" style={main_col_style}><strong>os</strong></Col>
