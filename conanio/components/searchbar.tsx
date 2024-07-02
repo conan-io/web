@@ -10,7 +10,7 @@ import { BiPackage } from "react-icons/bi";
 import { PiNoteBold } from "react-icons/pi";
 import { CgFormatSlash } from "react-icons/cg";
 import { useRouter } from 'next/router';
-import { ConanFilterResponseDTO, ConanResponse } from "../service/dtos";
+import { ConanFilterResponse, ConanResponse } from "../service/dtos";
 
 
 function ConanFilter(props: { checked: boolean; handleFilter: any; filter: string; filter_id: any; }) {
@@ -50,7 +50,7 @@ export interface ConanSelectProps {
   handleFilter: any;
 }
 
-export const toFilterOptions = (options: ConanResponse<ConanFilterResponseDTO>): FilterOption[] => 
+export const toFilterOptions = (options: ConanResponse<ConanFilterResponse>): FilterOption[] => 
     Object.values(options).map(elem => {return {label: elem.filter, value: elem.id};});
 
 

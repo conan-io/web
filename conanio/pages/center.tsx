@@ -11,13 +11,13 @@ import ConanFooter from '../components/footer';
 import {getJson, getJsonList, getUrls} from '../service/service';
 import { BiInfoCircle } from "react-icons/bi";
 import { GetServerSideProps, NextPage } from "next";
-import { PackageBasicDTO, ReferenceNumDTO } from "../service/dtos";
+import { RecipeBasic, RecipeReference } from "../service/dtos";
 
 interface PageProps  {
     data: {
-        popular: PackageBasicDTO[],
-        updated: PackageBasicDTO[],
-        new: PackageBasicDTO[],
+        popular: RecipeBasic[],
+        updated: RecipeBasic[],
+        new: RecipeBasic[],
         referenceNum: number,
         recipesNum: number,
     }
@@ -25,10 +25,10 @@ interface PageProps  {
 
 export const getServerSideProps: GetServerSideProps = async () => {
   let urls = getUrls()
-  const referenceNumResponse = await getJson<ReferenceNumDTO>(urls.reference.num, urls.api.private);
-  const popularResponse = await getJsonList<PackageBasicDTO>(urls.popular, urls.api.private)
-  const updatedResponse = await getJsonList<PackageBasicDTO>(urls.updated, urls.api.private)
-  const newResponse = await getJsonList<PackageBasicDTO>(urls.new, urls.api.private)
+  const referenceNumResponse = await getJson<RecipeReference>(urls.reference.num, urls.api.private);
+  const popularResponse = await getJsonList<RecipeBasic>(urls.popular, urls.api.private)
+  const updatedResponse = await getJsonList<RecipeBasic>(urls.updated, urls.api.private)
+  const newResponse = await getJsonList<RecipeBasic>(urls.new, urls.api.private)
 
   const _props: PageProps = {
     data: {
@@ -43,7 +43,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 }
 
 
-const CenterList = (props: { name: string; extraInfo: string; data: PackageBasicDTO[]; isFullName: boolean }) => (
+const CenterList = (props: { name: string; extraInfo: string; data: RecipeBasic[]; isFullName: boolean }) => (
     <div className="text-center">
       <Tooltip id="extra-info" />
       <h2>

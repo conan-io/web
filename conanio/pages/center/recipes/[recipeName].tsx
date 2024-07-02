@@ -19,7 +19,7 @@ import { truncate,
          DefaultDescription } from '../../../components/utils';
 import ConanFooter from '../../../components/footer';
 import { getJson, getUrls} from '../../../service/service';
-import { ConanResponse, PackageDownloadsDTO, PackageInfoDTO } from '../../../service/dtos';
+import { ConanResponse, RecipeDownloads, RecipeInfo } from '../../../service/dtos';
 import { LiaBalanceScaleSolid, LiaGithub } from "react-icons/lia";
 import { IoMdHome } from "react-icons/io";
 import hljs from "highlight.js";
@@ -27,7 +27,6 @@ import { UseItTab,
          BadgesTab,
          DependenciesTab,
          VersionsTab,
-         StatsTab,
          PackagesTab } from "../../../components/recipeTabs";
 import { PiWarningBold } from "react-icons/pi";
 import { MdOutlineToday } from "react-icons/md";
@@ -43,8 +42,8 @@ import { GetServerSideProps, GetServerSidePropsContext, GetServerSidePropsResult
 
 interface PageProps  {
     notFound?: boolean,
-    data?: ConanResponse<PackageInfoDTO>,
-    downloads?: ConanResponse<PackageDownloadsDTO>,
+    data?: ConanResponse<RecipeInfo>,
+    //downloads?: ConanResponse<PackageDownloadsDTO>,
     recipeName?: string,
     recipeVersion?: string
 }
@@ -59,17 +58,17 @@ export const getServerSideProps: GetServerSideProps<PageProps, Params> = async (
 
   const recipeName = context.params?.recipeName
   let urls = getUrls({packageId: recipeName});
-  let package_info_response = await getJson<ConanResponse<PackageInfoDTO>>(urls.package.info, urls.api.private);
+  let package_info_response = await getJson<ConanResponse<RecipeInfo>>(urls.package.info, urls.api.private);
   if (package_info_response.status == 404) {
     return {
       notFound: true,
     }
   }
-  let downloads_response = await getJson<ConanResponse<PackageDownloadsDTO>>(urls.package.downloads, urls.api.private)
+  //let downloadsResponse = await getJson<ConanResponse<PackageDownloadsDTO>>(urls.package.downloads, urls.api.private)
   return {
     props: {
       data: package_info_response.data,
-      downloads: downloads_response.data,
+      //downloads: downloadsResponse.data,
       recipeName: recipeName,
       recipeVersion: context.query.version? context.query.version as string: null
     },
@@ -99,19 +98,14 @@ const ConanPackage: NextPage<PageProps> = (props) => {
   const recipeLicenses = Object.keys(recipeData.info.licenses);
   const recipeConanCenterUrl = "https://github.com/conan-io/conan-center-index/tree/master/recipes/" + recipeData.name;
   const recipeUseIt = recipeData.info.use_it;
-  const recipeTotalDownloads = recipeData.info.downloads;
-  const recipeDownloads = props.downloads[selectedVersion].downloads;
-  const recipeDownloadsAll = props.downloads.all.downloads;
-  const recipeDownloadsVersions = props.downloads.all.versions;
-  const maintainedVersions = Object.values(props.data).filter(data => data.info.status === "ok").map(data => data.info.version);
-  const unmaintainedVersions = Object.values(props.data).filter(data => data.info.status !== "ok").map(data => data.info.version);
+
   const metadatsInfo = (recipeDescription && true)
 
   const iconStatusColor = recipeStatus === 'ok'? 'green': 'orange'
   const extraInfo = recipeStatus === 'ok'? 'maintained version': recipeStatus + ' version'
 
 
-  const RecipeInfo = () => {
+  const RecipeAside = () => {
     const isToolRequire = recipeUseIt && recipeUseIt.package_type == "application";
     const fieldRequirements = isToolRequire? 'tool_requires': 'requires';
 
@@ -248,26 +242,33 @@ ${recipeData.name}/${selectedVersion}`}
           value="badges"
           onClick={(e) => setSelectedTab(e.currentTarget.value)}
         ><PiMedal className="conanIcon18 me-1"/> Badges</Button>
+        {/*<Button
+          id="stats"
+          className={props.buttonClass + " " + ((selectedTab == 'stats') && "tabButtonActive")}
+          value="stats"
+          onClick={(e) => setSelectedTab(e.currentTarget.value)}
+        ><PiMedal className="conanIcon18 me-1"/> Stats</Button> */}
       </>
     )
 
   const RecipeTabs = () => (
       <>
       {selectedTab=='use_it' && recipeDescription && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
-        {metadatsInfo && (<RecipeInfo/>)}
+        {metadatsInfo && (<RecipeAside/>)}
         <Col xs lg="9" className="mt-4 ps-4 pe-4 pt-4 recipeContentBox">
-          <UseItTab info={recipeUseIt} recipeName={props.recipeName} recipeVersion={selectedVersion} />
+          <UseItTab  recipe={recipeData}/> 
         </Col>
       </Row>}
       {selectedTab=='packages' && recipeDescription && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
-        {metadatsInfo && (<RecipeInfo/>)}
+        {metadatsInfo && (<RecipeAside/>)}
         <Col xs lg="9" className="mt-4 ps-4 pe-4 pt-4 recipeContentBox">
-          <PackagesTab recipeRevision={recipeRevision} packages={recipePackages} recipeName={props.recipeName} recipeVersion={selectedVersion} packageOS={packageOS} setPackageOS={setPackageOS}/>
+          {/*<PackagesTab recipeRevision={recipeRevision} packages={recipePackages} recipeName={props.recipeName} recipeVersion={selectedVersion} packageOS={packageOS} setPackageOS={setPackageOS}/>*/}
+          <PackagesTab recipe={recipeData} packageOS={packageOS} setPackageOS={setPackageOS}/>
         </Col>
       </Row>}
       {selectedTab=='dependencies' && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
-        {metadatsInfo && (<RecipeInfo/>)}
-        <Col xs lg="9" className="mt-4 ps-4 pe-4 pt-4 recipeContentBox"><DependenciesTab info={recipeUseIt} recipeName={props.recipeName} recipeVersion={selectedVersion}/></Col>
+        {metadatsInfo && (<RecipeAside/>)}
+        <Col xs lg="9" className="mt-4 ps-4 pe-4 pt-4 recipeContentBox"><DependenciesTab recipe={recipeData}/></Col>
       </Row>}
       {selectedTab=='versions' && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
         <Col xs lg className="pb-4 mt-4 ps-4 pe-4 pt-4 recipeContentBox"><VersionsTab selector={setSelectedVersion} data={props.data} /></Col>
@@ -275,18 +276,11 @@ ${recipeData.name}/${selectedVersion}`}
       {selectedTab=='badges' && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
         <Col xs lg className="mt-4 ps-4 pe-4 pt-4 recipeContentBox"><BadgesTab recipeName={props.recipeName} /></Col>
       </Row>}
-      {selectedTab=='stats' && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
+      {/*{selectedTab=='stats' && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
         <Col xs lg className="mt-4 ps-4 pe-4 pt-4 recipeContentBox">
-          <StatsTab
-            maintainedVersions={maintainedVersions}
-            recipeName={props.recipeName}
-            recipeDownloadsAll={recipeDownloadsAll}
-            selectedVersion={selectedVersion}
-            data={props.data}
-            currentVersionDownloads={recipeTotalDownloads}
-          />
+        <StatsTab packages={props.data} downloads={props.downloads} versionIdx={indexSelectedVersion} />
         </Col>
-      </Row>}
+      </Row>} */}
       </>
     )
 

@@ -35,21 +35,21 @@ import { MdFilter1,
   MdOutlineToday } from "react-icons/md";
 import {getJsonList, getUrls, getJson} from '../../service/service';
 import { NextPage } from 'next';
-import { ConanFilterResponseDTO, ConanResponse, PackageInfoDTO } from '../../service/dtos';
+import { ConanFilterResponse, ConanResponse, RecipeInfo } from '../../service/dtos';
 
-type NewType = ConanFilterResponseDTO;
+type NewType = ConanFilterResponse;
 
 interface PageProps  {
     data: {
-        licenses: ConanResponse<ConanFilterResponseDTO>,
+        licenses: ConanResponse<ConanFilterResponse>,
         topics: ConanResponse<NewType>,
     }
 }
 
 export async function getServerSideProps(context) {
   let urls = getUrls({pattern: '', topics: null})
-  let licenses = await getJson<ConanResponse<ConanFilterResponseDTO>>(urls.licenses, urls.api.private)
-  let topics = await getJson<ConanResponse<ConanFilterResponseDTO>>(urls.topics, urls.api.private)
+  let licenses = await getJson<ConanResponse<ConanFilterResponse>>(urls.licenses, urls.api.private)
+  let topics = await getJson<ConanResponse<ConanFilterResponse>>(urls.topics, urls.api.private)
 
   return {
     props: {
@@ -62,7 +62,7 @@ export async function getServerSideProps(context) {
 }
 
 
-const PackageInfo = (props: {package: PackageInfoDTO}) => {
+const PackageInfo = (props: {package: RecipeInfo}) => {
   const licenses = Object.keys(props.package.info.licenses!)
   const labels = Object.keys(props.package.info.labels!)
   const packages = Object.values(props.package.info.packages).map((value) => value);
@@ -112,7 +112,7 @@ function SearchList(props: {
 }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [data, setData] = useState<PackageInfoDTO[]>(null);
+  const [data, setData] = useState<RecipeInfo[]>(null);
   const [pageNumber, setPageNumber] = useState(1);
   const [showAll, setShowAll] = useState(false);
 
@@ -123,21 +123,21 @@ function SearchList(props: {
     if (nameA > nameB) return 1;
   };
 
-  const sortByDownloads = (a: PackageInfoDTO, b: PackageInfoDTO) => {
+  const sortByDownloads = (a: RecipeInfo, b: RecipeInfo) => {
     return b.info.downloads - a.info.downloads
   };
 
-  const sortByDate = (a: PackageInfoDTO, b: PackageInfoDTO) => {
+  const sortByDate = (a: RecipeInfo, b: RecipeInfo) => {
     if (a.info.timestamp > b.info.timestamp) return -1;
     if (a.info.timestamp < b.info.timestamp) return 1;
   };
 
-  const sortByPopularity = (a: PackageInfoDTO, b: PackageInfoDTO) => {
+  const sortByPopularity = (a: RecipeInfo, b: RecipeInfo) => {
     return (b.info.downloads/b.info.age) - (a.info.downloads/a.info.age)
   };
 
-  const sortByBestMatch = (a: PackageInfoDTO, b: PackageInfoDTO) => {
-    const matchScore = (elem: PackageInfoDTO) => {
+  const sortByBestMatch = (a: RecipeInfo, b: RecipeInfo) => {
+    const matchScore = (elem: RecipeInfo) => {
       let score = 0;
       const tokens = props.value.split(' ');
       if (elem.name.toLowerCase() == props.value.toLowerCase()) score += 9000
@@ -159,7 +159,7 @@ function SearchList(props: {
     if(matchScore(a) < matchScore(b)) return 1;
   };
 
-  const sortByData = (a: PackageInfoDTO, b: PackageInfoDTO) => {
+  const sortByData = (a: RecipeInfo, b: RecipeInfo) => {
     if (props.sortDataBy == SortBy.Name) return sortByName(a, b)
     if (props.sortDataBy == SortBy.Date) return sortByDate(a, b)
     if (props.sortDataBy == SortBy.BestMatch) {
@@ -176,7 +176,7 @@ function SearchList(props: {
         let value = props.value || 'all';
         let urls = getUrls({pattern: value, topics: props.topics, licenses: props.licenses})
                 console.log(urls.search.package)
-        const packagesResponse = await getJsonList<PackageInfoDTO>(urls.search.package, urls.api.public);
+        const packagesResponse = await getJsonList<RecipeInfo>(urls.search.package, urls.api.public);
         setData(packagesResponse.data);
       } catch(err) {
         setError(err.message);
@@ -188,8 +188,8 @@ function SearchList(props: {
     fetchData();
   }, [props.value, props.topics, props.licenses])
 
-  const renderPagination = (filteredData: PackageInfoDTO[], pageSize: number) => {
-    let pages: PackageInfoDTO[][] = []
+  const renderPagination = (filteredData: RecipeInfo[], pageSize: number) => {
+    let pages: RecipeInfo[][] = []
     let pageButtoms = []
     for (let i = 0; i < filteredData.length; i += pageSize) {
       pages.push(filteredData.slice(i, i + pageSize))
@@ -332,7 +332,7 @@ const ConanSearch: NextPage<PageProps> = (props) => {
     return  (<Tag className="conanIconBlue" style={style}/>)
   }
 
-  const extraFilters = (item: PackageInfoDTO) => {
+  const extraFilters = (item: RecipeInfo) => {
     if (showLinux && showWindows && showMacOS && showMacOSSilicon){
       return true;
     }
