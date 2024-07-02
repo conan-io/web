@@ -5,13 +5,10 @@ import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Link from 'next/link';
 import { Tooltip } from 'react-tooltip';
-import { BasicSearchBar } from "../components/searchbar";
-import { ConanCenterHeader } from '../components/header';
-import ConanFooter from '../components/footer';
-import {getJson, getJsonList, getUrls} from '../service/service';
+import { BasicSearchBar, ConanCenterHeader, ConanFooter } from "@/components";
+import {getJson, getJsonList, getUrls, RecipeBasic, RecipeReference } from '@/service';
 import { BiInfoCircle } from "react-icons/bi";
 import { GetServerSideProps, NextPage } from "next";
-import { RecipeBasic, RecipeReference } from "../service/dtos";
 
 interface PageProps  {
     data: {

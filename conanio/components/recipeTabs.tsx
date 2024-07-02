@@ -27,9 +27,9 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Button from 'react-bootstrap/Button';
 import Collapse from 'react-bootstrap/Collapse';
 import {LineChart, XAxis, YAxis, Tooltip, CartesianGrid, Line, Legend} from 'recharts';
-import { truncateAndCopy } from './utils';
+import { truncateAndCopy } from '@/components/utils';
 import { useMediaQuery } from 'react-responsive';
-import { ConanResponse, RecipeDownloads, PackageInfo, RecipeInfo } from '../service/dtos';
+import { ConanResponse, RecipeDownloads, PackageInfo, RecipeInfo } from '@/service';
 
 {/* TODO: this function should go in a more common module. More configurable? */}
 function ClipboardCopy({ copyText }: {copyText: string}) {
@@ -68,7 +68,7 @@ function ClipboardCopy({ copyText }: {copyText: string}) {
 }
 
 
-const BadgesTab = ({recipeName}: {recipeName: string}) => {
+export const BadgesTab = ({recipeName}: {recipeName: string}) => {
   const mdMessage = `[![Conan Center](https://img.shields.io/conan/v/${recipeName})](https://conan.io/center/recipes/${recipeName})`;
   const resMessage = `.. image:: https://img.shields.io/conan/v/${recipeName}   :alt: Conan Center`;
   const asciiMessage = `image:https://img.shields.io/conan/v/${recipeName} [Conan Center]`;
@@ -104,7 +104,7 @@ const BadgesTab = ({recipeName}: {recipeName: string}) => {
   );
 }
 
-function CCIAssistanceLink() {
+const CCIAssistanceLink = () => {
   return (
     <p>If you need additional assistance, please ask a <Link href={{ pathname: "https://github.com/conan-io/conan-center-index/issues/new", query: { labels: "question", template: "question.yml", title: "[question] SHORT DESCRIPTION" }}}>
           question
@@ -279,7 +279,7 @@ class ExampleRecipe(ConanFile):
   );
 }
 
-const UseItTab = ({recipe}: {recipe: RecipeInfo}) => {
+export const UseItTab = ({recipe}: {recipe: RecipeInfo}) => {
   if (recipe.info.use_it) {
     const isToolRequire = recipe.info.use_it.package_type && recipe.info.use_it.package_type == "application";
     // If it's a tool requirement
@@ -316,7 +316,7 @@ const UseItTab = ({recipe}: {recipe: RecipeInfo}) => {
 }
 
 
-const DependenciesTab = ({recipe} : {recipe: RecipeInfo}) => {
+export const DependenciesTab = ({recipe} : {recipe: RecipeInfo}) => {
   if (recipe.info) {
     const hasRequires = recipe.info.use_it.requires && recipe.info.use_it.requires.length > 0;
     const hasBuildRequires = recipe.info.use_it.build_requires && recipe.info.use_it.build_requires.length > 0;
@@ -366,7 +366,7 @@ const DependenciesTab = ({recipe} : {recipe: RecipeInfo}) => {
 }
 
 
-const PackagesTab = ({recipe, packageOS, setPackageOS}: {recipe: RecipeInfo, packageOS: string, setPackageOS: Dispatch<SetStateAction<string>>}) => {
+export const PackagesTab = ({recipe, packageOS, setPackageOS}: {recipe: RecipeInfo, packageOS: string, setPackageOS: Dispatch<SetStateAction<string>>}) => {
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' })
   const packages = Object.values(recipe.info.packages).map((value) => value);
   const hasPackages = packages && packages.length > 0;
@@ -528,7 +528,7 @@ const PackagesTab = ({recipe, packageOS, setPackageOS}: {recipe: RecipeInfo, pac
 }
 
 
-const VersionsTab = ({data, selector}: {data: ConanResponse<RecipeInfo>, selector: Dispatch<SetStateAction<string>>}) => {
+export const VersionsTab = ({data, selector}: {data: ConanResponse<RecipeInfo>, selector: Dispatch<SetStateAction<string>>}) => {
   const VersionItem = ({recipe}: {recipe: RecipeInfo}) => {
     console.log(recipe)
     const iconStatusColor = recipe.info.status === 'ok'? 'green': 'orange'
@@ -594,7 +594,7 @@ const VersionsTab = ({data, selector}: {data: ConanResponse<RecipeInfo>, selecto
 }
 
 // Not being used right now because we do not telemetry conan client and thus, we dont retrieve proper download information
-const StatsTab = ({packages, downloads, versionIdx}: {packages: ConanResponse<RecipeInfo>, downloads: ConanResponse<RecipeDownloads>, versionIdx: string}) => {
+export const StatsTab = ({packages, downloads, versionIdx}: {packages: ConanResponse<RecipeInfo>, downloads: ConanResponse<RecipeDownloads>, versionIdx: string}) => {
   const recipe = packages[versionIdx];
   const recipeTotalDownloads = recipe.info.downloads;
   const recipeDownloadsAll = downloads["all"].downloads;
@@ -713,6 +713,3 @@ const StatsTab = ({packages, downloads, versionIdx}: {packages: ConanResponse<Re
     </div>
   )
 }
-
-
-export { UseItTab, BadgesTab, PackagesTab, DependenciesTab, VersionsTab, StatsTab };

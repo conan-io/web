@@ -18,7 +18,7 @@ function gtmConanPush(description: string){
 }
 
 
-function ConanHead(props: {titlePrefix?: string}){
+const ConanHead = (props: {titlePrefix?: string}) => {
   const router = useRouter();
   const defaultTitle = "Conan 2.0: C and C++ Open Source Package Manager";
   const title = props.titlePrefix? props.titlePrefix + " - " + defaultTitle: defaultTitle;
@@ -104,7 +104,7 @@ export function ConanHeader(props: {background?: string}){
 }
 
 
-export function ConanCenterHeader(props: {titlePrefix?: string}) {
+export const ConanCenterHeader = (props: {titlePrefix?: string}) => {
   return (
     <div>
       <ConanHead titlePrefix={props.titlePrefix}/>
@@ -115,7 +115,7 @@ export function ConanCenterHeader(props: {titlePrefix?: string}) {
 }
 
 
-export function ConanKitchenHeader(props: {titlePrefix?: string}){
+export const ConanKitchenHeader = (props: {titlePrefix?: string}) => {
   return (
     <div>
       <ConanHead titlePrefix={props.titlePrefix}/>

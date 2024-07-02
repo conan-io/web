@@ -1,8 +1,5 @@
 import React from 'react';
-
-import { ConanKitchenHeader } from '../../components/header';
-import ConanFooter from '../../components/footer';
-import SingleUserStory from '../../components/user-story';
+import { ConanKitchenHeader, ConanFooter, SingleUserStory } from '@/components';
 
 function UserStoriesRTIPage() {
   return (

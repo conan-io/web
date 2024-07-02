@@ -1,8 +1,7 @@
 //pages/sitemap.xml.js
 
 import { GetServerSideProps } from "next";
-import { RecipeInfo } from "../service/dtos";
-import {getJsonList, getUrls} from "../service/service";
+import {getJsonList, getUrls, RecipeInfo } from "@/service";
 
 const URL = "https://conan.io"
 

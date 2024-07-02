@@ -6,13 +6,13 @@ import { Tooltip } from 'react-tooltip';
 import { HiOutlineClipboardCopy, HiOutlineClipboardCheck } from "react-icons/hi";
 
 
-function truncate(text: string, n: number){
+export function truncate(text: string, n: number){
   if(text.length > n) return text.slice(0, n-1) + "...";
   return text;
 };
 
 
-function truncateTooltip(text: string, n: number){
+export function truncateTooltip(text: string, n: number){
   if(text.length > n) return (
     <>
       <Tooltip style={{ zIndex: 99 }} id={text}/>
@@ -30,7 +30,7 @@ function truncateTooltip(text: string, n: number){
 };
 
 
-function truncateAndCopy(text: string, n: number){
+export function truncateAndCopy(text: string, n: number){
   if(text.length > n) return (
     <>
       {truncateTooltip(text, n)}
@@ -46,7 +46,7 @@ function truncateAndCopy(text: string, n: number){
 };
 
 
-function urlify(rawUrl: string) {
+export function urlify(rawUrl: string) {
   if (rawUrl.search(/^http[s]?\:\/\//) === -1) {
     return 'http://' + rawUrl;
   } else {
@@ -55,14 +55,14 @@ function urlify(rawUrl: string) {
 }
 
 
-function sanitizeURL(url: string) {
+export function sanitizeURL(url: string) {
   url = urlify(url)
   let protocol = new URL(url).protocol;
   return url.replace(protocol + "//", "");
 }
 
 
-function ClipboardCopy({ copyText, tooltipStyle, isCopiedStyle, copyStyle }) {
+export function ClipboardCopy({ copyText, tooltipStyle, isCopiedStyle, copyStyle }) {
   const [isCopied, setIsCopied] = useState(false);
   async function copyTextToClipboard(text) {
     return await navigator.clipboard.writeText(text);
@@ -101,7 +101,7 @@ function ClipboardCopy({ copyText, tooltipStyle, isCopiedStyle, copyStyle }) {
 }
 
 
-function prettyProfileNames(){
+export function prettyProfileNames(){
   return {
     'Linux-x86_64': 'Linux',
     'Windows-x86_64': 'Windows',
@@ -111,7 +111,7 @@ function prettyProfileNames(){
 }
 
 
-function prettyProfiles(profileSettings: any[], style?: CSSProperties){
+export function prettyProfiles(profileSettings: any[], style?: CSSProperties){
   const profileList = profileSettings.map((item) => item.os + "-" + item.arch);
   if (profileList.filter(item => (item=='null-null')).length == profileList.length){
     return [
@@ -138,7 +138,7 @@ function prettyProfiles(profileSettings: any[], style?: CSSProperties){
 
 // This comes from the wikipedia's pseudocode, I couldn't be bothered to do some dynamic programming of my own,
 // comments left to make it easier to double-check the transpilation
-function levenshteinDistance(s: string, t: string) {
+export function levenshteinDistance(s: string, t: string) {
   const m = s.length;
   const n = t.length;
 
@@ -177,7 +177,7 @@ function levenshteinDistance(s: string, t: string) {
 };
 
 
-function DefaultDescription (props: { name: string; }) {
+export function DefaultDescription (props: { name: string; }) {
   return (
     (<Alert className="text-center" variant="secondary">
       It has not been possible to load this information.
@@ -187,6 +187,3 @@ function DefaultDescription (props: { name: string; }) {
     </Alert>)
   )
 }
-
-
-export { truncate, truncateTooltip, truncateAndCopy, urlify, sanitizeURL, ClipboardCopy, prettyProfiles, prettyProfileNames, levenshteinDistance, DefaultDescription };

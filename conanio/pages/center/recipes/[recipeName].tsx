@@ -1,7 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/router';
-
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -9,25 +8,25 @@ import Badge from 'react-bootstrap/Badge';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Button from 'react-bootstrap/Button';
 import Link from 'next/link';
-import { ConanCenterHeader } from '../../../components/header';
-import { truncate,
+import { ConanCenterHeader,
+         ConanFooter,
+         UseItTab,
+         BadgesTab,
+         DependenciesTab,
+         VersionsTab,
+         PackagesTab,
+         BasicSearchBar,
+         truncate,
          truncateAndCopy,
          urlify,
          sanitizeURL,
          ClipboardCopy,
          prettyProfiles,
-         DefaultDescription } from '../../../components/utils';
-import ConanFooter from '../../../components/footer';
-import { getJson, getUrls} from '../../../service/service';
-import { ConanResponse, RecipeInfo } from '../../../service/dtos';
+         DefaultDescription } from '@/components';
+import { getJson, getUrls, ConanResponse, RecipeInfo} from '@/service';
 import { LiaBalanceScaleSolid, LiaGithub } from "react-icons/lia";
 import { IoMdHome } from "react-icons/io";
 import hljs from "highlight.js";
-import { UseItTab,
-         BadgesTab,
-         DependenciesTab,
-         VersionsTab,
-         PackagesTab } from "../../../components/recipeTabs";
 import { PiWarningBold } from "react-icons/pi";
 import { MdOutlineToday } from "react-icons/md";
 import { AiOutlinePushpin } from "react-icons/ai";
@@ -35,7 +34,6 @@ import { PiGraphDuotone, PiMedal } from "react-icons/pi";
 import { FaTags, FaHashtag } from "react-icons/fa";
 import { SiConan } from "react-icons/si";
 import { HiOutlineDocumentText } from "react-icons/hi";
-import { BasicSearchBar } from "../../../components/searchbar";
 import { Tooltip } from 'react-tooltip';
 import { useMediaQuery } from 'react-responsive';
 import { GetServerSideProps, GetServerSidePropsContext, GetServerSidePropsResult, NextPage } from 'next';

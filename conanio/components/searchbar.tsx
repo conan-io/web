@@ -10,10 +10,10 @@ import { BiPackage } from "react-icons/bi";
 import { PiNoteBold } from "react-icons/pi";
 import { CgFormatSlash } from "react-icons/cg";
 import { useRouter } from 'next/router';
-import { ConanFilterResponse, ConanResponse } from "../service/dtos";
+import { ConanFilterResponse, ConanResponse } from "@/service";
 
 
-function ConanFilter(props: { checked: boolean; handleFilter: any; filter: string; filter_id: any; }) {
+const ConanFilter = (props: { checked: boolean; handleFilter: any; filter: string; filter_id: any; }) => {
   const [checked, setChecked] = useState(props.checked);
 
   const handleChange = () => {
@@ -33,7 +33,7 @@ function ConanFilter(props: { checked: boolean; handleFilter: any; filter: strin
   )
 }
 
-export function ConanListFilter(props: { filters: any[]; handleFilter: any; }) {
+const ConanListFilter = (props: { filters: any[]; handleFilter: any; }) => {
   return(
     <div key="custom-inline-checkbox" className="mb-3">
     {props.filters && props.filters.map((info) => (<Row key={info.id} style={{marginLeft: 15}}><ConanFilter filter_id={info.id} filter={info.filter} checked={info.checked} handleFilter={props.handleFilter}/></Row>))}
@@ -54,7 +54,7 @@ export const toFilterOptions = (options: ConanResponse<ConanFilterResponse>): Fi
     Object.values(options).map(elem => {return {label: elem.filter, value: elem.id};});
 
 
-export function ConanSingleSelect(props: ConanSelectProps) {
+export const ConanSingleSelect = (props: ConanSelectProps) => {
   const options = props.options;
   let defaultValues = []
   if (props.defaultValue){
@@ -111,7 +111,7 @@ export function ConanSingleSelect(props: ConanSelectProps) {
   )
 }
 
-export function ConanMultiSelectFilter(props: ConanSelectProps) {
+export const ConanMultiSelectFilter = (props: ConanSelectProps) => {
   const options = props.options;
   let defaultValues = []
   if (props.defaultValue){
@@ -169,7 +169,7 @@ export function ConanMultiSelectFilter(props: ConanSelectProps) {
   )
 }
 
-export function ConanSearchBar(props: { value: string ; handleChange: any; recipes?: number; references?: number; }) {
+export const ConanSearchBar = (props: { value: string ; handleChange: any; recipes?: number; references?: number; }) => {
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -199,7 +199,7 @@ export function ConanSearchBar(props: { value: string ; handleChange: any; recip
 }
 
 
-export function BasicSearchBar(props: { recipes?: number; references?: number; }) {
+export const BasicSearchBar = (props: { recipes?: number; references?: number; }) => {
 
   let router = useRouter();
   const [value, setValue] = useState('');

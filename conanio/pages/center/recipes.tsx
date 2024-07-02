@@ -7,18 +7,18 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Badge from 'react-bootstrap/Badge';
-import { ConanSearchBar,
-         ConanMultiSelectFilter,
-         ConanSingleSelect, 
-         toFilterOptions,
-         FilterOption} from "../../components/searchbar";
 import ListGroup from 'react-bootstrap/ListGroup';
 import Pagination from 'react-bootstrap/Pagination';
 import Link from 'next/link';
-import { ConanCenterHeader } from '../../components/header';
-import ConanFooter from '../../components/footer';
-import { prettyProfiles,
-         DefaultDescription } from '../../components/utils';
+import { ConanCenterHeader,
+         ConanFooter,
+         prettyProfiles,
+         DefaultDescription, 
+         ConanSearchBar,
+         ConanMultiSelectFilter,
+         ConanSingleSelect, 
+         toFilterOptions,
+         FilterOption } from '@/components';
 import { LiaBalanceScaleSolid } from "react-icons/lia";
 import { BsFilterCircleFill, BsFilterCircle } from "react-icons/bs";
 import { LuArrowBigUpDash } from "react-icons/lu";
@@ -33,9 +33,8 @@ import { MdFilter1,
   MdFilter9,
   MdFilter9Plus,
   MdOutlineToday } from "react-icons/md";
-import {getJsonList, getUrls, getJson} from '../../service/service';
 import { GetServerSideProps, GetServerSidePropsResult, NextPage } from 'next';
-import { ConanFilterResponse, ConanResponse, RecipeInfo } from '../../service/dtos';
+import {getJsonList, getUrls, getJson, ConanFilterResponse, ConanResponse, RecipeInfo } from '@/service';
 
 type NewType = ConanFilterResponse;
 

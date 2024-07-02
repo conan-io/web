@@ -1,8 +1,6 @@
 import Link from 'next/link'
 import React from 'react';
-
-import { ConanKitchenHeader } from '../components/header';
-import ConanFooter from '../components/footer';
+import { ConanKitchenHeader, ConanFooter } from '@/components';
 
 interface TribeMember {
     name: string,

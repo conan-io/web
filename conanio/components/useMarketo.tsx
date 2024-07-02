@@ -34,9 +34,7 @@ const useMarketo = (props: MarketoProps) => {
   }, [scriptLoaded, baseUrl, munchkinId, formId, callback]);
 };
 
-const MarketoForm = (props: MarketoProps) => {
+export const MarketoForm = (props: MarketoProps) => {
   useMarketo(props);
   return <form id={`mktoForm_${props.formId}`} />;
 };
-
-export default MarketoForm;

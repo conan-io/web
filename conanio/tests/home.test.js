@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import ConanHome from '@/components/home'
+import { ConanHome } from '@/components'
 
 describe('ConanHome Elements', () => {
 

@@ -3,8 +3,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Link from 'next/link';
-import { ConanKitchenHeader } from '../components/header';
-import ConanFooter from '../components/footer';
+import { ConanKitchenHeader, ConanFooter } from '@/components';
 import {
   FcWorkflow,
   FcMultipleDevices,

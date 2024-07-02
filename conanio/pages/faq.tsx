@@ -1,8 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-
-import { ConanKitchenHeader } from '../components/header';
-import ConanFooter from '../components/footer';
+import { ConanKitchenHeader, ConanFooter } from '@/components';
 
 // TODO: move FAQ questions to backend (database) and request them on SSR
 

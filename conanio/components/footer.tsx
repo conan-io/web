@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Link from 'next/link';
-import MarketoForm, { MarketoProps } from "./useMarketo";
+import { MarketoForm, MarketoProps } from "@/components";
 
 
 function gtmConanPush(description: string){
@@ -27,7 +27,7 @@ function gtmConanPushSocial(description: string){
 }
 
 
-function ConanFooter() {
+export const ConanFooter = () => {
   const [inputs, _setInputs] = useState<MarketoProps>({
     baseUrl: "https://leap.jfrog.com",
     munchkinId: "256-FNZ-187",
@@ -140,5 +140,3 @@ function ConanFooter() {
     </footer>
   )
 }
-
-export default ConanFooter

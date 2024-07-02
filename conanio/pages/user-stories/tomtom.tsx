@@ -1,7 +1,5 @@
 import React from "react";
-import { ConanKitchenHeader } from "../../components/header";
-import ConanFooter from "../../components/footer";
-import SingleUserStory from "../../components/user-story";
+import { ConanKitchenHeader, ConanFooter, SingleUserStory } from '@/components';
 import Link from "next/link";
 
 const UserStoriesTomtomPage = () => (
