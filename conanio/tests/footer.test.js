@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import ConanFooter from '@/components/footer'
+import { ConanFooter } from '@/components'
 
 describe('ConanFooter Elements', () => {
 

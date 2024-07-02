@@ -6,8 +6,8 @@ import Navbar from 'react-bootstrap/Navbar';
 import { LuPackageSearch } from "react-icons/lu";
 
 
-function gtmConanPush(description){
-  dataLayer.push({
+function gtmConanPush(description: string){
+  window.dataLayer.push({
     'event': 'fireEvent',
     'event_name': 'element_click',
     'type': 'navigation',
@@ -18,7 +18,7 @@ function gtmConanPush(description){
 }
 
 
-function ConanHead(props) {
+const ConanHead = (props: {titlePrefix?: string}) => {
   const router = useRouter();
   const defaultTitle = "Conan 2.0: C and C++ Open Source Package Manager";
   const title = props.titlePrefix? props.titlePrefix + " - " + defaultTitle: defaultTitle;
@@ -52,7 +52,7 @@ function BetaBanner() {
               href="https://github.com/conan-io/web/issues"
               onClick={
                 () => {
-                  dataLayer.push({
+                  window.dataLayer.push({
                     'event': 'fireEvent',
                     'event_name': 'element_click',
                     'type': 'ui',
@@ -70,7 +70,7 @@ function BetaBanner() {
 }
 
 
-export function ConanHeader(props) {
+export function ConanHeader(props: {background?: string}){
   return (
     <header id="masthead" className={props.background}>
       <div className="container">
@@ -104,7 +104,7 @@ export function ConanHeader(props) {
 }
 
 
-export function ConanCenterHeader(props) {
+export const ConanCenterHeader = (props: {titlePrefix?: string}) => {
   return (
     <div>
       <ConanHead titlePrefix={props.titlePrefix}/>
@@ -115,7 +115,7 @@ export function ConanCenterHeader(props) {
 }
 
 
-export function ConanKitchenHeader(props) {
+export const ConanKitchenHeader = (props: {titlePrefix?: string}) => {
   return (
     <div>
       <ConanHead titlePrefix={props.titlePrefix}/>

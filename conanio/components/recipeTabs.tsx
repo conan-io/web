@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { useState } from "react";
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
@@ -27,13 +27,14 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Button from 'react-bootstrap/Button';
 import Collapse from 'react-bootstrap/Collapse';
 import {LineChart, XAxis, YAxis, Tooltip, CartesianGrid, Line, Legend} from 'recharts';
-import { prettyProfiles, truncateAdnCopy } from './utils';
+import { truncateAndCopy } from '@/components/utils';
 import { useMediaQuery } from 'react-responsive';
+import { ConanResponse, RecipeDownloads, PackageInfo, RecipeInfo } from '@/service';
 
 {/* TODO: this function should go in a more common module. More configurable? */}
-function ClipboardCopy({ copyText }) {
+function ClipboardCopy({ copyText }: {copyText: string}) {
   const [isCopied, setIsCopied] = useState(false);
-  async function copyTextToClipboard(text) {
+  async function copyTextToClipboard(text: string) {
     return await navigator.clipboard.writeText(text);
   }
   // onClick handler function for the copy button
@@ -67,7 +68,7 @@ function ClipboardCopy({ copyText }) {
 }
 
 
-function BadgesTab({recipeName}) {
+export const BadgesTab = ({recipeName}: {recipeName: string}) => {
   const mdMessage = `[![Conan Center](https://img.shields.io/conan/v/${recipeName})](https://conan.io/center/recipes/${recipeName})`;
   const resMessage = `.. image:: https://img.shields.io/conan/v/${recipeName}   :alt: Conan Center`;
   const asciiMessage = `image:https://img.shields.io/conan/v/${recipeName} [Conan Center]`;
@@ -103,7 +104,7 @@ function BadgesTab({recipeName}) {
   );
 }
 
-function CCIAssistanceLink() {
+const CCIAssistanceLink = () => {
   return (
     <p>If you need additional assistance, please ask a <Link href={{ pathname: "https://github.com/conan-io/conan-center-index/issues/new", query: { labels: "question", template: "question.yml", title: "[question] SHORT DESCRIPTION" }}}>
           question
@@ -112,16 +113,16 @@ function CCIAssistanceLink() {
   );
 }
 
-function UseItFullContent({props}) {
-  const reference = props.recipeName + "/" + props.recipeVersion;
+const UseItFullContent = ({recipe}: {recipe: RecipeInfo}) => {
+  const reference = recipe.name + "/" + recipe.info.version;
 
-  const TargetsInfo = function(recipe_properties) {
+  const TargetsInfo = (recipe_properties: {root: any, components: any}) => {
     const [open, setOpen] = useState(false);
     const [open2, setOpen2] = useState(false);
     const root = recipe_properties.root? recipe_properties.root: Object();
     const components = recipe_properties.components? recipe_properties.components: Object();
-    const getCMakePropertyValue = function(config_property, module_property) {
-      let defaultName = config_property == "cmake_target_name"? `${props.recipeName}::${props.recipeName}`: props.recipeName;
+    const getCMakePropertyValue = (config_property: string, module_property: string) => {
+      let defaultName = config_property == "cmake_target_name"? `${recipe.name}::${recipe.name}`: recipe.name;
       let name = root[config_property]? root[config_property]: defaultName;
       if (root.cmake_find_mode == "module" && root[module_property]) {
         return root[module_property];
@@ -135,13 +136,13 @@ function UseItFullContent({props}) {
     };
     const cmakePackageName = getCMakePropertyValue("cmake_file_name", "cmake_module_file_name");
     const cmakeTargetName = getCMakePropertyValue("cmake_target_name", "cmake_module_target_name");
-    const pkgConfigName = root.pkg_config_name? `${root.pkg_config_name}.pc`: `${props.recipeName}.pc`;
+    const pkgConfigName = root.pkg_config_name? `${root.pkg_config_name}.pc`: `${recipe.name}.pc`;
     const componentsTargetNames = Object.keys(components).filter((component) => components[component]).map(function(component) {
-      let name = components[component].cmake_target_name? components[component].cmake_target_name: `${props.recipeName}::${component}`;
+      let name = components[component].cmake_target_name? components[component].cmake_target_name: `${recipe.name}::${component}`;
       return `${component} => ${name}`;
     });
     const componentsPkgConfigName = Object.keys(components).filter((component) => components[component]).map(function(component) {
-      let name = components[component].pkg_config_name? components[component].pkg_config_name: `${props.recipeName}-${component}`;
+      let name = components[component].pkg_config_name? components[component].pkg_config_name: `${recipe.name}-${component}`;
       return `${component} => ${name}.pc`;
     });
     return (
@@ -185,34 +186,33 @@ target_link_libraries(YOUR_TARGET ${cmakeTargetName.split(" (config),")[0].trim(
     );
   };
 
-  const HeadersInfo = function({headers}) {
+  const HeadersInfo = ({headers}: {headers?: string[]}) => {
     if (headers && headers.length > 0) {
       return (
       <div>
-        <p>These are all the available headers. Some of these ones might be non-public; make sure of it by visiting the <code>{props.recipeName}</code> homepage listed above:</p>
+        <p>These are all the available headers. Some of these ones might be non-public; make sure of it by visiting the <code>{recipe.name}</code> homepage listed above:</p>
         <pre className='preFixed'>
-          <code className="language-c">{headers.sort().map(function(h) {
-          return `#include "${h}"\n`;})}</code>
+          <code className="language-c">{headers.sort().map((header) => `#include "${header}"\n`)}</code>
         </pre>
       </div>);
     }
     return null;
   };
 
-  const RecipeDetails = function(){
-    if (props.info.hasOwnProperty("properties") || props.info.headers) {
+  const RecipeDetails = () => {
+    if (recipe.info.use_it.properties || recipe.info.use_it.headers) {
       let cmakeFindModeNone = false;
-      if (props.info.properties) {
-          if (props.info.properties.hasOwnProperty("cmake_find_mode")) {
-            cmakeFindModeNone = props.info.properties.cmake_find_mode == "none";
+      if (recipe.info.use_it.properties) {
+          if (recipe.info.use_it.properties.cmake_find_mode) {
+            cmakeFindModeNone = recipe.info.use_it.properties.cmake_find_mode == "none";
           }
       }
       return (
         <div>
           <p>Useful information to take into account to consume this library:</p>
           <Tabs className="package-tabs mt-2" id="uncontrolled">
-            {props.info.hasOwnProperty("properties") && !cmakeFindModeNone && (<Tab eventKey="targets" title="Targets"><br/><TargetsInfo root={props.info.properties} components={props.info.components_properties} /></Tab>)}
-            {props.info.headers && (<Tab eventKey="headers" title="Headers"><br/><HeadersInfo headers={props.info.headers} /></Tab>)}
+            {recipe.info.use_it.properties && !cmakeFindModeNone && (<Tab eventKey="targets" title="Targets"><br/><TargetsInfo root={recipe.info.use_it.properties} components={recipe.info.use_it.components_properties} /></Tab>)}
+            {recipe.info.use_it.headers && (<Tab eventKey="headers" title="Headers"><br/><HeadersInfo headers={recipe.info.use_it.headers} /></Tab>)}
           </Tabs>
         </div>
         );
@@ -220,7 +220,7 @@ target_link_libraries(YOUR_TARGET ${cmakeTargetName.split(" (config),")[0].trim(
     return null;
   };
 
-  const ConanfileInfo = function() {
+  const ConanfileInfo = () => {
     const [conanfile, setConanfile] = useState('txt');
     const conanfileTxt = `[requires]
 ${reference}
@@ -263,7 +263,7 @@ class ExampleRecipe(ConanFile):
 
   return (
     <div>
-      <h3>Using {props.recipeName}</h3>
+      <h3>Using {recipe.name}</h3>
       <blockquote>
         <BiSolidInfoCircle/><strong> Note</strong>
         <br/><br/>
@@ -279,14 +279,14 @@ class ExampleRecipe(ConanFile):
   );
 }
 
-function UseItTab(props) {
-  if (props.info) {
-    const isToolRequire = props.info.package_type && props.info.package_type == "application";
+export const UseItTab = ({recipe}: {recipe: RecipeInfo}) => {
+  if (recipe.info.use_it) {
+    const isToolRequire = recipe.info.use_it.package_type && recipe.info.use_it.package_type == "application";
     // If it's a tool requirement
     if (isToolRequire) {
         return (
           <div>
-            <h3>Using {props.recipeName} as a tool</h3>
+            <h3>Using {recipe.name} as a tool</h3>
             <p>This recipe belongs to the family of the Conan build tools.</p>
             <p>Please, have a look at the Conan documentation about
             <Link href={{ pathname: "https://docs.conan.io/2/tutorial/consuming_packages/use_tools_as_conan_packages.html"}}>
@@ -299,7 +299,7 @@ function UseItTab(props) {
     }
     else {
       // if it's a normal library
-      return <UseItFullContent props={props}></UseItFullContent>
+      return <UseItFullContent recipe={recipe}></UseItFullContent>
     }
   }
   return (
@@ -316,34 +316,34 @@ function UseItTab(props) {
 }
 
 
-function DependenciesTab(props) {
-  if (props.info) {
-    const hasRequires = props.info.requires && props.info.requires.length > 0;
-    const hasBuildRequires = props.info.build_requires && props.info.build_requires.length > 0;
+export const DependenciesTab = ({recipe} : {recipe: RecipeInfo}) => {
+  if (recipe.info) {
+    const hasRequires = recipe.info.use_it.requires && recipe.info.use_it.requires.length > 0;
+    const hasBuildRequires = recipe.info.use_it.build_requires && recipe.info.use_it.build_requires.length > 0;
     if (hasRequires || hasBuildRequires) {
       return (
         <div>
           {hasRequires && (<div>
           <h3>Dependencies</h3>
           <br/>
-          {props.info.requires.map( function(require) {
-            let ref = require.split("/");
-            let name = ref[0];
-            let version = ref[1];
-            return <Link key={ require + "deps"} href={{ pathname: "/center/recipes/" + name, query: { version: version } }} passHref><div onClick={() => props.setRecipeVersion(version)}><h5>{require}</h5></div></Link>;
-            })
+          {recipe.info.use_it.requires.map((require) => {
+              let ref = require.split("/");
+              let name = ref[0];
+              let version = ref[1];
+              return <Link key={require + "deps"} href={{ pathname: "/center/recipes/" + name, query: { version: version } }} passHref><h5>{require}</h5></Link>;
+          })
           }
           </div>)}
           {hasBuildRequires && (<div>
           <br/>
           <h3>Dependencies (tool requirements)</h3>
           <br/>
-          {props.info.build_requires.map( function(require) {
-            let ref = require.split("/");
-            let name = ref[0];
-            let version = ref[1];
-            return <Link key={require + "tool_deps"} href={{ pathname: "/center/recipes/" + name, query: { version: version } }} passHref><div onClick={() => props.setRecipeVersion(version)}><h5>{require}</h5></div></Link>;
-            })
+          {recipe.info.use_it.build_requires.map((require) => {
+              let ref = require.split("/");
+              let name = ref[0];
+              let version = ref[1];
+              return <Link key={require + "tool_deps"} href={{ pathname: "/center/recipes/" + name, query: { version: version } }} passHref><h5>{require}</h5></Link>;
+          })
           }
           </div>)}
         </div>
@@ -353,7 +353,7 @@ function DependenciesTab(props) {
       <div>
         <h3>Dependencies</h3>
         <br/>
-        <p>This recipe version (<strong>{props.recipeName}/{props.recipeVersion}</strong>) has no dependencies.</p>
+        <p>This recipe version (<strong>{recipe.name}/{recipe.info.version}</strong>) has no dependencies.</p>
       </div>
     );
   }
@@ -366,10 +366,11 @@ function DependenciesTab(props) {
 }
 
 
-function PackagesTab(props) {
+export const PackagesTab = ({recipe, packageOS, setPackageOS}: {recipe: RecipeInfo, packageOS: string, setPackageOS: Dispatch<SetStateAction<string>>}) => {
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' })
-  const hasPackages = props.packages && props.packages.length > 0;
-  const PackageItem = function({package_info}) {
+  const packages = Object.values(recipe.info.packages).map((value) => value);
+  const hasPackages = packages && packages.length > 0;
+  const PackageItem = function({packageInfo, key}: {packageInfo: PackageInfo, key: string}) {
     const group_style = {
       border: '0.05rem solid #FFFFFF',
       backgroundColor: '#FFFFFF',
@@ -400,22 +401,22 @@ function PackagesTab(props) {
 
     const OptionList = () => {
       const defaultOptionNumber = 5;
-      const optionsLength = Object.keys(package_info.options).length;
+      const optionsLength = Object.keys(packageInfo.options).length;
       const [optionsNumber, setOptionsNumber] = useState(defaultOptionNumber);
 
-      if(Object.keys(package_info.options).length > 0) {
+      if(Object.keys(packageInfo.options).length > 0) {
         return (
           <Row style={row_style}>
             <Col xs="12" md="4" lg="4" style={main_col_style}><strong>options</strong></Col>
-            <Col>{Object.keys(package_info.options).slice(0, optionsNumber).map((key, index) => (
-              <Col key={key}><Row>{key}: {package_info.options[key]}</Row></Col>))}
-              {Object.keys(package_info.options).length > optionsNumber && <Col>
-                <Row><a onClick={()=>{setOptionsNumber(Object.keys(package_info.options).length);}} style={showStyle}>
+            <Col>{Object.keys(packageInfo.options).slice(0, optionsNumber).map((key) => (
+              <Col key={key}><Row>{key}: {packageInfo.options[key]}</Row></Col>))}
+              {Object.keys(packageInfo.options).length > optionsNumber && <Col>
+                <Row><a onClick={()=>{setOptionsNumber(Object.keys(packageInfo.options).length);}} style={showStyle}>
                     <TfiMoreAlt className="conanIcon26 conanIconBlue"/>
                   </a>
                 </Row>
               </Col>}
-              {Object.keys(package_info.options).length > defaultOptionNumber && optionsNumber == optionsLength && <Col>
+              {Object.keys(packageInfo.options).length > defaultOptionNumber && optionsNumber == optionsLength && <Col>
                 <Row>
                   <a onClick={()=>{setOptionsNumber(defaultOptionNumber);}} style={showStyle}>
                     <AiOutlineMinusCircle className="conanIcon26 conanIconBlue"/>
@@ -430,70 +431,70 @@ function PackagesTab(props) {
 
     return (
       <div>
-        {package_info.package_id && (<div className="ps-3 ms-4 mt-2">
-          {os[package_info.os]}
-          <Badge className="ms-1 profileTopics">{package_info.os}</Badge>
-          <Badge className="profileTopics">{package_info.arch}</Badge>
-          <Badge className="profileTopics">{package_info.options.shared && package_info.options.shared == "True" && ("Shared")}</Badge>
-          <Badge className="profileTopics">{package_info.build_type}</Badge>
+        {packageInfo.package_id && (<div className="ps-3 ms-4 mt-2">
+          {os[packageInfo.os]}
+          <Badge className="ms-1 profileTopics">{packageInfo.os}</Badge>
+          <Badge className="profileTopics">{packageInfo.arch}</Badge>
+          <Badge className="profileTopics">{packageInfo.options.shared && packageInfo.options.shared == "True" && ("Shared")}</Badge>
+          <Badge className="profileTopics">{packageInfo.build_type}</Badge>
           {
-            props.packages.length==1 &&
-            !package_info.os &&
-            !package_info.arch &&
-            !package_info.compiler &&
-            !package_info.compiler_cppstd &&
-            !package_info.compiler_version &&
-            !package_info.compiler_runtime &&
-            !package_info.compiler_runtime_type &&
-            !package_info.build_type &&
+            packages.length==1 &&
+            !packageInfo.os &&
+            !packageInfo.arch &&
+            !packageInfo.compiler &&
+            !packageInfo.compiler_cppstd &&
+            !packageInfo.compiler_version &&
+            !packageInfo.compiler_runtime &&
+            !packageInfo.compiler_runtime_type &&
+            !packageInfo.build_type &&
             (<Badge className="profileTopics">Header Only</Badge>)
           }
         </div>)}
-        <ListGroup.Item key={package_info.package_id} style={group_style}>
-          {package_info.package_id && (<Row style={frist_row_style}>
+        <ListGroup.Item key={packageInfo.package_id} style={group_style}>
+          {packageInfo.package_id && (<Row style={frist_row_style}>
             <Col xs="12" md="4" lg="4" style={main_col_style}><strong>package ID</strong></Col>
-            <Col>{isTabletOrMobile? truncateAdnCopy(package_info.package_id, 18): package_info.package_id}</Col>
+            <Col>{isTabletOrMobile? truncateAndCopy(packageInfo.package_id, 18): packageInfo.package_id}</Col>
           </Row>)}
-          {props.recipeRevision && (<Row style={row_style}>
+          {recipe.info.recipe_revision && (<Row style={row_style}>
             <Col xs="12" md="4" lg="4" style={main_col_style}><strong>Recipe Revision</strong></Col>
-            <Col>{isTabletOrMobile? truncateAdnCopy(props.recipeRevision,18): props.recipeRevision}</Col>
+            <Col>{isTabletOrMobile? truncateAndCopy(recipe.info.recipe_revision,18): recipe.info.recipe_revision}</Col>
           </Row>)}
-          {package_info.os && (<Row style={row_style}>
+          {packageInfo.os && (<Row style={row_style}>
             <Col xs="12" md="4" lg="4" style={main_col_style}><strong>os</strong></Col>
-            <Col>{package_info.os}</Col>
+            <Col>{packageInfo.os}</Col>
           </Row>)}
-          {package_info.arch && (<Row style={row_style}>
+          {packageInfo.arch && (<Row style={row_style}>
             <Col xs="12" md="4" lg="4" style={main_col_style}><strong>arch</strong></Col>
-            <Col>{package_info.arch}</Col>
+            <Col>{packageInfo.arch}</Col>
           </Row>)}
-          {package_info.compiler && (<Row style={row_style}>
+          {packageInfo.compiler && (<Row style={row_style}>
             <Col xs="12" md="4" lg="4" style={main_col_style}><strong>compiler</strong></Col>
-            <Col>{package_info.compiler}</Col>
+            <Col>{packageInfo.compiler}</Col>
           </Row>)}
-          {package_info.compiler_cppstd && (<Row>
+          {packageInfo.compiler_cppstd && (<Row>
             <Col xs="12" md="4" lg="4" style={main_col_style}><strong>compiler.cppstd</strong></Col>
-            <Col>{package_info.compiler_cppstd}</Col>
+            <Col>{packageInfo.compiler_cppstd}</Col>
           </Row>)}
-          {package_info.compiler_version && (<Row>
+          {packageInfo.compiler_version && (<Row>
             <Col xs="12" md="4" lg="4" style={main_col_style}><strong>compiler.version</strong></Col>
-            <Col>{package_info.compiler_version}</Col>
+            <Col>{packageInfo.compiler_version}</Col>
           </Row>)}
-          {package_info.compiler_runtime && (<Row>
+          {packageInfo.compiler_runtime && (<Row>
             <Col xs="12" md="4" lg="4" style={main_col_style}><strong>compiler.runtime</strong></Col>
-            <Col>{package_info.compiler_runtime}</Col>
+            <Col>{packageInfo.compiler_runtime}</Col>
           </Row>)}
-          {package_info.compiler_runtime_type && (<Row>
+          {packageInfo.compiler_runtime_type && (<Row>
             <Col xs="12" md="4" lg="4" style={main_col_style}><strong>compiler.runtime_type</strong></Col>
-            <Col>{package_info.compiler_runtime_type}</Col>
+            <Col>{packageInfo.compiler_runtime_type}</Col>
           </Row>)}
-          {package_info.build_type && (<Row style={row_style}>
+          {packageInfo.build_type && (<Row style={row_style}>
             <Col xs="12" md="4" lg="4" style={main_col_style}><strong>build_type</strong></Col>
-            <Col>{package_info.build_type}</Col>
+            <Col>{packageInfo.build_type}</Col>
           </Row>)}
           <OptionList/>
-          {package_info.requires.length > 0 && (<Row style={row_style}>
+          {packageInfo.requires.length > 0 && (<Row style={row_style}>
             <Col xs="12" md="4" lg="4" style={main_col_style}><strong>requires</strong></Col>
-            <Col>{package_info.requires.map(r => (
+            <Col>{packageInfo.requires.map(r => (
               <Col key={r}><Row>{r}</Row></Col>))}
             </Col>
           </Row>)}
@@ -504,15 +505,15 @@ function PackagesTab(props) {
   if (hasPackages) {
     return (
       <div>
-        <h3>Packages {props.packageOS && ("(" + props.packageOS + ")")}</h3>
-        {props.packageOS && (<a style={{color: '#007bff', cursor: 'pointer'}} onClick={() => props.setPackageOS(null)}>(Show all packages)</a>)}
+        <h3>Packages {packageOS && ("(" + packageOS + ")")}</h3>
+        {packageOS && (<a style={{color: '#007bff', cursor: 'pointer'}} onClick={() => setPackageOS(null)}>(Show all packages)</a>)}
         <br/>
         <ListGroup className="mb-4">
-          { ((!props.packageOS) || (props.packageOS=='Linux')) && props.packages.filter(data => data.os == 'Linux').map(data => (<PackageItem key={data.package_id} package_info={data}/>)) }
-          { ((!props.packageOS) || (props.packageOS=='Windows')) && props.packages.filter(data => data.os == 'Windows').map(data => (<PackageItem key={data.package_id} package_info={data}/>)) }
-          { ((!props.packageOS) || (props.packageOS=='macOS')) && props.packages.filter(data => ((data.os == 'Macos') && (data.arch == 'x86_64'))).map(data => (<PackageItem key={data.package_id} package_info={data}/>)) }
-          { ((!props.packageOS) || (props.packageOS=='macOS Apple Silicon')) && props.packages.filter(data => ((data.os == 'Macos') && (data.arch == 'armv8'))).map(data => (<PackageItem key={data.package_id} package_info={data}/>)) }
-          { ((!props.packageOS) || (props.packageOS=='Header Only')) && props.packages.filter(data => ((!data.os && !data.arch))).map(data => (<PackageItem key={data.package_id} package_info={data}/>)) }
+          { ((!packageOS) || (packageOS=='Linux')) && packages.filter(data => data.os == 'Linux').map(data => (<PackageItem key={data.package_id} packageInfo={data}/>)) }
+          { ((!packageOS) || (packageOS=='Windows')) && packages.filter(data => data.os == 'Windows').map(data => (<PackageItem key={data.package_id} packageInfo={data}/>)) }
+          { ((!packageOS) || (packageOS=='macOS')) && packages.filter(data => ((data.os == 'Macos') && (data.arch == 'x86_64'))).map(data => (<PackageItem key={data.package_id} packageInfo={data}/>)) }
+          { ((!packageOS) || (packageOS=='macOS Apple Silicon')) && packages.filter(data => ((data.os == 'Macos') && (data.arch == 'armv8'))).map(data => (<PackageItem key={data.package_id} packageInfo={data}/>)) }
+          { ((!packageOS) || (packageOS=='Header Only')) && packages.filter(data => ((!data.os && !data.arch))).map(data => (<PackageItem key={data.package_id} packageInfo={data}/>)) }
         </ListGroup>
       </div>
     );
@@ -521,14 +522,15 @@ function PackagesTab(props) {
     <div>
       <h3>Packages</h3>
       <br/>
-      <p>This recipe version (<strong>{props.recipeName}/{props.recipeVersion}</strong>) has no packages.</p>
+      <p>This recipe version (<strong>{recipe.name}/{recipe.info.version}</strong>) has no packages.</p>
     </div>
   );
 }
 
 
-function VersionsTab(props) {
-  const VersionItem = function({recipe}) {
+export const VersionsTab = ({data, selector}: {data: ConanResponse<RecipeInfo>, selector: Dispatch<SetStateAction<string>>}) => {
+  const VersionItem = ({recipe}: {recipe: RecipeInfo}) => {
+    console.log(recipe)
     const iconStatusColor = recipe.info.status === 'ok'? 'green': 'orange'
     const extraInfo = recipe.info.status === 'ok'? 'maintained version': recipe.info.status + ' version'
     return (
@@ -545,7 +547,7 @@ function VersionsTab(props) {
             <a data-tooltip-id='extra-info' data-tooltip-html="Reference version" data-tooltip-place="top">
               <FaTags className="me-2" style={{verticalAlign:'text-top',color: '#21AFFF', height: '21px', width: '21px'}}/>
             </a>
-            <a key={recipe.info.version} style={{color: '#007bff',cursor: 'pointer'}} onClick={()=>{props.selector(recipe.info.version);window.scrollTo(0, 0);}}>
+            <a key={recipe.info.version} style={{color: '#007bff',cursor: 'pointer'}} onClick={()=>{selector(recipe.info.version);window.scrollTo(0, 0);}}>
               {recipe.info.version}
             </a>
           </Col>
@@ -573,9 +575,12 @@ function VersionsTab(props) {
                 </a> {recipe.info.recipe_revision}
             </div>
             </Row>
+            {/* TODO: refactor model davidsf@jfrog.com */}
+            {/*
             {recipe.info.settings && recipe.info.settings.length > 0 && <Row className="mt-2">
               {prettyProfiles(recipe.info.settings).map((item) => (item.badget))}
             </Row>}
+            */}
           </Col>
         </Row>
       </ListGroup.Item>
@@ -583,18 +588,23 @@ function VersionsTab(props) {
   }
   return (
     <ListGroup>
-      { Object.values(props.data).map(data => (<VersionItem key={data.info.recipe_revision} recipe={data}/>)) }
+      { Object.values(data).map(recipe => (<VersionItem key={recipe.info.recipe_revision} recipe={recipe}/>)) }
     </ListGroup>
   );
 }
 
+// Not being used right now because we do not telemetry conan client and thus, we dont retrieve proper download information
+export const StatsTab = ({packages, downloads, versionIdx}: {packages: ConanResponse<RecipeInfo>, downloads: ConanResponse<RecipeDownloads>, versionIdx: string}) => {
+  const recipe = packages[versionIdx];
+  const recipeTotalDownloads = recipe.info.downloads;
+  const recipeDownloadsAll = downloads["all"].downloads;
+  const maintainedVersions = Object.values(packages).filter(data => data.info.status === "ok").map(data => data.info.version);
 
-function StatsTab(props) {
   const color = ['#21AFFF', '#3cb44b', '#ffe119', '#f58231', '#911eb4',
                  '#e6194B', '#f032e6', '#bfef45', '#fabed4', '#469990', '#dcbeff',
                  '#9A6324', '#fffac8', '#800000', '#aaffc3', '#808000', '#ffd8b1',
                  '#000075', '#a9a9a9', '#4363d8', '#42d4f4']
-   const labels = props.maintainedVersions.map((item) => ({"key": item}));
+   const labels = maintainedVersions.map((item) => ({"key": item}));
    const [lineProps, setLineProps] = useState(
      labels.reduce(
        (a, { key }) => {
@@ -647,7 +657,7 @@ function StatsTab(props) {
    const showCurrentVersionLine = () => {
      const newLineProps = labels.reduce(
        (a, { key }) => {
-         a[key] = !(key==props.selectedVersion);
+         a[key] = !(key==versionIdx);
          return a;
        },
        { hover: null }
@@ -657,22 +667,22 @@ function StatsTab(props) {
 
   return (
     <div>
-      <Row className="ps-3 pb-3"><h3>{props.recipeName} stats</h3></Row>
+      <Row className="ps-3 pb-3"><h3>{recipe.name} stats</h3></Row>
       <hr/>
       <Row className="ps-1">
         <Col xs md lg="3"><b>Total downloads:</b></Col>
         <Col xs md lg="auto">
-          {Object.values(props.data).map((e) => e.info.downloads).reduce((a, b) => a + b, 0).toLocaleString()}</Col>
+          {Object.values(packages).map((e) => e.info.downloads).reduce((a, b) => a + b, 0).toLocaleString()}</Col>
       </Row>
       <hr/>
       <Row className="ps-1">
         <Col xs md lg="3"><b>Current version total downloads:</b></Col>
-        <Col xs md lg="auto">{props.currentVersionDownloads.toLocaleString()}</Col>
+        <Col xs md lg="auto">{recipeTotalDownloads.toLocaleString()}</Col>
       </Row>
       <hr/>
       <Row className="pt-4 ps-3"><h4>Recipe downloads by version</h4></Row>
       <Row>
-        <LineChart width={Math.min(1100, window.innerWidth*0.8)} height={400} data={props.recipeDownloadsAll} margin={{ top: 10, right: 10, left: 10, bottom: 10 }}>
+        <LineChart width={Math.min(1100, window.innerWidth*0.8)} height={400} data={recipeDownloadsAll} margin={{ top: 10, right: 10, left: 10, bottom: 10 }}>
           <XAxis dataKey="date" stroke="#808080"/>
           <YAxis stroke="#808080"/>
           <Legend
@@ -682,7 +692,7 @@ function StatsTab(props) {
           />
           <Tooltip />
           <CartesianGrid strokeDasharray="3 3" />
-          {props.maintainedVersions.map((item, index) => (
+          {maintainedVersions.map((item, index) => (
             <Line
               key={item}
               type="monotone"
@@ -703,6 +713,3 @@ function StatsTab(props) {
     </div>
   )
 }
-
-
-export { UseItTab, BadgesTab, PackagesTab, DependenciesTab, VersionsTab, StatsTab };

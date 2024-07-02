@@ -7,6 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "format": "prettier . --check",
+    "format:fix": "prettier . --write",
     "test": "jest --watch",
     "test:ci": "jest --ci"
   },
@@ -35,7 +37,10 @@
     "@testing-library/user-event": "14.2.0",
     "eslint": "^8.56.0",
     "eslint-config-next": "^14.2.4",
+    "eslint-config-prettier": "^9.1.0",
     "jest": "28.1.0",
-    "jest-environment-jsdom": "29.7.0"
+    "jest-environment-jsdom": "29.7.0",
+    "prettier": "3.3.2",
+    "typescript": "5.5.2"
   }
 }

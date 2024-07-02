@@ -5,7 +5,7 @@ import { ConanCenterHeader } from './header';
 
 // From: https://stackabuse.com/how-to-create-a-loading-animation-in-react-from-scratch/
 
-export default function Loader() {
+export const Loader = () => {
   return (
     <React.StrictMode>
 

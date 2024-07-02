@@ -1,14 +1,12 @@
 import React from 'react';
-
-import { ConanKitchenHeader } from '../components/header';
-import ConanFooter from '../components/footer';
+import { ConanKitchenHeader, ConanFooter } from '@/components';
 import { Tooltip } from 'react-tooltip';
 import Link from 'next/link';
 import { BiInfoCircle } from "react-icons/bi";
 
 
-function gtmConanPush(eventType, product, platforms, purpose, description){
-  dataLayer.push({
+function gtmConanPush(eventType: string, product: string, platforms: string, purpose: string, description: string){
+  window.dataLayer.push({
     'event': 'fireEvent',
     'event_name': 'element_click',
     'type': eventType,
@@ -20,17 +18,43 @@ function gtmConanPush(eventType, product, platforms, purpose, description){
 }
 
 
-function gtmConanPushDownload(product, platforms, description){
+function gtmConanPushDownload(product: string, platforms: string, description: string){
   gtmConanPush('download', product, platforms, 'get ' + product, description);
 }
 
 
-function gtmConanPushCopy(product, platforms, description){
+function gtmConanPushCopy(product: string, platforms: string, description: string){
   gtmConanPush('copy', product, platforms, 'get ' + product, description);
 }
 
+interface GtmProps {
+    gtmProduct: string;
+    gtmPlatforms: string;
+    gtmDownloadDescription?: string;
+    gtmCopyDescription?: string;
+}
 
-function CopyToClipboard(props) {
+interface CopyToClipboardProps extends GtmProps {
+    imageAlt: string;
+    imageSrc: string;
+    textToShow: string;
+    textToCopy: string;
+}
+
+interface DownloadInstallerProps extends GtmProps {
+    imageAlt: string;
+    imageSrc: string;
+    textToShow: string;
+    installerLink: string;
+}
+
+interface DownloadInstallerOrCopyProps extends DownloadInstallerProps {
+    textTooltip: string;
+    textToCopy: string;
+}
+
+// TODO use the one declared in utils.tsx
+function CopyToClipboard(props: CopyToClipboardProps) {
   return (
     <div className="package-wrapper d-flex flex-no-wrap">
       <div className="cn-box small"><img alt={props.imageAlt} className="lazy" src={props.imageSrc}></img></div>
@@ -50,7 +74,7 @@ function CopyToClipboard(props) {
 }
 
 
-function DownloadInstallerOrCopy(props) {
+function DownloadInstallerOrCopy(props: DownloadInstallerOrCopyProps){
   return (
     <div className="package-wrapper d-flex flex-no-wrap">
       <div className="cn-box small"><img alt={props.imageAlt} className="lazy" src={props.imageSrc}></img></div>
@@ -80,7 +104,7 @@ function DownloadInstallerOrCopy(props) {
   )
 }
 
-function DownloadInstaller(props) {
+function DownloadInstaller(props: DownloadInstallerProps){
   return (
     <div className="package-wrapper d-flex flex-no-wrap">
       <div className="cn-box small"><img alt={props.imageAlt} className="lazy" src={props.imageSrc}></img></div>

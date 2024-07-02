@@ -1,11 +1,10 @@
 import React from 'react';
 import Link from 'next/link';
+import { ConanKitchenHeader, ConanFooter } from '@/components';
 
-import { ConanKitchenHeader } from '../components/header';
-import ConanFooter from '../components/footer';
+// TODO: move FAQ questions to backend (database) and request them on SSR
 
-
-function FaqPage() {
+const FaqPage = () => {
 
   const faqs = [
     {
@@ -139,4 +138,4 @@ function FaqPage() {
   );
 }
 
-export default FaqPage
+export default FaqPage;

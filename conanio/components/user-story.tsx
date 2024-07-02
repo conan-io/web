@@ -1,6 +1,16 @@
 import Link from 'next/link';
+import { UrlObject } from 'url';
 
-export default function SingleUserStory(props) {
+export const SingleUserStory = (props: {
+  metaTitle: string;        // TODO unused
+  metaDescription: string;  // TODO unused
+  pageTitle: string;
+  downloadFileImgSrc: string;
+  downloadFileURL: string | UrlObject;
+  companyName: string;
+  imgSrc: string;
+  contentHTML: any
+}) => {
   return (
     <div>
       <section className="breadcrumbs pt-5">

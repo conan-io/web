@@ -7,16 +7,18 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Badge from 'react-bootstrap/Badge';
-import { ConanSearchBar,
-         ConanMultiSelectFilter,
-         ConanSingleSelect } from "../../components/searchbar";
 import ListGroup from 'react-bootstrap/ListGroup';
 import Pagination from 'react-bootstrap/Pagination';
 import Link from 'next/link';
-import { ConanCenterHeader } from '../../components/header';
-import ConanFooter from '../../components/footer';
-import { prettyProfiles,
-         DefaultDescription } from '../../components/utils';
+import { ConanCenterHeader,
+         ConanFooter,
+         prettyProfiles,
+         DefaultDescription, 
+         ConanSearchBar,
+         ConanMultiSelectFilter,
+         ConanSingleSelect, 
+         toFilterOptions,
+         FilterOption } from '@/components';
 import { LiaBalanceScaleSolid } from "react-icons/lia";
 import { BsFilterCircleFill, BsFilterCircle } from "react-icons/bs";
 import { LuArrowBigUpDash } from "react-icons/lu";
@@ -31,56 +33,65 @@ import { MdFilter1,
   MdFilter9,
   MdFilter9Plus,
   MdOutlineToday } from "react-icons/md";
-import {get_json_list, get_urls, get_json_list_with_id} from '../../service/service';
+import { GetServerSideProps, GetServerSidePropsResult, NextPage } from 'next';
+import {getJsonList, getUrls, getJson, ConanFilterResponse, ConanResponse, RecipeInfo } from '@/service';
 
+type NewType = ConanFilterResponse;
 
-export async function getServerSideProps(context) {
-  let urls = get_urls({search: '', topics: null})
-  const topics_list_response = await get_json_list_with_id(urls.topics, urls.api.private);
-  const licenses_list_response = await get_json_list_with_id(urls.licenses, urls.api.private);
-  // const packages_response = await get_json_list(urls.search.package, urls.api.private);
-  // let  packages = packages_response.data;
-  // if (packages && packages.length > 0 && initialValue !== 'all') {
-  //   packages.sort((a, b) => levenshteinDistance(a.name, initialValue) - levenshteinDistance(b.name, initialValue))
-  // }
+interface PageProps  {
+    data: {
+        licenses: ConanResponse<ConanFilterResponse>,
+        topics: ConanResponse<NewType>,
+    }
+}
+
+export const getServerSideProps: GetServerSideProps<
+  PageProps
+> = async (): Promise<GetServerSidePropsResult<PageProps>> => {
+  let urls = getUrls({ pattern: "", topics: null });
+  let licenses = await getJson<ConanResponse<ConanFilterResponse>>(
+    urls.licenses,
+    urls.api.private,
+  );
+  let topics = await getJson<ConanResponse<ConanFilterResponse>>(
+    urls.topics,
+    urls.api.private,
+  );
+
   return {
     props: {
       data: {
-        licenses: licenses_list_response.data.map(elem => {return {filter: elem.value.filter, id: elem.value.id};}),
-        topics: topics_list_response.data.map(elem => {return {filter: elem.value.filter, id: elem.value.id};}),
-        // defaultValue: value,
-        // defaultTopics: topics,
-        // defaultLicenses: licenses,
-        // packages: packages,
+        licenses: licenses.data,
+        topics: topics.data,
       },
     },
-  }
-}
+  };
+};
 
 
-function PackageInfo(props) {
-  const licenses = Object.keys(props.data.info.licenses)
-  const labels = Object.keys(props.data.info.labels)
-  const packages = Object.values(props.data.info.packages).map((value) => value);
+const PackageInfo = (props: {package: RecipeInfo}) => {
+  const licenses = Object.keys(props.package.info.licenses!)
+  const labels = Object.keys(props.package.info.labels!)
+  const packages = Object.values(props.package.info.packages).map((value) => value);
   return (
     <div className="m-2">
       <Row>
         <Col xs="12" lg="6" className="mt-2">
           <Row>
             <Col xs="12" lg="auto">
-              <Link href={{ pathname: "/center/recipes/" + props.data.name, query: { version: props.data.info.version } }}>
-                <h3>{props.data.name}/{props.data.info.version}</h3>
+              <Link href={{ pathname: "/center/recipes/" + props.package.name, query: { version: props.package.info.version } }}>
+                <h3>{props.package.name}/{props.package.info.version}</h3>
               </Link>
             </Col>
           </Row>
           <Row>
             <Col xs="12" lg="auto">
-              {props.data.info.description || (<DefaultDescription name={props.data.name}/>)}
+              {props.package.info.description || (<DefaultDescription name={props.package.name}/>)}
             </Col>
           </Row>
         </Col>
         <Col xs="12" lg="6">
-          <Row className="mt-2">{props.data.info.timestamp && <Col xs="12" lg="auto"><MdOutlineToday className="conanIconBlue"/> {props.data.info.timestamp}</Col>}</Row>
+          <Row className="mt-2">{props.package.info.timestamp && <Col xs="12" lg="auto"><MdOutlineToday className="conanIconBlue"/> {props.package.info.timestamp}</Col>}</Row>
           <Row>{licenses && licenses.length > 0 && <Col xs="12" lg="auto"><LiaBalanceScaleSolid className="conanIconBlue"/> {licenses.join(", ")}</Col>}</Row>
         </Col>
       </Row>
@@ -93,36 +104,47 @@ function PackageInfo(props) {
   )
 }
 
-function SearchList(props) {
+enum SortBy {
+    Name = 'sortByName',
+    Date = 'sortByDate',
+    BestMatch = 'sortByBestMatch',
+}
 
+const SearchList = (props: {
+  value: string;
+  sortDataBy: SortBy,
+  topics: number[];
+  licenses: number[];
+  extraFilters: any;
+}) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<RecipeInfo[]>(null);
   const [pageNumber, setPageNumber] = useState(1);
   const [showAll, setShowAll] = useState(false);
 
-  const sortByName = (a, b) => {
+  const sortByName = (a: RecipeInfo, b: RecipeInfo) => {
     const nameA = a.name.toUpperCase(); // ignore upper and lowercase
     const nameB = b.name.toUpperCase(); // ignore upper and lowercase
     if (nameA < nameB) return -1;
     if (nameA > nameB) return 1;
   };
 
-  const sortByDownloads = (a, b) => {
+  const sortByDownloads = (a: RecipeInfo, b: RecipeInfo) => {
     return b.info.downloads - a.info.downloads
   };
 
-  const sortByDate = (a, b) => {
+  const sortByDate = (a: RecipeInfo, b: RecipeInfo) => {
     if (a.info.timestamp > b.info.timestamp) return -1;
     if (a.info.timestamp < b.info.timestamp) return 1;
   };
 
-  const sortByPopularity = (a, b) => {
+  const sortByPopularity = (a: RecipeInfo, b: RecipeInfo) => {
     return (b.info.downloads/b.info.age) - (a.info.downloads/a.info.age)
   };
 
-  const sortByBestMatch = (a, b) => {
-    const matchScore = (elem) => {
+  const sortByBestMatch = (a: RecipeInfo, b: RecipeInfo) => {
+    const matchScore = (elem: RecipeInfo) => {
       let score = 0;
       const tokens = props.value.split(' ');
       if (elem.name.toLowerCase() == props.value.toLowerCase()) score += 9000
@@ -140,14 +162,14 @@ function SearchList(props) {
       return score
     }
     if (matchScore(a) == matchScore(b)) return sortByName(a, b);
-    if(matchScore(a) > matchScore(b)) return -1;
-    if(matchScore(a) < matchScore(b)) return 1;
+    if (matchScore(a) > matchScore(b)) return -1;
+    if (matchScore(a) < matchScore(b)) return 1;
   };
 
-  const sortByData = (a, b) => {
-    if (props.sortDataBy == "sortByName") return sortByName(a, b)
-    if (props.sortDataBy == "sortByDate") return sortByDate(a, b)
-    if (props.sortDataBy == "sortByBestMatch") {
+  const sortByData = (a: RecipeInfo, b: RecipeInfo) => {
+    if (props.sortDataBy == SortBy.Name) return sortByName(a, b)
+    if (props.sortDataBy == SortBy.Date) return sortByDate(a, b)
+    if (props.sortDataBy == SortBy.BestMatch) {
       if (props.value) return sortByBestMatch(a, b);
       else return sortByName(a, b);
     }
@@ -159,9 +181,9 @@ function SearchList(props) {
     const fetchData = async () => {
       try {
         let value = props.value || 'all';
-        let urls = get_urls({search: value, topics: props.topics, licenses: props.licenses})
-        const packages_response = await get_json_list(urls.search.package, urls.api.public);
-        setData(packages_response.data);
+        let urls = getUrls({pattern: value, topics: props.topics, licenses: props.licenses})
+        const packagesResponse = await getJsonList<RecipeInfo>(urls.search.package, urls.api.public);
+        setData(packagesResponse.data);
       } catch(err) {
         setError(err.message);
         setData(null);
@@ -172,8 +194,8 @@ function SearchList(props) {
     fetchData();
   }, [props.value, props.topics, props.licenses])
 
-  function renderPagination(filteredData, pageSize){
-    let pages = []
+  const renderPagination = (filteredData: RecipeInfo[], pageSize: number) => {
+    let pages: RecipeInfo[][] = []
     let pageButtoms = []
     for (let i = 0; i < filteredData.length; i += pageSize) {
       pages.push(filteredData.slice(i, i + pageSize))
@@ -199,7 +221,7 @@ function SearchList(props) {
         {
           pages.length > 0 && pages[pageNumber-1].map((info) => (
             <ListGroup.Item className="conan-content-basic-card mt-4" key={info.name}>
-              <PackageInfo data={info}/>
+              <PackageInfo package={info}/>
             </ListGroup.Item>))
         }
         {pages.length > 1 && (<Pagination size="sm" style={{    "margin": "17px auto 0px auto"}}>
@@ -227,82 +249,77 @@ function SearchList(props) {
         </Pagination>)}
         {data && showAll && data.filter((info) => props.extraFilters(info)).sort(sortByData).map((info) => (
         <ListGroup.Item className="conan-content-basic-card mt-4" key={info.name}>
-          <PackageInfo data={info}/>
+          <PackageInfo package={info}/>
         </ListGroup.Item>))}
       </ListGroup>
     </div>
   )
 }
 
-export default function ConanSearch(props) {
+const ConanSearch: NextPage<PageProps> = (props) => {
   const router = useRouter();
-  let defaultValue = router.query.value;
-  let defaultTopics = router.query.topics;
-  let defaultLicenses = router.query.licenses;
+  let defaultValue = router.query.value?.toString() || '';
+  let defaultTopics = router.query.topics || [];
+  let defaultLicenses = router.query.licenses || [];
 
-  defaultTopics = defaultTopics || [];
   if (typeof defaultTopics === "string"){
     defaultTopics = [defaultTopics]
   }
-  defaultTopics = defaultTopics.map(e => parseInt(e))
-  defaultLicenses = defaultLicenses || [];
   if (typeof defaultLicenses === "string"){
     defaultLicenses = [defaultLicenses]
   }
-  defaultLicenses = defaultLicenses.map(e => parseInt(e))
-  defaultValue = defaultValue || '';
 
   const [textSearchBar, setTextSearchBar] = useState(defaultValue);
-  const [value, setValue] = useState(defaultValue);
-  const [topics, setTopics] = useState(defaultTopics);
-  const [licenses, setLicenses] = useState(defaultLicenses);
+  const [value, setValue] = useState<string>(defaultValue);
+  const [topics, setTopics] = useState<number[]>(defaultTopics.map(e => parseInt(e)));
+  const [licenses, setLicenses] = useState<number[]>(defaultLicenses.map(e => parseInt(e)));
   const [timer, setTimer] = useState(null);
   const [showFilters, setShowFilters] = useState(defaultTopics.length > 0);
   const [showWindows, setShowWindows] = useState(true);
   const [showMacOS, setShowMacOS] = useState(true);
   const [showMacOSSilicon, setShowMacOSSilicon] = useState(true);
   const [showLinux, setShowLinux] = useState(true);
-  const [sortDataBy, setSortDataBy] = useState('sortByBestMatch');
+  const [sortDataBy, setSortDataBy] = useState(SortBy.BestMatch);
 
-  const getData = async (value, topiclist, licenseList) => {
+  const getData = async (value: string, topicList: number[], licenseList: number[]) => {
     router.push(
       {
         pathname: '/center/recipes',
-        query: {value: value, topics: topiclist, licenses: licenseList}
+        query: {value: value, topics: topicList, licenses: licenseList}
       }, undefined, {shallow: true})
   }
-  const handleChange = (e) => {
-    const typingSearch = (v) => {
-      setValue(e);
-      getData(v, topics, licenses);
+  const handleChange = (event: string) => {
+    const typingSearch = (value: string) => {
+      setValue(event);
+      getData(value, topics, licenses);
     };
-    setTextSearchBar(e)
+    setTextSearchBar(event)
     clearTimeout(timer);
     const newTimer = setTimeout(() => {
-      typingSearch(e);
+      typingSearch(event);
     }, 500);
     setTimer(newTimer);
   }
 
-  var handleTopics = (selectedOption) => {
-    let newTopics = selectedOption.map(elem => {return elem.value})
+  var handleTopics = (selectedOption: FilterOption[]) => {
+    const newTopics = selectedOption.map(elem => {return elem.value as number})
     setTopics(newTopics);
     getData(value, newTopics, licenses);
   }
 
-  var handleLicenses = (selectedOption) => {
-    let newLicenses = selectedOption.map(elem => {return elem.value})
+  var handleLicenses = (selectedOption: FilterOption[]) => {
+    const newLicenses = selectedOption.map(elem => {return elem.value as number})
     setLicenses(newLicenses);
     getData(value, topics, newLicenses);
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     setValue(textSearchBar)
     getData(textSearchBar, topics, licenses);
     event.preventDefault();
   }
 
-  const handleSortFuction = (selectedOption) => {
+  const handleSortFuction = (selectedOption: { value: React.SetStateAction<SortBy> }) => {
     setSortDataBy(selectedOption.value);
   }
 
@@ -315,13 +332,19 @@ export default function ConanSearch(props) {
     const tags = {1: MdFilter1, 2: MdFilter2, 3: MdFilter3, 4: MdFilter4,
       5: MdFilter5, 6: MdFilter6, 7: MdFilter7, 8: MdFilter8, 9: MdFilter9}
     const style = {backgroundColor: 'white', verticalAlign: 'text-top'}
-    const _filterNumber = topics.length + licenses.length + !showWindows + !showLinux + !showMacOS + !showMacOSSilicon
+    const _filterNumber =
+      topics.length +
+      licenses.length +
+      (showWindows ? 0 : 1) +
+      (showLinux ? 0 : 1) +
+      (showMacOS ? 0 : 1) +
+      (showMacOSSilicon ? 0 : 1);
     if (!_filterNumber) return null
     const Tag = _filterNumber>9? MdFilter9Plus: tags[_filterNumber];
     return  (<Tag className="conanIconBlue" style={style}/>)
   }
 
-  const extraFilters = (item) => {
+  const extraFilters = (item: RecipeInfo) => {
     if (showLinux && showWindows && showMacOS && showMacOSSilicon){
       return true;
     }
@@ -356,10 +379,10 @@ export default function ConanSearch(props) {
               <Col xs="10" md="10" lg="2" className="mt-2">
                 <ConanSingleSelect
                   title="Sort by"
-                  defaultValue={{value: 'sortByBestMatch', label: 'by best match'}}
-                  options={[{value: 'sortByBestMatch', label: 'by best match'},
-                            {value: 'sortByName', label: 'by name'},
-                            {value: 'sortByDate', label: 'by date'}]}
+                  defaultValue={{value: SortBy.BestMatch, label: 'by best match'}}
+                  options={[{value: SortBy.BestMatch, label: 'by best match'},
+                            {value: SortBy.Name, label: 'by name'},
+                            {value: SortBy.Date, label: 'by date'}]}
                   handleFilter={handleSortFuction}
                 />
               </Col>
@@ -378,8 +401,8 @@ export default function ConanSearch(props) {
             </Row>
             <Col lg={{span: 10, offset: 1}}>
             {showFilters && <Row style={filterStyle} className="conan-content-basic-card">
-              <Col xs="12" md="12" lg="6" className="mt-2"><ConanMultiSelectFilter title="Licenses" defaultValue={licenses} filters={props.data.licenses} handleFilter={handleLicenses}/></Col>
-              <Col xs="12" md="12" lg="6" className="mt-2"><ConanMultiSelectFilter title="Topics" defaultValue={topics} filters={props.data.topics} handleFilter={handleTopics}/></Col>
+              <Col xs="12" md="12" lg="6" className="mt-2"><ConanMultiSelectFilter title="Licenses" defaultValue={licenses} options={toFilterOptions(props.data.licenses)} handleFilter={handleLicenses}/></Col>
+              <Col xs="12" md="12" lg="6" className="mt-2"><ConanMultiSelectFilter title="Topics" defaultValue={topics} options={toFilterOptions(props.data.topics)} handleFilter={handleTopics}/></Col>
               <Col xs="12" md="12" lg="6" className="mt-2">
                 <Badge style={{cursor: 'pointer'}} className={(showLinux? "profileTopics": "profileEmptyTopics")} onClick={() => setShowLinux(!showLinux)}>Linux</Badge>
                 <Badge style={{cursor: 'pointer'}} className={(showWindows? "profileTopics": "profileEmptyTopics")} onClick={() => setShowWindows(!showWindows)}>Windows</Badge>
@@ -403,3 +426,4 @@ export default function ConanSearch(props) {
     </React.StrictMode>
   );
 }
+export default ConanSearch;
