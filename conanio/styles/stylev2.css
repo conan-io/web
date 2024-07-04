@@ -572,6 +572,7 @@ section#faqQuestions {
 .hero-bg {
   top: 422px;
   left: 0;
+  z-index: -1;
 }
 .hero-bg.downloads-hero-bg {
   top: 150px;
