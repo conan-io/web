@@ -20,8 +20,16 @@ export default async (req: SignupRequest, res: NextApiResponse) => {
     },
   );
   if (!response.ok) {
-    res.status(response.status).json({});
+    if(response.status==422){
+      let data = await response.json();
+      res.status(response.status).json(data);
+    }
+    else{
+      res.status(response.status).json({message: "Sorry, something went wrong. Please try again later."});
+    }
   }
-  let data = await response.json();
-  res.status(200).json(data);
+  else {
+    let data = await response.json();
+    res.status(200).json(data);
+  }
 };
