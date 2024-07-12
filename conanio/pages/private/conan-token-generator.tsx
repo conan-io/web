@@ -32,6 +32,8 @@ const ConanTokenGenerator = () => {
         },
       );
       const data = await response.json();
+      console.log(data)
+      console.log(response)
       setInfo({
         status: response.status,
         message: data.message,
@@ -56,11 +58,11 @@ const ConanTokenGenerator = () => {
           <br />
         </Container>
         <Container className="conancontainer">
-          {info && info.status == "200" && (
+          {info && (info.status == "200" || info.status == "422" || info.status == "403") && (
             <Col
               className="text-center"
-              md={{ span: 6, offset: 3 }}
-              lg={{ span: 6, offset: 3 }}
+              md={{ span: 8, offset: 2 }}
+              lg={{ span: 8, offset: 2 }}
             >
               <Alert show={show} className="conanAlert" variant="success">
                 <Row>
@@ -80,18 +82,28 @@ const ConanTokenGenerator = () => {
           {info && info.status == "500" && (
             <Col
               className="text-center"
-              md={{ span: 6, offset: 3 }}
-              lg={{ span: 6, offset: 3 }}
+              md={{ span: 8, offset: 2 }}
+              lg={{ span: 8, offset: 2 }}
             >
               <Alert show={show} className="conanAlert" variant="danger">
-                {info.message}
+              <Row>
+                  <Col md="11" lg="11">
+                    {info.message}
+                  </Col>
+                  <Col md="1" lg="1">
+                    <AiOutlineCloseCircle
+                      className="conanIcon22"
+                      onClick={() => setShow(false)}
+                    />
+                  </Col>
+                </Row>
               </Alert>
             </Col>
           )}
         </Container>
         <Container className="conancontainer">
           <Form onSubmit={handleSubmit}>
-            <Col md={{ span: 6, offset: 3 }} lg={{ span: 6, offset: 3 }}>
+            <Col md={{ span: 8, offset: 2 }} lg={{ span: 8, offset: 2 }}>
               <div className="recipeContentBox p-4">
                 <Row>
                   <Form.Group as={Col} controlId="validationFullName">
