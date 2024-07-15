@@ -32,8 +32,6 @@ const ConanTokenGenerator = () => {
         },
       );
       const data = await response.json();
-      console.log(data)
-      console.log(response)
       setInfo({
         status: response.status,
         message: data.message,
