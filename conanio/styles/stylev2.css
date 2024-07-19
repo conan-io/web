@@ -532,6 +532,12 @@ select {
   text-align: center;
 }
 
+.btn.conan-blue-border:hover {
+  color: black;
+  border: 2px solid #21AFFF;
+  border-radius: 50px;
+}
+
 .copyBadgesButton {
   border: none;
   background-color: transparent;
