@@ -82,7 +82,7 @@ const Loading = () => (
   </div>
 )
 
-export const ReadmeTab = (props: {readme: string}) => {
+export const ReadmeTab = (props: {readme?: string}) => {
   if (props.readme) {
       return <Markdown>{props.readme}</Markdown>
   }
