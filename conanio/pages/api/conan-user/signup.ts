@@ -1,22 +1,30 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
 interface SignupRequest extends NextApiRequest {
-  query: {
-    full_name?: string;
-    email?: string;
-  };
+    body: {
+        full_name?: string;
+        email?: string;
+        region?: string;
+        gdpr_consent?: boolean;
+    };
 }
 
 export default async (req: SignupRequest, res: NextApiResponse) => {
-  let full_name = req.query.full_name || "";
-  let email = req.query.email || "";
+    const { full_name = "", email = "", region = "", gdpr_consent = false } = req.body;
 
   const response = await fetch(
-    `${encodeURI(process.env.conanioAuthServer)}/conan-user/signup?full_name=${encodeURIComponent(
-      full_name,
-    )}&email=${encodeURIComponent(email)}`,
+    `${encodeURI(process.env.conanioAuthServer)}/conan-user/signup`,
     {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        full_name,
+        email,
+        region,
+        gdpr_consent,
+      }),
     },
   );
   if (!response.ok) {
