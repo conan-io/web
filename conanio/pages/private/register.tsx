@@ -41,6 +41,9 @@ const ConanRegistration = () => {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    console.log("Full name:", fullName);
+    console.log("Email:", email);
+
     // Validate that terms are accepted
     if (!termsAgree) {
       setAlertMessage("You must accept the Terms of Service and Privacy Notice before registering.");
@@ -54,6 +57,8 @@ const ConanRegistration = () => {
         region: region,
         gdpr_consent: gdprConsent,
     };
+
+    console.log("pay:", payload);
 
     try {
         const urls = getUrls();
