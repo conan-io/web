@@ -352,6 +352,9 @@ border-radius: 10px;
   border-radius: 10px;
   background-color: white;
   box-shadow: 0px 9px 29px rgba(0, 0, 0, 0.07), 0px 1.12694px 3.63125px rgba(0, 0, 0, 0.035);
+  margin-bottom: 30px;
+  font-size: 14px;
+  text-align: left;
 }
 
 .backgroundWhite{
