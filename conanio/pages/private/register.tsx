@@ -258,7 +258,7 @@ const ConanRegistration = () => {
                       <Form.Check.Label>
                         By completing registration, you agree to the{" "}
                         <Link
-                          href="https://conancenter-stg.jfrog.team/terms-conditions"
+                          href="/terms-conditions"
                           passHref
                           id="terms_btn_footer"
                           rel="noopener noreferrer"
