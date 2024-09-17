@@ -42,34 +42,6 @@ const ConanHead = (props: {titlePrefix?: string}) => {
 }
 
 
-function BetaBanner() {
-  return (
-    <section id="beta-banner" className="beta-banner">
-      <div className="container">
-        <div className="row d-flex justify-content-around align-items-center">
-          <div className="col-auto mt-1 mb-1 text-center text-white beta-links">
-            Conancenter web BETA version - <Link
-              href="https://github.com/conan-io/web/issues"
-              onClick={
-                () => {
-                  window.dataLayer.push({
-                    'event': 'fireEvent',
-                    'event_name': 'element_click',
-                    'type': 'ui',
-                    'purpose': 'feedback',
-                    'description': 'conancenter web beta version feedback'
-                  });
-                }
-              } style={{textDecoration: 'underline'}} className="white"><b>your feedback</b>
-            </Link> will help us to improve it!
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-
 export function ConanHeader(props: {background?: string}){
   return (
     <header id="masthead" className={props.background}>
@@ -109,7 +81,6 @@ export const ConanCenterHeader = (props: {titlePrefix?: string}) => {
     <div>
       <ConanHead titlePrefix={props.titlePrefix}/>
       <ConanHeader background="backgroundWhite"/>
-      {/* <BetaBanner/> */}
     </div>
   );
 }

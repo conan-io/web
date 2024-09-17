@@ -7,7 +7,7 @@ interface TribeMember {
     image?: string,
     description: string,
     linkedin?: string,
-    twitter?: string,
+    x?: string,
     company?: string
 }
 
@@ -21,7 +21,7 @@ const TribeCards = (props: { data: TribeMember[] }) => (
               <div className="content-top mb-1">
                 <img className="w-100 object-cover text-center bg-gray tm_Image" alt={info.name} width="278" height="252" src={info.image || "/conan-tribe/anonymous.png"}></img>
                 <h3 className="mt-3 tm_Name">{info.name}</h3>
-                <p className="company py-2"> {info.company}</p>
+                <p className="company py-2">{info.company}</p>
                 <p className="short-description">{info.description}</p>
               </div>
               <div className="content-bottom">
@@ -29,8 +29,8 @@ const TribeCards = (props: { data: TribeMember[] }) => (
                   {info.linkedin && <li>
                     <Link href={info.linkedin}><div className="me-2"><img alt="linkedin" src="/social/linkedin.svg"></img></div></Link>
                   </li>}
-                  {info.twitter && <li>
-                    <Link href={info.twitter}><div className="me-2"><img alt="linkedin" src="/social/twitter.svg"></img></div></Link>
+                  {info.x && <li>
+                    <Link href={info.x}><div className="me-2"><img alt="linkedin" src="/social/x.svg"></img></div></Link>
                   </li>}
                 </ul>
               </div>
@@ -51,13 +51,13 @@ const TribePage = () => {
         image: '/conan-tribe/trollface_med_-_Nenad_Miksa.png',
         description: 'Head of Tools and Software Infrastructure at Microblink Ltd.',
         linkedin: 'https://www.linkedin.com/in/nmiksa/',
-        twitter: 'https://twitter.com/DodoMiksa/',
+        x: 'https://x.com/DodoMiksa/',
         company: 'Microblink'
     },
     {
         name: 'Chandler Scott',
         description: "Developer at Aquaveo. I hack on all things computer, regardless of where they came from. I consider C/C+ my 'home' language, but I have had fun learning all sorts of new ones too.",
-        twitter: 'https://twitter.com/Tsubashi/',
+        x: 'https://x.com/Tsubashi/',
         company: 'Aquaveo'
     },
     {
@@ -78,7 +78,7 @@ const TribePage = () => {
         image: '/conan-tribe/pp_-_Yoann_Potinet.jpg',
         description: 'Software Engineer at Bluemanoid and Game Developer ',
         linkedin: 'https://www.linkedin.com/in/www.linkedin.com/',
-        twitter: 'https://twitter.com/ypotinet/',
+        x: 'https://x.com/ypotinet/',
         company: 'Bluemanoid'
     },
     {
@@ -86,7 +86,7 @@ const TribePage = () => {
         image: '/conan-tribe/Michael_Maguire.jpg',
         description: 'C++ and Java software engineering professional at Bloomberg, previously at Microsoft in Redmond and at Research in Motion on the BlackBerry team. Architected the Java email and SMS applications for the BlackBerry. Inventor of the threaded message view UI now ubiquitous for mobile chat and text applications.',
         linkedin: 'https://www.linkedin.com/in/michaelmaguire/',
-        twitter: 'https://twitter.com/michaelmaguire/',
+        x: 'https://x.com/michaelmaguire/',
         company: 'Bloomberg LP'
     },
     {
@@ -94,7 +94,7 @@ const TribePage = () => {
         image: '/conan-tribe/kwolf_-_Kai_Wolf.jpg',
         description: 'Computer scientist (M.Sc.) with a strong focus on Computer Vision, Machine Learning and Mobile Computing mainly in the languages C, C++, Kotlin and Python',
         linkedin: 'https://www.linkedin.com/in/kw0lf/',
-        twitter: 'https://twitter.com/kw0lf/',
+        x: 'https://x.com/kw0lf/',
         company: 'Kai Wolf - SW Consulting'
     },
     {
@@ -108,7 +108,7 @@ const TribePage = () => {
         image: '/conan-tribe/photo_profil_-_Romain_Deterre.jpg',
         description: 'Software Manager at Alazar Technologies. Uses C++ in a wide variety of environments to enable high performance data acquisition and processing applications.',
         linkedin: 'https://www.linkedin.com/in/romain-deterre-50161941/',
-        twitter: 'https://twitter.com/romaindeterre/',
+        x: 'https://x.com/romaindeterre/',
         company: 'Alazar Technologies Inc.'
     },
     {
@@ -123,7 +123,7 @@ const TribePage = () => {
         image: '/conan-tribe/Julien_Marrec-B_W-400x400_-_Julien_Marrec.jpg',
         description: 'Energy engineer/BEM professional, Founder of EffiBEM. Interests include: building energy modeling, Python, ruby, C++, CI/CD, dataviz, machine learning. ',
         linkedin: 'https://www.linkedin.com/in/julienmarrec/',
-        twitter: 'https://twitter.com/MarrecJulien/',
+        x: 'https://x.com/MarrecJulien/',
         company: 'EffiBEM'
     },
     {
@@ -138,7 +138,7 @@ const TribePage = () => {
         image: '/conan-tribe/PhotoMe1small_-_Harald_Achitz.jpg',
         description: 'Harald is long time developer who worked in a wide range of different fields and on all major platforms, mostly, but not exclusive, in projects where C++ played an important role. One of his favorite spare time activities is organizing the Stockholm C++ meetup group, StockholmCpp.',
         linkedin: 'https://www.linkedin.com/in/harald-achitz-860657139/',
-        twitter: 'https://twitter.com/haralda4z/',
+        x: 'https://x.com/haralda4z/',
     },
     {
         name: 'Zack Johnson',
@@ -185,7 +185,7 @@ const TribePage = () => {
         image: '/conan-tribe/aln-mittel_-_Andreas_Kleber.jpg',
         description: 'Starting as C++ developer 12y years ago, I moved more and more to DevOps topics since about 7 years ago and I am now a DevOps Engineer since about 2,5 years. My big focus in our company currently is the introduction of Conan.',
         linkedin: 'https://www.linkedin.com/in/andreas-kleber/',
-        twitter: 'https://twitter.com/andreasklebe_r/',
+        x: 'https://x.com/andreasklebe_r/',
         company: 'ESI Group'
     },
     {
@@ -243,7 +243,7 @@ const TribePage = () => {
         image: '/conan-tribe/IMG_0200_200x200_-_Martin_Pausch.jpg',
         description: 'Martin is Head of Device Framework at Carl Zeiss Meditec AG. With his experience as a Technical Consultant and Lead Software Engineer, he solves problems for the users of Medical Software to meet their needs and he relies on his analytic skills and the interdisciplinary team he works with.',
         linkedin: 'https://www.linkedin.com/in/martinpausch/',
-        twitter: 'https://twitter.com/mapau/',
+        x: 'https://x.com/mapau/',
         company: 'Zeiss Meditec AG'
     },
     {
@@ -251,7 +251,7 @@ const TribePage = () => {
         image: '/conan-tribe/IMG_0953_-_James_Weir.JPG',
         description: 'Principal Architect and Software Engineer at heart with more than 20 years experience in everything from Ada to YAML, a few more years to get to Z :D',
         linkedin: 'https://www.linkedin.com/in/jameswweir/',
-        twitter: 'https://twitter.com/jameswweir/',
+        x: 'https://x.com/jameswweir/',
         company: 'TomTom'
     },
     {
@@ -280,7 +280,7 @@ const TribePage = () => {
         image: '/conan-tribe/CIMG00481b_-_Eric_Pederson.jpeg',
         description: 'I am a software developer working in finance.  My focus over the last few years has been DevOps.  ',
         linkedin: 'https://www.linkedin.com/in/sourcedelica/',
-        twitter: 'https://twitter.com/sourcedelica/',
+        x: 'https://x.com/sourcedelica/',
         company: 'Tradeweb Markets'
     },
     {
@@ -304,7 +304,7 @@ const TribePage = () => {
         image: '/conan-tribe/Tamas_Szelei.jpg',
         description: 'I enjoy wrangling build systems and long walks on the beach at sunset.',
         linkedin: 'https://www.linkedin.com/in/tamasszelei/',
-        twitter: 'https://twitter.com/szeleitamas/',
+        x: 'https://x.com/szeleitamas/',
         company: 'Plex'
     },
     {
@@ -330,14 +330,14 @@ const TribePage = () => {
         image: '/conan-tribe/0_-_Javier_Povedano_Molina.jpeg',
         description: 'Javier Povedano is currently working at RTI as a Internal Tools Lead. After some years developing in C/C++ middleware for the Industrial Internet of Things, I moved to a newly created team to make our developers and our release process more efficient. There I started learning more about Jenkins, Artifactory, and, obviously Conan.',
         linkedin: 'https://www.linkedin.com/in/jpovedano/',
-        twitter: 'https://twitter.com/jpovedano/',
+        x: 'https://x.com/jpovedano/',
         company: 'RTI'
     },
     {
         name: 'Marcel Pfütze',
         image: '/conan-tribe/me_-_Salamibrodel.jpg',
         description: 'Senior Software Developer.\r\nMostly working with Cloud Integration of existing C/C++/Java/python projects.',
-        twitter: 'https://twitter.com/KepptnK/',
+        x: 'https://x.com/KepptnK/',
     },
     {
         name: 'R. Andrew Ohana',
@@ -363,7 +363,7 @@ const TribePage = () => {
       image: '/conan-tribe/Kevin_Mitchell.jpg',
       description: "Kevin is a Senior Software Architect at Datalogics, where he introduced Conan to our C++ projects. He's also got a strong background in Python and Java as well as other programming languages.",
       company: 'Datalogics',
-      twitter: 'https://twitter.com/kamitchell/'
+      x: 'https://x.com/kamitchell/'
     },
     {
       name: 'Alex Brinkman',
@@ -381,7 +381,7 @@ const TribePage = () => {
       image: '/conan-tribe/michael_aigner.png',
       description: "Build cross platform products including CAD system, raytracer, package manager mainly for desktop and server applications with C++ and Qt. I also write applications in python, golang, typescript and many more. Daily conan user since 0.7. Huge CI/CD fan mostly done with GitLab CI.",
       company: 'ZKW Lichtsysteme GmbH',
-      twitter: 'https://twitter.com/tonka_2000/',
+      x: 'https://x.com/tonka_2000/',
       linkedin: 'https://www.linkedin.com/in/michael-aigner-ab06809/'
     },
     {
@@ -401,7 +401,7 @@ const TribePage = () => {
       image: '/conan-tribe/mateuszpusz.jpg',
       description: "A software architect, principal engineer, and security champion with more than 15 years of experience in designing, writing, and maintaining C++ code for fun and living. A trainer with 10 years of C++ teaching experience, consultant, conference speaker, and evangelist. A member of the ISO C++ Committee and MISRA C++.",
       company: 'Train IT',
-      twitter: 'https://twitter.com/mateusz_pusz/',
+      x: 'https://x.com/mateusz_pusz/',
       linkedin: 'https://www.linkedin.com/in/mpusz/'
     },
     {
@@ -421,7 +421,7 @@ const TribePage = () => {
       description: "I’m a C++ and Python developer with about 14 years of experience in FinTech. I’m currently responsible for the engineering tool chain of LSEG Technology. (Technology arm of London Stock Exchange Group)",
       company: 'LSEG Technology',
       linkedin: 'https://lk.linkedin.com/in/gayancp/',
-      twitter: 'https://twitter.com/gayanpathirage/'
+      x: 'https://x.com/gayanpathirage/'
     },
     {
       name: 'Robert Boehne',
@@ -454,7 +454,7 @@ const TribePage = () => {
       image: '/conan-tribe/luis_roalter.jpeg',
       description: "I'm a C++ and Python developer since 2014. Main topics are continuous integration and deployment and tool development. Trying to solved everything with Python and Git.",
       company: 'Rohde & Schwarz',
-      twitter: 'https://twitter.com/roalter'
+      x: 'https://x.com/roalter'
     },
     {
       name: 'Fabian Sturm',
@@ -493,7 +493,7 @@ const TribePage = () => {
       description: "C++ jedi. C++ tools enthusiast. Speaker. Refactoring and software design fan. Full-stack developer in HFT field.",
       company: 'Pinely',
       linkedin: 'https://www.linkedin.com/in/mmatrosov/',
-      twitter: 'https://twitter.com/cppjedi'
+      x: 'https://x.com/cppjedi'
     },
     {
       name: 'Simon Schuster',
@@ -541,8 +541,7 @@ const TribePage = () => {
             <p className="pb-3">
               Now that Conan 2.0 is GA, we will discuss with the Tribe the way going forward for strategic changes to Conan,
               future major 3.0, 4.0 versions, etc. We will also talk about the Tribe itself and there will be opportunities to join.
-              In the meantime, everybody is welcome to give feedback in the
-              <Link href="https://github.com/conan-io/tribe" target="_blank" rel="noopener noreferrer">Conan Tribe Github</Link> repository
+              In the meantime, everybody is welcome to give feedback in the <Link href="https://github.com/conan-io/tribe" target="_blank" rel="noopener noreferrer">Conan Tribe Github</Link> repository
               and contact the maintainers at <Link href="mailto:tribe-maintainers@conan.io" target="_blank" rel="noopener noreferrer">tribe-maintainers@conan.io</Link>.
             </p>
           </div>
