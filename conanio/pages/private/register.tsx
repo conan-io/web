@@ -268,7 +268,7 @@ const ConanRegistration = () => {
                         </Link>{" "}
                         For information about the storing and processing of your personal data by JFrog, see our{" "}
                         <Link
-                          href="https://jfrog.com/privacy-policy/"
+                          href="https://jfrog.com/privacy-notice/"
                           passHref
                           id="privacy_notice"
                           rel="noopener noreferrer"

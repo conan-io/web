@@ -91,27 +91,27 @@ export const ConanFooter = () => {
               </li>
               <li>
                 <Link href="https://blog.conan.io/">
-                  <div onClick={() => {gtmConanPush('blog')}}id="blog_btn_footer">Blog</div>
+                  <div onClick={() => {gtmConanPush('blog')}} id="blog_btn_footer">Blog</div>
                 </Link>
               </li>
               <li>
                 <Link href="/faq">
-                  <div onClick={() => {gtmConanPush('faq')}}id="faq_btn_footer">FAQ</div>
+                  <div onClick={() => {gtmConanPush('faq')}} id="faq_btn_footer">FAQ</div>
                 </Link>
               </li>
               <li>
                 <Link href="/privacy-policy">
-                  <div onClick={() => {gtmConanPush('privacy policy')}}id="privacypolicy_btn_footer">Privacy Policy</div>
+                  <div onClick={() => {gtmConanPush('privacy notice')}} id="privacynotice_btn_footer">Privacy Policy</div>
                 </Link>
               </li>
               <li>
                 <Link href="/terms-conditions">
-                  <div onClick={() => {gtmConanPush('terms')}}id="terms_btn_footer">Terms</div>
+                  <div onClick={() => {gtmConanPush('terms')}} id="terms_btn_footer">Terms</div>
                 </Link>
               </li>
               <li>
                 <Link href="#">
-                  <div onClick={() => {gtmConanPush('cookies')}}className="ot-sdk-show-settings" id="cookies_btn_footer">Cookies Settings</div>
+                  <div onClick={() => {gtmConanPush('cookies')}} className="ot-sdk-show-settings" id="cookies_btn_footer">Cookies Settings</div>
                 </Link>
               </li>
             </ul>
@@ -119,12 +119,12 @@ export const ConanFooter = () => {
           <div className="col-md-2 pe-0">
             <ul className="socials d-flex mt-1 mb-0 pt-2 ps-0 justify-content-center list-unstyled">
               <li>
-                <a onClick={() => {gtmConanPushSocial('twitter')}} className="me-2" href="https://twitter.com/conan_io">
-                  <img alt="twitter" className="lazy" src="/social/twitter.svg"></img>
+                <a onClick={() => {gtmConanPushSocial('x')}} className="me-2" href="https://x.com/conan_io">
+                  <img alt="x" className="lazy" src="/social/x.svg"></img>
                 </a>
               </li>
               <li>
-                <a onClick={() => {gtmConanPushSocial('slack')}} className="me-2" href="https://cpplang.​slack.​com/?id=conan">
+                <a onClick={() => {gtmConanPushSocial('slack')}} className="me-2" href="https://cpplang.slack.com/?id=conan">
                   <img alt="slack" className="lazy" src="/social/slack.svg"></img>
                 </a>
               </li>
