@@ -383,9 +383,6 @@ const ConanHomeUsers = () => (
             <img className="" src="/brands/company_29.png" alt="Poco"></img>
           </div>
           <div className="user-box d-flex justify-content-center align-content-center conan-card">
-            <img className="" src="/brands/company_27.png" alt="Huawei"></img>
-          </div>
-          <div className="user-box d-flex justify-content-center align-content-center conan-card">
             <img className="" src="/brands/company_28.png" alt="Pix4D"></img>
           </div>
           <div className="user-box d-flex justify-content-center align-content-center conan-card">
