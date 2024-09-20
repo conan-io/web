@@ -19,7 +19,7 @@ function generateSiteMap(packages: RecipeInfo[]){
         <loc>${URL}/faq</loc>
      </url>
      <url>
-        <loc>${URL}/privacy-policy</loc>
+        <loc>https://jfrog.com/privacy-notice/</loc>
      </url>
      <url>
         <loc>${URL}/terms-conditions</loc>

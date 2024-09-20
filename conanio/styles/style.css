@@ -763,8 +763,8 @@ body.downloads .modal-footer button.modal-copy-button {
   background: #7BA7D3;
 }
 
-body.privacy-policy ol,
-body.privacy-policy ul {
+body.privacy-notice ol,
+body.privacy-notice ul {
   padding-left: 1.5em;
   margin-top: 10px;
 }
