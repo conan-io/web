@@ -30,7 +30,7 @@ const TribeCards = (props: { data: TribeMember[] }) => (
                     <Link href={info.linkedin}><div className="me-2"><img alt="linkedin" src="/social/linkedin.svg"></img></div></Link>
                   </li>}
                   {info.x && <li>
-                    <Link href={info.x}><div className="me-2"><img alt="linkedin" src="/social/x.svg"></img></div></Link>
+                    <Link href={info.x}><div className="me-2"><img alt="X" src="/social/x-black.svg"></img></div></Link>
                   </li>}
                 </ul>
               </div>
