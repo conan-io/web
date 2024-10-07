@@ -357,14 +357,14 @@ border-radius: 10px;
   max-width: 1228px !important;
 }
 
-.beta-banner {
-  background: #21AFFF;
+.global-banner {
+  background: #32AF44;
 }
 
-.beta-banner a {
+.global-banner a {
   color: white;
 }
-.beta-banner a:hover {
+.global-banner a:hover {
   color: #006dcc;
 }
 /*
