@@ -129,9 +129,6 @@ const ConanPackage: NextPage<PageProps> = (props) => {
   const extraInfo = recipeStatus === 'ok'? 'maintained version': recipeStatus + ' version'
 
   const RecipeAside = () => {
-    const isToolRequire = recipeData.use_it?.package_type == "application";
-    const fieldRequirements = isToolRequire? 'tool_requires': 'requires';
-
     const installCodeContent = `[requires]\n${recipeData.name}/${selectedVersion}`;
     return (
       <Col xs lg="3" className="ps-4 mt-4 pt-4">
