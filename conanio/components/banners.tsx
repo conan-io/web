@@ -19,7 +19,7 @@ export function Conan1xBanner() {
                           'description': 'conancenter stop 1.x packages'
                         });
                       }
-                    } className="white"> <b>Read this blog post</b>
+                    } className="white"> <b>Read the blog post</b>
             </Link>
           </div>
         </div>
