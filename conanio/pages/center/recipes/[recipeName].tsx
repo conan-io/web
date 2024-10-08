@@ -8,21 +8,24 @@ import Badge from 'react-bootstrap/Badge';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Button from 'react-bootstrap/Button';
 import Link from 'next/link';
-import { ConanCenterHeader,
-         ConanFooter,
-         UseItTab,
-         BadgesTab,
-         DependenciesTab,
-         VersionsTab,
-         PackagesTab,
-         BasicSearchBar,
-         truncate,
-         truncateAndCopy,
-         urlify,
-         sanitizeURL,
-         ClipboardCopy,
-         prettyProfiles,
-         DefaultDescription } from '@/components';
+import {
+    ConanCenterHeader,
+    ConanFooter,
+    UseItTab,
+    BadgesTab,
+    DependenciesTab,
+    VersionsTab,
+    PackagesTab,
+    BasicSearchBar,
+    truncate,
+    truncateAndCopy,
+    urlify,
+    sanitizeURL,
+    ClipboardCopy,
+    prettyProfiles,
+    DefaultDescription,
+    Conan1xBanner
+} from '@/components';
 import { getJson, getUrls, ConanResponse, RecipeInfo, RecipeUseIt} from '@/service';
 import { LiaBalanceScaleSolid, LiaGithub } from "react-icons/lia";
 import { IoMdHome } from "react-icons/io";
@@ -126,9 +129,6 @@ const ConanPackage: NextPage<PageProps> = (props) => {
   const extraInfo = recipeStatus === 'ok'? 'maintained version': recipeStatus + ' version'
 
   const RecipeAside = () => {
-    const isToolRequire = recipeData.use_it?.package_type == "application";
-    const fieldRequirements = isToolRequire? 'tool_requires': 'requires';
-
     const installCodeContent = `[requires]\n${recipeData.name}/${selectedVersion}`;
     return (
       <Col xs lg="3" className="ps-4 mt-4 pt-4">
@@ -328,6 +328,7 @@ const ConanPackage: NextPage<PageProps> = (props) => {
 
       <div className="flex-wrapper bg-conan-blue">
         <ConanCenterHeader titlePrefix={recipeData.name}/>
+        <Conan1xBanner/>
         <Container className="conancontainer">
           <div className="mt-3 mb-3">
           <BasicSearchBar/>

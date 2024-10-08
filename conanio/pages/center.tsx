@@ -5,7 +5,7 @@ import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Link from 'next/link';
 import { Tooltip } from 'react-tooltip';
-import { BasicSearchBar, ConanCenterHeader, ConanFooter } from "@/components";
+import { BasicSearchBar, ConanCenterHeader, ConanFooter, Conan1xBanner } from "@/components";
 import {getJson, getJsonList, getUrls, RecipeBasic, RecipeReference } from '@/service';
 import { BiInfoCircle } from "react-icons/bi";
 import { GetServerSideProps, NextPage } from "next";
@@ -77,6 +77,7 @@ const Center: NextPage<PageProps> = (props) => (
 
     <div className="flex-wrapper bg-conan-blue">
       <ConanCenterHeader/>
+      <Conan1xBanner/>
         <br/>
         <Container className="conancontainer">
           <Container><h1 className="text-center">The Conan libraries and tools central repository</h1></Container>

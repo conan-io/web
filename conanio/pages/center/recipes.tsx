@@ -10,15 +10,18 @@ import Badge from 'react-bootstrap/Badge';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Pagination from 'react-bootstrap/Pagination';
 import Link from 'next/link';
-import { ConanCenterHeader,
-         ConanFooter,
-         prettyProfiles,
-         DefaultDescription, 
-         ConanSearchBar,
-         ConanMultiSelectFilter,
-         ConanSingleSelect, 
-         toFilterOptions,
-         FilterOption } from '@/components';
+import {
+  ConanCenterHeader,
+  ConanFooter,
+  prettyProfiles,
+  DefaultDescription,
+  ConanSearchBar,
+  ConanMultiSelectFilter,
+  ConanSingleSelect,
+  toFilterOptions,
+  FilterOption,
+  Conan1xBanner
+} from '@/components';
 import { LiaBalanceScaleSolid } from "react-icons/lia";
 import { BsFilterCircleFill, BsFilterCircle } from "react-icons/bs";
 import { LuArrowBigUpDash } from "react-icons/lu";
@@ -366,6 +369,7 @@ const ConanSearch: NextPage<PageProps> = (props) => {
 
       <div className="flex-wrapper bg-conan-blue">
         <ConanCenterHeader titlePrefix={"Search Result"}/>
+        <Conan1xBanner/>
           <br/>
           <Container className="conancontainer">
             <Row className="justify-content-md-center">
