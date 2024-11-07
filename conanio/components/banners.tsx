@@ -8,7 +8,7 @@ export function Conan1xBanner() {
       <div className="container">
         <div className="row d-flex justify-content-around align-items-center">
           <div className="col-auto mt-1 mb-1 text-center text-white">
-            Conan Center will stop receiving updates for Conan 1.x packages soon.
+          Conan Center has stopped receiving updates for Conan 1.x packages. A new https://center2.conan.io Conan 2-only remote is now available.
               <Link href="https://blog.conan.io/2024/09/30/Conan-Center-will-stop-receiving-updates-for-Conan-1.html" onClick={
                       () => {
                         window.dataLayer.push({
