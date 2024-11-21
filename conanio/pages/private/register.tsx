@@ -264,7 +264,7 @@ const ConanRegistration = () => {
                           rel="noopener noreferrer"
                           target="_blank"
                         >
-                          JFrog Terms and Conditions
+                          Conan Catalog Terms and Conditions
                         </Link>{" "}
                         For information about the storing and processing of your personal data by JFrog, see our{" "}
                         <Link
