@@ -20,6 +20,12 @@ const nextConfig = {
         destination: '/center/recipes/:recipe',
         permanent: true,
       },
+      {
+        source: '/private/:page*',
+        basePath: false,
+        destination: '/',
+        permanent: false,
+      },
     ]
   },
 }
