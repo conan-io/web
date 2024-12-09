@@ -58,6 +58,7 @@ export const getServerSideProps: GetServerSideProps<PageProps, Params> = async (
 ): Promise<GetServerSidePropsResult<PageProps>> => {
 
   const recipeName = context.params?.recipeName
+  const recipeVersion = decodeURIComponent(context.query.version.toString())? context.query.version as string: null
   let urls = getUrls({packageId: recipeName});
   let package_info_response = await getJson<ConanResponse<RecipeInfo>>(urls.package.info, urls.api.private);
   if (package_info_response.status == 404) {
@@ -71,7 +72,7 @@ export const getServerSideProps: GetServerSideProps<PageProps, Params> = async (
       data: package_info_response.data,
       //downloads: downloadsResponse.data,
       recipeName: recipeName,
-      recipeVersion: context.query.version? context.query.version as string: null
+      recipeVersion: recipeVersion
     },
   };
 }
