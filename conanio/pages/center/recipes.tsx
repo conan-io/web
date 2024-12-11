@@ -82,7 +82,7 @@ const PackageInfo = (props: {package: RecipeInfo}) => {
         <Col xs="12" lg="6" className="mt-2">
           <Row>
             <Col xs="12" lg="auto">
-              <Link href={{ pathname: "/center/recipes/" + props.package.name, query: { version: encodeURIComponent(props.package.info.version) } }}>
+              <Link href={{ pathname: "/center/recipes/" + props.package.name, query: { version: encodeURIComponent(props.package.info.version || "") } }}>
                 <h3>{props.package.name}/{props.package.info.version}</h3>
               </Link>
             </Col>

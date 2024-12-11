@@ -309,7 +309,7 @@ export const DependenciesTab = ({recipe, loading} : {recipe: RecipeInfo, loading
               let ref = require.split("/");
               let name = ref[0];
               let version = ref[1];
-              return <Link key={require + "deps"} href={{ pathname: "/center/recipes/" + name, query: { version: encodeURIComponent(version) } }} passHref><h5>{require}</h5></Link>;
+              return <Link key={require + "deps"} href={{ pathname: "/center/recipes/" + name, query: { version: encodeURIComponent(version || "") } }} passHref><h5>{require}</h5></Link>;
           })
           }
           </div>)}
@@ -321,7 +321,7 @@ export const DependenciesTab = ({recipe, loading} : {recipe: RecipeInfo, loading
               let ref = require.split("/");
               let name = ref[0];
               let version = ref[1];
-              return <Link key={require + "tool_deps"} href={{ pathname: "/center/recipes/" + name, query: { version: encodeURIComponent(version) } }} passHref><h5>{require}</h5></Link>;
+              return <Link key={require + "tool_deps"} href={{ pathname: "/center/recipes/" + name, query: { version: encodeURIComponent(version || "") } }} passHref><h5>{require}</h5></Link>;
           })
           }
           </div>)}
