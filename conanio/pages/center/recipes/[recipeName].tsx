@@ -83,8 +83,12 @@ const ConanPackage: NextPage<PageProps> = (props) => {
 
   useEffect(() => {hljs.highlightAll();});
 
-  const [selectedVersion, setSelectedVersion] = useState(props.recipeVersion !== null? props.recipeVersion: props.data[0].info.version);
-  const indexSelectedVersion = Object.keys(props.data).filter(index => props.data[index].info.version === selectedVersion)[0];
+  let [selectedVersion, setSelectedVersion] = useState(props.recipeVersion !== null? props.recipeVersion: props.data[0].info.version);
+  let indexSelectedVersion = Object.keys(props.data).filter(index => props.data[index].info.version === selectedVersion)[0];
+  if (indexSelectedVersion == null) {
+      indexSelectedVersion = "0";
+      selectedVersion = props.data[0].info.version;
+  }
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' })
   const [selectedTab, setSelectedTab] = useState(indexSelectedVersion && props.data[indexSelectedVersion].info.status === "ok"? 'use_it': 'versions');
   const [packageOS, setPackageOS] = useState(null);
