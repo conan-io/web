@@ -4,7 +4,6 @@ const nextConfig = {
   output: 'standalone',
   env: {
     conanioServer: process.env.NEXT_PUBLIC_CONAN_CONANIO_SERVICE,
-    conanioAuthServer: process.env.CONANIO_AUTH_SERVER,
     gtmURL: process.env.GTM_URL,
     gtmID: process.env.GTM_ID
   },
