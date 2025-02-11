@@ -83,7 +83,7 @@ const ConanPackage: NextPage<PageProps> = (props) => {
 
   useEffect(() => {hljs.highlightAll();});
 
-  let [selectedVersion, setSelectedVersion] = useState(props.recipeVersion !== null? props.recipeVersion: props.data[0].info.version);
+  const [selectedVersion, setSelectedVersion] = useState(props.recipeVersion !== null? props.recipeVersion: props.data[0].info.version);
   let indexSelectedVersion = Object.keys(props.data).filter(index => props.data[index].info.version === selectedVersion)[0];
   if (indexSelectedVersion == null) {
       indexSelectedVersion = "0";
