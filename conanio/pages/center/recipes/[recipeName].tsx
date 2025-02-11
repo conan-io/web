@@ -87,7 +87,7 @@ const ConanPackage: NextPage<PageProps> = (props) => {
   let indexSelectedVersion = Object.keys(props.data).filter(index => props.data[index].info.version === selectedVersion)[0];
   if (indexSelectedVersion == null) {
       indexSelectedVersion = "0";
-      selectedVersion = props.data[0].info.version;
+      setSelectedVersion(props.data[0].info.version);
   }
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' })
   const [selectedTab, setSelectedTab] = useState(indexSelectedVersion && props.data[indexSelectedVersion].info.status === "ok"? 'use_it': 'versions');
