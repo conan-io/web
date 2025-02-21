@@ -303,32 +303,31 @@ const DownloadJFrogArtifactoryCommunityEditionForCpp = () => {
           <div className="text pb-1">
             <p className="py-3 front-text">Download the latest version of JFrog Artifactory Community Edition to host
               your own private packages on your own server - for free.</p>
-            <p className="mb-2">Download:</p>
+            <p className="mb-2">Recommended install (latest):</p>
           </div>
           <div className="install">
             <div className="installers pb-4">
-              <DownloadInstaller
-                imageAlt="Linux"
-                imageSrc="/downloads/jfrog-artifactory-small-pack.png"
-                textToShow="Download tar.gz"
-                installerLink={"https://releases.jfrog.io/artifactory/bintray-artifactory/org/artifactory/cpp/ce/jfrog-artifactory-cpp-ce/"+ artifactoryReleaseVersion +"/jfrog-artifactory-cpp-ce-"+ artifactoryReleaseVersion +"-linux.tar.gz"}
+              <CopyToClipboard
+                imageAlt="Docker"
+                imageSrc="/downloads/docker-small-pack.svg"
+                textToShow="$ docker run ..."
+                textToCopy="docker run --name artifactory -d -e JF_SHARED_DATABASE_TYPE=derby -e JF_SHARED_DATABASE_ALLOWNONPOSTGRESQL=true -p 8081:8081 -p 8082:8082 releases-docker.jfrog.io/jfrog/artifactory-cpp-ce:latest"
                 gtmProduct={gtmProduct}
-                gtmPlatforms="any os from source"
-                gtmDownloadDescription="Download tar.gz"
+                gtmPlatforms="docker"
+                gtmCopyDescription="docker run --name artifactory -d -e JF_SHARED_DATABASE_TYPE=derby -e JF_SHARED_DATABASE_ALLOWNONPOSTGRESQL=true -p 8081:8081 -p 8082:8082 releases-docker.jfrog.io/jfrog/artifactory-cpp-ce:latest"
               />
             </div>
-            <p>Other Installers:</p>
+            <p>Older installers ({artifactoryReleaseVersion}):</p>
             <div className="installers small-installers pb-4">
               <DownloadInstaller
                 imageAlt="Linux"
                 imageSrc="/downloads/linux-small-pack.svg"
-                textToShow="Linux Installer"
+                textToShow="Linux .tgz"
                 installerLink={"https://releases.jfrog.io/artifactory/bintray-artifactory/org/artifactory/cpp/ce/jfrog-artifactory-cpp-ce/"+ artifactoryReleaseVersion +"/jfrog-artifactory-cpp-ce-"+ artifactoryReleaseVersion +"-linux.tar.gz"}
                 gtmProduct={gtmProduct}
                 gtmPlatforms="linux"
                 gtmDownloadDescription="Linux Installer"
               />
-
               <DownloadInstallerOrCopy
                 imageAlt="rpm"
                 imageSrc="/downloads/rpm-small-pack.png"
@@ -356,7 +355,7 @@ const DownloadJFrogArtifactoryCommunityEditionForCpp = () => {
               <DownloadInstaller
                 imageAlt="Windows"
                 imageSrc="/downloads/windows-small-pack.svg"
-                textToShow="Windows Installer"
+                textToShow="Windows .zip"
                 installerLink={"https://releases.jfrog.io/artifactory/bintray-artifactory/org/artifactory/cpp/ce/jfrog-artifactory-cpp-ce/"+ artifactoryReleaseVersion +"/jfrog-artifactory-cpp-ce-"+ artifactoryReleaseVersion +"-windows.zip"}
                 gtmProduct={gtmProduct}
                 gtmPlatforms="windows"
