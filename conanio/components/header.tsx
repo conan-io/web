@@ -57,6 +57,7 @@ export function ConanHeader(props: {background?: string}){
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                   <Nav className="me-auto">
+                      <Nav.Link onClick={() => {gtmConanPush('laso')}} href="/laso"><span className="btn navBtn black">Laso Scolarship</span></Nav.Link>
                       <Nav.Link onClick={() => {gtmConanPush('conancenter')}} href="/center"><span className="btn navBtn black">ConanCenter<LuPackageSearch className="ms-1"/></span></Nav.Link>
                       <Nav.Link onClick={() => {gtmConanPush('faq')}} href="/faq"><span className="btn navBtn black">FAQ</span></Nav.Link>
                       <Nav.Link onClick={() => {gtmConanPush('docs')}} href="https://docs.conan.io/"><span className="btn navBtn black">Docs</span></Nav.Link>
