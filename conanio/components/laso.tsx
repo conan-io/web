@@ -13,18 +13,23 @@ const ScholarshipSummary = () => (
     <section id={styles.scholarshipSummary} className="text-black">
         <div className="container py-4">
             <div className="row">
-                <div className={`col-7 ${styles.scholarshipSummaryCard}`}>
-                    <h2 style={{textTransform: "none"}}>The LASO Scholarship</h2>
-                    <h3>In memory of Luis Martinez de Bartolomé, "Laso"</h3>
-                    To honor the legacy of Luis Martínez de Bartolomé, affectionately known as "Laso,"
-                    a scholarship has been established to commemorate his exceptional technical talent, integrity,
-                    and profound impact on the community. This scholarship is a tribute to his life and his invaluable
-                    contributions,
-                    supporting others in achieving their own aspirations in his memory.
-                    <ScholarshipApplyBtn/>
-                </div>
-                <div className="col-3">
-                    <img src="/laso/laso.png" width="720px"/>
+                <div className={`col-8 ${styles.scholarshipSummaryCard}`}>
+                    <div className="row">
+                        <div className="col-8">
+                            <h2 style={{textTransform: "none"}}>The LASO Scholarship</h2>
+                            <h3>In memory of Luis Martinez de Bartolomé, "Laso"</h3>
+                            <p>
+                                To honor the legacy of Luis Martínez de Bartolomé, affectionately known as "Laso,"
+                                a scholarship has been established to commemorate his exceptional technical talent, integrity,
+                                and profound impact on the community. This scholarship is a tribute to his life and his
+                                invaluable contributions, supporting others in achieving their own aspirations in his memory.
+                            </p>
+                            <ScholarshipApplyBtn/>
+                        </div>
+                        <div className="col-3 align-content-end overflow-visible">
+                            <img src="/laso/laso.png" width="400px" style={{"maxWidth": "none", "marginLeft": "100px"}}/>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -35,7 +40,7 @@ const ScholarshipDescription = () => (
     <section id={styles.scholarshipDescription} className="text-black">
         <div className="container py-4">
             <div className="row">
-                <div className="col-6">
+                <div className="col-7">
                     <h2>The Scholarship</h2>
                     <div className={styles.lasoUnderTitle}></div>
                     <p>
@@ -60,7 +65,7 @@ const ScholarshipProcess = () => (
         <div className="container py-4 justify-content-center">
             <div className="row">
                 <div className="col-4">
-                    <img src="/laso/students.jpeg" width="720px"/>
+                    <img src="/laso/students.jpeg" width="auto"/>
                 </div>
                 <div className="col-6">
                     <h2>Nomination Process</h2>
@@ -95,7 +100,8 @@ const ScholarshipApplication = () => (
                     </p>
                     <p>
                         The number of lines of code contributed in the past year for every repository will be counted.
-                        That will be weighted by the number of stars of the repository, with a factor from 0-10, computed as
+                        That will be weighted by the number of stars of the repository, with a factor from 0-10,
+                        computed as
                         the number of stars (capped at 10K) divided by 1000.
                     </p>
                 </div>
@@ -109,18 +115,22 @@ const ScholarshipTimeline = () => (
         <div className="container py-4">
             <div className="row justify-content-between">
                 <div className="col-2">
+                    <div className={styles.timelineOrder}>1</div>
                     <div className={styles.scholarshipTimelineDate}>February 1, 2025</div>
                     <div className="desc">Enrollment opens</div>
                 </div>
                 <div className="col-2">
+                    <div className={styles.timelineOrder}>2</div>
                     <div className={styles.scholarshipTimelineDate}>March 31, 2025</div>
                     <div className="desc">Final Date for submission of applications</div>
                 </div>
                 <div className="col-2">
+                    <div className={styles.timelineOrder}>3</div>
                     <div className={styles.scholarshipTimelineDate}>April 30, 2025</div>
                     <div className="desc">Scholarship Committee Notice to awarded applicants</div>
                 </div>
                 <div className="col-2">
+                    <div className={styles.timelineOrder}>4</div>
                     <div className={styles.scholarshipTimelineDate}>May 31, 2025</div>
                     <div className="desc">Scholarship Delivery</div>
                 </div>
@@ -135,21 +145,27 @@ const ScholarshipAboutLaso = () => (
             <div className="row justify-content-center">
                 <div className="col-4 justify-content-center">
                     <h2>About Luis Martinez de Bartolomé, "Laso"</h2>
+                </div>
+            </div>
+            <div className="row justify-content-center">
+                <div className="col-1 justify-content-center">
                     <div className={styles.lasoUnderTitle}></div>
                 </div>
             </div>
             <div className="row justify-content-center">
                 <div className="col-7">
-                    Laso co-founded the Conan project and was a highly esteemed member of the software development
-                    community.
-                    Renowned for his exceptional technical talent, he could swiftly master new technologies and develop
-                    comprehensive solutions within hours.
-                    Beyond his professional prowess, Laso was celebrated for his authentic smile and unwavering honesty,
-                    traits that endeared him to colleagues and friends alike.
-                    His work has profoundly influenced global software development practices, particularly in the C and
-                    C++ domains,
-                    impacting numerous organizations and improving the lives of millions.
-                    Laso's legacy continues to inspire those who had the privilege of knowing him
+                    <p>
+                        Laso co-founded the Conan project and was a highly esteemed member of the software development
+                        community.
+                        Renowned for his exceptional technical talent, he could swiftly master new technologies and develop
+                        comprehensive solutions within hours.
+                        Beyond his professional prowess, Laso was celebrated for his authentic smile and unwavering honesty,
+                        traits that endeared him to colleagues and friends alike.
+                        His work has profoundly influenced global software development practices, particularly in the C and
+                        C++ domains,
+                        impacting numerous organizations and improving the lives of millions.
+                        Laso's legacy continues to inspire those who had the privilege of knowing him.
+                    </p>
                 </div>
             </div>
             <div className="row justify-content-center">
