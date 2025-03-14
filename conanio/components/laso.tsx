@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image"
 import styles from "@/styles/Laso.module.css";
 
 const ScholarshipApplyBtn = () => (
@@ -17,9 +18,9 @@ const ScholarshipSummary = () => (
                     <div className="row">
                         <div className="col-8">
                             <h2 style={{textTransform: "none"}}>The LASO Scholarship</h2>
-                            <h3>In memory of Luis Martinez de Bartolomé, "Laso"</h3>
+                            <h3>In memory of Luis Martinez de Bartolomé, &aquot;Laso&aquot;</h3>
                             <p>
-                                To honor the legacy of Luis Martínez de Bartolomé, affectionately known as "Laso,"
+                                To honor the legacy of Luis Martínez de Bartolomé, affectionately known as &aquot;Laso&aquot;,
                                 a scholarship has been established to commemorate his exceptional technical talent, integrity,
                                 and profound impact on the community. This scholarship is a tribute to his life and his
                                 invaluable contributions, supporting others in achieving their own aspirations in his memory.
@@ -27,7 +28,7 @@ const ScholarshipSummary = () => (
                             <ScholarshipApplyBtn/>
                         </div>
                         <div className="col-3 align-content-end overflow-visible">
-                            <img src="/laso/laso.png" width="400px" style={{"maxWidth": "none", "marginLeft": "100px"}}/>
+                            <Image alt="Laso" src="/laso/laso.png" style={{"maxWidth": "none", "marginLeft": "100px", width: "400px"}}/>
                         </div>
                     </div>
                 </div>
@@ -65,7 +66,7 @@ const ScholarshipProcess = () => (
         <div className="container py-4 justify-content-center">
             <div className="row">
                 <div className="col-4">
-                    <img src="/laso/students.jpeg" width="auto"/>
+                    <Image alt="Students in a field" src="/laso/students.jpeg" style={{width: "auto"}}/>
                 </div>
                 <div className="col-6">
                     <h2>Nomination Process</h2>
@@ -144,7 +145,7 @@ const ScholarshipAboutLaso = () => (
         <div className="container py-4 text-center">
             <div className="row justify-content-center">
                 <div className="col-4 justify-content-center">
-                    <h2>About Luis Martinez de Bartolomé, "Laso"</h2>
+                    <h2>About Luis Martinez de Bartolomé, &aquot;Laso&aquot;</h2>
                 </div>
             </div>
             <div className="row justify-content-center">
@@ -164,7 +165,7 @@ const ScholarshipAboutLaso = () => (
                         His work has profoundly influenced global software development practices, particularly in the C and
                         C++ domains,
                         impacting numerous organizations and improving the lives of millions.
-                        Laso's legacy continues to inspire those who had the privilege of knowing him.
+                        Laso&apos;s legacy continues to inspire those who had the privilege of knowing him.
                     </p>
                 </div>
             </div>
