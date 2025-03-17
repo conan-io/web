@@ -71,7 +71,8 @@ const ScholarshipProcess = () => (
         <div className="container py-4 justify-content-center">
             <div className="row">
                 <div className="col-4">
-                    <Image alt="Students in a field" src="/laso/students.webp" width={"500"} height={"300"}/>
+                    <Image alt="Students in a field" src="/laso/students.webp" width={"500"} height={"300"}
+                    style={{"height": "auto"}}/>
                 </div>
                 <div className="col-6">
                     <h2>Nomination Process</h2>
