@@ -1,7 +1,6 @@
-import Link from 'next/link'
 import React from 'react';
 import { LasoScholarship } from '@/components';
-import {ConanKitchenHeader, ConanFooter, ConanHome} from '@/components';
+import {ConanKitchenHeader, ConanFooter} from '@/components';
 
 
 const LasoPage = () => {
@@ -10,7 +9,7 @@ const LasoPage = () => {
         <React.StrictMode>
 
             <div className="flex-wrapper">
-                <ConanKitchenHeader/>
+                <ConanKitchenHeader titlePrefix={"Laso Scholarship"}/>
                 <LasoScholarship/>
                 <ConanFooter/>
             </div>

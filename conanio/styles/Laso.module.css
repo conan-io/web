@@ -24,14 +24,14 @@
 }
 
 #scholarshipSummary {
-    background-image: url("../public/laso/background.jpeg");
+    background-image: url("../public/laso/background.webp");
     background-repeat: no-repeat;
     background-size: cover;
 }
 
 .scholarshipSummaryCard {
     background-color: #FFFFFFCC;
-    padding: 30px 40px 30px 40px;
+    padding: 30px 40px 0 40px;
 }
 
 #scholarshipDescription {

@@ -11,8 +11,8 @@ const ScholarshipApplyBtn = () => (
 );
 
 const ScholarshipSummary = () => (
-    <section id={styles.scholarshipSummary} className="text-black">
-        <div className="container py-4">
+    <section id={styles.scholarshipSummary} style={{"overflow": "hidden"}}>
+        <div className="container pt-4">
             <div className="row">
                 <div className={`col-8 ${styles.scholarshipSummaryCard}`}>
                     <div className="row">
@@ -25,9 +25,13 @@ const ScholarshipSummary = () => (
                                 and profound impact on the community. This scholarship is a tribute to his life and his
                                 invaluable contributions, supporting others in achieving their own aspirations in his memory.
                             </p>
+                            <div className="d-block d-md-none align-content-center">
+                                <img alt="Laso portrait" src="/laso/laso.png"
+                                     style={{"maxWidth": "none", "width": "400px"}}/>
+                            </div>
                             <ScholarshipApplyBtn/>
                         </div>
-                        <div className="col-3 align-content-end overflow-visible">
+                        <div className="col-md-3 d-none d-md-block align-content-end overflow-visible">
                             <img alt="Laso portrait" src="/laso/laso.png"
                                    style={{"maxWidth": "none", "marginLeft": "100px", "width": "400px"}}/>
                         </div>
@@ -39,7 +43,7 @@ const ScholarshipSummary = () => (
 );
 
 const ScholarshipDescription = () => (
-    <section id={styles.scholarshipDescription} className="text-black">
+    <section id={styles.scholarshipDescription}>
         <div className="container py-4">
             <div className="row">
                 <div className="col-7">
@@ -63,11 +67,11 @@ const ScholarshipDescription = () => (
 );
 
 const ScholarshipProcess = () => (
-    <section id="scholarshipProcess" className="text-black">
+    <section id="scholarshipProcess">
         <div className="container py-4 justify-content-center">
             <div className="row">
                 <div className="col-4">
-                    <img alt="Students in a field" src="/laso/students.jpeg" style={{width: "auto"}}/>
+                    <Image alt="Students in a field" src="/laso/students.webp" width={"500"} height={"300"}/>
                 </div>
                 <div className="col-6">
                     <h2>Nomination Process</h2>
@@ -90,7 +94,7 @@ const ScholarshipProcess = () => (
 );
 
 const ScholarshipApplication = () => (
-    <section id="scholarshipApplication" className="text-black">
+    <section id="scholarshipApplication">
         <div className="container py-4">
             <div className="row">
                 <div className="col-7">
@@ -113,7 +117,7 @@ const ScholarshipApplication = () => (
 );
 
 const ScholarshipTimeline = () => (
-    <section id={styles.scholarshipTimeline} className="text-black">
+    <section id={styles.scholarshipTimeline}>
         <div className="container py-4">
             <div className="row justify-content-between">
                 <div className="col-2">
@@ -142,18 +146,14 @@ const ScholarshipTimeline = () => (
 );
 
 const ScholarshipAboutLaso = () => (
-    <section id={styles.scholarshipAboutLaso} className="text-black">
+    <section id={styles.scholarshipAboutLaso}>
         <div className="container py-4 text-center">
             <div className="row justify-content-center">
                 <div className="col-4 justify-content-center">
                     <h2>About Luis Martinez de Bartolomé, &#34;Laso&#34;</h2>
                 </div>
             </div>
-            <div className="row justify-content-center">
-                <div className="col-1 justify-content-center">
-                    <div className={styles.lasoUnderTitle}></div>
-                </div>
-            </div>
+            <div className="row justify-content-center"><div className={styles.lasoUnderTitle}></div></div>
             <div className="row justify-content-center">
                 <div className="col-7">
                     <p>
@@ -178,7 +178,7 @@ const ScholarshipAboutLaso = () => (
 );
 
 const ScholarshipFooter = () => (
-    <section id={styles.scholarshipFooter} className="text-black">
+    <section id={styles.scholarshipFooter}>
         <div className="container py-4 text-center">
             <div className="row justify-content-center">
                 <div className="col-12 justify-content-center">
