@@ -5,6 +5,7 @@ export { Loader } from "./loader";
 export { Conan1xBanner, ConanAuditBanner } from "./banners";
 export {
   UseItTab,
+  AuditTab,
   BadgesTab,
   PackagesTab,
   DependenciesTab,
