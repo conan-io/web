@@ -381,6 +381,19 @@ border-radius: 10px;
   max-width: 1228px !important;
 }
 
+.audit-banner {
+  font-size: 1.22rem;
+  background-position:center center;
+  background-image: linear-gradient(to right, #485f83, #3d5274, #314565, #0C1D37, #0C1D37, #0C1D37, #0C1D37, #0C1D37, #0C1D37, #314565, #3d5274, #485f83);
+}
+
+.audit-banner a {
+  color: white;
+}
+.audit-banner a:hover {
+  color: #006dcc;
+}
+
 .global-banner {
   background: #1F6914;
 }
