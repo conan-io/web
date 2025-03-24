@@ -2,7 +2,7 @@ export { ConanFooter } from "./footer";
 export { ConanCenterHeader, ConanKitchenHeader } from "./header";
 export { ConanHome } from "./home";
 export { Loader } from "./loader";
-export { Conan1xBanner } from "./banners";
+export { Conan1xBanner, ConanAuditBanner } from "./banners";
 export {
   UseItTab,
   BadgesTab,

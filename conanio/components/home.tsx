@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Slider from "react-slick";
+import { ConanAuditBanner } from "./banners";
 
 const ConanHomeHero = () => (
   <section id="hero" className="position-relative">
@@ -834,6 +835,7 @@ const ConanHomeUsersVoices = () => (
 export const ConanHome = () => (
   <div>
     <ConanHomeHero />
+    <ConanAuditBanner/>
     <ConanHomeAdvantages />
     <ConanHomePlaces />
     <ConanHomeTribe />
