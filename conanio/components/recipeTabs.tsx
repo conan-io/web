@@ -72,10 +72,10 @@ export const AuditTab = ({ recipeName, recipeVersion }: { recipeName: string, re
   
   return (
     <div className="mb-4">
-      <p className="h5 fw-bold mb-3">
+      <p className="h3 mb-3">
         🔍 Ready to secure your dependencies in seconds?
       </p>
-      <div className="card">
+      <div className="card" style={{borderColor: '#0070f3'}}>
         <div className="card-body">
           <ol className="ps-3 mb-3">
             <li>
