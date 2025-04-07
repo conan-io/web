@@ -12,8 +12,9 @@ const LasoTermsPage = () => {
                 <div className={"row justify-content-center align-items-center"}>
                     <div className={"col-8"}>
 
-                        <h1 style={{textAlign: "center"}}>TERMS OF THE CALL FOR THE LUIS MARTINEZ DE BARTOLOMÉ
-                            SCHOLARSHIP AWARD</h1>
+                        <h1 style={{textAlign: "center"}}>
+                            TERMS OF THE CALL FOR THE LUIS MARTINEZ DE BARTOLOMÉ SCHOLARSHIP AWARD
+                        </h1>
                         <ol>
                             <li>
                                 <h2>Introduction</h2>
@@ -33,16 +34,15 @@ const LasoTermsPage = () => {
                                     year of
                                     tuition in a Spanish public university in any degree of Computer Science,
                                     Engineering and
-                                    associated degrees during the 2025-2026 academic year (the "Academic Year").
+                                    associated degrees during the 2025-2026 academic year (the &#34;Academic Year&#34;).
                                 </p>
                             </li>
                             <li>
                                 <h2>Monetary Award</h2>
-                                <p>The Award is endowed with a maximum gross amount of 2000 euros, but it may vary
-                                    depending on
-                                    the tuition fees of the corresponding university. The applicable tax withholdings
-                                    will be
-                                    deducted.
+                                <p>
+                                    The Award is endowed with a maximum gross amount of 2000 euros, but it may vary
+                                    depending on the tuition fees of the corresponding university.
+                                    The applicable tax withholdings will be deducted.
                                 </p>
                                 <p>
                                     The amount of the Award may only be applied to the tuition fee at the university
@@ -125,7 +125,7 @@ const LasoTermsPage = () => {
                                         applying for the scholarship.
                                     </li>
                                     <li>
-                                        Letter or email from the university reflecting the candidate's access to the
+                                        Letter or email from the university reflecting the candidate&#39;s access to the
                                         admission
                                         process for the Academic Year and the status of the process at the time of
                                         submitting the
@@ -211,11 +211,12 @@ const LasoTermsPage = () => {
                                 </ol>
                             </li>
 
-                            <li><h2>Candidates’ selection</h2>
+                            <li>
+                                <h2>Candidates&#39; selection</h2>
                                 <p>
                                     The selection process will be conducted on a competitive basis. The Company will
                                     designate
-                                    one or more individuals (the "Selection Committee") who will be responsible for
+                                    one or more individuals (the &#34;Selection Committee&#34;) who will be responsible for
                                     verifying
                                     the compliance of the applications for the Award as well as the merits and
                                     capabilities of
@@ -229,7 +230,7 @@ const LasoTermsPage = () => {
                                     and legal departments.
                                 </p>
                                 <p>
-                                    The selection process will be based on the application form and the candidates'
+                                    The selection process will be based on the application form and the candidates&#39;
                                     contributions to the code, as stated in the registration form. The Company reserves
                                     the
                                     right to conduct interviews as part of the registration process, should it be deemed
@@ -257,8 +258,9 @@ const LasoTermsPage = () => {
                                 </p>
                             </li>
 
-                            <li><h2>Obligations of the Awardee</h2>
-                                By submitting their application, the candidate accepts these rules (the "Rules"). In
+                            <li>
+                                <h2>Obligations of the Awardee</h2>
+                                By submitting their application, the candidate accepts these rules (the &#34;Rules&#34;). In
                                 particular, the candidate agrees to:
                                 <ol type={"a"}>
                                     <li>Acceptance of the Award within ten calendar days from the official notification
