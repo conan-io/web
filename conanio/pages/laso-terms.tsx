@@ -8,7 +8,7 @@ const LasoTermsPage = () => {
         <React.StrictMode>
 
             <div className="flex-wrapper">
-                <ConanKitchenHeader titlePrefix={"Laso Scholarship"}/>
+                <ConanKitchenHeader titlePrefix={"Laso Scholarship Terms"}/>
                 <div className={"row justify-content-center align-items-center"}>
                     <div className={"col-8"}>
 
