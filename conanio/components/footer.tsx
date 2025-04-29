@@ -50,7 +50,7 @@ export const ConanFooter = () => {
 
   return (
     <footer className="py-5 bg-bright-gray" id="siteFooter">
-      <Script id="gtag-config" strategy="afterInteractive">
+      <Script id="gtag-btn-footer">
         {`
           if (window.airgap) {
               const cookieSettings = document.getElementById('cookies_btn_footer');
