@@ -26,29 +26,20 @@ const ConanHead = (props: {titlePrefix?: string}) => {
   const title = props.titlePrefix? props.titlePrefix + " - " + defaultTitle: defaultTitle;
   const canonicalUrl = (`https://conan.io` + (router.asPath === "/" ? "": router.asPath)).split("?")[0];
   return (
-    <>
-      <Head>
-        <meta charSet="UTF-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-        <meta name="title" content="Conan.io - the Open Source C and C++ Package Manager for Developers"/>
-        <meta
-          name="description"
-          content="Conan is an open source, decentralized and multi-platform package manager for C and C++ that allows you to create and share all your native binaries."
-        />
-        <meta name="google-site-verification" content="v3n-2fbFdumhO916PmSTXMRwVAeXMeBiZ_SK_M6vjgs"/>
-        <link rel="shortcut icon" type="image/png" href="/favicon.png"/>
-        <link rel="alternate" href="https://conan.io" hrefLang="en"/>
-        <title>{title}</title>
-        <link rel="canonical" href={canonicalUrl} />
-      </Head>
-      <Script
-          strategy="beforeInteractive"
-          data-cfasync="false"
-          data-tracker-overrides="GoogleConsentMode:security_storage=on;ad_storage=SaleOfInfo,Advertising;ad_user_data=SaleOfInfo,Advertising;ad_personalization=SaleOfInfo,Advertising;analytics_storage=Analytics,SaleOfInfo;functionality_storage=Functional,SaleOfInfo;personalization_storage=Functional,SaleOfInfo"
-          src="https://transcend-cdn.com/cm/f0071674-c641-4cf3-9d31-303ec0c86b1b/airgap.js"
-          data-languages="en"
+    <Head>
+      <meta charSet="UTF-8"/>
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+      <meta name="title" content="Conan.io - the Open Source C and C++ Package Manager for Developers"/>
+      <meta
+        name="description"
+        content="Conan is an open source, decentralized and multi-platform package manager for C and C++ that allows you to create and share all your native binaries."
       />
-    </>
+      <meta name="google-site-verification" content="v3n-2fbFdumhO916PmSTXMRwVAeXMeBiZ_SK_M6vjgs"/>
+      <link rel="shortcut icon" type="image/png" href="/favicon.png"/>
+      <link rel="alternate" href="https://conan.io" hrefLang="en"/>
+      <title>{title}</title>
+      <link rel="canonical" href={canonicalUrl} />
+    </Head>
   );
 }
 
