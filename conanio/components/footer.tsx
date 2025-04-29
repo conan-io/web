@@ -114,7 +114,7 @@ export const ConanFooter = () => {
                 <Link href="#">
                   <div onClick={() => {gtmConanPush('cookies')}} className="ot-sdk-show-settings" id="cookies_btn_footer">Cookies Settings</div>
                 </Link>
-                <Script id="gtag-btn-footer">
+                <Script id="gtag-btn-footer" strategy="lazyOnload">
                   {`
                     if (window.airgap) {
                         const cookieSettings = document.getElementById('cookies_btn_footer');
