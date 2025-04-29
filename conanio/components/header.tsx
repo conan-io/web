@@ -26,7 +26,6 @@ const ConanHead = (props: {titlePrefix?: string}) => {
   const title = props.titlePrefix? props.titlePrefix + " - " + defaultTitle: defaultTitle;
   const canonicalUrl = (`https://conan.io` + (router.asPath === "/" ? "": router.asPath)).split("?")[0];
   return (
-    <>
       <Head>
         <meta charSet="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
@@ -41,14 +40,6 @@ const ConanHead = (props: {titlePrefix?: string}) => {
         <title>{title}</title>
         <link rel="canonical" href={canonicalUrl} />
       </Head>
-      <Script
-          strategy="beforeInteractive"
-          data-cfasync="false"
-          data-tracker-overrides="GoogleConsentMode:security_storage=on;ad_storage=SaleOfInfo,Advertising;ad_user_data=SaleOfInfo,Advertising;ad_personalization=SaleOfInfo,Advertising;analytics_storage=Analytics,SaleOfInfo;functionality_storage=Functional,SaleOfInfo;personalization_storage=Functional,SaleOfInfo"
-          src="https://transcend-cdn.com/cm/f0071674-c641-4cf3-9d31-303ec0c86b1b/airgap.js"
-          data-languages="en"
-      />
-    </>
   );
 }
 
