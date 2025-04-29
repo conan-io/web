@@ -50,16 +50,6 @@ export const ConanFooter = () => {
 
   return (
     <footer className="py-5 bg-bright-gray" id="siteFooter">
-      <Script id="gtag-btn-footer">
-        {`
-          if (window.airgap) {
-              const cookieSettings = document.getElementById('cookies_btn_footer');
-              cookieSettings.onclick = () => {
-                transcend.showConsentManager({ viewState: 'CompleteOptions' });
-              };
-            }
-        `}
-      </Script>
       <div className="container white d-flex justify-content-center">
         <div className="row">
           <div className="col-12">
@@ -124,6 +114,16 @@ export const ConanFooter = () => {
                 <Link href="#">
                   <div onClick={() => {gtmConanPush('cookies')}} className="ot-sdk-show-settings" id="cookies_btn_footer">Cookies Settings</div>
                 </Link>
+                <Script id="gtag-btn-footer">
+                  {`
+                    if (window.airgap) {
+                        const cookieSettings = document.getElementById('cookies_btn_footer');
+                        cookieSettings.onclick = () => {
+                          transcend.showConsentManager({ viewState: 'CompleteOptions' });
+                        };
+                      }
+                  `}
+                </Script>
               </li>
             </ul>
           </div>
