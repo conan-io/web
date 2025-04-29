@@ -38,14 +38,12 @@ export default function MyApp({ Component, pageProps }: AppProps){
     <>
       <Script
         id="transcend-consent-manager"
-        strategy="afterInteractive"
         data-cfasync="false"
         data-tracker-overrides="GoogleConsentMode:security_storage=on;ad_storage=SaleOfInfo,Advertising;ad_user_data=SaleOfInfo,Advertising;ad_personalization=SaleOfInfo,Advertising;analytics_storage=Analytics,SaleOfInfo;functionality_storage=Functional,SaleOfInfo;personalization_storage=Functional,SaleOfInfo"
         src="https://transcend-cdn.com/cm/f0071674-c641-4cf3-9d31-303ec0c86b1b/airgap.js"
-        data-report-only="on"
-        data-prompt="1"
+        data-languages="en"
       />
-
+      {/* Google Tag Manager */}
       <Script id="google-tag-manager" strategy="afterInteractive">
         {`
           (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -55,7 +53,7 @@ export default function MyApp({ Component, pageProps }: AppProps){
           })(window,document,'script','dataLayer','${GTM_ID}');
         `}
       </Script>
-
+      {/* End Google Tag Manager */}
       <Script id="gtag-config" strategy="afterInteractive">
         {`
           window.dataLayer = window.dataLayer || [];
@@ -67,8 +65,7 @@ export default function MyApp({ Component, pageProps }: AppProps){
           gtag('set', 'developer_id.dODQ2Mj', true);
         `}
       </Script>
-
       {loading ? <Loader /> : <Component {...pageProps} />}
     </>
-  )
+  );
 };

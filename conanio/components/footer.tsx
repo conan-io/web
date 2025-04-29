@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Link from 'next/link';
 import { MarketoForm, MarketoProps } from "@/components";
+import Script from "next/script";
 
 
 function gtmConanPush(description: string){
@@ -49,6 +50,16 @@ export const ConanFooter = () => {
 
   return (
     <footer className="py-5 bg-bright-gray" id="siteFooter">
+      <Script id="gtag-config" strategy="afterInteractive">
+        {`
+          if (window.airgap) {
+              const cookieSettings = document.getElementById('cookies_btn_footer');
+              cookieSettings.onclick = () => {
+                transcend.showConsentManager({ viewState: 'CompleteOptions' });
+              };
+            }
+        `}
+      </Script>
       <div className="container white d-flex justify-content-center">
         <div className="row">
           <div className="col-12">
