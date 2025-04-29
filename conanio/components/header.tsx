@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { LuPackageSearch } from "react-icons/lu";
+import Script from "next/script";
+import React from "react";
 
 
 function gtmConanPush(description: string){
@@ -37,6 +39,12 @@ const ConanHead = (props: {titlePrefix?: string}) => {
       <link rel="alternate" href="https://conan.io" hrefLang="en"/>
       <title>{title}</title>
       <link rel="canonical" href={canonicalUrl} />
+      <Script
+        data-cfasync="false"
+        data-tracker-overrides="GoogleConsentMode:security_storage=on;ad_storage=SaleOfInfo,Advertising;ad_user_data=SaleOfInfo,Advertising;ad_personalization=SaleOfInfo,Advertising;analytics_storage=Analytics,SaleOfInfo;functionality_storage=Functional,SaleOfInfo;personalization_storage=Functional,SaleOfInfo"
+        src="https://transcend-cdn.com/cm/f0071674-c641-4cf3-9d31-303ec0c86b1b/airgap.js"
+        data-languages="en"
+      />
     </Head>
   );
 }
