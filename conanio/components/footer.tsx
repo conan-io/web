@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Link from 'next/link';
 import { MarketoForm, MarketoProps } from "@/components";
-import Script from "next/script";
 
 
 function gtmConanPush(description: string){
@@ -112,18 +111,13 @@ export const ConanFooter = () => {
               </li>
               <li>
                 <Link href="#">
-                  <div onClick={() => {gtmConanPush('cookies')}} className="ot-sdk-show-settings" id="cookies_btn_footer">Cookies Settings</div>
+                  <div onClick={() => {
+                    gtmConanPush('cookies');
+                    if (typeof window !== 'undefined' && window.airgap) {
+                        window.transcend.showConsentManager({ viewState: 'CompleteOptions' });
+                    }
+                  }} className="ot-sdk-show-settings" id="cookies_btn_footer">Cookies Settings</div>
                 </Link>
-                <Script id="gtag-btn-footer" strategy="lazyOnload">
-                  {`
-                    if (window.airgap) {
-                        const cookieSettings = document.getElementById('cookies_btn_footer');
-                        cookieSettings.onclick = () => {
-                          transcend.showConsentManager({ viewState: 'CompleteOptions' });
-                        };
-                      }
-                  `}
-                </Script>
               </li>
             </ul>
           </div>
