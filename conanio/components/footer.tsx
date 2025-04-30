@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Link from 'next/link';
 import { MarketoForm, MarketoProps } from "@/components";
-import Script from "next/script";
 
 
 function gtmConanPush(description: string){
