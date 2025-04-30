@@ -114,7 +114,7 @@ export const ConanFooter = () => {
                   <div onClick={() => {
                     gtmConanPush('cookies');
                     if (typeof window !== 'undefined' && window.airgap) {
-                        transcend.showConsentManager({ viewState: 'CompleteOptions' });
+                        window.transcend.showConsentManager({ viewState: 'CompleteOptions' });
                     }
                   }} className="ot-sdk-show-settings" id="cookies_btn_footer">Cookies Settings</div>
                 </Link>
