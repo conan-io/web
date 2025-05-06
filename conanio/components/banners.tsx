@@ -27,3 +27,31 @@ export function Conan1xBanner() {
     </section>
   );
 }
+
+
+export function ConanAuditBanner() {
+  return (
+    <section id="audit-banner" className="audit-banner">
+      <div className="container">
+        <div className="row d-flex justify-content-around align-items-center">
+          <div className="col-auto mt-4 mb-4 text-center text-white">
+          Scan for vulnerabilities in your packages with the new conan audit command.
+              <Link href="https://blog.conan.io/introducing-conan-audit-command/" onClick={
+                      () => {
+                        window.dataLayer.push({
+                          'event': 'fireEvent',
+                          'event_name': 'element_click',
+                          'type': 'ui',
+                          'purpose': 'feedback',
+                          'description': 'Introducing the conan audit Command for Scanning'
+                        });
+                      }
+                    } className="white"> <b>Learn more</b>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+

@@ -12,6 +12,7 @@ import {
     ConanCenterHeader,
     ConanFooter,
     UseItTab,
+    AuditTab,
     BadgesTab,
     DependenciesTab,
     VersionsTab,
@@ -35,6 +36,7 @@ import { PiWarningBold } from "react-icons/pi";
 import { MdOutlineToday } from "react-icons/md";
 import { AiOutlinePushpin } from "react-icons/ai";
 import { PiGraphDuotone, PiMedal } from "react-icons/pi";
+import { FaShieldAlt } from "react-icons/fa";
 import { FaReadme, FaTags, FaHashtag } from "react-icons/fa";
 import { SiConan } from "react-icons/si";
 import { HiOutlineDocumentText } from "react-icons/hi";
@@ -301,6 +303,15 @@ const ConanPackage: NextPage<PageProps> = (props) => {
           onClick={(e) => setSelectedTab(e.currentTarget.value)}
         ><FaTags className="conanIcon18 me-1"/> Versions</Button>
         <Button
+        id="audit"
+        className={props.buttonClass + " " + (selectedTab === 'audit' && "tabButtonActive")}
+        value="audit"
+        onClick={(e) => setSelectedTab(e.currentTarget.value)}
+        >
+        <FaShieldAlt className="conanIcon18 me-1" /> Audit
+        </Button>
+
+        <Button
           id="badges"
           className={props.buttonClass + " " + ((selectedTab == 'badges') && "tabButtonActive")}
           value="badges"
@@ -336,6 +347,10 @@ const ConanPackage: NextPage<PageProps> = (props) => {
       {selectedTab=='versions' && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
         <Col xs lg className="pb-4 mt-4 ps-4 pe-4 pt-4 recipeContentBox"><VersionsTab selector={setSelectedVersion} data={props.data} /></Col>
       </Row>}
+      {selectedTab=='audit' && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
+        <Col xs lg className="mt-4 ps-4 pe-4 pt-4 recipeContentBox"><AuditTab recipeName={props.recipeName} recipeVersion={selectedVersion} />
+        </Col>
+        </Row>}
       {selectedTab=='badges' && <Row style={{marginLeft: '0px', marginRight: '0px'}}>
         <Col xs lg className="mt-4 ps-4 pe-4 pt-4 recipeContentBox"><BadgesTab recipeName={props.recipeName} /></Col>
       </Row>}

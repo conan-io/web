@@ -67,6 +67,76 @@ export const BadgesTab = ({recipeName}: {recipeName: string}) => {
   );
 }
 
+export const AuditTab = ({ recipeName, recipeVersion }: { recipeName: string, recipeVersion: string }) => {
+  const reference = `${recipeName}/${recipeVersion}`;
+  
+  return (
+    <div className="mb-4">
+      <p className="h3 mb-3">
+        🔍 Ready to secure your dependencies in seconds?
+      </p>
+      <div className="card" style={{borderColor: '#0070f3'}}>
+        <div className="card-body">
+          <ol className="ps-3 mb-3">
+            <li>
+              <strong>Register for free</strong> at{' '}
+              <a
+                href="https://audit.conan.io/register"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                audit.conan.io/register
+              </a>.
+            </li>
+            <li>
+              <strong>Save your token</strong> and <strong>activate it</strong> via the confirmation email you receive.
+            </li>
+            <li>
+              <strong>Configure Conan to use your token</strong>:
+            </li>
+          </ol>
+          <pre className="bg-light p-2 rounded">
+            <code>conan audit provider auth conancenter --token=&lt;token&gt;</code>
+          </pre>
+          <ol start={4} className="ps-3 mt-3">
+            <li>
+              <strong>Scan</strong> for vulnerabilities:
+            </li>
+          </ol>
+          <pre className="bg-light p-2 rounded">
+            <code>{`# Check a specific reference
+conan audit list ${reference}
+
+# Scan the entire dependency graph
+conan audit scan --requires=${reference}`}</code>
+          </pre>
+          <p className="mt-3 small text-muted">
+            Note: For more details on the Conan Audit command, please read{' '}
+            <a
+              href="https://blog.conan.io/introducing-conan-audit-command/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              this post
+            </a>.
+          </p>
+          <p className="mt-2 small text-muted">
+            Tip: To avoid exposing your token in shell history, authenticate using an environment variable (e.g., CONAN_AUDIT_PROVIDER_TOKEN_CONANCENTER=&lt;token&gt;). For more info, see{' '}
+            <a
+              href="https://docs.conan.io/2/devops/audit.html"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              the documentation
+            </a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
 const CCIAssistanceLink = () => {
   return (
     <p>If you need additional assistance, please ask a <Link href={{ pathname: "https://github.com/conan-io/conan-center-index/issues/new", query: { labels: "question", template: "question.yml", title: "[question] SHORT DESCRIPTION" }}}>

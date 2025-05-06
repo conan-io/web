@@ -3,9 +3,10 @@ export { ConanCenterHeader, ConanKitchenHeader } from "./header";
 export { ConanHome } from "./home";
 export { LasoScholarship } from "./laso"
 export { Loader } from "./loader";
-export { Conan1xBanner } from "./banners";
+export { Conan1xBanner, ConanAuditBanner } from "./banners";
 export {
   UseItTab,
+  AuditTab,
   BadgesTab,
   PackagesTab,
   DependenciesTab,

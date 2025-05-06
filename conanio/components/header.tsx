@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { LuPackageSearch } from "react-icons/lu";
+import Script from "next/script";
+import React from "react";
 
 
 function gtmConanPush(description: string){
