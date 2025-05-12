@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image"
 import styles from "@/styles/Laso.module.css";
+import Link from "next/link";
 
 const ScholarshipApplyBtn = () => (
     <div>
@@ -51,15 +52,20 @@ const ScholarshipDescription = () => (
                     <div className={styles.lasoUnderTitle}></div>
                     <p>
                         The Laso scholarship was created in memory of Luis Martinez de Bartolomé, a dear colleague and
-                        friend,
-                        and recognize his significant contribution to open source and C++ world.
+                        friend, and recognize his significant contribution to open source and C++ world.
                     </p>
                     <p>
                         The Laso scholarship will be provided to students of Spanish public universities in any degree
-                        of CS,
-                        Engineering or similar.
+                        of CS, Engineering or similar.
                     </p>
                     <p>The scholarship will cover the costs of one year tuition.</p>
+
+                    <p>Read
+                        <Link href="/laso-terms">
+                            <div onClick={() => {gtmConanPush('terms')}} id="laso_terms_btn_footer">the terms of the grant</div>
+                        </Link>
+                        .
+                    </p>
                 </div>
             </div>
         </div>
@@ -84,8 +90,7 @@ const ScholarshipProcess = () => (
                         </li>
                         <li>
                             The main criteria will be the quantity and relevance of open-source contributions during the
-                            past 12
-                            months prior to submission of the application.
+                            past 12 months prior to submission of the application.
                         </li>
                     </ol>
                 </div>
@@ -108,8 +113,11 @@ const ScholarshipApplication = () => (
                     <p>
                         The number of lines of code contributed in the past year for every repository will be counted.
                         That will be weighted by the number of stars of the repository, with a factor from 0-10,
-                        computed as
-                        the number of stars (capped at 10K) divided by 1000.
+                        computed as the number of stars (capped at 10K) divided by 1000.
+                    </p>
+                    <p>
+                        The terms of the scholarship are available <Link href="/laso-terms">
+                        <div onClick={() => {gtmConanPush('terms')}} id="laso_terms_btn_footer">here</div></Link>.
                     </p>
                 </div>
             </div>
