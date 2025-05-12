@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import ConanSearch from '@/pages/search'
+import ConanSearch from '@/pages/center/recipes'
 
 
 describe('ConanFooter Elements', () => {
