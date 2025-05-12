@@ -34,4 +34,4 @@ describe('ConanHome Elements', () => {
     }
   }
 
-});
+})
