@@ -4,16 +4,26 @@ import { ConanFooter } from '@/components'
 describe('ConanFooter Elements', () => {
 
   const test_elements = {
-    contentinfo: [""],
-    list: [""],
-    link: ["x", "slack", "github", "Download", "Conan-Center", "GitHub", "Docs", "Blog", "Privacy Notice", "Terms", "", "Github", "Twitter", "Slack #conan"],
-    img: ["x", "slack", "github"],
-    heading: ["GET", "Resources", "Legal", "Social"],
+    link: [
+      "Downloads",
+      "ConanCenter",
+      "GitHub",
+      "Docs",
+      "Blog",
+      "FAQ",
+      "Privacy Notice",
+      "Terms",
+      "Cookies Settings",
+      "x",
+      "slack",
+      "github"
+    ],
+    img: ["x", "slack", "github"]
   }
 
   for (const key in test_elements){
     for (const element of test_elements[key]) {
-      it(key + ' to:' + element, () => {
+      it(key + ' --> ' + element, () => {
         render(<ConanFooter />)
         const expected = screen.getByRole(key, {
           name: element,
