@@ -20,3 +20,15 @@ Object.defineProperty(window, 'matchMedia', {
     dispatchEvent: jest.fn(),
   })),
 });
+
+
+import { mockRouter } from './tests/mocks/router';
+import { useRouter } from 'next/router';
+
+jest.mock('next/router', () => ({
+  useRouter: jest.fn(),
+}));
+
+beforeEach(() => {
+  useRouter.mockReturnValue(mockRouter);
+});
