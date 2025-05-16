@@ -11,8 +11,8 @@ describe('ConanFooter Elements', () => {
       {"name": "OpenGL", "version": "system"}
     ],
     updated: [
-      {"name": "openSSL", "version": "v3.0.3"},
-      {"name": "zlib", "version": "v1.21.2"}
+      {"name": "openvino", "version": "3.2.1"},
+      {"name": "any-lite", "version": "1.21.2"}
     ],
     new: [
       {"name": "boost", "version": "v1.79.0"},
@@ -29,14 +29,22 @@ describe('ConanFooter Elements', () => {
   }
 
    const test_elements = {
-     link: ["openSSL/v3.0.3", "zlib/v1.21.2", "boost/v1.79.0", "OpenGL/system", "openSSL", "zlib", "boost/v1.79.0", "OpenGL/system"],
+     link: [
+      "openSSL",
+      "zlib",
+      "boost",
+      "OpenGL",
+      "openvino",
+      "any-lite",
+      "boost/v1.79.0",
+      "OpenGL/system"],
    }
 
 
 
    for (const key in test_elements){
      for (const element of test_elements[key]) {
-       it(key + ' to:' + element, () => {
+       it(key + ' --> ' + element, () => {
          render(<Center data={get_server_side_props_data}/>);
          const expected = screen.getAllByRole(key, {
            name: element,
