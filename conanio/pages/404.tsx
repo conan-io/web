@@ -1,9 +1,8 @@
-'use client';
-
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { SiConan } from 'react-icons/si';
+import { LuPackageSearch } from 'react-icons/lu';
 
 import { ConanKitchenHeader, ConanFooter } from '@/components';
 
@@ -17,6 +16,9 @@ export default function NotFound() {
     }
   }, [pathname]);
 
+  const buttonHref = isRecipePath ? '/center' : '/';
+  const buttonText = isRecipePath ? 'Return to ConanCenter' : 'Return to the Conan home';
+
   return (
     <div className="not-found-light-bg text-light d-flex flex-column min-vh-100">
       <ConanKitchenHeader />
@@ -28,8 +30,7 @@ export default function NotFound() {
 
         {isRecipePath ? (
           <p className="lead text-black mb-3">
-            This Conan package couldn&rsquo;t be found.
-            Maybe it was never uploaded? 🔍
+            This Conan package couldn&rsquo;t be found. Maybe it was never uploaded? 🔍
           </p>
         ) : (
           <p className="lead text-black mb-3">
@@ -37,9 +38,13 @@ export default function NotFound() {
           </p>
         )}
 
-        <Link href="/" className="btn conan-blue-gradient-bg btn-lg mt-3">
-          <SiConan className="me-2" />
-          Return to the Conan home
+        <Link href={buttonHref} className="btn conan-blue-gradient-bg btn-lg mt-3 d-flex align-items-center">
+          {buttonText}
+          {isRecipePath ? (
+            <LuPackageSearch className="ms-2" />
+          ) : (
+            <SiConan className="ms-2" />
+          )}
         </Link>
       </main>
 
