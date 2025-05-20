@@ -1,16 +1,25 @@
-import Link from 'next/link'
+'use client';
 
-import { ConanKitchenHeader, ConanFooter } from '@/components';
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { SiConan } from 'react-icons/si';
 
+import { ConanKitchenHeader, ConanFooter } from '@/components';
+
 export default function NotFound() {
-  const pathname = usePathname() || '';
-  const isRecipePath = pathname.startsWith('/center/recipes');
+  const pathname = usePathname();
+  const [isRecipePath, setIsRecipePath] = useState(false);
+
+  useEffect(() => {
+    if (pathname?.startsWith('/center/recipes')) {
+      setIsRecipePath(true);
+    }
+  }, [pathname]);
 
   return (
     <div className="not-found-light-bg text-light d-flex flex-column min-vh-100">
-      <ConanKitchenHeader/>
+      <ConanKitchenHeader />
 
       <main className="container text-center flex-grow-1 d-flex flex-column justify-content-center align-items-center">
         <h2 className="display-4 text-black fw-bold mb-3">
@@ -19,7 +28,8 @@ export default function NotFound() {
 
         {isRecipePath ? (
           <p className="lead text-black mb-3">
-            This Conan package couldn&rsquo;t be found. Maybe it was never uploaded? 🔍
+            This Conan package couldn&rsquo;t be found.
+            Maybe it was never uploaded? 🔍
           </p>
         ) : (
           <p className="lead text-black mb-3">
@@ -33,7 +43,7 @@ export default function NotFound() {
         </Link>
       </main>
 
-      <ConanFooter/>
+      <ConanFooter />
     </div>
   );
 }
