@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-import { ConanKitchenHeader, ConanHome, ConanFooter } from '@/components';
+import { ConanKitchenHeader, ConanFooter } from '@/components';
 import { usePathname } from 'next/navigation';
 import { SiConan } from 'react-icons/si';
 
