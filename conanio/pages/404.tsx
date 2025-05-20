@@ -18,7 +18,7 @@ export default function NotFound() {
         </h2>
 
         {isRecipePath ? (
-          <p className="lead mb-3">
+          <p className="lead text-black mb-3">
             This Conan package couldn&rsquo;t be found. Maybe it was never uploaded? 🔍
           </p>
         ) : (
