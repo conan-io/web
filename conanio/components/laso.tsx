@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const ScholarshipApplyBtn = () => (
     <div>
-        <button className={styles.scholarshipApplyBtn}>
+        <button className={styles.scholarshipApplyBtn} onclick="window.open('https://forms.gle/V8foYKcDCLfJVUqQ8','_blank')">
             Apply now
         </button>
     </div>
@@ -59,10 +59,6 @@ const ScholarshipDescription = () => (
                         of CS, Engineering or similar.
                     </p>
                     <p>The scholarship will cover the costs of one year tuition.</p>
-
-                    <p>
-                      Read <Link href="/laso-terms">the terms of the grant</Link>.
-                    </p>
                 </div>
             </div>
         </div>
@@ -104,8 +100,8 @@ const ScholarshipApplication = () => (
                     <h2>How to apply</h2>
                     <div className={styles.lasoUnderTitle}></div>
                     <p>
-                        Each candidate will submit their Github/Gitlab/other usernames and up to 5 public open source
-                        repositories (with a valid OSS license)
+                        Each candidate will submit up to 5 public open source
+                        repositories (with a valid OSS license) with the Github/Gitlab/other username used to contribute to that repository.
                     </p>
                     <p>
                         The number of lines of code contributed in the past year for every repository will be counted.
@@ -113,7 +109,7 @@ const ScholarshipApplication = () => (
                         computed as the number of stars (capped at 10K) divided by 1000.
                     </p>
                     <p>
-                        The terms of the scholarship are available <Link href="/laso-terms">here</Link>.
+                        <Link href="/laso-terms">The terms of the scholarship are available here</Link>.
                     </p>
                 </div>
             </div>
@@ -127,22 +123,22 @@ const ScholarshipTimeline = () => (
             <div className="row justify-content-between">
                 <div className="col-2">
                     <div className={styles.timelineOrder}>1</div>
-                    <div className={styles.scholarshipTimelineDate}>February 1, 2025</div>
+                    <div className={styles.scholarshipTimelineDate}>May 26, 2025</div>
                     <div className="desc">Enrollment opens</div>
                 </div>
                 <div className="col-2">
                     <div className={styles.timelineOrder}>2</div>
-                    <div className={styles.scholarshipTimelineDate}>March 31, 2025</div>
+                    <div className={styles.scholarshipTimelineDate}>June 30, 2025</div>
                     <div className="desc">Final Date for submission of applications</div>
                 </div>
                 <div className="col-2">
                     <div className={styles.timelineOrder}>3</div>
-                    <div className={styles.scholarshipTimelineDate}>April 30, 2025</div>
+                    <div className={styles.scholarshipTimelineDate}>July 20, 2025</div>
                     <div className="desc">Scholarship Committee Notice to awarded applicants</div>
                 </div>
                 <div className="col-2">
                     <div className={styles.timelineOrder}>4</div>
-                    <div className={styles.scholarshipTimelineDate}>May 31, 2025</div>
+                    <div className={styles.scholarshipTimelineDate}>July 31, 2025</div>
                     <div className="desc">Scholarship Delivery</div>
                 </div>
             </div>

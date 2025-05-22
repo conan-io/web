@@ -95,16 +95,12 @@ const LasoTermsPage = () => {
                                 any
                                 option or right to employment with the Company under any circumstances.
                             </li>
+
                             <li>
                                 <h2>Documentation to be submitted.</h2>
-                                To prove the eligibility criteria and be eligible for the Award, the candidate must send
-                                the
-                                following documentation in PDF format to the indicated email within the specified period
-                                in
-                                Section 6:
+                                Applications will be submitted via the dedicated online form, including:
                                 <ol type={"a"}>
-                                    <li>National identity document or passport.</li>
-                                    <li>Contact details: telephone number, e-mail, etc.</li>
+                                    <li>Contact details: Full name e-mail, etc.</li>
                                     <li>Current university and specific degree.</li>
                                     <li>
                                         Submit the GitHub/GitLab/other usernames along with up to 5 public open-source
@@ -113,17 +109,18 @@ const LasoTermsPage = () => {
                                         past year for
                                         each repository will be counted and weighted by the number of stars, using a
                                         factor from
-                                        0-10, calculated as the number of stars (capped at 10,000) divided by 1,000. The
-                                        candidate
-                                        must provide up-to-date proof of enrollment at the time of registration,
-                                        confirming their
-                                        enrollment in the subject for which the scholarship is granted.
+                                        0-10, calculated as the number of stars (capped at 10,000) divided by 1,000.
                                     </li>
                                     <li>
-                                        An application letter introducing yourself and your work, along with your
-                                        motivation for
-                                        applying for the scholarship.
+                                        Extra information about the open source contributions, motivation or other merits.
                                     </li>
+                                </ol>
+
+                                To be able to receive the award, upon notification of winning, the candidate will have 
+                                to provide:
+                                <ol type={"a"}>
+                                    <li>National identity document or passport.</li>
+                                    <li>Proof of ownership of the open source contributions</li>
                                     <li>
                                         Letter or email from the university reflecting the candidate&#39;s access to the
                                         admission
@@ -136,14 +133,10 @@ const LasoTermsPage = () => {
                                         university will suffice. If admission to the university occurs after the Award
                                         is granted,
                                         the candidate must immediately present an accrediting document issued by the
-                                        university to
-                                        the Company.
+                                        university to the Company.
                                     </li>
-                                    <li>
-                                        The candidate must sign and attach to the documentation the Data Protection
-                                        clause according
-                                        to the standardized model that can be downloaded from the website.
-                                    </li>
+                                    <li>Necessary details for the University tuition payment, which will be paid directly by 
+                                    the Company.</li>
                                 </ol>
                             </li>
                             <li>
@@ -246,15 +239,14 @@ const LasoTermsPage = () => {
 
                             <li><h2>Deadlines</h2>
                                 <p>
-                                    The call will open on March 9th and will close on April 2nd.
+                                    The call will open on May 26th and will close on June 30th.
                                 </p>
                                 <p>
-                                    Applications must be sent by email to: [TBD].
+                                    Applications must be sent via de designated form in https://forms.gle/V8foYKcDCLfJVUqQ8.
                                 </p>
                                 <p>
-                                    The Selection Committee decision will be announced in [TBD]. The winner will receive
-                                    written
-                                    communication from the Company.
+                                    The Selection Committee decision will be announced on July 20th. The winner will receive
+                                    email communication from the Company.
                                 </p>
                             </li>
 
@@ -274,8 +266,7 @@ const LasoTermsPage = () => {
                                     </li>
 
                                     <li>Send mid-term to the Company, accrediting their progress and results, endorsed
-                                        by professors
-                                        or directors, if necessary.
+                                        by professors or directors, if necessary.
                                     </li>
                                     <li>Present the final academic results accredited by the university to the
                                         Company.
@@ -289,8 +280,7 @@ const LasoTermsPage = () => {
                                         appropriate or pertinent within the limits of current legislation.
                                     </li>
                                     <li>Return the amounts received if the Academic Year is not completed according to
-                                        the study
-                                        project, or if a refund is required according to these bases.
+                                        the study project, or if a refund is required according to these bases.
                                     </li>
                                 </ol>
                                 <p>
@@ -301,7 +291,7 @@ const LasoTermsPage = () => {
                                     expressly accepted.
                                 </p>
                                 <p>
-                                    For any inquiries, interested parties can contact through the address: [TBD].
+                                    For any inquiries, interested parties can contact through the address: conan@jfrog.com
                                 </p>
                             </li>
                         </ol>
