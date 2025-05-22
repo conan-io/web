@@ -60,11 +60,8 @@ const ScholarshipDescription = () => (
                     </p>
                     <p>The scholarship will cover the costs of one year tuition.</p>
 
-                    <p>Read
-                        <Link href="/laso-terms">
-                            <div id="laso_terms_btn_footer">the terms of the grant</div>
-                        </Link>
-                        .
+                    <p>
+                      Read <Link href="/laso-terms">the terms of the grant</Link>.
                     </p>
                 </div>
             </div>
@@ -116,8 +113,7 @@ const ScholarshipApplication = () => (
                         computed as the number of stars (capped at 10K) divided by 1000.
                     </p>
                     <p>
-                        The terms of the scholarship are available <Link href="/laso-terms">
-                        <div id="laso_terms_btn_footer">here</div></Link>.
+                        The terms of the scholarship are available <Link href="/laso-terms">here</Link>.
                     </p>
                 </div>
             </div>
