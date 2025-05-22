@@ -62,7 +62,7 @@ const ScholarshipDescription = () => (
 
                     <p>Read
                         <Link href="/laso-terms">
-                            <div onClick={() => {gtmConanPush('terms')}} id="laso_terms_btn_footer">the terms of the grant</div>
+                            <div id="laso_terms_btn_footer">the terms of the grant</div>
                         </Link>
                         .
                     </p>
@@ -117,7 +117,7 @@ const ScholarshipApplication = () => (
                     </p>
                     <p>
                         The terms of the scholarship are available <Link href="/laso-terms">
-                        <div onClick={() => {gtmConanPush('terms')}} id="laso_terms_btn_footer">here</div></Link>.
+                        <div id="laso_terms_btn_footer">here</div></Link>.
                     </p>
                 </div>
             </div>
