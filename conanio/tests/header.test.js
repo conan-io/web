@@ -1,20 +1,29 @@
 import { render, screen } from '@testing-library/react'
-import { ConanHeader } from '@/components'
+import { ConanCenterHeader } from '@/components'
 
-describe('ConanHeader Elements', () => {
+describe('ConanCenterHeader Elements', () => {
 
   const test_elements = {
     banner: [""],
-    link: ["Conan C++ Package Manager", "Search Search", "Conan-Center", "FAQ", "Docs", "Blog", "User Stories", "Github"],
-    img: ["Conan C++ Package Manager", "Search", "Github"],
-    button: [""],
-    navigation: [""],
+    link: [
+      "Conan C++ Package Manager",
+      "Downloads",
+      "ConanCenter",
+      "FAQ",
+      "Docs",
+      "Blog",
+      "Github"
+    ],
+    img: [
+      "Conan C++ Package Manager",
+      "Github"
+    ],
   }
 
   for (const key in test_elements){
     for (const element of test_elements[key]) {
-      it(key + ' to:' + element, () => {
-        render(<ConanHeader />)
+      it(key + ' --> ' + element, () => {
+        render(<ConanCenterHeader />)
         const expected = screen.getByRole(key, {
           name: element,
         })
@@ -22,4 +31,5 @@ describe('ConanHeader Elements', () => {
       })
     }
   }
+
 })

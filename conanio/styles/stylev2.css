@@ -1209,3 +1209,8 @@ section.users .users-flex .user-box img {
 #faqAccordion li.faq-element:nth-child(even) {
   background-color: rgba(235, 247, 255, 0.1);
 }
+
+.not-found-light-bg {
+  background-color: #D3EDFF;
+  width: 100%;
+}
