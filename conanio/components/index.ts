@@ -1,6 +1,7 @@
 export { ConanFooter } from "./footer";
 export { ConanCenterHeader, ConanKitchenHeader } from "./header";
 export { ConanHome } from "./home";
+export { LasoScholarship } from "./laso"
 export { Loader } from "./loader";
 export { Conan1xBanner, ConanAuditBanner } from "./banners";
 export {
