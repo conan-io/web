@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const ScholarshipApplyBtn = () => (
     <div>
-        <button className={styles.scholarshipApplyBtn} onclick="window.open('https://forms.gle/V8foYKcDCLfJVUqQ8','_blank')">
+        <button className={styles.scholarshipApplyBtn} onClick={() => {window.open('https://forms.gle/V8foYKcDCLfJVUqQ8','_blank')}}>
             Apply now
         </button>
     </div>
