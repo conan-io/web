@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React from "react";
+import { IoSchoolOutline } from "react-icons/io5";
 
 
 export function Conan1xBanner() {
@@ -55,3 +56,30 @@ export function ConanAuditBanner() {
   );
 }
 
+export function LasoBanner() {
+  return (
+    <section id="laso-banner" className="laso-banner">
+      <div className="container">
+        <div className="row d-flex justify-content-around align-items-center">
+          <div className="row-auto mt-4 text-center">
+            In memory of Luis Martínez de Bartolomé, &quot;Laso&quot;.
+          </div>
+          <div className="row-auto mb-4 text-center">
+            <Link href="/laso" onClick={
+                    () => {
+                      window.dataLayer.push({
+                        'event': 'fireEvent',
+                        'event_name': 'element_click',
+                        'type': 'ui',
+                        'purpose': 'feedback',
+                        'description': 'Laso scholarship'
+                      });
+                    }
+                  } className=""><b>The LASO Scholarship <IoSchoolOutline/></b>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
