@@ -242,7 +242,11 @@ const LasoTermsPage = () => {
                                     The call will open on May 26th and will close on June 30th.
                                 </p>
                                 <p>
-                                    Applications must be sent via de designated form in https://forms.gle/V8foYKcDCLfJVUqQ8.
+                                    Applications must be sent via de designated form in <a 
+                                        href="https://forms.gle/V8foYKcDCLfJVUqQ8" 
+                                        rel="noopener noreferrer" 
+                                        target="_blank" 
+                                    >https://forms.gle/V8foYKcDCLfJVUqQ8</a>.
                                 </p>
                                 <p>
                                     The Selection Committee decision will be announced on July 20th. The winner will receive
