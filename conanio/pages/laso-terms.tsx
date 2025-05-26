@@ -232,7 +232,7 @@ const LasoTermsPage = () => {
                                 The call will open on May 26th and will close on June 30th.
                             </p>
                             <p>
-                                Applications must be sent via de designated form in <a 
+                                Applications must be sent via the designated form in <a 
                                     href="https://forms.gle/V8foYKcDCLfJVUqQ8" 
                                     rel="noopener noreferrer" 
                                     target="_blank" 
