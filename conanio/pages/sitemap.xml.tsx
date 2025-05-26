@@ -16,6 +16,9 @@ function generateSiteMap(packages: RecipeInfo[]){
         <loc>${URL}/downloads</loc>
      </url>
      <url>
+        <loc>${URL}/laso</loc>
+     </url>
+     <url>
         <loc>${URL}/faq</loc>
      </url>
      <url>
