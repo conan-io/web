@@ -100,12 +100,12 @@ const PackageInfo = (props: {package: RecipeInfo}) => {
             {deprecated === 'true' && (
               <Badge className="bg-warning">Deprecated</Badge>
             )}
-            {deprecated !== 'true' && deprecated !== 'false' && !deprecated.includes(' ') && (
+            {deprecated !== 'true' && deprecated !== 'false' && deprecated != undefined && !deprecated.includes(' ') && (
               <Link href={{pathname: "/center/recipes/" + deprecated}}>
                 <Badge className="bg-warning">Deprecated, substitute available: {deprecated}</Badge>
               </Link>
             )}
-            {deprecated !== 'true' && deprecated !== 'false' && deprecated.includes(' ') && (
+            {deprecated !== 'true' && deprecated !== 'false' && deprecated != undefined && deprecated.includes(' ') && (
               <Link href={{pathname: "/center/recipes/" + deprecated}}>
                 <Badge className="bg-warning">Deprecated</Badge>
               </Link>

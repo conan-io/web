@@ -424,7 +424,7 @@ const ConanPackage: NextPage<PageProps> = (props) => {
                     </span>
                   </Alert>
                 )}
-                {deprecated !== 'true' && deprecated !== 'false' && !deprecated.includes(' ') && (
+                {deprecated !== 'true' && deprecated !== 'false' && deprecated != undefined && !deprecated.includes(' ') && (
                   <Alert className="text-center" variant="warning">
                     <span>
                       This recipe has been deprecated in favour of <Link
@@ -438,7 +438,7 @@ const ConanPackage: NextPage<PageProps> = (props) => {
                     </span>
                   </Alert>
                 )}
-                {deprecated !== 'true' && deprecated !== 'false' && deprecated.includes(' ') && (
+                {deprecated !== 'true' && deprecated !== 'false' && deprecated != undefined && deprecated.includes(' ') && (
                   <Alert className="text-center" variant="warning">
                     <span>
                       This recipe has been deprecated and is listed here for reference only.<br/>
