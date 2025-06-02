@@ -76,6 +76,7 @@ const PackageInfo = (props: {package: RecipeInfo}) => {
   const licenses = Object.keys(props.package.info.licenses!)
   const labels = Object.keys(props.package.info.labels!)
   const packages = Object.values(props.package.info.packages).map((value) => value);
+  const deprecated = props.package.info.deprecated;
   return (
     <div className="m-2">
       <Row>
@@ -96,9 +97,19 @@ const PackageInfo = (props: {package: RecipeInfo}) => {
         <Col xs="12" lg="6">
           <Row className="mt-2">{props.package.info.timestamp && <Col xs="12" lg="auto"><MdOutlineToday className="conanIconBlue"/> {props.package.info.timestamp}</Col>}</Row>
           <Row>{licenses && licenses.length > 0 && <Col xs="12" lg="auto"><LiaBalanceScaleSolid className="conanIconBlue"/> {licenses.join(", ")}</Col>}</Row>
-          {props.package.info.deprecated !== 'false' && (
-            <Badge className="bg-warning">Deprecated</Badge>
-          )}
+            {deprecated === 'true' && (
+              <Badge className="bg-warning">Deprecated</Badge>
+            )}
+            {deprecated !== 'true' && deprecated !== 'false' && !deprecated.includes(' ') && (
+              <Link href={{pathname: "/center/recipes/" + deprecated}}>
+                <Badge className="bg-warning">Deprecated, substitute available: {deprecated}</Badge>
+              </Link>
+            )}
+            {deprecated !== 'true' && deprecated !== 'false' && deprecated.includes(' ') && (
+              <Link href={{pathname: "/center/recipes/" + deprecated}}>
+                <Badge className="bg-warning">Deprecated</Badge>
+              </Link>
+            )}
         </Col>
       </Row>
       <Row>

@@ -156,7 +156,7 @@ const ConanPackage: NextPage<PageProps> = (props) => {
   const recipeLicenses = Object.keys(recipeData.info.licenses);
   const recipeConanCenterUrl = "https://github.com/conan-io/conan-center-index/tree/master/recipes/" + recipeData.name;
   const recipeReadme = props.readme;
-  const deprecated = recipeData.info.deprecated !== undefined? recipeData.info.deprecated: "false";
+  const deprecated = recipeData.info.deprecated;
   const metadatsInfo = (recipeDescription && true)
 
   const iconStatusColor = recipeStatus === 'ok'? 'green': 'orange'
@@ -414,16 +414,41 @@ const ConanPackage: NextPage<PageProps> = (props) => {
                   </Row>
                 </Col>
               </Row>
-              {deprecated !== "false" && (
-                <Alert className="text-center" variant="warning">
-                  This recipe has been deprecated and is no longer maintained.
-                  {deprecated !== "true" && (
-                    <Link href={{pathname: "/center/recipes/" + deprecated}}>
-                      Usage of this recipe is discouraged, please use {deprecated} instead.
-                    </Link>
-                  )}
-                </Alert>
-              )}
+                {deprecated === 'true' && (
+                  <Alert className="text-center" variant="warning">
+                    <span>
+                      This recipe is no longer maintained and is listed here for reference only.<br/>
+                      Please open an issue in <Link
+                        href={{pathname: "https://github.com/conan-io/conan-center-index/issues/new/choose"}}
+                        target={"_blank"}>ConanCenter</Link> if you have any questions.
+                    </span>
+                  </Alert>
+                )}
+                {deprecated !== 'true' && deprecated !== 'false' && !deprecated.includes(' ') && (
+                  <Alert className="text-center" variant="warning">
+                    <span>
+                      This recipe has been deprecated in favour of <Link
+                        href={{pathname: "/center/recipes/" + deprecated}}>
+                          {deprecated}
+                        </Link>
+                      <br/>Please use <Link
+                        href={{pathname: "/center/recipes/" + deprecated}}>
+                        {deprecated}
+                      </Link> instead.
+                    </span>
+                  </Alert>
+                )}
+                {deprecated !== 'true' && deprecated !== 'false' && deprecated.includes(' ') && (
+                  <Alert className="text-center" variant="warning">
+                    <span>
+                      This recipe has been deprecated and is listed here for reference only.<br/>
+                      The deprecation reason is: <pre>{deprecated}</pre>
+                      Please open an issue in <Link
+                        href={{pathname: "https://github.com/conan-io/conan-center-index/issues/new/choose"}}
+                        target={"_blank"}>ConanCenter</Link> if you have any questions.
+                    </span>
+                  </Alert>
+                )}
               {!recipeDescription && (<Row className="mt-4"><Col xs lg><DefaultDescription name={recipeData.name}/></Col></Row>)}
               {recipeDescription && (<Row><Col xs lg>{recipeDescription}</Col></Row>)}
               {recipeLabels && Object.keys(recipeLabels).length > 0 && (<Row className="pt-2">
