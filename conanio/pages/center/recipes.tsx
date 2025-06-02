@@ -383,7 +383,7 @@ const ConanSearch: NextPage<PageProps> = (props) => {
                   </div>
                 </Form>
               </Col>
-              <Col xs="10" md="10" lg="2" className="mt-2">
+              <Col xs="10" md="10" lg="3" className="mt-2">
                 <ConanSingleSelect
                   title="Sort by"
                   defaultValue={{value: SortBy.BestMatch, label: 'by best match'}}
