@@ -418,7 +418,7 @@ const ConanPackage: NextPage<PageProps> = (props) => {
                 <Alert className="text-center" variant="warning">
                   This recipe has been deprecated and is no longer maintained.
                   {deprecated !== "true" && (
-                    <Link href={encodeURI(process.env.conanioServer) + "/center/recipes/" + deprecated}>
+                    <Link href={{pathname: "/center/recipes/" + deprecated}}>
                       Usage of this recipe is discouraged, please use {deprecated} instead.
                     </Link>
                   )}

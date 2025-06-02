@@ -79,6 +79,9 @@ const PackageInfo = (props: {package: RecipeInfo}) => {
   return (
     <div className="m-2">
       <Row>
+        {props.package.info.deprecated !== 'false' && (
+          <Badge className="bg-warning" style={{marginLeft: "10px"}}>Deprecated</Badge>
+        )}
         <Col xs="12" lg="6" className="mt-2">
           <Row>
             <Col xs="12" lg="auto">
