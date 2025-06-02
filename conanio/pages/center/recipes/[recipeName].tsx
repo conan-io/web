@@ -43,6 +43,7 @@ import { HiOutlineDocumentText } from "react-icons/hi";
 import { Tooltip } from 'react-tooltip';
 import { useMediaQuery } from 'react-responsive';
 import { GetServerSideProps, GetServerSidePropsContext, GetServerSidePropsResult, NextPage } from 'next';
+import Alert from "react-bootstrap/Alert";
 
 interface PageProps  {
     notFound?: boolean,
@@ -154,7 +155,8 @@ const ConanPackage: NextPage<PageProps> = (props) => {
   const recipeLabels = recipeData.info.labels;
   const recipeLicenses = Object.keys(recipeData.info.licenses);
   const recipeConanCenterUrl = "https://github.com/conan-io/conan-center-index/tree/master/recipes/" + recipeData.name;
-  const recipeReadme = props.readme
+  const recipeReadme = props.readme;
+  const deprecated = recipeData.info.deprecated !== undefined? recipeData.info.deprecated: "false";
   const metadatsInfo = (recipeDescription && true)
 
   const iconStatusColor = recipeStatus === 'ok'? 'green': 'orange'
@@ -412,6 +414,16 @@ const ConanPackage: NextPage<PageProps> = (props) => {
                   </Row>
                 </Col>
               </Row>
+              {deprecated !== "false" && (
+                <Alert className="text-center" variant="warning">
+                  This recipe has been deprecated and is no longer maintained.
+                  {deprecated !== "true" && (
+                    <Link href={encodeURI(process.env.conanioServer) + "/center/recipes/" + deprecated}>
+                      Usage of this recipe is discouraged, please use {deprecated} instead.
+                    </Link>
+                  )}
+                </Alert>
+              )}
               {!recipeDescription && (<Row className="mt-4"><Col xs lg><DefaultDescription name={recipeData.name}/></Col></Row>)}
               {recipeDescription && (<Row><Col xs lg>{recipeDescription}</Col></Row>)}
               {recipeLabels && Object.keys(recipeLabels).length > 0 && (<Row className="pt-2">
