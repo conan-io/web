@@ -156,7 +156,7 @@ const ConanPackage: NextPage<PageProps> = (props) => {
   const recipeLicenses = Object.keys(recipeData.info.licenses);
   const recipeConanCenterUrl = "https://github.com/conan-io/conan-center-index/tree/master/recipes/" + recipeData.name;
   const recipeReadme = props.readme;
-  const deprecated = recipeData.info.deprecated;
+  const deprecated = recipeData.info.deprecated == undefined? 'false': recipeData.info.deprecated;
   const metadatsInfo = (recipeDescription && true)
 
   const iconStatusColor = recipeStatus === 'ok'? 'green': 'orange'
@@ -424,7 +424,7 @@ const ConanPackage: NextPage<PageProps> = (props) => {
                     </span>
                   </Alert>
                 )}
-                {deprecated !== 'true' && deprecated !== 'false' && deprecated != undefined && !deprecated.includes(' ') && (
+                {deprecated !== 'true' && deprecated !== 'false' && !deprecated.includes(' ') && (
                   <Alert className="text-center" variant="warning">
                     <span>
                       This recipe has been deprecated in favour of <Link
@@ -438,7 +438,7 @@ const ConanPackage: NextPage<PageProps> = (props) => {
                     </span>
                   </Alert>
                 )}
-                {deprecated !== 'true' && deprecated !== 'false' && deprecated != undefined && deprecated.includes(' ') && (
+                {deprecated !== 'true' && deprecated !== 'false' && deprecated.includes(' ') && (
                   <Alert className="text-center" variant="warning">
                     <span>
                       This recipe has been deprecated and is listed here for reference only.<br/>
