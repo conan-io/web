@@ -55,3 +55,37 @@ export function ConanAuditBanner() {
   );
 }
 
+
+export function LasoBanner() {
+  return (
+    <section id="laso-banner" className="laso-banner">
+      <div className="container">
+        <img className="laso-banner-img" alt="Laso portrait" src="/laso/laso.png"/>
+        <div className="row d-flex justify-content-around align-items-center">
+          <div className="col-auto mt-4 mb-4 text-center text-white">
+            <p className="mb-2">In memory of Luis Martinez de Bartolomé, "Laso":</p>
+            <Link href="/laso" onClick={
+                    () => {
+                      window.dataLayer.push({
+                        'event': 'fireEvent',
+                        'event_name': 'element_click',
+                        'type': 'ui',
+                        'purpose': 'feedback',
+                        'description': 'The LASO Scholarship'
+                      });
+                    }
+                  } className="white">
+                  <div
+                  className="btn laso-btn-border bg-white ms-lg-4"
+                  id="why_use_conan"
+                >
+                  <span><b></b>The LASO Scholarship</span>
+                </div>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
