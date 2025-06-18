@@ -429,7 +429,7 @@ border-radius: 10px;
   height: 147px;
   font-size: 1.22rem;
   background-position:center center;
-  background-image: linear-gradient(to right, #D5EFFF, #839CAB, #D5EFFF);
+  background-image: linear-gradient(to right, transparent, #D5EFFF 20%, #839CAB 50%, #D5EFFF 80%, transparent);
 }
 
 .laso-banner a {
