@@ -63,7 +63,7 @@ export function LasoBanner() {
         <img className="laso-banner-img" alt="Laso portrait" src="/laso/laso.png"/>
         <div className="row d-flex justify-content-around align-items-center">
           <div className="col-auto mt-4 mb-4 text-center text-white">
-            <p className="mb-2">In memory of Luis Martinez de Bartolomé, "Laso":</p>
+            <p className="mb-2">In memory of Luis Martinez de Bartolomé, &quot;Laso&quot;:</p>
             <Link href="/laso" onClick={
                     () => {
                       window.dataLayer.push({
