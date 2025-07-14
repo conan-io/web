@@ -394,6 +394,51 @@ border-radius: 10px;
   color: #006dcc;
 }
 
+.laso-btn-border {
+  border: 2px solid white;
+  border-radius: 50px;
+}
+
+.btn.laso-btn-border:hover {
+  color: black;
+  border: 2px solid white;
+  border-radius: 50px;
+}
+
+
+.laso-banner-img {
+  width: 146px;
+  position: absolute;
+  margin-left: 280px;
+}
+
+@media screen and (max-width: 1300px) {
+  .laso-banner-img {
+    margin-left: 150px;
+  }
+}
+
+
+@media screen and (max-width: 940px) {
+  .laso-banner-img {
+    display: none;
+  }
+}
+
+.laso-banner {
+  height: 147px;
+  font-size: 1.22rem;
+  background-position:center center;
+  background-image: linear-gradient(to right, transparent, #D5EFFF 20%, #839CAB 50%, #D5EFFF 80%, transparent);
+}
+
+.laso-banner a {
+  color: white;
+}
+.laso-banner a:hover {
+  color: #006dcc;
+}
+
 .global-banner {
   background: #1F6914;
 }
@@ -568,6 +613,19 @@ select {
 
 .conan-blue-gradient-bg {
   background: linear-gradient(92.17deg, #0086FD 6.81%, #21AFFF 83.22%);
+  border-radius: 50px;
+}
+
+.btn.conan-audit-blue-gradient-bg {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: white;
+  text-align: center;
+  min-width: 160px !important;
+}
+
+.conan-audit-blue-gradient-bg {
+  background: linear-gradient(92.17deg, #0C1D37 6.81%, #485f83 83.22%);
   border-radius: 50px;
 }
 
@@ -1208,4 +1266,9 @@ section.users .users-flex .user-box img {
 }
 #faqAccordion li.faq-element:nth-child(even) {
   background-color: rgba(235, 247, 255, 0.1);
+}
+
+.not-found-light-bg {
+  background-color: #D3EDFF;
+  width: 100%;
 }

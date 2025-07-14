@@ -76,6 +76,7 @@ const PackageInfo = (props: {package: RecipeInfo}) => {
   const licenses = Object.keys(props.package.info.licenses!)
   const labels = Object.keys(props.package.info.labels!)
   const packages = Object.values(props.package.info.packages).map((value) => value);
+  const deprecated = props.package.info.deprecated == undefined? 'false' : props.package.info.deprecated;
   return (
     <div className="m-2">
       <Row>
@@ -96,6 +97,16 @@ const PackageInfo = (props: {package: RecipeInfo}) => {
         <Col xs="12" lg="6">
           <Row className="mt-2">{props.package.info.timestamp && <Col xs="12" lg="auto"><MdOutlineToday className="conanIconBlue"/> {props.package.info.timestamp}</Col>}</Row>
           <Row>{licenses && licenses.length > 0 && <Col xs="12" lg="auto"><LiaBalanceScaleSolid className="conanIconBlue"/> {licenses.join(", ")}</Col>}</Row>
+            {(deprecated === 'true' || deprecated.includes(' ')) && (
+              // Deprecated with true, or it has a reason that we're displaying in the recipe page
+              <Badge className="bg-warning">Deprecated</Badge>
+            )}
+            {deprecated !== 'true' && deprecated !== 'false' && !deprecated.includes(' ') && (
+              // Not marked as True, but neither as false/a reason, then it is pointing to the available substitute
+              <Link href={{pathname: "/center/recipes/" + deprecated}}>
+                <Badge className="bg-warning">Deprecated, substitute available: {deprecated}</Badge>
+              </Link>
+            )}
         </Col>
       </Row>
       <Row>
@@ -380,7 +391,7 @@ const ConanSearch: NextPage<PageProps> = (props) => {
                   </div>
                 </Form>
               </Col>
-              <Col xs="10" md="10" lg="2" className="mt-2">
+              <Col xs="10" md="10" lg="3" className="mt-2">
                 <ConanSingleSelect
                   title="Sort by"
                   defaultValue={{value: SortBy.BestMatch, label: 'by best match'}}

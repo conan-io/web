@@ -1,6 +1,6 @@
 import os
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 
 from data import *
 
@@ -249,6 +249,7 @@ async def get_search(query='', filters='', licenses=''):
 
 @app.get('/package/{name}')
 async def get_package(name=''):
+    # raise HTTPException(status_code=404, detail=f"Package {name} not found") ## Uncomment this to force package not found
     return {
         "0": {
             "name": name,
