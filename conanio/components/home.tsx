@@ -29,25 +29,36 @@ const ConanHomeHero = () => (
               manager to create and share all your native binaries.
             </h2>
             <div className="d-inline">
-              <Link href="/downloads">
+            <Link href="https://academy.jfrog.com/conan-2-essentials?utm_source=Conan+Web">
+              <div
+                className="btn conan-blue-gradient-bg position-relative"
+                id="training_btn_top"
+                title="Hands-On Video Course for Conan 2.0"
+              >
+                {/* Sello "New" */}
                 <div
-                  className="btn conan-blue-gradient-bg ms-0"
-                  id="download_btn_top"
+                  className="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger"
+                  style={{ transform: "translate(-50%, -50%)", fontSize: "0.9rem" }}
                 >
-                  <span>Downloads</span>
+                  New!
                 </div>
-              </Link>
+
+                <span>Free Video Course</span>
+              </div>
+            </Link>
+
               <Link href="https://docs.conan.io/2/tutorial.html">
                 <div
-                  className="btn conan-blue-border bg-white ms-lg-4"
+                  className="btn conan-blue-border bg-white ms-lg-2"
                   id="get_started_btn_top"
                 >
                   <span>Get Started</span>
                 </div>
               </Link>
+
               <Link href="/why-conan">
                 <div
-                  className="btn conan-blue-border bg-white ms-lg-4"
+                  className="btn conan-blue-border bg-white ms-lg-2"
                   id="why_use_conan"
                 >
                   <span>Why use Conan?</span>
