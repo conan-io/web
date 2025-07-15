@@ -21,7 +21,7 @@ const ConanHomeHero = () => (
         <div className="col-6">
           <div className="hero-content py-3">
             <h1 className="black">
-              Conan, software package manager for C and C++ developers
+              Conan, software package manager <span style={{ whiteSpace: "nowrap" }}>for C and C++</span> developers
             </h1>
             <h2 className="homepage-hero-paragraph my-3 black">
               The open source, decentralized and multi-platform package{" "}
