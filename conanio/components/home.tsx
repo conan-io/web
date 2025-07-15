@@ -29,7 +29,7 @@ const ConanHomeHero = () => (
               manager to create and share all your native binaries.
             </h2>
             <div className="d-inline">
-            <Link href="https://academy.jfrog.com/conan-2-essentials">
+            <Link href="https://academy.jfrog.com/conan-2-essentials?utm_source=Conan+Web">
               <div
                 className="btn conan-blue-gradient-bg position-relative"
                 id="training_btn_top"
