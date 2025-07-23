@@ -292,6 +292,7 @@ const ConanSearch: NextPage<PageProps> = (props) => {
   const [showWindows, setShowWindows] = useState(true);
   const [showMacOS, setShowMacOS] = useState(true);
   const [showMacOSSilicon, setShowMacOSSilicon] = useState(true);
+  const [showWinArmv8, setShowWinArmv8] = useState(true);
   const [showLinux, setShowLinux] = useState(true);
   const [sortDataBy, setSortDataBy] = useState(SortBy.BestMatch);
 
@@ -352,14 +353,15 @@ const ConanSearch: NextPage<PageProps> = (props) => {
       (showWindows ? 0 : 1) +
       (showLinux ? 0 : 1) +
       (showMacOS ? 0 : 1) +
-      (showMacOSSilicon ? 0 : 1);
+      (showMacOSSilicon ? 0 : 1) +
+      (showWinArmv8 ? 0 : 1);
     if (!_filterNumber) return null
     const Tag = _filterNumber>9? MdFilter9Plus: tags[_filterNumber];
     return  (<Tag className="conanIconBlue" style={style}/>)
   }
 
   const extraFilters = (item: RecipeInfo) => {
-    if (showLinux && showWindows && showMacOS && showMacOSSilicon){
+    if (showLinux && showWindows && showMacOS && showMacOSSilicon && showWinArmv8){
       return true;
     }
     else{
@@ -370,6 +372,7 @@ const ConanSearch: NextPage<PageProps> = (props) => {
         if (showLinux && packages['Linux-x86_64']) return true
         if (showMacOS && packages['Macos-x86_64']) return true
         if (showMacOSSilicon && packages['Macos-armv8']) return true
+        if (showWinArmv8 && packages['Windows-armv8']) return true
       }
       return false;
     }
@@ -423,6 +426,7 @@ const ConanSearch: NextPage<PageProps> = (props) => {
                 <Badge style={{cursor: 'pointer'}} className={(showWindows? "profileTopics": "profileEmptyTopics")} onClick={() => setShowWindows(!showWindows)}>Windows</Badge>
                 <Badge style={{cursor: 'pointer'}} className={(showMacOS? "profileTopics": "profileEmptyTopics")} onClick={() => setShowMacOS(!showMacOS)}>macOS</Badge>
                 <Badge style={{cursor: 'pointer'}} className={(showMacOSSilicon? "profileTopics": "profileEmptyTopics")} onClick={() => setShowMacOSSilicon(!showMacOSSilicon)}>macOS Apple Silicon</Badge>
+                <Badge style={{cursor: 'pointer'}} className={(showWinArmv8? "profileTopics": "profileEmptyTopics")} onClick={() => setShowWinArmv8(!showWinArmv8)}>Windows ARM64</Badge>
               </Col>
             </Row>}
             </Col>
