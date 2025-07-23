@@ -567,9 +567,10 @@ export const PackagesTab = ({recipe, packageOS, setPackageOS}: {recipe: RecipeIn
         <br/>
         <ListGroup className="mb-4">
           { ((!packageOS) || (packageOS=='Linux')) && packages.filter(data => data.os == 'Linux').map(data => (<PackageItem key={data.package_id} packageInfo={data}/>)) }
-          { ((!packageOS) || (packageOS=='Windows')) && packages.filter(data => data.os == 'Windows').map(data => (<PackageItem key={data.package_id} packageInfo={data}/>)) }
+          { ((!packageOS) || (packageOS=='Windows')) && packages.filter(data => ((data.os == 'Windows') && (data.arch == 'x86_64'))).map(data => (<PackageItem key={data.package_id} packageInfo={data}/>)) }
           { ((!packageOS) || (packageOS=='macOS')) && packages.filter(data => ((data.os == 'Macos') && (data.arch == 'x86_64'))).map(data => (<PackageItem key={data.package_id} packageInfo={data}/>)) }
           { ((!packageOS) || (packageOS=='macOS Apple Silicon')) && packages.filter(data => ((data.os == 'Macos') && (data.arch == 'armv8'))).map(data => (<PackageItem key={data.package_id} packageInfo={data}/>)) }
+          { ((!packageOS) || (packageOS=='Windows ARM64')) && packages.filter(data => ((data.os == 'Windows') && (data.arch == 'armv8'))).map(data => (<PackageItem key={data.package_id} packageInfo={data}/>)) }
           { ((!packageOS) || (packageOS=='Header Only')) && packages.filter(data => ((!data.os && !data.arch))).map(data => (<PackageItem key={data.package_id} packageInfo={data}/>)) }
         </ListGroup>
       </div>
