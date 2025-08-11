@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Slider from "react-slick";
-import { LasoBanner } from "./banners";
 
 const ConanHomeHero = () => (
   <section id="hero" className="position-relative">
@@ -76,8 +75,8 @@ const ConanHomeHero = () => (
 );
 
 const ConanHomeAdvantages = () => (
-  <section className="advantages py-0 pt-5" id="advantages">
-    <div className="container py-0 pt-5">
+  <section className="advantages py-0 pt-1" id="advantages">
+    <div className="container py-0 pt-1">
       <div className="row justify-content-center">
         <div className="col-lg-3 pb-3 pb-lg-0">
           <div className="advantage black conan-card">
@@ -846,7 +845,6 @@ const ConanHomeUsersVoices = () => (
 export const ConanHome = () => (
   <div>
     <ConanHomeHero />
-    <LasoBanner/>
     <ConanHomeAdvantages />
     <ConanHomePlaces />
     <ConanHomeTribe />
