@@ -190,14 +190,46 @@ const ScholarshipFooter = () => (
     </section>
 );
 
+const ScholarshipEnded = () => (
+  <section id={styles.scholarshipSummary} style={{"overflow": "hidden"}}>
+    <div className="container pt-4">
+      <div className="row">
+        <div className={`col-8 ${styles.scholarshipSummaryCard}`}>
+          <div className="row">
+            <div className="col-8">
+              <h2 style={{textTransform: "none"}}>The LASO Scholarship</h2>
+              <h3>In memory of Luis Martinez de Bartolomé, &#34;Laso&#34;</h3>
+              <p>
+                The LASO Scholarship was created in memory of Luis Martinez de Bartolomé, affectionately known as &#34;Laso&#34;.
+              </p>
+              <p>
+                The scholarship application period <b>is now closed</b>. Stay tuned for our next opening.
+              </p>
+              <div className="d-block d-md-none align-content-center">
+                <img alt="Laso portrait" src="/laso/laso.png"
+                     style={{"maxWidth": "none", "width": "400px"}}/>
+              </div>
+            </div>
+            <div className="col-md-3 d-none d-md-block align-content-end overflow-visible">
+              <img alt="Laso portrait" src="/laso/laso.png"
+                   style={{"maxWidth": "none", "marginLeft": "100px", "width": "400px"}}/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
 export const LasoScholarship = () => (
     <div id={styles.scholarshipContents}>
-        <ScholarshipSummary/>
-        <ScholarshipDescription/>
-        <ScholarshipProcess/>
-        <ScholarshipApplication/>
-        <ScholarshipTimeline/>
-        <ScholarshipAboutLaso/>
-        <ScholarshipFooter/>
+        <ScholarshipEnded/>
+        {/*<ScholarshipSummary/>*/}
+        {/*<ScholarshipDescription/>*/}
+        {/*<ScholarshipProcess/>*/}
+        {/*<ScholarshipApplication/>*/}
+        {/*<ScholarshipTimeline/>*/}
+        {/*<ScholarshipAboutLaso/>*/}
+        {/*<ScholarshipFooter/>*/}
     </div>
 );
