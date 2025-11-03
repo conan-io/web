@@ -170,6 +170,15 @@ const DownloadConanPackageManager = () => {
                 gtmDownloadDescription="Ubuntu / Debian X64 Installer"
               />
               <DownloadInstaller
+                imageAlt="Debian"
+                imageSrc="/downloads/debian-small-pack.svg"
+                textToShow="Ubuntu / Debian arm64 Installer"
+                installerLink={"https://github.com/conan-io/conan/releases/download/"+ conanReleaseVersion +"/conan-"+ conanReleaseVersion +"-arm64.deb"}
+                gtmProduct={gtmProduct}
+                gtmPlatforms="debian"
+                gtmDownloadDescription="Ubuntu / Debian arm64 Installer"
+              />
+              <DownloadInstaller
                 imageAlt="Windows"
                 imageSrc="/downloads/windows-small-pack.svg"
                 textToShow="Download x86_64 Installer"
