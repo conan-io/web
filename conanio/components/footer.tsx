@@ -129,7 +129,7 @@ export const ConanFooter = () => {
                 </a>
               </li>
               <li>
-                <a onClick={() => {gtmConanPushSocial('slack')}} className="me-2" href="https://cpplang.slack.com/?id=conan">
+                <a onClick={() => {gtmConanPushSocial('slack')}} className="me-2" href="https://cppalliance.org/slack/#cpp-slack">
                   <img alt="slack" className="lazy" src="/social/slack.svg"></img>
                 </a>
               </li>
