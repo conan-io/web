@@ -42,5 +42,8 @@
     "jest-environment-jsdom": "29.7.0",
     "prettier": "3.3.2",
     "typescript": "5.5.2"
+  },
+  "resolutions": {
+    "glob": "^11.1.0"
   }
 }
