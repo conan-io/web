@@ -20,12 +20,23 @@
     "downlevelIteration": true,
     "baseUrl": ".",
     "paths": {
-      "@/styles/*": ["styles/*"],
-      "@/components/*": ["components/*"],
-      "@/components": ["components"],
-      "@/service/*": ["service/*"],
-      "@/service": ["service"]
-    }
+      "@/styles/*": [
+        "styles/*"
+      ],
+      "@/components/*": [
+        "components/*"
+      ],
+      "@/components": [
+        "components"
+      ],
+      "@/service/*": [
+        "service/*"
+      ],
+      "@/service": [
+        "service"
+      ]
+    },
+    "target": "ES2017"
   },
   "include": [
     "next-env.d.ts",
