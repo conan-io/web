@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from "react";
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -29,6 +30,7 @@ import {
     Conan1xBanner
 } from '@/components';
 import { getJson, getUrls, ConanResponse, RecipeInfo, RecipeUseIt} from '@/service';
+import { buildRecipeReferenceJsonLd, resolveSelectedRecipe } from '@/components/recipeReferenceJsonLd';
 import { LiaBalanceScaleSolid, LiaGithub } from "react-icons/lia";
 import { IoMdHome } from "react-icons/io";
 import hljs from "highlight.js";
@@ -51,7 +53,8 @@ interface PageProps  {
     //downloads?: ConanResponse<PackageDownloadsDTO>,
     readme?: string,
     recipeName?: string,
-    recipeVersion?: string
+    recipeVersion?: string,
+    jsonLd?: Record<string, unknown>,
 }
 
 type Params = {
@@ -72,6 +75,11 @@ export const getServerSideProps: GetServerSideProps<PageProps, Params> = async (
       notFound: true,
     }
   }
+  const selectedRecipe = resolveSelectedRecipe(
+    package_info_response.data as Record<string, RecipeInfo>,
+    recipeVersion
+  );
+  const jsonLd = buildRecipeReferenceJsonLd(selectedRecipe, recipeName);
   //let downloadsResponse = await getJson<ConanResponse<PackageDownloadsDTO>>(urls.package.downloads, urls.api.private)
   return {
     props: {
@@ -79,7 +87,8 @@ export const getServerSideProps: GetServerSideProps<PageProps, Params> = async (
       readme: await fetchReadme(recipeName),
       //downloads: downloadsResponse.data,
       recipeName: recipeName,
-      recipeVersion: recipeVersion
+      recipeVersion: recipeVersion,
+      jsonLd,
     },
   };
 }
@@ -381,8 +390,20 @@ const ConanPackage: NextPage<PageProps> = (props) => {
     );
   }
 
+  const jsonLdScript =
+    props.jsonLd &&
+    JSON.stringify(props.jsonLd).replace(/</g, '\\u003c');
+
   return (
     <React.StrictMode>
+      {jsonLdScript && (
+        <Head>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: jsonLdScript }}
+          />
+        </Head>
+      )}
 
       <div className="flex-wrapper bg-conan-blue">
         <ConanCenterHeader titlePrefix={recipeData.name}/>
