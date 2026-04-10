@@ -105,6 +105,22 @@ function propertyValue(name: string, value: string): Record<string, unknown> {
   return { '@type': 'PropertyValue', name, value };
 }
 
+/** Align with recipe page UI: API often sends the string `'false'` when not deprecated (truthy in JS). */
+function deprecationMessage(
+  origin: string,
+  deprecated: string | undefined
+): string | undefined {
+  if (deprecated == null || deprecated === 'false') return undefined;
+  if (deprecated === 'true') {
+    return 'This recipe is marked deprecated on Conan Center.';
+  }
+  if (!deprecated.includes(' ')) {
+    const n = encodeURIComponent(deprecated);
+    return `Deprecated; prefer package \`${deprecated}\` (${origin}/center/recipes/${n}).`;
+  }
+  return deprecated;
+}
+
 function compactVersionLines(
   origin: string,
   recipeName: string,
@@ -187,8 +203,9 @@ export function buildRecipeReferenceJsonLd(
   if (recipe.info.recipe_revision) {
     additionalProps.push(propertyValue('Recipe revision (Conan Center)', recipe.info.recipe_revision));
   }
-  if (recipe.info.deprecated) {
-    additionalProps.push(propertyValue('Deprecation', String(recipe.info.deprecated)));
+  const deprecation = deprecationMessage(origin, recipe.info.deprecated);
+  if (deprecation) {
+    additionalProps.push(propertyValue('Deprecation', deprecation));
   }
 
   const useIt = recipe.use_it;
