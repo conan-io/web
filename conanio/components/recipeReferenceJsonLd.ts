@@ -1,4 +1,4 @@
-import type { PackageInfo, RecipeInfo, RecipeUseItContent } from '@/service';
+import type { RecipeInfo, RecipeUseItContent } from '@/service';
 import { getSiteOrigin } from '@/service/siteOrigin';
 
 export function resolveSelectedRecipe(
@@ -42,7 +42,7 @@ function keywordsFromLabels(labels: RecipeInfo['info']['labels']): string[] | un
   return keys.length ? keys : undefined;
 }
 
-/** Mirrors TargetsInfo / HeadersInfo in recipeTabs.tsx for JSON-LD and SEO. */
+/** Mirrors TargetsInfo / HeadersInfo in recipeTabs.tsx. */
 function buildUseItTargetsSummary(
   recipeName: string,
   useIt: RecipeUseItContent
@@ -101,19 +101,32 @@ function buildUseItTargetsSummary(
   };
 }
 
-function packageSummaryLine(pkg: PackageInfo): string {
-  const parts = [pkg.os, pkg.arch, pkg.compiler, pkg.build_type].filter(Boolean);
-  if (parts.length) return parts.join(' / ');
-  return 'Header-only (no os/arch profile)';
-}
-
 function propertyValue(name: string, value: string): Record<string, unknown> {
   return { '@type': 'PropertyValue', name, value };
 }
 
+function compactVersionLines(
+  origin: string,
+  recipeName: string,
+  recipeNameFromPath: string,
+  entries: RecipeInfo[]
+): string {
+  return entries
+    .map((r) => {
+      const v = r.info.version;
+      const u = recipePageUrl(origin, recipeNameFromPath, v);
+      const meta = [r.info.status && `status ${r.info.status}`, r.info.timestamp && `updated ${r.info.timestamp}`]
+        .filter(Boolean)
+        .join(', ');
+      const head = meta ? `${recipeName}/${v} (${meta})` : `${recipeName}/${v}`;
+      return `${head}\n${u}`;
+    })
+    .join('\n\n');
+}
+
 /**
- * JSON-LD @graph for Conan Center recipe reference pages (aligned with /llms.txt URL pattern).
- * Includes use-it targets/headers, packages, dependencies, and all recipe versions when `allVersions` is passed.
+ * JSON-LD @graph optimized for LLM consumption: one primary SoftwareSourceCode node,
+ * optional dependency ItemLists, no SEO-only nodes (WebSite, WebPage, breadcrumbs, binary IDs).
  */
 export function buildRecipeReferenceJsonLd(
   recipe: RecipeInfo,
@@ -123,13 +136,12 @@ export function buildRecipeReferenceJsonLd(
   const origin = getSiteOrigin();
   const version = recipe.info.version;
   const pageUrl = recipePageUrl(origin, recipeNameFromPath, version);
-  const pageId = `${pageUrl}#webpage`;
   const codeId = `${pageUrl}#recipe`;
-  const breadcrumbId = `${pageUrl}#breadcrumb`;
   const description = recipe.info.description?.trim() || undefined;
   const licenses = licensesForSchema(recipe.info.licenses);
   const keywords = keywordsFromLabels(recipe.info.labels);
   const githubRepo = `https://github.com/conan-io/conan-center-index/tree/master/recipes/${recipeNameFromPath}`;
+  const conanRef = `${recipe.name}/${version}`;
 
   const softwareSourceCode: Record<string, unknown> = {
     '@type': 'SoftwareSourceCode',
@@ -144,8 +156,40 @@ export function buildRecipeReferenceJsonLd(
   if (licenses) softwareSourceCode.license = licenses;
   if (keywords?.length) softwareSourceCode.keywords = keywords.join(', ');
 
+  if (recipe.info.timestamp) {
+    const iso = /^\d{4}-\d{2}-\d{2}/.test(recipe.info.timestamp)
+      ? `${recipe.info.timestamp}T00:00:00.000Z`
+      : undefined;
+    if (iso) softwareSourceCode.dateModified = iso;
+  }
+
   const additionalProps: Record<string, unknown>[] = [];
-  const aboutRefs: { '@id': string }[] = [];
+
+  additionalProps.push(propertyValue('Conan package reference', conanRef));
+  additionalProps.push(
+    propertyValue('Conan 2 CLI (example)', `conan install --requires=${conanRef}`)
+  );
+  additionalProps.push(
+    propertyValue(
+      'conanfile.txt (fragment)',
+      `[requires]\n${conanRef}`
+    )
+  );
+
+  const homepage = recipe.info.homepage?.trim();
+  if (homepage) {
+    additionalProps.push(propertyValue('Upstream project homepage', homepage));
+  }
+
+  if (recipe.info.status) {
+    additionalProps.push(propertyValue('Recipe status (Conan Center)', recipe.info.status));
+  }
+  if (recipe.info.recipe_revision) {
+    additionalProps.push(propertyValue('Recipe revision (Conan Center)', recipe.info.recipe_revision));
+  }
+  if (recipe.info.deprecated) {
+    additionalProps.push(propertyValue('Deprecation', String(recipe.info.deprecated)));
+  }
 
   const useIt = recipe.use_it;
   if (useIt) {
@@ -153,7 +197,7 @@ export function buildRecipeReferenceJsonLd(
     if (!isToolRecipe) {
       const targets = buildUseItTargetsSummary(recipe.name, useIt);
       if (targets) {
-        additionalProps.push(propertyValue('CMake package name(s)', targets.cmakePackageName));
+        additionalProps.push(propertyValue('CMake find package name(s)', targets.cmakePackageName));
         additionalProps.push(propertyValue('CMake target name(s)', targets.cmakeTargetName));
         additionalProps.push(propertyValue('pkg-config file name(s)', targets.pkgConfigName));
         if (targets.componentCmakeTargets.length) {
@@ -172,98 +216,22 @@ export function buildRecipeReferenceJsonLd(
         additionalProps.push(propertyValue('Public headers (include paths)', sorted.join('\n')));
       }
     }
-    if (useIt.requires?.length) {
-      const depsId = `${pageUrl}#dependencies-requires`;
-      aboutRefs.push({ '@id': depsId });
-    }
-    if (useIt.build_requires?.length) {
-      const depsId = `${pageUrl}#dependencies-build-requires`;
-      aboutRefs.push({ '@id': depsId });
-    }
-  }
-
-  const pkgs = recipe.info.packages ? Object.values(recipe.info.packages) : [];
-  if (pkgs.length) {
-    aboutRefs.push({ '@id': `${pageUrl}#binary-packages` });
   }
 
   if (allVersions && Object.keys(allVersions).length > 0) {
-    aboutRefs.push({ '@id': `${pageUrl}#recipe-versions` });
+    const lines = compactVersionLines(origin, recipe.name, recipeNameFromPath, Object.values(allVersions));
+    additionalProps.push(propertyValue('All versions on Conan Center (name, status, recipe page URL)', lines));
   }
 
-  if (additionalProps.length) {
-    softwareSourceCode.additionalProperty = additionalProps;
-  }
-  if (aboutRefs.length) {
-    softwareSourceCode.about = aboutRefs.length === 1 ? aboutRefs[0] : aboutRefs;
-  }
+  softwareSourceCode.additionalProperty = additionalProps;
 
-  const breadcrumbList = {
-    '@type': 'BreadcrumbList',
-    '@id': breadcrumbId,
-    itemListElement: [
-      {
-        '@type': 'ListItem',
-        position: 1,
-        name: 'Home',
-        item: `${origin}/`,
-      },
-      {
-        '@type': 'ListItem',
-        position: 2,
-        name: 'Conan Center',
-        item: `${origin}/center`,
-      },
-      {
-        '@type': 'ListItem',
-        position: 3,
-        name: `${recipe.name}/${version}`,
-        item: pageUrl,
-      },
-    ],
-  };
-
-  const webPage: Record<string, unknown> = {
-    '@type': 'WebPage',
-    '@id': pageId,
-    url: pageUrl,
-    name: `${recipe.name}/${version} | Conan Center`,
-    inLanguage: 'en',
-    isPartOf: { '@id': `${origin}/#website` },
-    breadcrumb: { '@id': breadcrumbId },
-    mainEntity: { '@id': codeId },
-  };
-
-  if (description) webPage.description = description;
-  if (recipe.info.timestamp) {
-    const iso = /^\d{4}-\d{2}-\d{2}/.test(recipe.info.timestamp)
-      ? `${recipe.info.timestamp}T00:00:00.000Z`
-      : undefined;
-    if (iso) webPage.dateModified = iso;
-  }
-
-  const graph: Record<string, unknown>[] = [
-    {
-      '@type': 'WebSite',
-      '@id': `${origin}/#website`,
-      url: origin,
-      name: 'Conan',
-      publisher: {
-        '@type': 'Organization',
-        name: 'Conan',
-        url: origin,
-      },
-    },
-    breadcrumbList,
-    softwareSourceCode,
-    webPage,
-  ];
+  const graph: Record<string, unknown>[] = [softwareSourceCode];
 
   if (useIt?.requires?.length) {
     graph.push({
       '@type': 'ItemList',
       '@id': `${pageUrl}#dependencies-requires`,
-      name: 'Recipe dependencies (requires)',
+      name: 'Runtime dependencies (requires)',
       numberOfItems: useIt.requires.length,
       itemListElement: useIt.requires.map((req, i) => {
         const [depName, depVersion] = req.split('/');
@@ -281,7 +249,7 @@ export function buildRecipeReferenceJsonLd(
     graph.push({
       '@type': 'ItemList',
       '@id': `${pageUrl}#dependencies-build-requires`,
-      name: 'Recipe dependencies (tool requirements / build_requires)',
+      name: 'Tool requirements (build_requires)',
       numberOfItems: useIt.build_requires.length,
       itemListElement: useIt.build_requires.map((req, i) => {
         const [depName, depVersion] = req.split('/');
@@ -293,46 +261,6 @@ export function buildRecipeReferenceJsonLd(
         };
       }),
     });
-  }
-
-  if (pkgs.length) {
-    graph.push({
-      '@type': 'ItemList',
-      '@id': `${pageUrl}#binary-packages`,
-      name: 'Binary packages (Conan package IDs)',
-      numberOfItems: pkgs.length,
-      itemListElement: pkgs.map((pkg, i) => ({
-        '@type': 'ListItem',
-        position: i + 1,
-        name: pkg.package_id || `package-${i}`,
-        description: packageSummaryLine(pkg),
-      })),
-    });
-  }
-
-  if (allVersions) {
-    const versionEntries = Object.values(allVersions);
-    if (versionEntries.length) {
-      graph.push({
-        '@type': 'ItemList',
-        '@id': `${pageUrl}#recipe-versions`,
-        name: 'Published recipe versions',
-        numberOfItems: versionEntries.length,
-        itemListElement: versionEntries.map((r, i) => ({
-          '@type': 'ListItem',
-          position: i + 1,
-          name: `${recipe.name}/${r.info.version}`,
-          item: recipePageUrl(origin, recipeNameFromPath, r.info.version),
-          description: [
-            r.info.status && `status: ${r.info.status}`,
-            r.info.timestamp && `updated: ${r.info.timestamp}`,
-            r.info.recipe_revision && `recipe revision: ${r.info.recipe_revision}`,
-          ]
-            .filter(Boolean)
-            .join('; '),
-        })),
-      });
-    }
   }
 
   return {
