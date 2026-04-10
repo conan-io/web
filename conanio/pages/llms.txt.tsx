@@ -1,7 +1,14 @@
 import { GetServerSideProps } from 'next';
+import { getJsonList, getUrls, RecipeBasic } from '@/service';
 import { getSiteOrigin } from '@/service/siteOrigin';
 
-function generateLlmsTxt(origin: string): string {
+function recipeReferenceUrl(origin: string, recipe: RecipeBasic): string {
+  const name = encodeURIComponent(recipe.name);
+  const version = encodeURIComponent(recipe.version || '');
+  return `${origin}/center/recipes/${name}?version=${version}`;
+}
+
+function generateLlmsTxt(origin: string, popular: RecipeBasic[]): string {
   const host = (() => {
     try {
       return new URL(origin).host;
@@ -10,36 +17,62 @@ function generateLlmsTxt(origin: string): string {
     }
   })();
 
-  return `# Conan.io
+  const popularBlock =
+    popular.length > 0
+      ? `## Popular recipes
 
-> Conan.io hosts marketing pages; the only site content that is useful for automated access is **ConanCenter recipe reference** pages: metadata, versions, and usage snippets for each package.
+Same list and ranking as **Popular recipes** on [Conan Center](${origin}/center) (most downloaded recipes in the last 30 days).
 
-The canonical public deployment for this build is **${origin}** (HTML pages). For installing Conan, authoring recipes, and CLI reference, use the official documentation at https://docs.conan.io/ (Conan 2.x). Individual recipes use \`${origin}/center/recipes/{recipeName}\`.
+${popular.map((r) => `- [${r.name}](${recipeReferenceUrl(origin, r)})`).join('\n')}
 
-## ConanCenter recipe pages (reference)
+`
+      : '';
 
-Each public recipe has one HTML page. That is the only URL pattern on **${host}** that agents should fetch for package metadata.
+  return `# Conan.io — ConanCenter package index
 
-- **Path:** \`${origin}/center/recipes/{recipeName}\`  
-  \`{recipeName}\` is the recipe name as in ConanCenter (e.g. \`zlib\`, \`openssl\`).
+> ConanCenter hosts 1500+ open-source C/C++ packages curated for Conan. On **${host}** you can browse recipe metadata, versions, licenses, dependencies, and usage-oriented details for each package.
+> For installing Conan, tutorials, CLI reference, and authoring recipes, use the official documentation at https://docs.conan.io/ (Conan 2.x).
 
-- **Reference version (query string):** add \`?version={version}\` to open a specific recipe version.  
-  \`{version}\` is the exact version string for that recipe (as shown on the page, e.g. \`1.3.1\`). Use URL encoding when the version contains characters that must be escaped (the server decodes the \`version\` query parameter). If \`version\` is omitted, the page defaults to an available version (typically the current maintained one).
+This deployment serves HTML from **${origin}**. Recipe pages follow:
 
-- **Example:** \`${origin}/center/recipes/zlib?version=1.3.1\`
+\`${origin}/center/recipes/{recipeName}\`
 
-Recipe rows that are deprecated or unmaintained may be labeled as shown “for reference only” in the UI; they use the **same** URL pattern.
+Use \`{recipeName}\` as in ConanCenter (e.g. \`zlib\`, \`openssl\`).
 
-## Optional
+## Recipe reference URLs
 
-- [Conan documentation](https://docs.conan.io/): Official Conan 2.x documentation (install, CLI, recipes, consuming packages — not hosted on this marketing site).
-- [Blog](https://blog.conan.io/): Articles and release notes (separate site).
-- [Conan Audit](https://audit.conan.io/): Security audit service (separate site).
+Each public recipe has one HTML page under that path. Prefer these URLs when you need machine-oriented package metadata from this site.
+
+- **Path:** \`${origin}/center/recipes/{recipeName}\`
+
+- **Version (query string):** \`?version={version}\` opens a specific recipe version. \`{version}\` is the exact version string shown on the page (e.g. \`1.3.1\`). URL-encode the value when needed; the server decodes the \`version\` query parameter. If omitted, the page picks a default version (typically a current maintained one).
+
+- **Examples (this deployment):**
+  - Default / latest context: \`${origin}/center/recipes/zlib\`
+  - Pinned version: \`${origin}/center/recipes/zlib?version=1.3.1\`
+
+Deprecated or unmaintained versions may be labeled in the UI; they use the **same** URL pattern.
+
+${popularBlock}## Other useful links (off this origin)
+
+- [Conan documentation](https://docs.conan.io/): Official Conan 2.x docs (install, CLI, recipes, consuming packages).
+- [Blog](https://blog.conan.io/): Articles and release notes.
+- [Conan Audit](https://audit.conan.io/): Security audit service.
 `;
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ res }) => {
-  const body = generateLlmsTxt(getSiteOrigin());
+  const origin = getSiteOrigin();
+  let popular: RecipeBasic[] = [];
+  try {
+    const urls = getUrls();
+    const popularResponse = await getJsonList<RecipeBasic>(urls.popular, urls.api.private);
+    popular = popularResponse.data;
+  } catch {
+    /* same endpoint as /center; if it fails, omit Popular recipes block */
+  }
+
+  const body = generateLlmsTxt(origin, popular);
   res.setHeader('Content-Type', 'text/plain; charset=utf-8');
   res.write(body);
   res.end();

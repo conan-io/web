@@ -79,7 +79,24 @@ export const getServerSideProps: GetServerSideProps<PageProps, Params> = async (
     package_info_response.data as Record<string, RecipeInfo>,
     recipeVersion
   );
-  const jsonLd = buildRecipeReferenceJsonLd(selectedRecipe, recipeName);
+
+  let recipeForJsonLd: RecipeInfo = selectedRecipe;
+  try {
+    const useItResp = await getJson<ConanResponse<RecipeUseIt>>(urls.package.useIt, urls.api.private);
+    const byVersion = useItResp.data as Record<string, RecipeUseIt>;
+    const entry = byVersion[selectedRecipe.info.version];
+    if (entry?.use_it) {
+      recipeForJsonLd = { ...selectedRecipe, use_it: entry.use_it };
+    }
+  } catch {
+    /* optional: same as client when use_it is unavailable */
+  }
+
+  const jsonLd = buildRecipeReferenceJsonLd(
+    recipeForJsonLd,
+    recipeName!,
+    package_info_response.data as Record<string, RecipeInfo>
+  );
   //let downloadsResponse = await getJson<ConanResponse<PackageDownloadsDTO>>(urls.package.downloads, urls.api.private)
   return {
     props: {

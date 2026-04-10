@@ -36,15 +36,17 @@ export interface RecipeInfo {
   use_it?: RecipeUseItContent;
 }
 
-interface RecipeUseItContent {
+export interface RecipeUseItContent {
   build_requires: string[];
-  components_properties?: any;
+  components_properties?: Record<string, Record<string, string>>;
   headers: string[];
   package_type: string;
   properties: {
     cmake_find_mode?: string;
     cmake_file_name?: string;
     cmake_target_name?: string;
+    cmake_module_file_name?: string;
+    cmake_module_target_name?: string;
     pkg_config_name?: string;
   };
   requires: string[];
