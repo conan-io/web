@@ -1,5 +1,5 @@
 import type { RecipeInfo, RecipeUseItContent } from '@/service';
-import { getSiteOrigin } from '@/service/siteOrigin';
+import { getSiteOrigin, recipeReferencePageUrl } from '@/service';
 
 export function resolveSelectedRecipe(
   data: Record<string, RecipeInfo>,
@@ -14,12 +14,6 @@ export function resolveSelectedRecipe(
     if (found) return found;
   }
   return entries[0];
-}
-
-function recipePageUrl(origin: string, recipeName: string, version: string): string {
-  const v = encodeURIComponent(version);
-  const n = encodeURIComponent(recipeName);
-  return `${origin}/center/recipes/${n}?version=${v}`;
 }
 
 function licensesForSchema(licenses: RecipeInfo['info']['licenses']): string | string[] | undefined {
@@ -121,23 +115,42 @@ function deprecationMessage(
   return deprecated;
 }
 
-function compactVersionLines(
-  origin: string,
-  recipeName: string,
-  recipeNameFromPath: string,
-  entries: RecipeInfo[]
-): string {
+function compactVersionLines(origin: string, recipeNameFromPath: string, entries: RecipeInfo[]): string {
   return entries
     .map((r) => {
       const v = r.info.version;
-      const u = recipePageUrl(origin, recipeNameFromPath, v);
+      const u = recipeReferencePageUrl(origin, recipeNameFromPath, v);
       const meta = [r.info.status && `status ${r.info.status}`, r.info.timestamp && `updated ${r.info.timestamp}`]
         .filter(Boolean)
         .join(', ');
-      const head = meta ? `${recipeName}/${v} (${meta})` : `${recipeName}/${v}`;
+      const head = meta ? `${r.name}/${v} (${meta})` : `${r.name}/${v}`;
       return `${head}\n${u}`;
     })
     .join('\n\n');
+}
+
+function dependencyItemList(
+  pageUrl: string,
+  origin: string,
+  fragment: string,
+  title: string,
+  refs: string[]
+): Record<string, unknown> {
+  return {
+    '@type': 'ItemList',
+    '@id': `${pageUrl}#${fragment}`,
+    name: title,
+    numberOfItems: refs.length,
+    itemListElement: refs.map((req, i) => {
+      const [depName, depVersion] = req.split('/');
+      return {
+        '@type': 'ListItem',
+        position: i + 1,
+        name: req,
+        item: recipeReferencePageUrl(origin, depName, depVersion ?? ''),
+      };
+    }),
+  };
 }
 
 /**
@@ -151,7 +164,7 @@ export function buildRecipeReferenceJsonLd(
 ): Record<string, unknown> {
   const origin = getSiteOrigin();
   const version = recipe.info.version;
-  const pageUrl = recipePageUrl(origin, recipeNameFromPath, version);
+  const pageUrl = recipeReferencePageUrl(origin, recipeNameFromPath, version);
   const codeId = `${pageUrl}#recipe`;
   const description = recipe.info.description?.trim() || undefined;
   const licenses = licensesForSchema(recipe.info.licenses);
@@ -236,7 +249,7 @@ export function buildRecipeReferenceJsonLd(
   }
 
   if (allVersions && Object.keys(allVersions).length > 0) {
-    const lines = compactVersionLines(origin, recipe.name, recipeNameFromPath, Object.values(allVersions));
+    const lines = compactVersionLines(origin, recipeNameFromPath, Object.values(allVersions));
     additionalProps.push(propertyValue('All versions on Conan Center (name, status, recipe page URL)', lines));
   }
 
@@ -245,39 +258,21 @@ export function buildRecipeReferenceJsonLd(
   const graph: Record<string, unknown>[] = [softwareSourceCode];
 
   if (useIt?.requires?.length) {
-    graph.push({
-      '@type': 'ItemList',
-      '@id': `${pageUrl}#dependencies-requires`,
-      name: 'Runtime dependencies (requires)',
-      numberOfItems: useIt.requires.length,
-      itemListElement: useIt.requires.map((req, i) => {
-        const [depName, depVersion] = req.split('/');
-        return {
-          '@type': 'ListItem',
-          position: i + 1,
-          name: req,
-          item: recipePageUrl(origin, depName, depVersion ?? ''),
-        };
-      }),
-    });
+    graph.push(
+      dependencyItemList(pageUrl, origin, 'dependencies-requires', 'Runtime dependencies (requires)', useIt.requires)
+    );
   }
 
   if (useIt?.build_requires?.length) {
-    graph.push({
-      '@type': 'ItemList',
-      '@id': `${pageUrl}#dependencies-build-requires`,
-      name: 'Tool requirements (build_requires)',
-      numberOfItems: useIt.build_requires.length,
-      itemListElement: useIt.build_requires.map((req, i) => {
-        const [depName, depVersion] = req.split('/');
-        return {
-          '@type': 'ListItem',
-          position: i + 1,
-          name: req,
-          item: recipePageUrl(origin, depName, depVersion ?? ''),
-        };
-      }),
-    });
+    graph.push(
+      dependencyItemList(
+        pageUrl,
+        origin,
+        'dependencies-build-requires',
+        'Tool requirements (build_requires)',
+        useIt.build_requires
+      )
+    );
   }
 
   return {

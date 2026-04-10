@@ -1,21 +1,16 @@
 import { GetServerSideProps } from 'next';
-import { getJsonList, getUrls, RecipeBasic } from '@/service';
-import { getSiteOrigin } from '@/service/siteOrigin';
+import { getJsonList, getSiteOrigin, getUrls, RecipeBasic, recipeReferencePageUrl } from '@/service';
 
-function recipeReferenceUrl(origin: string, recipe: RecipeBasic): string {
-  const name = encodeURIComponent(recipe.name);
-  const version = encodeURIComponent(recipe.version || '');
-  return `${origin}/center/recipes/${name}?version=${version}`;
+function llmsHostLabel(origin: string): string {
+  try {
+    return new URL(origin).host;
+  } catch {
+    return 'conan.io';
+  }
 }
 
 function generateLlmsTxt(origin: string, popular: RecipeBasic[]): string {
-  const host = (() => {
-    try {
-      return new URL(origin).host;
-    } catch {
-      return 'conan.io';
-    }
-  })();
+  const host = llmsHostLabel(origin);
 
   const popularBlock =
     popular.length > 0
@@ -23,7 +18,7 @@ function generateLlmsTxt(origin: string, popular: RecipeBasic[]): string {
 
 Same list and ranking as **Popular recipes** on [Conan Center](${origin}/center) (most downloaded recipes in the last 30 days).
 
-${popular.map((r) => `- [${r.name}](${recipeReferenceUrl(origin, r)})`).join('\n')}
+${popular.map((r) => `- [${r.name}](${recipeReferencePageUrl(origin, r.name, r.version || '')})`).join('\n')}
 
 `
       : '';
