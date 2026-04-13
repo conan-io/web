@@ -6,20 +6,20 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "format": "prettier . --check",
     "format:fix": "prettier . --write",
     "test": "jest --watch",
     "test:ci": "jest --ci"
   },
   "dependencies": {
-    "@isaacs/brace-expansion": "^5.0.1",
+    "brace-expansion": "^5.0.5",
     "bootstrap": "^5.3.3",
     "diff": "^5.2.2",
     "highlight.js": "11.8.0",
     "install": "^0.13.0",
-    "lodash": "^4.17.23",
-    "next": "^16.1.7",
+    "lodash": "^4.18.0",
+    "next": "^16.2.3",
     "npm": "^11.8.0",
     "react": "19.2.1",
     "react-bootstrap": "^2.4.0",
@@ -41,9 +41,9 @@
     "@testing-library/user-event": "14.2.0",
     "@types/react": "19.2.1",
     "@types/react-dom": "19.2.1",
-    "eslint": "^8.56.0",
-    "eslint-config-next": "^15.5.10",
-    "eslint-config-prettier": "^9.1.0",
+    "eslint": "^9.22.0",
+    "eslint-config-next": "^16.2.3",
+    "eslint-config-prettier": "^10.1.8",
     "jest": "28.1.0",
     "jest-environment-jsdom": "29.7.0",
     "prettier": "3.3.2",
@@ -51,9 +51,13 @@
   },
   "resolutions": {
     "@tootallnate/once": "^3.0.1",
+    "brace-expansion": "^5.0.5",
     "flatted": "^3.4.2",
     "glob": "^11.1.0",
+    "lodash": "^4.18.0",
     "minimatch": "^10.2.3",
-    "tar": "^7.5.11"
+    "picomatch": "^4.0.4",
+    "tar": "^7.5.11",
+    "yaml": "^1.10.3"
   }
 }
