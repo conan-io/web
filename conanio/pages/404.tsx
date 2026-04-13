@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { SiConan } from 'react-icons/si';
@@ -8,13 +7,7 @@ import { ConanKitchenHeader, ConanFooter } from '@/components';
 
 export default function NotFound() {
   const pathname = usePathname();
-  const [isRecipePath, setIsRecipePath] = useState(false);
-
-  useEffect(() => {
-    if (pathname?.startsWith('/center/recipes')) {
-      setIsRecipePath(true);
-    }
-  }, [pathname]);
+  const isRecipePath = Boolean(pathname?.startsWith('/center/recipes'));
 
   const buttonHref = isRecipePath ? '/center' : '/';
   const buttonText = isRecipePath ? 'Return to ConanCenter' : 'Return to the Conan home';
