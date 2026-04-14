@@ -115,47 +115,24 @@ function deprecationMessage(
   return deprecated;
 }
 
-function compactVersionLines(origin: string, recipeNameFromPath: string, entries: RecipeInfo[]): string {
-  return entries
-    .map((r) => {
-      const v = r.info.version;
-      const u = recipeReferencePageUrl(origin, recipeNameFromPath, v);
-      const meta = [r.info.status && `status ${r.info.status}`, r.info.timestamp && `updated ${r.info.timestamp}`]
-        .filter(Boolean)
-        .join(', ');
-      const head = meta ? `${r.name}/${v} (${meta})` : `${r.name}/${v}`;
-      return `${head}\n${u}`;
-    })
-    .join('\n\n');
+/** All recipe versions as a single comma-separated list (order follows API / object values). */
+function allVersionsCommaSeparated(entries: RecipeInfo[]): string {
+  return entries.map((r) => r.info.version).join(', ');
 }
 
-function dependencyItemList(
-  pageUrl: string,
-  origin: string,
-  fragment: string,
-  title: string,
-  refs: string[]
-): Record<string, unknown> {
-  return {
-    '@type': 'ItemList',
-    '@id': `${pageUrl}#${fragment}`,
-    name: title,
-    numberOfItems: refs.length,
-    itemListElement: refs.map((req, i) => {
+function dependencyRefsSummary(origin: string, refs: string[]): string {
+  return refs
+    .map((req) => {
       const [depName, depVersion] = req.split('/');
-      return {
-        '@type': 'ListItem',
-        position: i + 1,
-        name: req,
-        item: recipeReferencePageUrl(origin, depName, depVersion ?? ''),
-      };
-    }),
-  };
+      const page = recipeReferencePageUrl(origin, depName, depVersion ?? '');
+      return `${req} (${page})`;
+    })
+    .join(', ');
 }
 
 /**
- * JSON-LD @graph optimized for LLM consumption: one primary SoftwareSourceCode node,
- * optional dependency ItemLists, no SEO-only nodes (WebSite, WebPage, breadcrumbs, binary IDs).
+ * JSON-LD (single SoftwareSourceCode object) for LLM consumption: optional dependency lines in
+ * additionalProperty, no SEO-only nodes (WebSite, WebPage, breadcrumbs, binary IDs).
  */
 export function buildRecipeReferenceJsonLd(
   recipe: RecipeInfo,
@@ -249,34 +226,26 @@ export function buildRecipeReferenceJsonLd(
   }
 
   if (allVersions && Object.keys(allVersions).length > 0) {
-    const lines = compactVersionLines(origin, recipeNameFromPath, Object.values(allVersions));
-    additionalProps.push(propertyValue('All versions on Conan Center (name, status, recipe page URL)', lines));
+    const versions = allVersionsCommaSeparated(Object.values(allVersions));
+    additionalProps.push(propertyValue('All versions on Conan Center', versions));
   }
 
-  softwareSourceCode.additionalProperty = additionalProps;
-
-  const graph: Record<string, unknown>[] = [softwareSourceCode];
-
   if (useIt?.requires?.length) {
-    graph.push(
-      dependencyItemList(pageUrl, origin, 'dependencies-requires', 'Runtime dependencies (requires)', useIt.requires)
+    additionalProps.push(
+      propertyValue('Runtime dependencies (requires)', dependencyRefsSummary(origin, useIt.requires))
     );
   }
 
   if (useIt?.build_requires?.length) {
-    graph.push(
-      dependencyItemList(
-        pageUrl,
-        origin,
-        'dependencies-build-requires',
-        'Tool requirements (build_requires)',
-        useIt.build_requires
-      )
+    additionalProps.push(
+      propertyValue('Tool requirements (build_requires)', dependencyRefsSummary(origin, useIt.build_requires))
     );
   }
 
+  softwareSourceCode.additionalProperty = additionalProps;
+
   return {
     '@context': 'https://schema.org',
-    '@graph': graph,
+    ...softwareSourceCode,
   };
 }

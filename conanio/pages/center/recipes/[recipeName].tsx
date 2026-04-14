@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Container from 'react-bootstrap/Container';
@@ -54,7 +54,6 @@ interface PageProps  {
     readme?: string,
     recipeName?: string,
     recipeVersion?: string,
-    jsonLd?: Record<string, unknown>,
 }
 
 type Params = {
@@ -75,37 +74,33 @@ export const getServerSideProps: GetServerSideProps<PageProps, Params> = async (
       notFound: true,
     }
   }
-  const selectedRecipe = resolveSelectedRecipe(
-    package_info_response.data as Record<string, RecipeInfo>,
-    recipeVersion
-  );
 
-  let recipeForJsonLd: RecipeInfo = selectedRecipe;
+  const data = package_info_response.data as Record<string, RecipeInfo>;
+  const selectedRecipe = resolveSelectedRecipe(data, recipeVersion);
   try {
     const useItResp = await getJson<ConanResponse<RecipeUseIt>>(urls.package.useIt, urls.api.private);
     const byVersion = useItResp.data as Record<string, RecipeUseIt>;
     const entry = byVersion[selectedRecipe.info.version];
     if (entry?.use_it) {
-      recipeForJsonLd = { ...selectedRecipe, use_it: entry.use_it };
+      for (const [k, v] of Object.entries(data)) {
+        if (v.info.version === selectedRecipe.info.version) {
+          data[k] = { ...v, use_it: entry.use_it };
+          break;
+        }
+      }
     }
   } catch {
-    /* optional: same as client when use_it is unavailable */
+    /* optional: same as when use_it is unavailable */
   }
 
-  const jsonLd = buildRecipeReferenceJsonLd(
-    recipeForJsonLd,
-    recipeName!,
-    package_info_response.data as Record<string, RecipeInfo>
-  );
   //let downloadsResponse = await getJson<ConanResponse<PackageDownloadsDTO>>(urls.package.downloads, urls.api.private)
   return {
     props: {
-      data: package_info_response.data,
+      data,
       readme: await fetchReadme(recipeName),
       //downloads: downloadsResponse.data,
       recipeName: recipeName,
       recipeVersion: recipeVersion,
-      jsonLd,
     },
   };
 }
@@ -170,6 +165,17 @@ const ConanPackage: NextPage<PageProps> = (props) => {
     };
     fetchData();
   },[]);
+
+  const jsonLdScript = useMemo(() => {
+    if (!props.data || !props.recipeName) return null;
+    let idx = Object.keys(props.data).filter((index) => props.data![index].info.version === selectedVersion)[0];
+    if (idx == null) {
+      idx = '0';
+    }
+    const recipe = props.data[idx];
+    if (!recipe) return null;
+    return JSON.stringify(buildRecipeReferenceJsonLd(recipe, props.recipeName, props.data)).replace(/</g, '\\u003c');
+  }, [props.data, props.recipeName, selectedVersion, useItLoading]);
 
   if (!props.data) return (<div>Loading...</div>);
   const recipeData = props.data[indexSelectedVersion];
@@ -406,10 +412,6 @@ const ConanPackage: NextPage<PageProps> = (props) => {
       undefined
     );
   }
-
-  const jsonLdScript =
-    props.jsonLd &&
-    JSON.stringify(props.jsonLd).replace(/</g, '\\u003c');
 
   return (
     <React.StrictMode>
