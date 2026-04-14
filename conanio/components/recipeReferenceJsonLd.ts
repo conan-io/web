@@ -218,10 +218,11 @@ export function buildRecipeReferenceJsonLd(
           );
         }
       }
-      if (useIt.headers?.length) {
-        const sorted = [...useIt.headers].sort();
-        additionalProps.push(propertyValue('Public headers (include paths)', sorted.join('\n')));
-      }
+      // Omitted from JSON-LD: listing every include path blows up payload size on large recipes (e.g. ncbi-cxx-toolkit-public).
+      // if (useIt.headers?.length) {
+      //   const sorted = [...useIt.headers].sort();
+      //   additionalProps.push(propertyValue('Public headers (include paths)', sorted.join('\n')));
+      // }
     }
   }
 
