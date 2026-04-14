@@ -18,7 +18,14 @@ function generateLlmsTxt(origin: string, popular: RecipeBasic[]): string {
 
 Same list and ranking as **Popular recipes** on [Conan Center](${origin}/center) (most downloaded recipes in the last 30 days).
 
-${popular.map((r) => `- [${r.name}](${recipeReferencePageUrl(origin, r.name, r.version || '')})`).join('\n')}
+${popular
+    .map((r) => {
+      const href = r.version
+        ? recipeReferencePageUrl(origin, r.name, r.version)
+        : `${origin}/center/recipes/${encodeURIComponent(r.name)}`;
+      return `- [${r.name}](${href})`;
+    })
+    .join('\n')}
 
 `
       : '';
@@ -34,19 +41,15 @@ This deployment serves HTML from **${origin}**. Recipe pages follow:
 
 Use \`{recipeName}\` as in ConanCenter (e.g. \`zlib\`, \`openssl\`).
 
-## Recipe reference URLs
+## Recipe pages
 
-Each public recipe has one HTML page under that path. Prefer these URLs when you need machine-oriented package metadata from this site.
+- Pattern: \`${origin}/center/recipes/{name}?version={version}\`
+- Example: \`${origin}/center/recipes/zlib?version=1.3.1\`
+- If \`version\` is omitted, defaults to the latest maintained version.
 
-- **Path:** \`${origin}/center/recipes/{recipeName}\`
+## Machine-readable data
 
-- **Version (query string):** \`?version={version}\` opens a specific recipe version. \`{version}\` is the exact version string shown on the page (e.g. \`1.3.1\`). URL-encode the value when needed; the server decodes the \`version\` query parameter. If omitted, the page picks a default version (typically a current maintained one).
-
-- **Examples (this deployment):**
-  - Default / latest context: \`${origin}/center/recipes/zlib\`
-  - Pinned version: \`${origin}/center/recipes/zlib?version=1.3.1\`
-
-Deprecated or unmaintained versions may be labeled in the UI; they use the **same** URL pattern.
+Recipe pages embed JSON-LD (\`<script type="application/ld+json">\`) with structured package metadata: version, license, dependencies, CMake/pkg-config targets, install commands, and all available versions.
 
 ${popularBlock}## Other useful links (off this origin)
 
