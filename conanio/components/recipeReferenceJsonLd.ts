@@ -53,21 +53,9 @@ function buildUseItTargetsSummary(
   const root = useIt.properties as Record<string, string | undefined>;
   if (root.cmake_find_mode === 'none') return undefined;
 
-  const getCMakePropertyValue = (configProperty: string, moduleProperty: string): string => {
-    const defaultName =
-      configProperty === 'cmake_target_name' ? `${recipeName}::${recipeName}` : recipeName;
-    const name = root[configProperty] ?? defaultName;
-    if (root.cmake_find_mode === 'module' && root[moduleProperty]) {
-      return String(root[moduleProperty]);
-    }
-    if (root.cmake_find_mode === 'both' && root[moduleProperty]) {
-      return `${name} (config), ${root[moduleProperty]} (module)`;
-    }
-    return String(name);
-  };
-
-  const cmakePackageName = getCMakePropertyValue('cmake_file_name', 'cmake_module_file_name');
-  const cmakeTargetName = getCMakePropertyValue('cmake_target_name', 'cmake_module_target_name');
+  /** JSON-LD omits cmake_module_file_name / cmake_module_target_name (config-style names only). */
+  const cmakePackageName = String(root.cmake_file_name ?? recipeName);
+  const cmakeTargetName = String(root.cmake_target_name ?? `${recipeName}::${recipeName}`);
   const pkgConfigName = root.pkg_config_name ? `${root.pkg_config_name}.pc` : `${recipeName}.pc`;
 
   const components = useIt.components_properties ?? {};
