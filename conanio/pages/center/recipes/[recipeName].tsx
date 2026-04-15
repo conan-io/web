@@ -54,6 +54,8 @@ interface PageProps  {
     readme?: string,
     recipeName?: string,
     recipeVersion?: string,
+    /** JSON-LD built on the server (includes use_it summary) without embedding full `use_it` in `data`. */
+    initialJsonLdScript?: string | null,
 }
 
 type Params = {
@@ -77,20 +79,22 @@ export const getServerSideProps: GetServerSideProps<PageProps, Params> = async (
 
   const data = package_info_response.data as Record<string, RecipeInfo>;
   const selectedRecipe = resolveSelectedRecipe(data, recipeVersion);
+
+  let initialJsonLdScript: string | null = null;
   try {
     const useItResp = await getJson<ConanResponse<RecipeUseIt>>(urls.package.useIt, urls.api.private);
     const byVersion = useItResp.data as Record<string, RecipeUseIt>;
     const entry = byVersion[selectedRecipe.info.version];
-    if (entry?.use_it) {
-      for (const [k, v] of Object.entries(data)) {
-        if (v.info.version === selectedRecipe.info.version) {
-          data[k] = { ...v, use_it: entry.use_it };
-          break;
-        }
-      }
-    }
+    const recipeForLd: RecipeInfo = entry?.use_it
+      ? { ...selectedRecipe, use_it: entry.use_it }
+      : selectedRecipe;
+    initialJsonLdScript = JSON.stringify(
+      buildRecipeReferenceJsonLd(recipeForLd, recipeName!, data)
+    ).replace(/</g, '\\u003c');
   } catch {
-    /* optional: same as when use_it is unavailable */
+    initialJsonLdScript = JSON.stringify(
+      buildRecipeReferenceJsonLd(selectedRecipe, recipeName!, data)
+    ).replace(/</g, '\\u003c');
   }
 
   //let downloadsResponse = await getJson<ConanResponse<PackageDownloadsDTO>>(urls.package.downloads, urls.api.private)
@@ -101,6 +105,7 @@ export const getServerSideProps: GetServerSideProps<PageProps, Params> = async (
       //downloads: downloadsResponse.data,
       recipeName: recipeName,
       recipeVersion: recipeVersion,
+      initialJsonLdScript,
     },
   };
 }
@@ -173,9 +178,12 @@ const ConanPackage: NextPage<PageProps> = (props) => {
       idx = '0';
     }
     const recipe = props.data[idx];
-    if (!recipe) return null;
-    return JSON.stringify(buildRecipeReferenceJsonLd(recipe, props.recipeName, props.data)).replace(/</g, '\\u003c');
-  }, [props.data, props.recipeName, selectedVersion, useItLoading]);
+    if (!recipe) return props.initialJsonLdScript ?? null;
+    if (recipe.use_it) {
+      return JSON.stringify(buildRecipeReferenceJsonLd(recipe, props.recipeName, props.data)).replace(/</g, '\\u003c');
+    }
+    return props.initialJsonLdScript ?? null;
+  }, [props.data, props.recipeName, selectedVersion, useItLoading, props.initialJsonLdScript]);
 
   if (!props.data) return (<div>Loading...</div>);
   const recipeData = props.data[indexSelectedVersion];
@@ -439,8 +447,8 @@ const ConanPackage: NextPage<PageProps> = (props) => {
                     <Col>
                       <h1 className="mt-2 mb-2" style={{display: 'inline'}}>
                         {recipeData.name}/{selectedVersion}
-                      </h1><
-                        ClipboardCopy
+                      </h1>
+                      <ClipboardCopy
                           copyText={recipeData.name + "/" + selectedVersion}
                           buttonStyle={{cursor: 'pointer', display: 'inline'}}
                           tooltipStyle={{marginTop: "-14px", zIndex: 99}}
