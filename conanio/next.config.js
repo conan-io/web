@@ -16,7 +16,8 @@ const nextConfig = {
         permanent: true,
       },
       {
-        source: '/center/:recipe((?!.*recipes).*$)',
+        // Exclude /center/llms.txt (static llms route); same "no recipes substring" rule as before.
+        source: '/center/:recipe((?!.*recipes)(?!llms\\.txt$).*$)',
         destination: '/center/recipes/:recipe',
         permanent: true,
       },
