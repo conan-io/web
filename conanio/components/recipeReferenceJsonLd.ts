@@ -130,6 +130,7 @@ export function buildRecipeReferenceJsonLd(
   const origin = getSiteOrigin();
   const version = recipe.info.version;
   const pageUrl = recipeReferencePageUrl(origin, recipeNameFromPath, version);
+  const useItApiUrl = `${origin}/api/package/${encodeURIComponent(recipeNameFromPath.toLowerCase())}/use_it`;
   const codeId = `${pageUrl}#recipe`;
   const description = recipe.info.description?.trim() || undefined;
   const licenses = licensesForSchema(recipe.info.licenses);
@@ -167,6 +168,12 @@ export function buildRecipeReferenceJsonLd(
     propertyValue(
       'conanfile.txt (fragment)',
       `[requires]\n${conanRef}`
+    )
+  );
+  additionalProps.push(
+    propertyValue(
+      'Conan Center use_it JSON API URL (GET; response is version-keyed, each value includes use_it)',
+      useItApiUrl
     )
   );
 
