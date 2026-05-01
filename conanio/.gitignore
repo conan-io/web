@@ -3,7 +3,12 @@
 # dependencies
 /node_modules
 /.pnp
-.pnp.js
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
 
 # testing
 /coverage
@@ -16,7 +21,6 @@
 /build
 
 # misc
-/tmp/
 .DS_Store
 *.pem
 
@@ -26,10 +30,13 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# local env files
-.env*.local
-
 # vercel
 .vercel
+
 # typescript
-tsconfig.tsbuildinfo
+*.tsbuildinfo
+next-env.d.ts
+
+# temporary: large assets (re-enable in git when ready)
+/public/conan-frog.png
+/public/tribe-frogs.png

@@ -20,7 +20,8 @@ COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED=1
 
-RUN yarn test:ci
+# CI tests not implemented yet: add a suite (e.g. test:ci in package.json), then uncomment.
+# RUN yarn test:ci
 RUN yarn build . NEXT_PUBLIC_CONAN_VERSION=${NEXT_PUBLIC_CONAN_VERSION} NEXT_PUBLIC_CONAN_CONANIO_SERVICE=${NEXT_PUBLIC_CONAN_CONANIO_SERVICE} NEXT_PUBLIC_SITE_ORIGIN=${NEXT_PUBLIC_SITE_ORIGIN}
 
 # Production image, copy all the files and run next
@@ -35,7 +36,7 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 # You only need to copy next.config.js if you are NOT using the default configuration
-COPY --from=builder /app/next.config.js ./
+COPY --from=builder /app/next.config.ts ./
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/package.json ./package.json
 
