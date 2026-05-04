@@ -2,9 +2,15 @@ import { useEffect, useState } from "react";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
 import Script from "next/script";
+import { Tooltip } from "react-tooltip";
 
-import "../styles/globals.css";
-import Loader from "../components/Loader";
+import {
+  CONANIO_CLIPBOARD_TOOLTIP_ID,
+  CONANIO_CLIPBOARD_TOOLTIP_OFFSET_PX,
+  conanioClipboardTooltipMiddlewares,
+} from "@/constants/copyTooltip";
+import "@/styles/globals.css";
+import Loader from "@/components/Loader";
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -64,6 +70,15 @@ export default function App({ Component, pageProps }: AppProps) {
           </Script>
         </>
       )}
+      <Tooltip
+        id={CONANIO_CLIPBOARD_TOOLTIP_ID}
+        className="conanio-clipboard-tooltip"
+        place="top"
+        positionStrategy="fixed"
+        offset={CONANIO_CLIPBOARD_TOOLTIP_OFFSET_PX}
+        middlewares={conanioClipboardTooltipMiddlewares}
+        style={{ zIndex: 10000 }}
+      />
       {loading ? <Loader /> : <Component {...pageProps} />}
     </>
   );

@@ -1,8 +1,8 @@
 /* eslint-disable react/no-unescaped-entities -- article body migrated from static HTML */
 import Link from "next/link";
-import MainNav from "../../components/MainNav";
-import MainFooter from "../../components/MainFooter";
-import PageHead from "../../components/PageHead";
+import MainFooter from "@/components/MainFooter";
+import MainNav from "@/components/MainNav";
+import PageHead from "@/components/PageHead";
 
 export default function UserStoryRtiPage() {
   return (

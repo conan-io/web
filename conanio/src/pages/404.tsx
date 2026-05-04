@@ -1,8 +1,8 @@
 import Link from "next/link";
 
-import MainFooter from "../components/MainFooter";
-import MainNav from "../components/MainNav";
-import PageHead from "../components/PageHead";
+import MainFooter from "@/components/MainFooter";
+import MainNav from "@/components/MainNav";
+import PageHead from "@/components/PageHead";
 
 export default function NotFound() {
   return (

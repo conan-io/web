@@ -1,20 +1,15 @@
 import { useMemo, useState } from "react";
 
+import CopyToClipboardButton from "@/components/CopyToClipboardButton";
 import type { BadgeSnippetFormat, RecipePageTabBase } from "@/types/recipeDetail";
 import { badgeSnippetStrings } from "@/utils/recipeDetailUtils";
 
-import { clipboardCopyIconSvg } from "./recipeDetailIcons";
+import { clipboardCopyIconSvg } from "@/components/recipeDetail/recipeDetailIcons";
 
 export default function BadgesTab({ isActive, recipeName, recipeVersion }: RecipePageTabBase) {
   const [snippetFormat, setSnippetFormat] = useState<BadgeSnippetFormat>("markdown");
   const snippets = useMemo(() => badgeSnippetStrings(recipeName), [recipeName]);
   const activeSnippet = snippets[snippetFormat];
-
-  const onCopySnippet = () => {
-    if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
-      void navigator.clipboard.writeText(activeSnippet);
-    }
-  };
 
   return (
     <div className={`panel${isActive ? " active" : ""}`} id="panel-badges" data-recipe={recipeName}>
@@ -63,9 +58,13 @@ export default function BadgesTab({ isActive, recipeName, recipeVersion }: Recip
       <div className="md-box badge-tab-panel" role="tabpanel">
         <div className="badge-tab-panel__row">
           <div className="badge-tab-panel__snippet">{activeSnippet}</div>
-          <button type="button" className="recipe-revision-row__copy" aria-label="Copy badge snippet to clipboard" onClick={onCopySnippet}>
+          <CopyToClipboardButton
+            copyText={activeSnippet}
+            className="recipe-revision-row__copy"
+            aria-label="Copy badge snippet to clipboard"
+          >
             {clipboardCopyIconSvg}
-          </button>
+          </CopyToClipboardButton>
         </div>
       </div>
     </div>

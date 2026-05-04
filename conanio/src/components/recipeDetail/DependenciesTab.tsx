@@ -2,8 +2,8 @@ import { useMemo } from "react";
 
 import type { DependenciesTabProps } from "@/types/recipeDetail";
 
-import DependencyRefLink from "./DependencyRefLink";
-import RecipeInfoAside from "./RecipeInfoAside";
+import DependencyRefLink from "@/components/recipeDetail/DependencyRefLink";
+import RecipeInfoAside from "@/components/recipeDetail/RecipeInfoAside";
 
 export default function DependenciesTab({
   isActive,

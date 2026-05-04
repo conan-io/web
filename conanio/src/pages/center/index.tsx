@@ -1,8 +1,8 @@
-import MainNav from "../../components/MainNav";
-import MainFooter from "../../components/MainFooter";
-import PageHead from "../../components/PageHead";
+import MainFooter from "@/components/MainFooter";
+import MainNav from "@/components/MainNav";
+import PageHead from "@/components/PageHead";
 import RecipeQuerySearchForm from "@/components/RecipeQuerySearchForm";
-import styles from "../../styles/centerPages.module.css";
+import styles from "@/styles/centerPages.module.css";
 import Link from "next/link";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { getJson, getJsonList, getUrls } from "@/service/api";

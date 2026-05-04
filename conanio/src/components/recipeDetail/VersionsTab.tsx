@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import type { RecipeInfo, RecipePageTabBase } from "@/types/recipeDetail";
 import { licenseNames } from "@/utils/recipeDetailUtils";
 
-import { recipeRevisionPinIconSvg, versionsTagIcon } from "./recipeDetailIcons";
+import { recipeRevisionPinIconSvg, versionsTagIcon } from "@/components/recipeDetail/recipeDetailIcons";
 
 export default function VersionsTab({
   isActive,

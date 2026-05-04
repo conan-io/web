@@ -2,9 +2,9 @@ import Link from "next/link";
 import { useCallback, useState } from "react";
 
 import { QUOTE_SVG, TESTIMONIALS, USER_BRAND_LOGOS } from "@/data/homePageContent";
-import MainNav from "../components/MainNav";
-import MainFooter from "../components/MainFooter";
-import PageHead from "../components/PageHead";
+import MainFooter from "@/components/MainFooter";
+import MainNav from "@/components/MainNav";
+import PageHead from "@/components/PageHead";
 
 export default function HomePage() {
   const [testimonialIndex, setTestimonialIndex] = useState(0);

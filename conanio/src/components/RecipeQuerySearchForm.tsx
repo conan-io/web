@@ -1,6 +1,6 @@
 import type { ChangeEvent, FormEvent } from "react";
 
-import styles from "./RecipeQuerySearchForm.module.css";
+import styles from "@/components/RecipeQuerySearchForm.module.css";
 
 const PLACEHOLDER = "Search a recipe… e.g. zlib, openssl, fmt";
 

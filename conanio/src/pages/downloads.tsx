@@ -1,7 +1,8 @@
-import DownloadsCopyIcon from "../components/DownloadsCopyIcon";
-import MainNav from "../components/MainNav";
-import MainFooter from "../components/MainFooter";
-import PageHead from "../components/PageHead";
+import CopyToClipboardButton from "@/components/CopyToClipboardButton";
+import DownloadsCopyIcon from "@/components/DownloadsCopyIcon";
+import MainFooter from "@/components/MainFooter";
+import MainNav from "@/components/MainNav";
+import PageHead from "@/components/PageHead";
 import {
   ARTIFACTORY_RELEASE_VERSION,
   buildDownloadsArtifacts,
@@ -9,8 +10,7 @@ import {
   DL_ICON,
   rpmInstallCopy,
 } from "@/data/downloadsPage";
-import { useCopyToClipboardDataAttribute } from "@/hooks/useCopyToClipboardDataAttribute";
-import styles from "../styles/contentPages.module.css";
+import styles from "@/styles/contentPages.module.css";
 
 /** Populated from `next.config` `env.conanVersion` (`NEXT_PUBLIC_CONAN_VERSION`). */
 function getConanReleaseVersion(): string {
@@ -28,8 +28,6 @@ function DlRowIcon({ src, alt }: { src: string; alt: string }) {
 export default function DownloadsPage() {
   const conanReleaseVersion = getConanReleaseVersion();
   const a = buildDownloadsArtifacts(conanReleaseVersion);
-
-  useCopyToClipboardDataAttribute("page");
 
   return (
     <>
@@ -72,9 +70,15 @@ export default function DownloadsPage() {
                 <code className="dl-cmd">
                   <span className="dl-prompt">$</span> pip install conan
                 </code>
-                <button type="button" className="dl-btn dl-btn--copy" data-copy="pip install conan" aria-label="Copy command">
+                <CopyToClipboardButton
+                  copyText="pip install conan"
+                  className="dl-btn dl-btn--copy"
+                  copiedClassName="copied"
+                  copiedResetMs={1100}
+                  aria-label="Copy command"
+                >
                   <DownloadsCopyIcon />
-                </button>
+                </CopyToClipboardButton>
               </li>
             </ul>
             <div className="dl-section-label">Other installers</div>
@@ -84,9 +88,15 @@ export default function DownloadsPage() {
                 <code className="dl-cmd">
                   <span className="dl-prompt">$</span> brew install conan
                 </code>
-                <button type="button" className="dl-btn dl-btn--copy" data-copy="brew install conan" aria-label="Copy command">
+                <CopyToClipboardButton
+                  copyText="brew install conan"
+                  className="dl-btn dl-btn--copy"
+                  copiedClassName="copied"
+                  copiedResetMs={1100}
+                  aria-label="Copy command"
+                >
                   <DownloadsCopyIcon />
-                </button>
+                </CopyToClipboardButton>
               </li>
               <li className="dl-row">
                 <DlRowIcon src={DL_ICON.debian} alt="Debian" />
@@ -129,9 +139,15 @@ export default function DownloadsPage() {
                 <code className="dl-cmd">
                   <span className="dl-prompt">$</span> yay -S conan
                 </code>
-                <button type="button" className="dl-btn dl-btn--copy" data-copy="yay -S conan" aria-label="Copy command">
+                <CopyToClipboardButton
+                  copyText="yay -S conan"
+                  className="dl-btn dl-btn--copy"
+                  copiedClassName="copied"
+                  copiedResetMs={1100}
+                  aria-label="Copy command"
+                >
                   <DownloadsCopyIcon />
-                </button>
+                </CopyToClipboardButton>
               </li>
               <li className="dl-row">
                 <DlRowIcon src={DL_ICON.github} alt="GitHub" />
@@ -163,18 +179,30 @@ export default function DownloadsPage() {
                 <code className="dl-cmd">
                   <span className="dl-prompt">$</span> wget and tar -xvf conan arm64 executable
                 </code>
-                <button type="button" className="dl-btn dl-btn--copy" data-copy={a.macArmCopy} aria-label="Copy command">
+                <CopyToClipboardButton
+                  copyText={a.macArmCopy}
+                  className="dl-btn dl-btn--copy"
+                  copiedClassName="copied"
+                  copiedResetMs={1100}
+                  aria-label="Copy command"
+                >
                   <DownloadsCopyIcon />
-                </button>
+                </CopyToClipboardButton>
               </li>
               <li className="dl-row dl-row--cmd">
                 <DlRowIcon src={DL_ICON.darwin} alt="macOS" />
                 <code className="dl-cmd">
                   <span className="dl-prompt">$</span> wget and tar -xvf conan x86_64 executable
                 </code>
-                <button type="button" className="dl-btn dl-btn--copy" data-copy={a.macX64Copy} aria-label="Copy command">
+                <CopyToClipboardButton
+                  copyText={a.macX64Copy}
+                  className="dl-btn dl-btn--copy"
+                  copiedClassName="copied"
+                  copiedResetMs={1100}
+                  aria-label="Copy command"
+                >
                   <DownloadsCopyIcon />
-                </button>
+                </CopyToClipboardButton>
               </li>
               <li className="dl-row dl-row--cmd">
                 <DlRowIcon src={DL_ICON.windows} alt="Windows" />
@@ -185,9 +213,15 @@ export default function DownloadsPage() {
                       <path d="M12 4v12M6 12l6 6 6-6M5 21h14" />
                     </svg>
                   </a>
-                  <button type="button" className="dl-btn dl-btn--copy" data-copy={a.winX64Ps} aria-label="Copy PowerShell command">
+                  <CopyToClipboardButton
+                    copyText={a.winX64Ps}
+                    className="dl-btn dl-btn--copy"
+                    copiedClassName="copied"
+                    copiedResetMs={1100}
+                    aria-label="Copy PowerShell command"
+                  >
                     <DownloadsCopyIcon />
-                  </button>
+                  </CopyToClipboardButton>
                 </span>
               </li>
               <li className="dl-row dl-row--cmd">
@@ -199,9 +233,15 @@ export default function DownloadsPage() {
                       <path d="M12 4v12M6 12l6 6 6-6M5 21h14" />
                     </svg>
                   </a>
-                  <button type="button" className="dl-btn dl-btn--copy" data-copy={a.winI686Ps} aria-label="Copy PowerShell command">
+                  <CopyToClipboardButton
+                    copyText={a.winI686Ps}
+                    className="dl-btn dl-btn--copy"
+                    copiedClassName="copied"
+                    copiedResetMs={1100}
+                    aria-label="Copy PowerShell command"
+                  >
                     <DownloadsCopyIcon />
-                  </button>
+                  </CopyToClipboardButton>
                 </span>
               </li>
               <li className="dl-row dl-row--cmd">
@@ -209,9 +249,15 @@ export default function DownloadsPage() {
                 <code className="dl-cmd">
                   <span className="dl-prompt">$</span> wget and tar -xvf x86_64 conan executable
                 </code>
-                <button type="button" className="dl-btn dl-btn--copy" data-copy={a.linuxX64Copy} aria-label="Copy command">
+                <CopyToClipboardButton
+                  copyText={a.linuxX64Copy}
+                  className="dl-btn dl-btn--copy"
+                  copiedClassName="copied"
+                  copiedResetMs={1100}
+                  aria-label="Copy command"
+                >
                   <DownloadsCopyIcon />
-                </button>
+                </CopyToClipboardButton>
               </li>
             </ul>
             <p className="dl-foot-note">
@@ -254,9 +300,15 @@ export default function DownloadsPage() {
                 <code className="dl-cmd">
                   <span className="dl-prompt">$</span> docker run …
                 </code>
-                <button type="button" className="dl-btn dl-btn--copy" data-copy={a.dockerLatest} aria-label="Copy command">
+                <CopyToClipboardButton
+                  copyText={a.dockerLatest}
+                  className="dl-btn dl-btn--copy"
+                  copiedClassName="copied"
+                  copiedResetMs={1100}
+                  aria-label="Copy command"
+                >
                   <DownloadsCopyIcon />
-                </button>
+                </CopyToClipboardButton>
               </li>
             </ul>
             <div className="dl-section-label">
@@ -281,9 +333,15 @@ export default function DownloadsPage() {
                       <path d="M12 4v12M6 12l6 6 6-6M5 21h14" />
                     </svg>
                   </a>
-                  <button type="button" className="dl-btn dl-btn--copy" data-copy={rpmInstallCopy} aria-label="Copy install command">
+                  <CopyToClipboardButton
+                    copyText={rpmInstallCopy}
+                    className="dl-btn dl-btn--copy"
+                    copiedClassName="copied"
+                    copiedResetMs={1100}
+                    aria-label="Copy install command"
+                  >
                     <DownloadsCopyIcon />
-                  </button>
+                  </CopyToClipboardButton>
                 </span>
               </li>
               <li className="dl-row dl-row--cmd">
@@ -295,9 +353,15 @@ export default function DownloadsPage() {
                       <path d="M12 4v12M6 12l6 6 6-6M5 21h14" />
                     </svg>
                   </a>
-                  <button type="button" className="dl-btn dl-btn--copy" data-copy={debianInstallCopy} aria-label="Copy install command">
+                  <CopyToClipboardButton
+                    copyText={debianInstallCopy}
+                    className="dl-btn dl-btn--copy"
+                    copiedClassName="copied"
+                    copiedResetMs={1100}
+                    aria-label="Copy install command"
+                  >
                     <DownloadsCopyIcon />
-                  </button>
+                  </CopyToClipboardButton>
                 </span>
               </li>
               <li className="dl-row">
@@ -323,9 +387,15 @@ export default function DownloadsPage() {
                 <code className="dl-cmd">
                   <span className="dl-prompt">$</span> docker run …
                 </code>
-                <button type="button" className="dl-btn dl-btn--copy" data-copy={a.dockerPinned} aria-label="Copy command">
+                <CopyToClipboardButton
+                  copyText={a.dockerPinned}
+                  className="dl-btn dl-btn--copy"
+                  copiedClassName="copied"
+                  copiedResetMs={1100}
+                  aria-label="Copy command"
+                >
                   <DownloadsCopyIcon />
-                </button>
+                </CopyToClipboardButton>
               </li>
               <li className="dl-row">
                 <DlRowIcon src={DL_ICON.darwin} alt="macOS" />

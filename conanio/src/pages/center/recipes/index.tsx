@@ -1,9 +1,9 @@
-import MainNav from "../../../components/MainNav";
-import MainFooter from "../../../components/MainFooter";
-import PageHead from "../../../components/PageHead";
+import MainFooter from "@/components/MainFooter";
+import MainNav from "@/components/MainNav";
+import PageHead from "@/components/PageHead";
 import RecipeQuerySearchForm from "@/components/RecipeQuerySearchForm";
 import RecipeSearchCard from "@/components/RecipeSearchCard";
-import styles from "../../../styles/centerPages.module.css";
+import styles from "@/styles/centerPages.module.css";
 import type { FilterItem } from "@/types/conanCenter";
 import type { SearchRecipeItem } from "@/types/searchRecipe";
 import { getJson, getUrls } from "@/service/api";

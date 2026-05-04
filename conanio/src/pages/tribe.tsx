@@ -1,8 +1,8 @@
-import MainFooter from "../components/MainFooter";
-import MainNav from "../components/MainNav";
-import PageHead from "../components/PageHead";
-import { TRIBE_MEMBERS, type TribeMember } from "../data/tribeMembers";
-import styles from "../styles/contentPages.module.css";
+import MainFooter from "@/components/MainFooter";
+import MainNav from "@/components/MainNav";
+import PageHead from "@/components/PageHead";
+import { TRIBE_MEMBERS, type TribeMember } from "@/data/tribeMembers";
+import styles from "@/styles/contentPages.module.css";
 
 function normalizeExternalHref(url: string): string {
   const u = url.trim();

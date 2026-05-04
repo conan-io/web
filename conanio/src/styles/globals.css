@@ -7,6 +7,9 @@ html,body{margin:0;padding:0;background:linear-gradient(180deg,#EFF5FE 0%,#FFFFF
 a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 ::selection{background:var(--accent);color:#fff}
+/* react-tooltip (CopyToClipboardButton): center label; width follows content (narrower for “Copied!”) */
+.conanio-clipboard-tooltip{text-align:center}
+.conanio-clipboard-tooltip *{text-align:center}
 .container{max-width:1200px;margin:0 auto;padding:0 40px}
 .pill{display:inline-flex;align-items:center;gap:8px;padding:5px 11px;border-radius:99px;font-size:12px;font-weight:500;background:var(--blue-soft);color:var(--blue-deep);font-family:var(--mono)}
 .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border-radius:10px;font-weight:600;font-size:14px;transition:.15s;border:1px solid transparent;cursor:pointer}

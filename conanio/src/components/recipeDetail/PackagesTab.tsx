@@ -1,5 +1,6 @@
 import { useMemo, type CSSProperties } from "react";
 
+import CopyToClipboardButton from "@/components/CopyToClipboardButton";
 import type { PackagesTabProps } from "@/types/recipeDetail";
 import {
   filterPackagesByPlatform,
@@ -9,7 +10,8 @@ import {
   sortPackagesForDisplay,
 } from "@/utils/recipeDetailUtils";
 
-import RecipeInfoAside from "./RecipeInfoAside";
+import { clipboardCopyIconSvg } from "@/components/recipeDetail/recipeDetailIcons";
+import RecipeInfoAside from "@/components/recipeDetail/RecipeInfoAside";
 
 const PKG_ROW_STACK: CSSProperties = {
   display: "flex",
@@ -29,12 +31,6 @@ function PackageCardMeta({
 }) {
   if (!packageId && !recipeRevision) return null;
 
-  const onCopy = (text: string) => {
-    if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
-      void navigator.clipboard.writeText(text);
-    }
-  };
-
   return (
     <div className="pkg-card-meta">
       {packageId ? (
@@ -50,17 +46,13 @@ function PackageCardMeta({
             <code className="pkg-card-meta__value" title={recipeRevision}>
               {recipeRevision}
             </code>
-            <button
-              type="button"
+            <CopyToClipboardButton
+              copyText={recipeRevision}
               className="recipe-revision-row__copy"
               aria-label="Copy recipe revision to clipboard"
-              onClick={() => onCopy(recipeRevision)}
             >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                <rect x={9} y={9} width={11} height={11} rx={2} />
-                <path d="M5 15V5a2 2 0 0 1 2-2h10" />
-              </svg>
-            </button>
+              {clipboardCopyIconSvg}
+            </CopyToClipboardButton>
           </span>
         </div>
       ) : null}

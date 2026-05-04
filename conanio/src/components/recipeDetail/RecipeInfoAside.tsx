@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 
+import CopyToClipboardButton from "@/components/CopyToClipboardButton";
 import type { PackageOsTabFilter, RecipeInfo } from "@/types/recipeDetail";
 import {
   licenseNames,
@@ -10,17 +11,11 @@ import {
   VALID_CHOOSELICENSE_SLUGS,
 } from "@/utils/recipeDetailUtils";
 
-import { recipeRevisionPinIconSvg } from "./recipeDetailIcons";
+import { recipeRevisionPinIconSvg } from "@/components/recipeDetail/recipeDetailIcons";
 
 function RecipeRevisionRow({ revisionFull }: { revisionFull: string }) {
   const full = revisionFull;
   const truncated = full.length > 20 ? `${full.slice(0, 20)}…` : full;
-
-  const onCopy = () => {
-    if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
-      void navigator.clipboard.writeText(full);
-    }
-  };
 
   return (
     <li className="recipe-revision-row">
@@ -30,18 +25,17 @@ function RecipeRevisionRow({ revisionFull }: { revisionFull: string }) {
       <span className="recipe-revision-row__hash" title={full}>
         {truncated}
       </span>
-      <button
-        type="button"
+      <CopyToClipboardButton
+        copyText={full}
         className="recipe-revision-row__copy"
         aria-label="Copy recipe revision to clipboard"
-        onClick={onCopy}
         disabled={!full}
       >
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
           <rect x={9} y={9} width={11} height={11} rx={2} />
           <path d="M5 15V5a2 2 0 0 1 2-2h10" />
         </svg>
-      </button>
+      </CopyToClipboardButton>
     </li>
   );
 }

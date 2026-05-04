@@ -11,7 +11,7 @@ import {
   DOC_TOOLS_AS_PACKAGES,
 } from "@/utils/recipeDetailUtils";
 
-import RecipeInfoAside from "./RecipeInfoAside";
+import RecipeInfoAside from "@/components/recipeDetail/RecipeInfoAside";
 
 function CciAssistanceLink() {
   return (

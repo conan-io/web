@@ -1,8 +1,8 @@
 import Link from "next/link";
-import MainNav from "../../components/MainNav";
-import MainFooter from "../../components/MainFooter";
-import PageHead from "../../components/PageHead";
-import styles from "../../styles/contentPages.module.css";
+import MainFooter from "@/components/MainFooter";
+import MainNav from "@/components/MainNav";
+import PageHead from "@/components/PageHead";
+import styles from "@/styles/contentPages.module.css";
 
 export default function UserStoriesPage() {
   return (

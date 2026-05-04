@@ -10,6 +10,7 @@ import AuditTab from "@/components/recipeDetail/AuditTab";
 import BadgesTab from "@/components/recipeDetail/BadgesTab";
 import DependenciesTab from "@/components/recipeDetail/DependenciesTab";
 import PackagesTab from "@/components/recipeDetail/PackagesTab";
+import CopyToClipboardButton from "@/components/CopyToClipboardButton";
 import RecipeMainTabs from "@/components/recipeDetail/RecipeMainTabs";
 import { clipboardCopyIconSvg } from "@/components/recipeDetail/recipeDetailIcons";
 import UseItTab from "@/components/recipeDetail/UseItTab";
@@ -141,11 +142,6 @@ function RecipeDetailPage({
   const recipeStatus = recipe.info.status;
   const statusSummary = recipeStatus === "ok" ? "maintained version" : `${recipeStatus} version`;
   const recipeReference = `${recipe.name}/${recipe.info.version}`;
-  const copyRecipeReference = () => {
-    if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
-      void navigator.clipboard.writeText(recipeReference);
-    }
-  };
 
   return (
     <>
@@ -172,15 +168,13 @@ function RecipeDetailPage({
                   <span className="status-warn-mark">!</span>
                 </span>
               ) : null}{" "}
-              <button
-                type="button"
+              <CopyToClipboardButton
+                copyText={recipeReference}
                 className="recipe-revision-row__copy pkg-head-copy-ref"
                 aria-label={`Copy recipe reference ${recipeReference}`}
-                title={`Copy ${recipeReference}`}
-                onClick={copyRecipeReference}
               >
                 {clipboardCopyIconSvg}
-              </button>
+              </CopyToClipboardButton>
             </h1>
             <p>{recipe.info.description}</p>
             <div className="chips">

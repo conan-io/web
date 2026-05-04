@@ -1,5 +1,5 @@
 import { useState } from "react";
-import MarketoForm, { type MarketoProps } from "./MarketoForm";
+import MarketoForm, { type MarketoProps } from "@/components/MarketoForm";
 
 function gtmConanPush(description: string) {
   if (!Array.isArray(window.dataLayer)) return;
