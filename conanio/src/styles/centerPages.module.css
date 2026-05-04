@@ -8,12 +8,11 @@
 .centerHome :global(.cc-hero .eyebrow .tag::before) {content:"";width:6px;height:6px;border-radius:99px;background:var(--accent);box-shadow:0 0 8px rgba(26,115,232,.55)}
 .centerHome :global(.cc-hero h1) {font-size:54px;line-height:1.05;letter-spacing:-.03em;margin:0 auto 22px;font-weight:800;color:var(--blue-ink);max-width:900px}
 .centerHome :global(.cc-hero h1 .blue) {color:var(--accent)}
-.centerHome :global(.cc-search) {max-width:640px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:14px 18px;border:1px solid var(--line-2);background:#fff;transition:.15s;box-shadow:0 20px 40px -28px rgba(10,30,70,.25)}
+.centerHome :global(.cc-search) {max-width:640px;margin:0 auto;display:flex;align-items:center;gap:8px;padding:11px 16px;border:1px solid var(--line);background:#fff;transition:.15s;box-shadow:0 20px 40px -28px rgba(10,30,70,.25)}
 .centerHome :global(.cc-search:focus-within) {border-color:var(--accent);box-shadow:0 0 0 3px rgba(26,115,232,.12)}
-.centerHome :global(.cc-search svg) {flex-shrink:0;color:var(--ink-3)}
-.centerHome :global(.cc-search input) {flex:1;border:0;outline:0;background:transparent;font:inherit;color:var(--ink);font-size:15px;min-width:0}
+.centerHome :global(.cc-search > svg) {flex-shrink:0;color:var(--ink-3)}
+.centerHome :global(.cc-search input) {flex:1;border:0;outline:0;background:transparent;font:inherit;color:var(--ink);font-size:14px;line-height:1.15;min-width:0}
 .centerHome :global(.cc-search input::placeholder) {color:var(--ink-3)}
-.centerHome :global(.cc-search kbd) {font-family:var(--mono);font-size:11px;padding:3px 7px;border:1px solid var(--line);color:var(--ink-3);background:var(--soft)}
 .centerHome :global(.cc-counts) {display:flex;justify-content:center;align-items:center;gap:0;margin-top:20px;font-family:var(--mono);font-size:13px;color:var(--accent)}
 .centerHome :global(.cc-counts a) {display:inline-flex;align-items:center;gap:8px;padding:8px 18px;transition:.15s}
 .centerHome :global(.cc-counts a:hover) {color:var(--blue-deep)}
@@ -48,9 +47,9 @@
 .centerRecipes :global(.notice) {background:var(--band);color:#EAF4EC;text-align:center;padding:10px 40px;font-size:13px;border-bottom:1px solid rgba(0,0,0,.15)}
 .centerRecipes :global(.searchwrap) {max-width:1200px;margin:0 auto;padding:44px 40px 0}
 .centerRecipes :global(.search-row) {display:grid;grid-template-columns:1fr 200px;gap:10px;align-items:center}
-.centerRecipes :global(.search) {display:flex;align-items:center;gap:10px;padding:11px 14px;border:1px solid var(--line-2);background:#fff;transition:.15s;box-shadow:0 6px 16px -14px rgba(10,30,70,.2)}
-.centerRecipes :global(.search svg) {flex-shrink:0;color:var(--ink-3)}
-.centerRecipes :global(.search input) {flex:1;border:0;outline:0;background:transparent;font:inherit;color:var(--ink);font-size:14px;min-width:0;font-family:var(--mono);letter-spacing:.04em}
+.centerRecipes :global(.search) {display:flex;align-items:center;gap:8px;padding:11px 14px;border:1px solid var(--line);background:#fff;transition:.15s;box-shadow:0 6px 16px -14px rgba(10,30,70,.2);box-sizing:border-box;min-height:0}
+.centerRecipes :global(.search > svg) {flex-shrink:0;color:var(--ink-3)}
+.centerRecipes :global(.search input) {flex:1;border:0;outline:0;background:transparent;font:inherit;color:var(--ink);font-size:13px;line-height:1.15;min-width:0;font-family:var(--mono);letter-spacing:.03em}
 .centerRecipes :global(.select) {position:relative;display:flex;align-items:center;gap:8px;padding:11px 12px;border:1px solid var(--line-2);background:#fff;color:var(--ink-2);font-size:13px;cursor:pointer;transition:.15s}
 .centerRecipes :global(.select:hover) {border-color:var(--accent)}
 .centerRecipes :global(.select .caret) {margin-left:auto;color:var(--ink-3);font-size:10px}
@@ -107,12 +106,11 @@
 .centerRecipe { --ink:#0B1220;--ink-2:#2A3346;--ink-3:#5B657A; --line:#E6EAF2;--line-2:#D7DEEC;--soft:#F4F7FC; --blue:#1A73E8;--blue-deep:#0E4FB8;--blue-ink:#082B6B;--blue-soft:#E6F0FE;--blue-ultra:#F3F7FE; --accent:#1A73E8;--band:#2F7D3A;--muted-chip:#CFD8E5; --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace; --sans:"Inter",system-ui,-apple-system,Segoe UI,sans-serif; margin:0;padding:0;background:linear-gradient(180deg,#EFF5FE 0%,#FFFFFF 520px);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased; }
 .centerRecipe :global(.logo) {display:flex;align-items:center;gap:10px;transition:transform .18s ease}
 .centerRecipe :global(.searchwrap) {max-width:1200px;margin:0 auto;padding:30px 40px 0}
-.centerRecipe :global(.search) {display:flex;align-items:center;gap:10px;padding:11px 14px;border:1px solid var(--line-2);background:#fff;transition:.15s;box-shadow:0 6px 16px -14px rgba(10,30,70,.2)}
+.centerRecipe :global(.search) {display:flex;align-items:center;gap:8px;padding:11px 14px;border:1px solid var(--line);background:#fff;transition:.15s;box-shadow:0 6px 16px -14px rgba(10,30,70,.2);box-sizing:border-box;min-height:0}
 .centerRecipe :global(.search:focus-within) {border-color:var(--accent);box-shadow:0 0 0 3px rgba(26,115,232,.12)}
-.centerRecipe :global(.search input) {flex:1;border:0;outline:0;background:transparent;font-family:var(--mono);font-size:14px;min-width:0;color:var(--ink);letter-spacing:.04em}
+.centerRecipe :global(.search input) {flex:1;border:0;outline:0;background:transparent;font-family:var(--mono);font-size:13px;line-height:1.15;min-width:0;color:var(--ink);letter-spacing:.03em}
 .centerRecipe :global(.search input::placeholder) {color:var(--ink-3)}
-.centerRecipe :global(.search svg) {flex-shrink:0;color:var(--ink-3)}
-.centerRecipe :global(.search kbd) {font-family:var(--mono);font-size:11px;padding:3px 7px;border:1px solid var(--line);color:var(--ink-3);background:var(--soft);flex-shrink:0}
+.centerRecipe :global(.search > svg) {flex-shrink:0;color:var(--ink-3)}
 .centerRecipe :global(.pkg-head) {max-width:1200px;margin:16px auto 0;padding:0 40px}
 .centerRecipe :global(.pkg-head .card) {background:#fff;border:1px solid var(--line);padding:24px 28px}
 .centerRecipe :global(.pkg-head h1) {margin:0 0 6px;font-size:28px;font-weight:700;color:var(--accent);letter-spacing:-.01em;display:inline-flex;align-items:center;gap:8px}
@@ -175,6 +173,7 @@
 .centerRecipe :global(.recipe-revision-row__copy:hover) {background:var(--blue-ultra)}
 .centerRecipe :global(.recipe-revision-row__copy:focus-visible) {outline:2px solid var(--accent);outline-offset:2px}
 .centerRecipe :global(.recipe-revision-row__copy svg) {width:14px;height:14px;color:var(--accent)}
+.centerRecipe :global(.side ul li .recipe-revision-row__copy svg) {width:14px;height:14px;color:var(--accent)}
 /* Match `v2/html/styles.css` `.side .plat-list span` — buttons must not use `font: inherit` (it overrides `font-size`). */
 .centerRecipe :global(.side .plat-list) {display:flex;flex-direction:column;gap:5px}
 .centerRecipe :global(.side .plat-list .plat-btn) {box-sizing:border-box;display:inline-flex;align-items:center;margin:0;padding:3px 10px;width:max-content;max-width:100%;border:0;border-radius:0;cursor:pointer;text-align:left;-webkit-appearance:none;appearance:none;vertical-align:baseline;font-size:11px;font-family:var(--mono);font-weight:400;line-height:normal;min-height:0}
@@ -229,7 +228,7 @@
 .centerRecipe :global(.useit-details summary) {cursor:pointer;color:var(--accent);font-size:12.5px;font-weight:600;list-style-position:outside;padding:4px 0}
 .centerRecipe :global(.useit-comp-list) {margin:8px 0 0;padding:10px 12px;background:var(--blue-ultra);border:1px solid var(--line);font-family:var(--mono);font-size:11.5px;line-height:1.5;color:var(--ink-2);overflow-x:auto}
 .centerRecipe :global(.useit-headers-pre) {margin:10px 0 0;padding:12px 14px;background:var(--blue-ultra);border:1px solid var(--line);font-family:var(--mono);font-size:12px;line-height:1.55;overflow-x:auto}
-.centerRecipe :global(.useit-headers-pre code) {font-family:inherit;color:var(--ink-2)}
+.centerRecipe :global(.useit-headers-pre code) {font-family:inherit;color:var(--ink-2);padding:0;background:transparent;display:block}
 .centerRecipe :global(.bk-version) {display:inline-flex;align-items:stretch;font-family:Verdana,DejaVu Sans,Geneva,sans-serif;font-size:11px;line-height:1;margin-bottom:14px;border-radius:3px;overflow:hidden;box-shadow:inset 0 -1px 0 rgba(0,0,0,.15);height:20px}
 .centerRecipe :global(.bk-version .bk-label), .centerRecipe :global(.bk-version .bk-value) {display:inline-flex;align-items:center;padding:0 6px;color:#fff;text-shadow:0 1px 0 rgba(0,0,0,.25)}
 .centerRecipe :global(.bk-version .bk-label) {background:#555;padding-left:6px}

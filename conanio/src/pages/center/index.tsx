@@ -1,6 +1,7 @@
 import MainNav from "../../components/MainNav";
 import MainFooter from "../../components/MainFooter";
 import PageHead from "../../components/PageHead";
+import RecipeQuerySearchForm from "@/components/RecipeQuerySearchForm";
 import styles from "../../styles/centerPages.module.css";
 import Link from "next/link";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
@@ -84,11 +85,7 @@ export default function CenterPage({
           </a>
           <h1>The Conan <span className="blue">libraries and tools</span><br />central repository.</h1>
           {/* Search */}
-          <form className="cc-search" action="/center/recipes" method="get">
-            <svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><circle cx={11} cy={11} r={7} /><line x1={21} y1={21} x2="16.65" y2="16.65" /></svg>
-            <input type="text" name="value" placeholder="Search a recipe… e.g. zlib, openssl, fmt" />
-            <kbd>⏎</kbd>
-          </form>
+          <RecipeQuerySearchForm mode="get" formClassName="cc-search" />
           {/* Counts */}
           <div className="cc-counts">
             <a>

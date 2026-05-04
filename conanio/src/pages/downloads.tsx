@@ -51,7 +51,7 @@ export default function DownloadsPage() {
           <article className="dl-col">
             <header className="dl-col-head">
               <div className="dl-col-brand">
-                <img src="/conan-logo.png?v=1777364053920" alt="Conan" />
+                <img src="/conan-cube.png?v=1777364053920" alt="Conan" />
                 <div>
                   <div className="dl-col-title">Conan</div>
                   <div className="dl-col-sub">C/C++ Package Manager</div>

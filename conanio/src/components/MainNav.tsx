@@ -36,7 +36,7 @@ export default function MainNav() {
   return (
     <nav className={`nav${isMenuOpen ? " open" : ""}${isScrolled ? " scrolled" : ""}`}>
       <a className="logo" aria-label="Conan — C/C++ Package Manager" href="/" onClick={() => handleNavClick("conan logo")}>
-        <img src="/conan-logo.png?v=1777364053920" alt="Conan — C/C++ Package Manager" style={{ height: 42, width: "auto", display: "block" }} />
+        <img src="/conan-logo.png?v=1777364053920" alt="Conan — C/C++ Package Manager" />
       </a>
       <ul>
         <li><a href="/center" onClick={() => handleNavClick("conancenter")}>ConanCenter</a></li>

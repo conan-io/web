@@ -77,13 +77,13 @@ export default function HomePage() {
                 <div className="badge">◆ Artifactory CE</div>
                 <h3>Host private packages, your server.</h3>
                 <p>Artifactory CE for C/C++ is the recommended free server for development and hosting private packages. WebUI, advanced auth and permissions, great performance, generic CLI, generic repos — for any kind of source or binary artifact.</p>
-                <div><a className="btn btn-primary">Download Artifactory CE</a></div>
+                <div><Link className="btn btn-primary" href="/downloads">Download Artifactory CE</Link></div>
               </div>
               <div className="prod cc">
                 <div className="badge">◇ ConanCenter</div>
                 <h3>Discover and share.</h3>
                 <p>The central place to search every available open-source Conan package created by the community. Includes recipes, configuration info, and makes it easy to package debugging into the UI — thousands of popular libraries ready to go.</p>
-                <div><a className="btn btn-ghost">Explore Conan libraries and tools</a></div>
+                <div><Link className="btn btn-ghost" href="/center">Explore Conan libraries and tools</Link></div>
               </div>
             </div>
           </div>

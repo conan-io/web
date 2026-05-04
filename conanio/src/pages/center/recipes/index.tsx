@@ -1,6 +1,7 @@
 import MainNav from "../../../components/MainNav";
 import MainFooter from "../../../components/MainFooter";
 import PageHead from "../../../components/PageHead";
+import RecipeQuerySearchForm from "@/components/RecipeQuerySearchForm";
 import RecipeSearchCard from "@/components/RecipeSearchCard";
 import styles from "../../../styles/centerPages.module.css";
 import type { FilterItem } from "@/types/conanCenter";
@@ -99,13 +100,14 @@ export default function CenterRecipesPage({ data }: InferGetServerSidePropsType<
         <MainNav />
         <div className="searchwrap">
           <div className="search-row">
-            <form className="search" onSubmit={search.handleSubmit}>
-              <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                <circle cx={11} cy={11} r={7} />
-                <line x1={21} y1={21} x2="16.65" y2="16.65" />
-              </svg>
-              <input type="text" name="value" value={search.textSearchBar} onChange={(event) => search.handleChange(event.target.value)} />
-            </form>
+            <RecipeQuerySearchForm
+              mode="controlled"
+              formClassName="search"
+              showEnterHint={false}
+              value={search.textSearchBar}
+              onChange={(event) => search.handleChange(event.target.value)}
+              onSubmit={search.handleSubmit}
+            />
             <div className="filter-wrap" ref={sortFilterRef}>
               <button type="button" className="filter-pill" onClick={() => search.setSortOpen(!search.sortOpen)}>
                 <span className="label">{search.selectedSortOption.label}</span>

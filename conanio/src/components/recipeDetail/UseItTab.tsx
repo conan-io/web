@@ -82,9 +82,7 @@ function UseItHeadersSection({ recipeName, headers }: { recipeName: string; head
         These are all the available headers. Some of these ones might be non-public; make sure of it by visiting the{" "}
         <code>{recipeName}</code> homepage listed above:
       </p>
-      <pre className="useit-headers-pre">
-        <code>{sorted.map((header) => `#include "${header}"\n`).join("")}</code>
-      </pre>
+      <pre className="useit-headers-pre"><code>{sorted.map((header) => `#include "${header}"\n`).join("")}</code></pre>
     </div>
   );
 }

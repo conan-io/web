@@ -1,0 +1,26 @@
+/* No gray “keycap” box — large return/Enter cue, low height so the search row stays compact. */
+.enterHint {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  background: none;
+  border: none;
+  color: var(--ink-3);
+  line-height: 0;
+}
+
+.enterSvg {
+  display: block;
+  width: 30px;
+  height: 12px;
+}
+
+@media (max-width: 640px) {
+  .enterSvg {
+    width: 26px;
+    height: 11px;
+  }
+}

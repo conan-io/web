@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 
 import MainNav from "@/components/MainNav";
+import RecipeQuerySearchForm from "@/components/RecipeQuerySearchForm";
 import MainFooter from "@/components/MainFooter";
 import PageHead from "@/components/PageHead";
 import AuditTab from "@/components/recipeDetail/AuditTab";
@@ -153,36 +154,14 @@ function RecipeDetailPage({
       <main id="page" className={styles.centerRecipe} data-screen-label={screenLabel}>
         <MainNav />
         <div className="searchwrap">
-          <form
-            className="search"
-            action="/center/recipes"
-            method="get"
+          <RecipeQuerySearchForm
+            mode="get"
+            formClassName="search"
             role="search"
             aria-label="Search recipes"
-          >
-            <svg
-              width={16}
-              height={16}
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden
-            >
-              <circle cx={11} cy={11} r={7} />
-              <line x1={21} y1={21} x2="16.65" y2="16.65" />
-            </svg>
-            <input
-              type="text"
-              name="value"
-              placeholder="Search a recipe… e.g. zlib, openssl, fmt"
-              autoComplete="off"
-              enterKeyHint="search"
-            />
-            <kbd title="Press Enter to search">⏎</kbd>
-          </form>
+            autoComplete="off"
+            enterKeyHint="search"
+          />
         </div>
         <div className="pkg-head">
           <div className="card">
