@@ -1,6 +1,7 @@
-import { Fragment } from "react";
+import { Fragment, useMemo } from "react";
 
 import CopyToClipboardButton from "@/components/CopyToClipboardButton";
+import { recipeRevisionPinIconSvg } from "@/components/recipeDetail/recipeDetailIcons";
 import type { PackageOsTabFilter, RecipeInfo } from "@/types/recipeDetail";
 import {
   licenseNames,
@@ -10,8 +11,7 @@ import {
   urlify,
   VALID_CHOOSELICENSE_SLUGS,
 } from "@/utils/recipeDetailUtils";
-
-import { recipeRevisionPinIconSvg } from "@/components/recipeDetail/recipeDetailIcons";
+import { getConanfileHljsMarkup } from "@/utils/hljsConanfile";
 
 function RecipeRevisionRow({ revisionFull }: { revisionFull: string }) {
   const full = revisionFull;
@@ -49,6 +49,10 @@ export default function RecipeInfoAside({
   onPlatformPick: (filter: PackageOsTabFilter) => void;
 }) {
   const requiresLine = `${recipe.name}/${recipe.info.version}`;
+  const installConanfileHljs = useMemo(() => {
+    const snippet = `[requires]\n${requiresLine}`;
+    return getConanfileHljsMarkup(snippet, "conanfile.txt");
+  }, [requiresLine]);
   const rev = recipe.info.recipe_revision ?? "";
   const recipeDescription = recipe.info.description?.trim() ?? "";
   const licenses = licenseNames(recipe.info.licenses);
@@ -177,8 +181,8 @@ export default function RecipeInfoAside({
         <>
           <h3>Install</h3>
           <p>Add the following line to your conanfile.txt:</p>
-          <div className="install">
-            <code>{`[requires]\n${requiresLine}`}</code>
+          <div className="target-box target-box--snippet" role="group" aria-label="conanfile.txt requires snippet">
+            <pre className="conanfile-snippet-pre"><code className={installConanfileHljs.className} dangerouslySetInnerHTML={{ __html: installConanfileHljs.html }} /></pre>
           </div>
         </>
       ) : null}
