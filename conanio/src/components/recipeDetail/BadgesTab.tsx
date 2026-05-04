@@ -17,12 +17,12 @@ export default function BadgesTab({ isActive, recipeName, recipeVersion }: Recip
         <span className="bk-label">conan</span>
         <span className="bk-value">v{recipeVersion}</span>
       </span>
-      <div className="md-tabs" role="tablist" aria-label="Badge snippet format">
+      <div className="secondary-tabs" role="tablist" aria-label="Badge snippet format">
         <button
           type="button"
           role="tab"
           aria-selected={snippetFormat === "markdown"}
-          className={`mtab${snippetFormat === "markdown" ? " active" : ""}`}
+          className={`stab${snippetFormat === "markdown" ? " active" : ""}`}
           onClick={() => setSnippetFormat("markdown")}
         >
           Markdown
@@ -31,7 +31,7 @@ export default function BadgesTab({ isActive, recipeName, recipeVersion }: Recip
           type="button"
           role="tab"
           aria-selected={snippetFormat === "rst"}
-          className={`mtab${snippetFormat === "rst" ? " active" : ""}`}
+          className={`stab${snippetFormat === "rst" ? " active" : ""}`}
           onClick={() => setSnippetFormat("rst")}
         >
           reStructuredText
@@ -40,7 +40,7 @@ export default function BadgesTab({ isActive, recipeName, recipeVersion }: Recip
           type="button"
           role="tab"
           aria-selected={snippetFormat === "asciidoc"}
-          className={`mtab${snippetFormat === "asciidoc" ? " active" : ""}`}
+          className={`stab${snippetFormat === "asciidoc" ? " active" : ""}`}
           onClick={() => setSnippetFormat("asciidoc")}
         >
           AsciiDoc
@@ -49,13 +49,13 @@ export default function BadgesTab({ isActive, recipeName, recipeVersion }: Recip
           type="button"
           role="tab"
           aria-selected={snippetFormat === "html"}
-          className={`mtab${snippetFormat === "html" ? " active" : ""}`}
+          className={`stab${snippetFormat === "html" ? " active" : ""}`}
           onClick={() => setSnippetFormat("html")}
         >
           HTML
         </button>
       </div>
-      <div className="md-box badge-tab-panel" role="tabpanel">
+      <div className="target-box badge-tab-panel" role="tabpanel">
         <div className="badge-tab-panel__row">
           <div className="badge-tab-panel__snippet">{activeSnippet}</div>
           <CopyToClipboardButton

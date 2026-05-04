@@ -1,5 +1,8 @@
-import { useState, type ReactNode } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 
+import CopyToClipboardButton from "@/components/CopyToClipboardButton";
+import RecipeInfoAside from "@/components/recipeDetail/RecipeInfoAside";
+import { clipboardCopyIconSvg } from "@/components/recipeDetail/recipeDetailIcons";
 import type { SecondaryTab, UseItTabProps } from "@/types/recipeDetail";
 import {
   buildUseItTargetsModel,
@@ -10,8 +13,7 @@ import {
   DOC_LIBRARY_CMAKE,
   DOC_TOOLS_AS_PACKAGES,
 } from "@/utils/recipeDetailUtils";
-
-import RecipeInfoAside from "@/components/recipeDetail/RecipeInfoAside";
+import { getConanfileHljsMarkup } from "@/utils/hljsConanfile";
 
 function CciAssistanceLink() {
   return (
@@ -126,6 +128,16 @@ export default function UseItTab({
   const heading =
     !useItLoading && ui && isTool ? `Using ${recipe.name} as a tool` : `Using ${recipe.name}`;
 
+  const libraryConanfileSnippet = useMemo(() => {
+    if (useItLoading || !ui || isTool) return null;
+    return activeCodeTab === "conanfile.txt" ? conanfileTxtSnippet(reference) : conanfilePySnippet(reference);
+  }, [useItLoading, ui, isTool, activeCodeTab, reference]);
+
+  const conanfileHljs = useMemo(() => {
+    if (libraryConanfileSnippet === null) return null;
+    return getConanfileHljsMarkup(libraryConanfileSnippet, activeCodeTab);
+  }, [libraryConanfileSnippet, activeCodeTab]);
+
   let mainCol: ReactNode = null;
   if (useItLoading) {
     mainCol = (
@@ -175,30 +187,41 @@ export default function UseItTab({
         <p className="intro-text">
           Simplest use case consuming this recipe and assuming CMake as your local build tool:
         </p>
-        <div className="codeblock">
-          <div className="cbtabs">
-            <button
-              type="button"
-              className={`cbtab${activeCodeTab === "conanfile.txt" ? " active" : ""}`}
-              onClick={() => onCodeTabChange("conanfile.txt")}
+        <div className="secondary-tabs" role="tablist" aria-label="Conanfile format">
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeCodeTab === "conanfile.txt"}
+            className={`stab${activeCodeTab === "conanfile.txt" ? " active" : ""}`}
+            onClick={() => onCodeTabChange("conanfile.txt")}
+          >
+            📄 conanfile.txt
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeCodeTab === "conanfile.py"}
+            className={`stab${activeCodeTab === "conanfile.py" ? " active" : ""}`}
+            onClick={() => onCodeTabChange("conanfile.py")}
+          >
+            🐍 conanfile.py
+          </button>
+        </div>
+        <div className="target-box target-box--snippet" role="tabpanel">
+          <div className="conanfile-snippet-row">
+            <pre className="conanfile-snippet-pre"><code className={conanfileHljs?.className} dangerouslySetInnerHTML={{ __html: conanfileHljs?.html ?? "" }} /></pre>
+            <CopyToClipboardButton
+              copyText={libraryConanfileSnippet ?? ""}
+              className="recipe-revision-row__copy"
+              aria-label={
+                activeCodeTab === "conanfile.txt"
+                  ? "Copy conanfile.txt snippet to clipboard"
+                  : "Copy conanfile.py snippet to clipboard"
+              }
             >
-              📄 conanfile.txt
-            </button>
-            <button
-              type="button"
-              className={`cbtab${activeCodeTab === "conanfile.py" ? " active" : ""}`}
-              onClick={() => onCodeTabChange("conanfile.py")}
-            >
-              🐍 conanfile.py
-            </button>
+              {clipboardCopyIconSvg}
+            </CopyToClipboardButton>
           </div>
-          <pre>
-            <code>
-              {activeCodeTab === "conanfile.txt"
-                ? conanfileTxtSnippet(reference)
-                : conanfilePySnippet(reference)}
-            </code>
-          </pre>
         </div>
         {showDetailsSection ? (
           <>

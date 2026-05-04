@@ -205,11 +205,12 @@
 .centerRecipe :global(.main-col .deps-list a:hover) {text-decoration:underline;text-underline-offset:3px}
 .centerRecipe :global(.main-col .deps-empty) {font-size:13.5px;color:var(--ink-2);line-height:1.6;margin:0}
 .centerRecipe :global(.main-col .deps-empty strong) {font-family:var(--mono);font-weight:600;color:var(--ink)}
-.centerRecipe :global(.codeblock) {background:#fff;border:1px solid var(--line)}
-.centerRecipe :global(.codeblock .cbtabs) {display:flex;border-bottom:1px solid var(--line)}
-.centerRecipe :global(.codeblock .cbtab) {padding:9px 14px;font-size:12.5px;color:var(--ink-3);cursor:pointer;display:inline-flex;align-items:center;gap:6px;border-right:1px solid var(--line)}
-.centerRecipe :global(.codeblock .cbtab.active) {background:var(--accent);color:#fff;font-weight:600}
-.centerRecipe :global(.codeblock pre) {margin:0;padding:16px 18px;font-family:var(--mono);font-size:12.5px;line-height:1.6;color:var(--ink)}
+.centerRecipe :global(.target-box.target-box--snippet) {padding:0}
+.centerRecipe :global(.conanfile-snippet-row) {display:flex;align-items:flex-start;gap:12px}
+.centerRecipe :global(.conanfile-snippet-row .recipe-revision-row__copy) {flex-shrink:0;align-self:flex-start;margin:10px 12px 0 0}
+.centerRecipe :global(.conanfile-snippet-pre) {margin:0;flex:1;min-width:0;padding:16px 18px;font-family:var(--mono);font-size:12.5px;line-height:1.6;color:var(--ink);white-space:pre}
+.centerRecipe :global(.conanfile-snippet-pre code.hljs) {background:aliceblue}
+.centerRecipe :global(.target-box.badge-tab-panel) {padding:16px 18px;font-family:var(--mono);font-size:12.5px;color:var(--ink);word-break:break-all;overflow-wrap:anywhere;max-width:100%;box-sizing:border-box;line-height:1.55}
 .centerRecipe :global(.code-kw) {color:var(--accent)}
 .centerRecipe :global(.code-val) {color:#2A7F3F}
 .centerRecipe :global(.code-com) {color:var(--ink-3)}
@@ -221,7 +222,7 @@
 .centerRecipe :global(.target-box) {background:#fff;border:1px solid var(--line);padding:18px 20px;font-size:13px;color:var(--ink-2);line-height:1.6}
 .centerRecipe :global(.target-box ul) {padding-left:18px;margin:8px 0 14px}
 .centerRecipe :global(.target-box li) {margin:3px 0}
-.centerRecipe :global(.target-box code) {font-family:var(--mono);font-size:12.5px;background:var(--blue-ultra);padding:1px 6px;color:var(--accent)}
+.centerRecipe :global(.target-box:not(.target-box--snippet) code) {font-family:var(--mono);font-size:12.5px;background:var(--blue-ultra);padding:1px 6px;color:var(--accent)}
 .centerRecipe :global(.target-box .mini-code) {background:var(--blue-ultra);border:1px solid var(--line);padding:12px 14px;font-family:var(--mono);font-size:12.5px;line-height:1.6;margin-top:10px}
 .centerRecipe :global(.useit-cmake-snippet) {white-space:pre-wrap}
 .centerRecipe :global(.useit-details) {margin-top:8px;margin-left:0}
@@ -237,10 +238,6 @@
 .centerRecipe :global(.badge-tab-panel .badge-tab-panel__row) {display:flex;align-items:flex-start;gap:12px}
 .centerRecipe :global(.badge-tab-panel .badge-tab-panel__snippet) {flex:1;min-width:0;white-space:pre-wrap;word-break:break-all;overflow-wrap:anywhere}
 .centerRecipe :global(.badge-tab-panel .badge-tab-panel__row .recipe-revision-row__copy) {flex-shrink:0}
-.centerRecipe :global(.md-tabs) {display:flex;gap:0;margin-bottom:0}
-.centerRecipe :global(.md-tabs .mtab) {padding:8px 16px;font-size:12.5px;color:var(--ink-2);background:#fff;border:1px solid var(--line);border-bottom:0;cursor:pointer}
-.centerRecipe :global(.md-tabs .mtab.active) {background:var(--accent);color:#fff;font-weight:600;border-color:var(--accent)}
-.centerRecipe :global(.md-box) {background:#fff;border:1px solid var(--line);padding:16px 18px;font-family:var(--mono);font-size:12.5px;color:var(--ink);word-break:break-all;overflow-wrap:anywhere;max-width:100%;box-sizing:border-box}
 .centerRecipe :global(.ver-list) {display:flex;flex-direction:column;gap:2px}
 .centerRecipe :global(.ver-row) {display:grid;grid-template-columns:40px 140px 1fr 1fr;gap:16px;align-items:center;padding:14px 8px;border-bottom:1px solid var(--line);font-size:13px;color:var(--ink-2)}
 .centerRecipe :global(.ver-row:last-child) {border-bottom:0}
@@ -312,8 +309,8 @@
   .centerRecipe :global(.ver-row) {grid-template-columns:32px 1fr;row-gap:6px}
   .centerRecipe :global(.ver-row .date), .centerRecipe :global(.ver-row .hash) {grid-column:2}
   .centerRecipe :global(.secondary-tabs) {flex-wrap:wrap}
-  .centerRecipe :global(.codeblock pre) {font-size:11.5px;overflow-x:auto}
-  .centerRecipe :global(.md-box) {font-size:11.5px}
+  .centerRecipe :global(.conanfile-snippet-pre) {font-size:11.5px;overflow-x:auto}
+  .centerRecipe :global(.target-box.badge-tab-panel) {font-size:11.5px}
 }
 
 .centerHome :global(.cc-hero .eyebrow .tag::before), .centerHome :global(.cc-item .dot) { border-radius: 99px !important; }

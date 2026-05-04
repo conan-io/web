@@ -9,6 +9,7 @@ import {
   CONANIO_CLIPBOARD_TOOLTIP_OFFSET_PX,
   conanioClipboardTooltipMiddlewares,
 } from "@/constants/copyTooltip";
+import "highlight.js/styles/github.css";
 import "@/styles/globals.css";
 import Loader from "@/components/Loader";
 
