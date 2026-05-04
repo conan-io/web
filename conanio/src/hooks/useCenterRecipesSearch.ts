@@ -163,6 +163,24 @@ export function useCenterRecipesSearch(data: CenterRecipesInitialData) {
     getData(value, selectedTopicIds, selectedLicenseIds, nextPlatforms, sortBy, "push");
   };
 
+  const hasFacetFiltersToClear = useMemo(
+    () =>
+      selectedLicenseIds.length > 0 ||
+      selectedTopicIds.length > 0 ||
+      selectedPlatforms.length < PLATFORM_OPTIONS.length,
+    [selectedLicenseIds, selectedTopicIds, selectedPlatforms],
+  );
+
+  const clearFacetFilters = () => {
+    const nextPlatforms = [...PLATFORM_OPTIONS];
+    setSelectedLicenseIds([]);
+    setSelectedTopicIds([]);
+    setSelectedPlatforms(nextPlatforms);
+    setLicensesOpen(false);
+    setTopicsOpen(false);
+    getData(value, [], [], nextPlatforms, sortBy, "push");
+  };
+
   const handleSortByChange = (nextSortBy: SortBy) => {
     setSortBy(nextSortBy);
     getData(value, selectedTopicIds, selectedLicenseIds, selectedPlatforms, nextSortBy, "push");
@@ -424,5 +442,7 @@ export function useCenterRecipesSearch(data: CenterRecipesInitialData) {
     togglePlatform,
     setSelectedLicenseIds,
     setSelectedTopicIds,
+    hasFacetFiltersToClear,
+    clearFacetFilters,
   };
 }

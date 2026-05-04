@@ -164,22 +164,35 @@ export function primaryProfileTagValues(p: PackageInfo): string[] {
   return out;
 }
 
-/** Remaining settings (compiler toolchain), shown after package ID / recipe revision. */
-export function formatPackageSettingsCompiler(p: PackageInfo): string {
-  const parts: string[] = [];
-  if (p.compiler) parts.push(`compiler=${p.compiler}`);
-  if (p.compiler_cppstd) parts.push(`compiler.cppstd=${p.compiler_cppstd}`);
-  if (p.compiler_version) parts.push(`compiler.version=${p.compiler_version}`);
-  if (p.compiler_runtime) parts.push(`compiler.runtime=${p.compiler_runtime}`);
-  if (p.compiler_runtime_type) parts.push(`compiler.runtime_type=${p.compiler_runtime_type}`);
-  return parts.join(", ");
+/** Compiler / toolchain settings as label + value pairs (same fields as legacy comma line). */
+export function packageCompilerSettingRows(p: PackageInfo): { name: string; value: string }[] {
+  const rows: { name: string; value: string }[] = [];
+  if (p.compiler) rows.push({ name: "compiler", value: String(p.compiler) });
+  if (p.compiler_cppstd) rows.push({ name: "compiler.cppstd", value: String(p.compiler_cppstd) });
+  if (p.compiler_version) rows.push({ name: "compiler.version", value: String(p.compiler_version) });
+  if (p.compiler_runtime) rows.push({ name: "compiler.runtime", value: String(p.compiler_runtime) });
+  if (p.compiler_runtime_type) rows.push({ name: "compiler.runtime_type", value: String(p.compiler_runtime_type) });
+  return rows;
 }
 
-export function formatPackageOptionsLine(p: PackageInfo): string {
+/** Legacy single-line form (e.g. logs); prefer `packageCompilerSettingRows` for UI. */
+export function formatPackageSettingsCompiler(p: PackageInfo): string {
+  return packageCompilerSettingRows(p).map((r) => `${r.name}=${r.value}`).join(", ");
+}
+
+/** Sorted `key=value` lines for the packages tab options column. */
+export function packageOptionsValueLines(p: PackageInfo): string[] {
   const opts = p.options ?? {};
   const keys = Object.keys(opts).sort((a, b) => a.localeCompare(b));
-  if (!keys.length) return "options=(none)";
-  return `options=${keys.map((k) => `${k}=${opts[k]}`).join(", ")}`;
+  if (!keys.length) return ["(none)"];
+  return keys.map((k) => `${k}=${opts[k]}`);
+}
+
+/** Legacy single-line form; prefer `packageOptionsValueLines` for UI. */
+export function formatPackageOptionsLine(p: PackageInfo): string {
+  const lines = packageOptionsValueLines(p);
+  if (lines.length === 1 && lines[0] === "(none)") return "options=(none)";
+  return `options=${lines.join(", ")}`;
 }
 
 export function sortPackagesForDisplay(packages: PackageInfo[]): PackageInfo[] {

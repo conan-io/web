@@ -69,7 +69,11 @@
 .centerRecipes :global(.filter-option.active) {color:var(--accent);background:var(--blue-ultra)}
 .centerRecipes :global(.sort-menu .sort-option) {padding:8px 10px}
 .centerRecipes :global(.sort-menu .sort-option-text) {font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;line-height:1.2}
-.centerRecipes :global(.quick-tags) {display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.centerRecipes :global(.filters-tags-row) {display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;margin-top:12px}
+.centerRecipes :global(.filters-tags-row .quick-tags) {display:flex;gap:6px;flex-wrap:wrap;flex:1;min-width:0}
+.centerRecipes :global(.clear-facet-filters) {margin-left:auto;flex-shrink:0;padding:6px 12px;border:1px solid var(--line);background:#fff;color:var(--accent);font-size:12.5px;font-family:var(--sans);font-weight:500;cursor:pointer;transition:.15s;border-radius:6px}
+.centerRecipes :global(.clear-facet-filters:hover:not(:disabled)) {border-color:var(--accent);background:var(--blue-ultra)}
+.centerRecipes :global(.clear-facet-filters:disabled) {opacity:.45;cursor:default;color:var(--ink-3)}
 .centerRecipes :global(.qtag) {display:inline-flex;align-items:center;padding:4px 11px;background:var(--muted-chip);color:#7D8AA6;font-size:11.5px;font-family:var(--mono);letter-spacing:.02em;cursor:pointer;transition:.15s;border:0}
 .centerRecipes :global(.qtag:hover) {background:#bfc8d6;color:#55637f}
 .centerRecipes :global(.qtag.on) {background:var(--accent);color:#fff}
@@ -188,6 +192,7 @@
 .centerRecipe :global(.pkg-card-tags) {display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 .centerRecipe :global(.pkg-card-rule) {border:0;border-top:1px solid var(--line);margin:4px 0;width:100%}
 .centerRecipe :global(.pkg-card-meta) {display:flex;flex-direction:column;gap:8px;font-size:12.5px}
+.centerRecipe :global(.pkg-card-meta__tight-stack) {display:flex;flex-direction:column;gap:0}
 .centerRecipe :global(.pkg-card-meta__row) {display:grid;grid-template-columns:minmax(96px,132px) 1fr;gap:10px;align-items:start}
 .centerRecipe :global(.pkg-card-meta__label) {color:var(--ink-3);font-weight:600;font-family:var(--sans)}
 .centerRecipe :global(.pkg-card-meta__value) {font-family:var(--mono);color:var(--ink-2);word-break:break-all;font-size:12px;line-height:1.45;margin:0}

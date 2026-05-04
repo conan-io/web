@@ -189,17 +189,28 @@ export default function CenterRecipesPage({ data }: InferGetServerSidePropsType<
               )}
             </div>
           </div>
-          <div className="quick-tags">
-            {PLATFORM_OPTIONS.map((platform) => (
-              <button
-                key={platform}
-                type="button"
-                className={`qtag ${search.selectedPlatforms.includes(platform) ? "on" : ""}`}
-                onClick={() => search.togglePlatform(platform)}
-              >
-                {platform}
-              </button>
-            ))}
+          <div className="filters-tags-row">
+            <div className="quick-tags">
+              {PLATFORM_OPTIONS.map((platform) => (
+                <button
+                  key={platform}
+                  type="button"
+                  className={`qtag ${search.selectedPlatforms.includes(platform) ? "on" : ""}`}
+                  onClick={() => search.togglePlatform(platform)}
+                >
+                  {platform}
+                </button>
+              ))}
+            </div>
+            <button
+              type="button"
+              className="clear-facet-filters"
+              disabled={!search.hasFacetFiltersToClear}
+              onClick={() => search.clearFacetFilters()}
+              aria-label="Clear license, topic, and OS filters"
+            >
+              Clear filters
+            </button>
           </div>
         </div>
         <div className="results-head">

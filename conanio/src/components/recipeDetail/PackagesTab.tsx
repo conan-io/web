@@ -4,8 +4,8 @@ import CopyToClipboardButton from "@/components/CopyToClipboardButton";
 import type { PackagesTabProps } from "@/types/recipeDetail";
 import {
   filterPackagesByPlatform,
-  formatPackageOptionsLine,
-  formatPackageSettingsCompiler,
+  packageCompilerSettingRows,
+  packageOptionsValueLines,
   primaryProfileTagValues,
   sortPackagesForDisplay,
 } from "@/utils/recipeDetailUtils";
@@ -25,35 +25,52 @@ const PKG_ROW_STACK: CSSProperties = {
 function PackageCardMeta({
   packageId,
   recipeRevision,
+  compilerRows,
 }: {
   packageId?: string;
   recipeRevision?: string;
+  compilerRows: { name: string; value: string }[];
 }) {
-  if (!packageId && !recipeRevision) return null;
+  if (!packageId && !recipeRevision && compilerRows.length === 0) return null;
 
   return (
     <div className="pkg-card-meta">
-      {packageId ? (
-        <div className="pkg-card-meta__row">
-          <span className="pkg-card-meta__label">package ID</span>
-          <code className="pkg-card-meta__value">{packageId}</code>
+      {packageId || recipeRevision ? (
+        <div className="pkg-card-meta__tight-stack">
+          {packageId ? (
+            <div className="pkg-card-meta__row">
+              <span className="pkg-card-meta__label">package ID</span>
+              <code className="pkg-card-meta__value">{packageId}</code>
+            </div>
+          ) : null}
+          {recipeRevision ? (
+            <div className="pkg-card-meta__row">
+              <span className="pkg-card-meta__label">Recipe revision</span>
+              <span className="pkg-card-meta__rev">
+                <code className="pkg-card-meta__value" title={recipeRevision}>
+                  {recipeRevision}
+                </code>
+                <CopyToClipboardButton
+                  copyText={recipeRevision}
+                  className="recipe-revision-row__copy"
+                  aria-label="Copy recipe revision to clipboard"
+                >
+                  {clipboardCopyIconSvg}
+                </CopyToClipboardButton>
+              </span>
+            </div>
+          ) : null}
         </div>
       ) : null}
-      {recipeRevision ? (
-        <div className="pkg-card-meta__row">
-          <span className="pkg-card-meta__label">Recipe revision</span>
-          <span className="pkg-card-meta__rev">
-            <code className="pkg-card-meta__value" title={recipeRevision}>
-              {recipeRevision}
-            </code>
-            <CopyToClipboardButton
-              copyText={recipeRevision}
-              className="recipe-revision-row__copy"
-              aria-label="Copy recipe revision to clipboard"
-            >
-              {clipboardCopyIconSvg}
-            </CopyToClipboardButton>
-          </span>
+      {(packageId || recipeRevision) && compilerRows.length > 0 ? <hr className="pkg-card-rule" /> : null}
+      {compilerRows.length > 0 ? (
+        <div className="pkg-card-meta__tight-stack">
+          {compilerRows.map((row) => (
+            <div key={row.name} className="pkg-card-meta__row">
+              <span className="pkg-card-meta__label">{row.name}</span>
+              <code className="pkg-card-meta__value">{row.value}</code>
+            </div>
+          ))}
         </div>
       ) : null}
     </div>
@@ -103,9 +120,8 @@ export default function PackagesTab({
             <div style={{ marginTop: 16, display: "flex", flexDirection: "column", gap: 8 }}>
               {filteredRows.map((pkg, index) => {
                 const recipeRevision = recipe.info.recipe_revision;
-                const compilerLine = formatPackageSettingsCompiler(pkg);
-                const hasCompilerLine = compilerLine.length > 0;
-                const hasMeta = Boolean(pkg.package_id || recipeRevision);
+                const compilerRows = packageCompilerSettingRows(pkg);
+                const hasMeta = Boolean(pkg.package_id || recipeRevision || compilerRows.length > 0);
                 const profileTags = primaryProfileTagValues(pkg);
                 return (
                   <div key={pkg.package_id ? `${pkg.package_id}-${index}` : `pkg-${index}`} className="pkg-card">
@@ -124,16 +140,23 @@ export default function PackagesTab({
                       <hr className="pkg-card-rule" />
                       {hasMeta ? (
                         <>
-                          <PackageCardMeta packageId={pkg.package_id} recipeRevision={recipeRevision} />
+                          <PackageCardMeta
+                            packageId={pkg.package_id}
+                            recipeRevision={recipeRevision}
+                            compilerRows={compilerRows}
+                          />
                           <hr className="pkg-card-rule" />
                         </>
                       ) : null}
-                      {hasCompilerLine ? (
-                        <span style={{ color: "var(--accent)", fontWeight: 600, wordBreak: "break-word" }}>
-                          {compilerLine}
-                        </span>
-                      ) : null}
-                      <span style={{ wordBreak: "break-word" }}>{formatPackageOptionsLine(pkg)}</span>
+                      <div className="pkg-card-meta__row">
+                        <span className="pkg-card-meta__label">options</span>
+                        <code
+                          className="pkg-card-meta__value"
+                          style={{ whiteSpace: "pre-line", wordBreak: "break-word" }}
+                        >
+                          {packageOptionsValueLines(pkg).join("\n")}
+                        </code>
+                      </div>
                     </div>
                   </div>
                 );
