@@ -83,8 +83,8 @@ export const TESTIMONIALS = [
 ] as const;
 
 /**
- * Homepage KPI copy.
- * Keep these values aligned with the moving blue ribbon below.
+ * Homepage hero KPI row (static marketing copy).
+ * Recipe / reference / PyPI ribbon values come from `getServerSideProps` on the homepage.
  */
 export const HOMEPAGE_KPIS = [
   { value: "10M+", label: "monthly downloads" },
@@ -92,16 +92,10 @@ export const HOMEPAGE_KPIS = [
   { value: "70+", label: "contributors" },
 ] as const;
 
-/**
- * Blue moving ribbon content.
- * If KPI text changes, update this list together with HOMEPAGE_KPIS.
- */
-export const RIBBON_ITEMS = [
-  "↓ 10M+ monthly downloads",
-  "◆ 1,500+ ConanCenter recipes",
-  "◇ 70+ core contributors",
-  "✦ MIT License",
-] as const;
+/** Static homepage ribbon segments; recipe, reference, and PyPI download counts are filled in `getServerSideProps` when available. */
+export const RIBBON_LICENSE = "✦ MIT License" as const;
+/** Shown if the pypistats request fails (PyPI `conan` package, rolling last 30 days). */
+export const RIBBON_DOWNLOADS_FALLBACK = "↓ 10M+ monthly PyPI downloads" as const;
 
 export const QUOTE_SVG: ReactNode = (
   <svg width={18} height={18} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">

@@ -1,12 +1,68 @@
 import Link from "next/link";
 import { useCallback, useState } from "react";
+import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 
-import { QUOTE_SVG, TESTIMONIALS, USER_BRAND_LOGOS } from "@/data/homePageContent";
+import {
+  QUOTE_SVG,
+  RIBBON_DOWNLOADS_FALLBACK,
+  RIBBON_LICENSE,
+  TESTIMONIALS,
+  USER_BRAND_LOGOS,
+} from "@/data/homePageContent";
 import MainFooter from "@/components/MainFooter";
 import MainNav from "@/components/MainNav";
 import PageHead from "@/components/PageHead";
+import { getJson, getUrls } from "@/service/api";
+import type { RecipeReference } from "@/types/conanCenter";
 
-export default function HomePage() {
+const PYPISTATS_CONAN_RECENT = "https://pypistats.org/api/packages/conan/recent";
+
+type PypistatsRecentResponse = {
+  data?: { last_month?: number };
+};
+
+async function fetchConanPypiMonthlyDownloads(): Promise<number | null> {
+  try {
+    const res = await fetch(PYPISTATS_CONAN_RECENT, {
+      headers: { Accept: "application/json" },
+      signal: AbortSignal.timeout(10_000),
+    });
+    if (!res.ok) return null;
+    const body = (await res.json()) as PypistatsRecentResponse;
+    const n = body.data?.last_month;
+    return typeof n === "number" && Number.isFinite(n) && n >= 0 ? Math.round(n) : null;
+  } catch {
+    return null;
+  }
+}
+
+interface HomePageProps {
+  recipesNum: number;
+  referenceNum: number;
+  pipMonthlyDownloads: number | null;
+}
+
+export const getServerSideProps: GetServerSideProps<HomePageProps> = async () => {
+  const urls = getUrls();
+  const [refResponse, pipMonthlyDownloads] = await Promise.all([
+    getJson<RecipeReference>(urls.reference.num, urls.api.private),
+    fetchConanPypiMonthlyDownloads(),
+  ]);
+  const data = refResponse.data;
+  return {
+    props: {
+      recipesNum: data?.recipes ?? 0,
+      referenceNum: data?.references ?? 0,
+      pipMonthlyDownloads,
+    },
+  };
+};
+
+export default function HomePage({
+  recipesNum,
+  referenceNum,
+  pipMonthlyDownloads,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [testimonialIndex, setTestimonialIndex] = useState(0);
   const tCount = TESTIMONIALS.length;
   const goPrev = useCallback(() => {
@@ -15,6 +71,18 @@ export default function HomePage() {
   const goNext = useCallback(() => {
     setTestimonialIndex((i) => (i + 1) % tCount);
   }, [tCount]);
+
+  const downloadsRibbon =
+    pipMonthlyDownloads != null
+      ? `↓ ${new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 1 }).format(pipMonthlyDownloads)} monthly PyPI downloads`
+      : RIBBON_DOWNLOADS_FALLBACK;
+
+  const ribbonItems = [
+    RIBBON_LICENSE,
+    downloadsRibbon,
+    `◆ ${recipesNum.toLocaleString("en-US")} recipes`,
+    `◇ ${referenceNum.toLocaleString("en-US")} references`,
+  ];
 
   return (
     <>
@@ -46,6 +114,13 @@ export default function HomePage() {
             </div>
           </div>
         </section>
+        <div className="ribbon">
+          <div className="track">
+            {[...ribbonItems, ...ribbonItems].map((item, idx) => (
+              <span key={`${item}-${idx}`}>{item}</span>
+            ))}
+          </div>
+        </div>
         <section className="section">
           <span className="pill">Why Conan</span>
           <h2>Three reasons teams pick Conan.</h2>
