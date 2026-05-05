@@ -115,8 +115,13 @@ export function resolveSelectedRecipe(data: Record<string, RecipeInfo>, requeste
   return entries[0];
 }
 
-/** Matches prod `getSelectedTab`: without readme, non-`ok` versions open the Versions tab first. */
-export function initialRecipeTab(packageInfo: Record<string, RecipeInfo>, requestedVersion: string | null): RecipeTab {
+/** Matches prod `getSelectedTab`: readme tab first when GitHub README exists; else use_it if `ok`, else Versions. */
+export function initialRecipeTab(
+  packageInfo: Record<string, RecipeInfo>,
+  requestedVersion: string | null,
+  readme: string | null,
+): RecipeTab {
+  if (readme) return "readme";
   try {
     const r = resolveSelectedRecipe(packageInfo, requestedVersion);
     return r.info.status === "ok" ? "useit" : "versions";

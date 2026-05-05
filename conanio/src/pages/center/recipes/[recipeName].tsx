@@ -14,6 +14,7 @@ import CopyToClipboardButton from "@/components/CopyToClipboardButton";
 import RecipeMainTabs from "@/components/recipeDetail/RecipeMainTabs";
 import { clipboardCopyIconSvg } from "@/components/recipeDetail/recipeDetailIcons";
 import UseItTab from "@/components/recipeDetail/UseItTab";
+import ReadmeTab from "@/components/recipeDetail/ReadmeTab";
 import VersionsTab from "@/components/recipeDetail/VersionsTab";
 import styles from "@/styles/centerPages.module.css";
 import type {
@@ -50,11 +51,23 @@ export const getServerSideProps: GetServerSideProps<RecipeDetailSsrProps> = asyn
 
   const packageInfo = packageRes.data as Record<string, RecipeInfo>;
 
+  const readmeUrl = `https://raw.githubusercontent.com/conan-io/conan-center-index/master/recipes/${encodeURIComponent(recipeName)}/README.md`;
+  let readme: string | null = null;
+  try {
+    const readmeRes = await fetch(readmeUrl);
+    if (readmeRes.ok) {
+      readme = await readmeRes.text();
+    }
+  } catch {
+    /* same as legacy: ignore fetch errors */
+  }
+
   return {
     props: {
       recipeName,
       recipeVersion,
       packageInfo,
+      readme,
     },
   };
 };
@@ -63,9 +76,12 @@ function RecipeDetailPage({
   recipeName,
   recipeVersion: recipeVersionQuery,
   packageInfo,
+  readme,
 }: RecipeDetailSsrProps) {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<RecipeTab>(() => initialRecipeTab(packageInfo, recipeVersionQuery));
+  const [activeTab, setActiveTab] = useState<RecipeTab>(() =>
+    initialRecipeTab(packageInfo, recipeVersionQuery, readme),
+  );
   const [packageOsFilter, setPackageOsFilter] = useState<PackageOsTabFilter | null>(null);
   const [activeCodeTab, setActiveCodeTab] = useState<CodeTab>("conanfile.py");
   const [useItByVersion, setUseItByVersion] = useState<Record<string, RecipeUseIt>>({});
@@ -194,8 +210,18 @@ function RecipeDetailPage({
             </div>
           </div>
         </div>
-        <RecipeMainTabs activeTab={activeTab} onTabChange={handleMainTabChange} />
+        <RecipeMainTabs activeTab={activeTab} onTabChange={handleMainTabChange} readme={readme} />
         <div className="body">
+          {readme ? (
+            <ReadmeTab
+              key={`readme-${recipeName}`}
+              isActive={activeTab === "readme"}
+              readme={readme}
+              recipe={recipe}
+              recipeName={recipeName}
+              onPlatformPick={pickPlatform}
+            />
+          ) : null}
           <UseItTab
             key={`${recipeName}-${recipeVersion}`}
             isActive={activeTab === "useit"}

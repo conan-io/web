@@ -147,10 +147,36 @@
 .centerRecipe :global(.pkg-head p) {margin:0 0 12px;color:var(--ink-2);font-size:var(--fs-13-5);line-height:1.5;max-width:960px}
 .centerRecipe :global(.pkg-head .chips) {display:flex;gap:6px;flex-wrap:wrap}
 .centerRecipe :global(.chip) {display:inline-flex;align-items:center;padding:3px 10px;background:var(--accent);color:#fff;font-size:var(--fs-11);font-family:var(--mono)}
-.centerRecipe :global(.tabs) {max-width:1200px;margin:16px auto 0;padding:0 40px;display:grid;grid-template-columns:repeat(6,1fr);gap:0;background:#fff;border:1px solid var(--line)}
 .centerRecipe :global(.tabs-wrap) {max-width:1200px;margin:16px auto 0;padding:0 40px}
-.centerRecipe :global(.tabs) {display:grid;grid-template-columns:repeat(6,1fr);background:#fff;border:1px solid var(--line)}
-.centerRecipe :global(.tab) {display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:13px 10px;font-size:var(--fs-13);color:var(--ink-2);cursor:pointer;border-right:1px solid var(--line);transition:.15s}
+/* One row for any tab count (6 or 7 with Readme): flex beats fixed repeat(6) grid */
+.centerRecipe :global(.tabs) {
+  display:flex;
+  flex-wrap:nowrap;
+  align-items:stretch;
+  width:100%;
+  box-sizing:border-box;
+  background:#fff;
+  border:1px solid var(--line);
+}
+.centerRecipe :global(.tab) {
+  box-sizing:border-box;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  flex:1 1 0;
+  min-width:0;
+  padding:13px 8px;
+  font-size:var(--fs-13);
+  color:var(--ink-2);
+  cursor:pointer;
+  border:0;
+  border-right:1px solid var(--line);
+  background:#fff;
+  transition:.15s;
+  white-space:nowrap;
+  font-family:var(--sans);
+}
 .centerRecipe :global(.tab:last-child) {border-right:0}
 .centerRecipe :global(.tab:hover) {color:var(--accent)}
 .centerRecipe :global(.tab.active) {background:var(--accent);color:#fff;font-weight:600}
@@ -161,6 +187,26 @@
 .centerRecipe :global(.panel h2) {margin:0 0 14px;font-size:var(--fs-20);color:var(--blue-ink);font-weight:700;letter-spacing:-.01em}
 .centerRecipe :global(.useit) {display:grid;grid-template-columns:200px 1fr;gap:22px}
 .centerRecipe :global(.useit h2) {margin:0 0 14px;font-size:var(--fs-20);color:var(--blue-ink);font-weight:700}
+.centerRecipe :global(.readme-prose > h2:first-child) {margin-top:0}
+.centerRecipe :global(.readme-prose) {font-size:var(--fs-13-5);color:var(--ink-2);line-height:1.65;max-width:min(72ch,100%)}
+.centerRecipe :global(.readme-prose p) {margin:.75em 0}
+.centerRecipe :global(.readme-prose h1) {font-size:var(--fs-22);color:var(--blue-ink);margin:1.15em 0 .45em;font-weight:700;letter-spacing:-.02em;line-height:1.25}
+.centerRecipe :global(.readme-prose h2:not(:first-child)) {font-size:var(--fs-18);color:var(--blue-ink);margin:1.1em 0 .4em;font-weight:700;line-height:1.3}
+.centerRecipe :global(.readme-prose h3) {font-size:var(--fs-15);color:var(--ink);margin:1em 0 .35em;font-weight:700}
+.centerRecipe :global(.readme-prose h4) {font-size:var(--fs-14);margin:.9em 0 .3em;font-weight:600;color:var(--ink)}
+.centerRecipe :global(.readme-prose ul), .centerRecipe :global(.readme-prose ol) {padding-left:1.35em;margin:.65em 0}
+.centerRecipe :global(.readme-prose li) {margin:.25em 0}
+.centerRecipe :global(.readme-prose pre) {margin:1em 0;padding:14px 16px;background:var(--blue-ultra);border:1px solid var(--line);overflow-x:auto;font-family:var(--mono);font-size:var(--fs-12-5);line-height:1.55}
+.centerRecipe :global(.readme-prose pre code) {background:transparent;padding:0;font-size:inherit;font-family:inherit}
+.centerRecipe :global(.readme-prose code) {font-family:var(--mono);font-size:var(--fs-12);background:var(--blue-ultra);padding:2px 6px;border-radius:3px}
+.centerRecipe :global(.readme-prose pre code) {border-radius:0}
+.centerRecipe :global(.readme-prose a) {color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+.centerRecipe :global(.readme-prose blockquote) {margin:1em 0;padding:.4em 0 .4em 14px;border-left:3px solid var(--line-2);color:var(--ink-3)}
+.centerRecipe :global(.readme-prose hr) {border:0;border-top:1px solid var(--line);margin:1.5em 0}
+.centerRecipe :global(.readme-prose img) {max-width:100%;height:auto;vertical-align:middle}
+.centerRecipe :global(.readme-prose table) {border-collapse:collapse;width:100%;margin:1em 0;font-size:var(--fs-12-5)}
+.centerRecipe :global(.readme-prose th), .centerRecipe :global(.readme-prose td) {border:1px solid var(--line);padding:8px 10px;text-align:left}
+.centerRecipe :global(.readme-prose th) {background:var(--soft);font-weight:600}
 .centerRecipe :global(.side h3) {font-size:var(--fs-14);font-weight:700;color:var(--ink);margin:0 0 10px}
 .centerRecipe :global(.side h3.recipe-info-heading) {display:flex;align-items:center;gap:6px}
 .centerRecipe :global(.side h3.recipe-info-heading svg.recipe-info-heading-svg) {width:15px;height:15px;flex-shrink:0;color:var(--ink-3);shape-rendering:geometricPrecision}
@@ -285,9 +331,9 @@
   .centerRecipes :global(.cards) {padding:0 24px;margin-bottom:48px}
 
   .centerRecipe :global(.pkg-head), .centerRecipe :global(.tabs-wrap), .centerRecipe :global(.body) {padding-left:24px;padding-right:24px}
-  .centerRecipe :global(.tabs) {grid-template-columns:repeat(3,1fr)}
-  .centerRecipe :global(.tab) {border-bottom:1px solid var(--line)}
-  .centerRecipe :global(.tab:nth-child(3n)) {border-right:0}
+  .centerRecipe :global(.tabs-wrap) {overflow-x:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+  .centerRecipe :global(.tabs) {width:max-content;min-width:100%}
+  .centerRecipe :global(.tab) {flex:1 0 auto;min-width:min(112px,14vw);padding:12px 7px}
 }
 
 @media (max-width: 640px) {
@@ -311,10 +357,7 @@
   .centerRecipe :global(.pkg-head), .centerRecipe :global(.tabs-wrap), .centerRecipe :global(.body) {padding-left:16px;padding-right:16px}
   .centerRecipe :global(.pkg-head .card) {padding:18px 18px}
   .centerRecipe :global(.pkg-head h1) {font-size:var(--fs-22)}
-  .centerRecipe :global(.tabs) {grid-template-columns:repeat(2,1fr)}
-  .centerRecipe :global(.tab) {padding:11px 8px;font-size:var(--fs-12)}
-  .centerRecipe :global(.tab:nth-child(3n)) {border-right:1px solid var(--line)}
-  .centerRecipe :global(.tab:nth-child(2n)) {border-right:0}
+  .centerRecipe :global(.tab) {min-width:96px;padding:11px 6px;font-size:var(--fs-12)}
   .centerRecipe :global(.panel) {padding:20px 18px}
   .centerRecipe :global(.useit) {grid-template-columns:1fr;gap:18px}
   .centerRecipe :global(.ver-row) {grid-template-columns:32px 1fr;row-gap:6px}

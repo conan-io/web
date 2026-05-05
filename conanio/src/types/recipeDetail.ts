@@ -59,9 +59,11 @@ export interface RecipeDetailSsrProps {
   recipeName: string;
   recipeVersion: string | null;
   packageInfo: Record<string, RecipeInfo>;
+  /** Raw markdown from conan-center-index `recipes/<name>/README.md`, when present. */
+  readme: string | null;
 }
 
-export type RecipeTab = "useit" | "packages" | "deps" | "versions" | "audit" | "badges";
+export type RecipeTab = "readme" | "useit" | "packages" | "deps" | "versions" | "audit" | "badges";
 export type CodeTab = "conanfile.txt" | "conanfile.py";
 export type SecondaryTab = "targets" | "headers";
 

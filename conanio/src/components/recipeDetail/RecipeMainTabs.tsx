@@ -1,5 +1,19 @@
 import type { RecipeTab, RecipeTabItem } from "@/types/recipeDetail";
 
+const README_TAB_ITEM: RecipeTabItem = {
+  id: "readme",
+  label: "Readme",
+  icon: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+      <path d="M14 2v6h6" />
+      <path d="M16 13H8" />
+      <path d="M16 17H8" />
+      <path d="M10 9H8" />
+    </svg>
+  ),
+};
+
 const RECIPE_TAB_ITEMS: RecipeTabItem[] = [
   {
     id: "useit",
@@ -67,14 +81,18 @@ const RECIPE_TAB_ITEMS: RecipeTabItem[] = [
 export default function RecipeMainTabs({
   activeTab,
   onTabChange,
+  readme,
 }: {
   activeTab: RecipeTab;
   onTabChange: (tab: RecipeTab) => void;
+  readme: string | null;
 }) {
+  const tabItems: RecipeTabItem[] = readme ? [README_TAB_ITEM, ...RECIPE_TAB_ITEMS] : RECIPE_TAB_ITEMS;
+
   return (
     <div className="tabs-wrap">
       <div className="tabs" id="tabs">
-        {RECIPE_TAB_ITEMS.map((tab) => (
+        {tabItems.map((tab) => (
           <button
             key={tab.id}
             type="button"
