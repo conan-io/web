@@ -83,6 +83,7 @@ export default function HomePage({
     `◆ ${recipesNum.toLocaleString("en-US")} recipes`,
     `◇ ${referenceNum.toLocaleString("en-US")} references`,
   ];
+  const ribbonLoop = [...ribbonItems, ...ribbonItems, ...ribbonItems, ...ribbonItems];
 
   return (
     <>
@@ -116,7 +117,7 @@ export default function HomePage({
         </section>
         <div className="ribbon">
           <div className="track">
-            {[...ribbonItems, ...ribbonItems].map((item, idx) => (
+            {ribbonLoop.map((item, idx) => (
               <span key={`${item}-${idx}`}>{item}</span>
             ))}
           </div>

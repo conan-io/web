@@ -100,10 +100,11 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .mascot-solo{display:grid;place-items:center;padding:20px;filter:drop-shadow(0 30px 40px rgba(10,30,70,.22))}
 .mascot-solo img{width:100%;max-width:520px;height:auto;object-fit:contain;display:block}
 .ribbon{background:var(--accent);color:#fff;padding:14px 0;overflow:hidden;position:relative;margin-top:48px}
-.ribbon .track{display:flex;gap:60px;white-space:nowrap;animation:scroll 30s linear infinite;font-family:var(--mono);font-size:var(--fs-13)}
-.ribbon .track span{opacity:.9}
+/* Four identical sequences in the markup → -25% = one loop; extra copies avoid empty band on wide viewports */
+.ribbon .track{display:flex;gap:60px;white-space:nowrap;width:max-content;animation:scroll 30s linear infinite;font-family:var(--mono);font-size:var(--fs-13);background:var(--accent);will-change:transform}
+.ribbon .track span{opacity:.9;flex-shrink:0}
 .ribbon .track b{font-weight:500}
-@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes scroll{from{transform:translate3d(0,0,0)}to{transform:translate3d(-25%,0,0)}}
 .section{padding:80px 40px;max-width:1200px;margin:0 auto}
 .section h2{font-size:var(--fs-42);letter-spacing:-.025em;margin:8px 0 12px;font-weight:700;color:var(--blue-ink)}
 .section .lead{color:var(--ink-3);font-size:var(--fs-16);max-width:620px;line-height:1.55;margin:0 0 40px}
