@@ -46,13 +46,6 @@ export default function HomePage() {
             </div>
           </div>
         </section>
-        <div className="ribbon">
-          {/* <div className="track">
-            {[...RIBBON_ITEMS, ...RIBBON_ITEMS].map((item, idx) => (
-              <span key={`${item}-${idx}`}>{item}</span>
-            ))}
-          </div> */}
-        </div>
         <section className="section">
           <span className="pill">Why Conan</span>
           <h2>Three reasons teams pick Conan.</h2>
