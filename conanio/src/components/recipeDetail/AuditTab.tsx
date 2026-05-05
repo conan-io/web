@@ -37,15 +37,7 @@ export default function AuditTab({ isActive, recipeName, recipeVersion }: Recipe
         </p>
         <p className="note-txt">
           Tip: To avoid exposing your token in shell history, authenticate using an environment variable (e.g.{" "}
-          <code
-            style={{
-              fontFamily: "var(--mono)",
-              background: "#fff",
-              padding: "1px 6px",
-              border: "1px solid var(--line)",
-              fontSize: "11.5px",
-            }}
-          >
+          <code className="audit-inline-code">
             CONAN_AUDIT_PROVIDER_TOKEN_CONANCENTER=&lt;token&gt;
           </code>
           ). For more info, see the <a>documentation</a>.

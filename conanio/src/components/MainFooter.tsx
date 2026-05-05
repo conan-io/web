@@ -66,7 +66,7 @@ export default function MainFooter() {
           <a href="https://blog.conan.io/" target="_blank" rel="noopener noreferrer" onClick={() => gtmConanPush("blog")}>Blog</a>
           <a href="/faq" onClick={() => gtmConanPush("faq")}>FAQ</a>
           <a href="https://jfrog.com/privacy-notice/" target="_blank" rel="noopener noreferrer" onClick={() => gtmConanPush("privacy notice")}>Privacy Notice</a>
-          <a href="/terms" onClick={() => gtmConanPush("terms")}>Terms</a>
+          <a href="/terms-conditions" onClick={() => gtmConanPush("terms")}>Terms</a>
           <a
             href="#"
             className="ot-sdk-show-settings"

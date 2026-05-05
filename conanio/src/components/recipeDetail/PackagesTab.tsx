@@ -1,4 +1,4 @@
-import { useMemo, type CSSProperties } from "react";
+import { useMemo } from "react";
 
 import CopyToClipboardButton from "@/components/CopyToClipboardButton";
 import type { PackagesTabProps } from "@/types/recipeDetail";
@@ -12,15 +12,6 @@ import {
 
 import { clipboardCopyIconSvg } from "@/components/recipeDetail/recipeDetailIcons";
 import RecipeInfoAside from "@/components/recipeDetail/RecipeInfoAside";
-
-const PKG_ROW_STACK: CSSProperties = {
-  display: "flex",
-  flexDirection: "column",
-  gap: 8,
-  fontFamily: "var(--mono)",
-  fontSize: "12.5px",
-  color: "var(--ink-2)",
-};
 
 function PackageCardMeta({
   packageId,
@@ -113,7 +104,7 @@ export default function PackagesTab({
             </button>
           ) : null}
           {packageRows.length === 0 ? (
-            <p style={{ color: "var(--ink-2)", fontSize: "13.5px", lineHeight: "1.6" }}>
+            <p className="packages-empty">
               This recipe version (<strong style={{ fontFamily: "var(--mono)" }}>{ref}</strong>) has no packages.
             </p>
           ) : (
@@ -125,7 +116,7 @@ export default function PackagesTab({
                 const profileTags = primaryProfileTagValues(pkg);
                 return (
                   <div key={pkg.package_id ? `${pkg.package_id}-${index}` : `pkg-${index}`} className="pkg-card">
-                    <div style={PKG_ROW_STACK}>
+                    <div className="pkg-card-stack">
                       {profileTags.length > 0 ? (
                         <div className="pkg-card-tags">
                           {profileTags.map((v, ti) => (
@@ -135,7 +126,7 @@ export default function PackagesTab({
                           ))}
                         </div>
                       ) : (
-                        <span style={{ fontSize: "12.5px", color: "var(--ink-3)" }}>(header-only)</span>
+                        <span className="pkg-card-header-only">(header-only)</span>
                       )}
                       <hr className="pkg-card-rule" />
                       {hasMeta ? (

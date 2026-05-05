@@ -53,7 +53,7 @@ export default function NotFound() {
                 transform: "rotate(-12deg)",
                 fontFamily: "var(--mono)",
                 fontWeight: 700,
-                fontSize: "30px",
+                fontSize: "var(--fs-30)",
                 lineHeight: 1,
                 letterSpacing: ".02em",
                 borderRadius: 0,
@@ -66,7 +66,7 @@ export default function NotFound() {
           <h1
             id="nf-heading"
             style={{
-              fontSize: "clamp(22px,4vw,32px)",
+              fontSize: "clamp(var(--fs-22), 4vw, var(--fs-32))",
               fontWeight: 700,
               color: "var(--blue-ink)",
               letterSpacing: "-.02em",

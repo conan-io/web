@@ -255,7 +255,7 @@ export default function HomePage() {
                   </span>
                 </div>
                 <h3>Conan Py Build</h3>
-                <p>A minimal PEP 517 build backend that uses Conan to compile Python C/C++ extensions. Drop it into your <span style={{fontFamily: 'var(--mono)', fontSize: '12.5px', color: 'var(--ink-2)'}}>pyproject.toml</span> and ship wheels.</p>
+                <p>A minimal PEP 517 build backend that uses Conan to compile Python C/C++ extensions. Drop it into your <span style={{fontFamily: 'var(--mono)', fontSize: 'var(--fs-12-5)', color: 'var(--ink-2)'}}>pyproject.toml</span> and ship wheels.</p>
                 <div className="foot">
                   <div className="tags"><span>PEP 517</span><span>python</span></div>
                   <span className="link">View on GitHub
@@ -265,7 +265,7 @@ export default function HomePage() {
               </a>
               <a className="proj addmore">
                 <div className="plus">+</div>
-                <h3 style={{color: 'var(--ink-2)', fontSize: 16}}>More coming soon</h3>
+                <h3 style={{color: 'var(--ink-2)', fontSize: 'var(--fs-16)'}}>More coming soon</h3>
                 <p>We ship adjacent tools regularly. Follow <b style={{color: 'var(--ink-2)'}}>@conan_io</b> or watch the org on GitHub.</p>
               </a>
             </div>

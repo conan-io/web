@@ -31,7 +31,7 @@ export default function VersionsTab({
     <div className={`panel${isActive ? " active" : ""}`} id="panel-versions" data-recipe={recipeName}>
       <div className="ver-list">
         {rows.length === 0 ? (
-          <p style={{ margin: 0, fontSize: "13.5px", color: "var(--ink-2)" }}>No versions available for this recipe.</p>
+          <p className="versions-empty">No versions available for this recipe.</p>
         ) : (
           rows.map((r, idx) => {
             const maintained = r.info.status === "ok";

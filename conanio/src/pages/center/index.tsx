@@ -81,7 +81,9 @@ export default function CenterPage({
             aria-label="Conan 2: Conan Center now serves packages from center2.conan.io — read the announcement"
           >
             <span className="tag">Conan 2</span>
-            <span>Now serving packages from <code style={{ fontFamily: "var(--mono)", fontSize: 11 }}>center2.conan.io</code></span>
+            <span>
+              Now serving packages from <code className="cc-eyebrow-code">center2.conan.io</code>
+            </span>
           </a>
           <h1>The Conan <span className="blue">libraries and tools</span><br />central repository.</h1>
           {/* Search */}

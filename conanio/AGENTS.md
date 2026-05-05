@@ -27,3 +27,11 @@ Production behavior lives in **`legacy/conanio`** (the previous Next.js app, kep
 - Recipe detail hydrates **use_it** from the client with **`urls.api.public`**: `legacy/conanio/pages/center/recipes/[recipeName].tsx` (`useEffect` + `getJson`); initial package data stays **`urls.api.private`** in `getServerSideProps`.
 
 In **this** tree, shared URL composition and fetch helpers live in **`src/service/api.ts`** — keep the same public/private split when wiring new calls.
+
+## Typography
+
+Font sizes use CSS variables `--fs-*` on `:root` in **`src/styles/globals.css`**. A comment block at the top of that file maps **roles** (marketing hero, doc hero, section titles, ConanCenter, prose, UI) to the usual tokens and breakpoints. Prefer `var(--fs-…)` for new styles; page-specific rules live in **`src/styles/contentPages.module.css`** and **`src/styles/centerPages.module.css`**.
+
+## FAQ and Terms copy
+
+The visible copy in **`src/pages/faq.tsx`** and **`src/pages/terms-conditions.tsx`** is **canonical**. Do **not** rewrite, replace, paraphrase, or “improve” that text as part of refactors, styling work, or drive-by edits. Only change those strings when the **user explicitly** asks to update FAQ or Terms content (or points to a specific wording change).
