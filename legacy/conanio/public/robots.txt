@@ -1,6 +1,0 @@
-# Allow all crawlers
-User-agent: *
-Allow: /
-# Optional hint for tools that look for llms.txt (not a robots.txt directive)
-# See: /llms.txt and /center/llms.txt
-Sitemap: https://conan.io/sitemap.xml
