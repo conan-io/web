@@ -13,7 +13,7 @@ import {
   DOC_LIBRARY_CMAKE,
   DOC_TOOLS_AS_PACKAGES,
 } from "@/utils/recipeDetailUtils";
-import { getConanfileHljsMarkup } from "@/utils/hljsConanfile";
+import { getConanfileHljsMarkup, getCppHljsMarkup } from "@/utils/hljsConanfile";
 
 function CciAssistanceLink() {
   return (
@@ -78,13 +78,24 @@ function UseItTargetsSection({
 
 function UseItHeadersSection({ recipeName, headers }: { recipeName: string; headers: string[] }) {
   const sorted = [...headers].sort((a, b) => a.localeCompare(b));
+  const includesSource = sorted.map((header) => `#include "${header}"`).join("\n");
+  const cppHljs = useMemo(() => getCppHljsMarkup(includesSource), [includesSource]);
+  const scrollLongList = sorted.length > 20;
+
   return (
     <div className="target-box">
       <p className="intro-text" style={{ marginTop: 0 }}>
         These are all the available headers. Some of these ones might be non-public; make sure of it by visiting the{" "}
         <code>{recipeName}</code> homepage listed above:
       </p>
-      <pre className="useit-headers-pre"><code>{sorted.map((header) => `#include "${header}"\n`).join("")}</code></pre>
+      <pre
+        className={`useit-headers-pre${scrollLongList ? " useit-headers-pre--scroll" : ""}`}
+      >
+        <code
+          className={cppHljs.className}
+          dangerouslySetInnerHTML={{ __html: cppHljs.html }}
+        />
+      </pre>
     </div>
   );
 }
