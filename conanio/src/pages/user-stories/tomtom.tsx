@@ -18,7 +18,7 @@ export default function UserStoryTomTomPage() {
             <div className="us-lockup">
               <img src="/conan-cube.png?v=1777364053920" alt="Conan" className="us-lockup-conan" />
               <span className="us-lockup-plus">+</span>
-              <img src="/tomtom-logo.png?v=1777364053920" alt="TomTom" className="us-lockup-customer us-lockup-customer--tomtom" />
+              <img src="/brands/company_tomtom.webp" alt="TomTom" className="us-lockup-customer us-lockup-customer--tomtom" />
             </div>
           </div>
         </section>

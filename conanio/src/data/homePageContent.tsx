@@ -1,16 +1,19 @@
 import type { ReactNode } from "react";
 
-/** Same paths as prod `conanio/components/home.tsx` (`ConanHomeUsers`). */
+/**
+ * Home “trusted by” logos (`ConanHomeUsers` in legacy `conanio/components/home.tsx`).
+ * WebP assets under `public/brands/` (`company_<slug>.webp`).
+ */
 export const USER_BRAND_LOGOS = [
-  { src: "/brands/company_29.png", alt: "Poco" },
-  { src: "/brands/company_28.png", alt: "Pix4D" },
-  { src: "/brands/company_26.png", alt: "Keysight Technologies" },
-  { src: "/brands/company_25.png", alt: "Microblink" },
-  { src: "/brands/company_32.png", alt: "Mercedes-Benz" },
-  { src: "/brands/company_33.png", alt: "Melexis" },
-  { src: "/brands/company_34.png", alt: "OpenROV" },
-  { src: "/brands/company_30.png", alt: "Arxan" },
-  { src: "/brands/company_31.png", alt: "Plex" },
+  { src: "/brands/company_poco.webp", alt: "Poco" },
+  { src: "/brands/company_pix4d.webp", alt: "Pix4D" },
+  { src: "/brands/company_keysight.webp", alt: "Keysight Technologies" },
+  { src: "/brands/company_microblink.webp", alt: "Microblink" },
+  { src: "/brands/company_mercedes.webp", alt: "Mercedes-Benz" },
+  { src: "/brands/company_melexis.webp", alt: "Melexis" },
+  { src: "/brands/company_openrov.webp", alt: "OpenROV" },
+  { src: "/brands/company_arxan.webp", alt: "Arxan" },
+  { src: "/brands/company_plex.webp", alt: "Plex" },
 ] as const;
 
 export const TESTIMONIALS = [

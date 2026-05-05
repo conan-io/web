@@ -507,7 +507,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .us-lockup-plus{font-size:var(--fs-30);color:var(--ink-3);font-weight:300}
 .us-lockup-customer{height:48px;width:auto;display:block;object-fit:contain}
 .us-lockup-customer--tomtom{height:42px}
-.us-lockup-customer--rti{height:64px}
+.us-lockup-customer--rti{height:64px;transform:translateY(-5px)}
 .us-body{max-width:1200px;margin:0 auto;padding:48px 32px 72px;display:grid;grid-template-columns:1fr 320px;gap:48px;align-items:start}
 .us-article{font-size:var(--fs-15);line-height:1.7;color:var(--ink-2);max-width:760px}
 .us-article h2{font-size:var(--fs-24);font-weight:600;color:var(--ink);letter-spacing:-.01em;margin:36px 0 14px;padding-top:8px}
@@ -540,7 +540,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .us-pdf-btn{padding:10px 30px;font-size:var(--fs-14);background:#3FAB4A;border-color:#3FAB4A}
 .us-pdf-btn:hover{background:#349840;border-color:#349840}
 @media (max-width: 1024px){ .us-hero h1{font-size:var(--fs-30)} .us-body{grid-template-columns:1fr;gap:36px;padding:36px 24px 56px} .us-aside{position:static;display:flex;justify-content:center} .us-hero{padding:36px 24px 28px} }
-@media (max-width: 640px){ .us-hero{padding:28px 16px 22px} .us-hero h1{font-size:var(--fs-23);margin-bottom:20px} .us-lockup{gap:14px} .us-lockup-conan{height:44px} .us-lockup-customer--tomtom{height:32px} .us-lockup-customer--rti{height:50px} .us-body{padding:28px 16px 40px;gap:28px} .us-article{font-size:var(--fs-14)} .us-article h2{font-size:var(--fs-20);margin-top:28px} .us-lede{font-size:var(--fs-14-5)} .us-quote{padding:16px 18px;margin:24px 0} .us-quote p{font-size:var(--fs-14-5)} .us-meta{grid-template-columns:1fr;gap:18px;margin-top:28px;padding-top:22px} .us-pdf-thumb{width:200px;height:260px} }
+@media (max-width: 640px){ .us-hero{padding:28px 16px 22px} .us-hero h1{font-size:var(--fs-23);margin-bottom:20px} .us-lockup{gap:14px} .us-lockup-conan{height:44px} .us-lockup-customer--tomtom{height:32px} .us-lockup-customer--rti{height:50px;transform:translateY(-3px)} .us-body{padding:28px 16px 40px;gap:28px} .us-article{font-size:var(--fs-14)} .us-article h2{font-size:var(--fs-20);margin-top:28px} .us-lede{font-size:var(--fs-14-5)} .us-quote{padding:16px 18px;margin:24px 0} .us-quote p{font-size:var(--fs-14-5)} .us-meta{grid-template-columns:1fr;gap:18px;margin-top:28px;padding-top:22px} .us-pdf-thumb{width:200px;height:260px} }
 
 /* ConanCenter pages migrated to CSS Modules:
    src/styles/centerPages.module.css */

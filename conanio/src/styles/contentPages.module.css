@@ -114,7 +114,7 @@
 .userStoriesIndexPage :global(.us-card) {display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);text-decoration:none;color:inherit;transition:border-color .15s ease, transform .15s ease, box-shadow .15s ease}
 .userStoriesIndexPage :global(.us-card:hover) {border-color:var(--ink);transform:translateY(-2px);box-shadow:0 14px 30px -18px rgba(10,30,70,.22)}
 .userStoriesIndexPage :global(.us-card-logo) {height:170px;display:grid;place-items:center;background:#F3F6FB;padding:28px;border-bottom:1px solid var(--line)}
-.userStoriesIndexPage :global(.us-card-logo img) {max-height:100%;max-width:100%;object-fit:contain;display:block}
+.userStoriesIndexPage :global(.us-card-logo img) {max-height:100%;max-width:100%;min-height:0;min-width:0;width:auto;height:auto;object-fit:contain;display:block}
 .userStoriesIndexPage :global(.us-card-logo--tomtom) {background:#FBFCFD}
 .userStoriesIndexPage :global(.us-card-tag) {padding:10px 18px;background:#E8F0FE;color:var(--accent);font-size:var(--fs-12);font-weight:600;letter-spacing:.02em;border-bottom:1px solid var(--line)}
 .userStoriesIndexPage :global(.us-card-title) {padding:18px 18px 8px;font-size:var(--fs-15);line-height:1.45;color:var(--ink);font-weight:600;letter-spacing:-.005em;flex:1}

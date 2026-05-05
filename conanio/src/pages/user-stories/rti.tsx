@@ -18,7 +18,7 @@ export default function UserStoryRtiPage() {
             <div className="us-lockup">
               <img src="/conan-cube.png?v=1777364053920" alt="Conan" className="us-lockup-conan" />
               <span className="us-lockup-plus">+</span>
-              <img src="/rti-logo.png?v=1777364053920" alt="RTI" className="us-lockup-customer us-lockup-customer--rti" />
+              <img src="/brands/company_rti.webp" alt="RTI" className="us-lockup-customer us-lockup-customer--rti" />
             </div>
           </div>
         </section>

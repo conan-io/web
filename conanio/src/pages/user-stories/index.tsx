@@ -22,7 +22,7 @@ export default function UserStoriesPage() {
           <div className="us-index-grid">
             <Link className="us-card" href="/user-stories/rti">
               <div className="us-card-logo us-card-logo--rti">
-                <img src="/rti-logo.png?v=1777364053920" alt="RTI" />
+                <img src="/brands/company_rti.webp" alt="RTI" />
               </div>
               <div className="us-card-tag">RTI Story</div>
               <div className="us-card-title">Speeding Multi-Platform Releases for Industrial IoT with Conan and Artifactory</div>
@@ -30,7 +30,7 @@ export default function UserStoriesPage() {
             </Link>
             <Link className="us-card" href="/user-stories/tomtom">
               <div className="us-card-logo us-card-logo--tomtom">
-                <img src="/tomtom-logo.png?v=1777364053920" alt="TomTom" />
+                <img src="/brands/company_tomtom.webp" alt="TomTom" />
               </div>
               <div className="us-card-tag">Customer Success Story: TomTom</div>
               <div className="us-card-title">TomTom fast tracks their delivery cycle with Conan</div>
