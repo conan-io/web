@@ -74,7 +74,7 @@ export default function CenterPage({
         {/* HERO */}
         <section className="cc-hero">
           <a
-            className="eyebrow"
+            className="center-announcement"
             href="https://blog.conan.io/2024/09/30/Conan-Center-will-stop-receiving-updates-for-Conan-1.html"
             target="_blank"
             rel="noopener noreferrer"
@@ -82,8 +82,9 @@ export default function CenterPage({
           >
             <span className="tag">Conan 2</span>
             <span>
-              Now serving packages from <code className="cc-eyebrow-code">center2.conan.io</code>
+              Now serving packages from <code className="center-announcement-code">center2.conan.io</code>
             </span>
+            <span aria-hidden="true" className="center-announcement-arrow">→</span>
           </a>
           <h1>The Conan <span className="blue">libraries and tools</span><br />central repository.</h1>
           {/* Search */}

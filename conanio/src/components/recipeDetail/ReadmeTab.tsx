@@ -20,7 +20,13 @@ export default function ReadmeTab({
 }) {
   useEffect(() => {
     if (!isActive) return;
-    hljs.highlightAll();
+
+    const codeBlocks = document.querySelectorAll<HTMLElement>("#panel-readme pre code");
+    codeBlocks.forEach((codeEl) => {
+      if (codeEl.classList.contains("hljs")) return;
+      if (codeEl.children.length > 0) return;
+      hljs.highlightElement(codeEl);
+    });
   }, [isActive, readme]);
 
   return (
