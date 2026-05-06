@@ -20,8 +20,7 @@ COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# CI tests not implemented yet: add a suite (e.g. test:ci in package.json), then uncomment.
-# RUN yarn test:ci
+RUN yarn test:ci
 RUN yarn build . NEXT_PUBLIC_CONAN_VERSION=${NEXT_PUBLIC_CONAN_VERSION} NEXT_PUBLIC_CONAN_CONANIO_SERVICE=${NEXT_PUBLIC_CONAN_CONANIO_SERVICE} NEXT_PUBLIC_SITE_ORIGIN=${NEXT_PUBLIC_SITE_ORIGIN}
 
 # Production image, copy all the files and run next
