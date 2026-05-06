@@ -3,6 +3,7 @@ import DownloadsCopyIcon from "@/components/DownloadsCopyIcon";
 import MainFooter from "@/components/MainFooter";
 import MainNav from "@/components/MainNav";
 import PageHead from "@/components/PageHead";
+import Image from "next/image";
 import {
   ARTIFACTORY_RELEASE_VERSION,
   buildDownloadsArtifacts,
@@ -20,7 +21,7 @@ function getConanReleaseVersion(): string {
 function DlRowIcon({ src, alt }: { src: string; alt: string }) {
   return (
     <span className="dl-ico">
-      <img src={src} alt={alt} decoding="async" />
+      <Image src={src} alt={alt} width={24} height={24} />
     </span>
   );
 }
@@ -49,7 +50,7 @@ export default function DownloadsPage() {
           <article className="dl-col">
             <header className="dl-col-head">
               <div className="dl-col-brand">
-                <img src="/conan-cube.png?v=1777364053920" alt="Conan" />
+                <Image src="/conan-cube.png" alt="Conan" width={40} height={40} />
                 <div>
                   <div className="dl-col-title">Conan</div>
                   <div className="dl-col-sub">C/C++ Package Manager</div>

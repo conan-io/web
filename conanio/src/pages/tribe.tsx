@@ -3,6 +3,7 @@ import MainNav from "@/components/MainNav";
 import PageHead from "@/components/PageHead";
 import { TRIBE_MEMBERS, type TribeMember } from "@/data/tribeMembers";
 import styles from "@/styles/contentPages.module.css";
+import Image from "next/image";
 
 function normalizeExternalHref(url: string): string {
   const u = url.trim();
@@ -15,7 +16,7 @@ function TribeMemberCard({ member }: { member: TribeMember }) {
   return (
     <article className="tribe-card">
       <div className="tribe-card-photo">
-        <img src={imgSrc} alt={member.name} width={278} height={252} loading="lazy" />
+        <Image src={imgSrc} alt={member.name} width={278} height={252} />
       </div>
       <div className="tribe-card-body">
         <h3 className="tribe-card-name">{member.name}</h3>
@@ -31,14 +32,14 @@ function TribeMemberCard({ member }: { member: TribeMember }) {
                   rel="noopener noreferrer"
                   aria-label={`${member.name} on LinkedIn`}
                 >
-                  <img src="/social/linkedin.svg" alt="" width={22} height={22} />
+                  <Image src="/social/linkedin.svg" alt="" width={22} height={22} />
                 </a>
               </li>
             ) : null}
             {member.x ? (
               <li>
                 <a href={member.x} target="_blank" rel="noopener noreferrer" aria-label={`${member.name} on X`}>
-                  <img src="/social/x-black.svg" alt="" width={22} height={22} />
+                  <Image src="/social/x-black.svg" alt="" width={22} height={22} />
                 </a>
               </li>
             ) : null}
@@ -64,7 +65,7 @@ export default function TribePage() {
                 <h1 id="tribe-hero-title">The Conan 2.0 Tribe</h1>
               </div>
               <div className="tribe-hero-visual" aria-hidden>
-                <img src="/tribe-banner.svg" alt="" />
+                <Image src="/tribe-banner.svg" alt="" width={620} height={340} loading="eager" />
               </div>
             </div>
           </div>

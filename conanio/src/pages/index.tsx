@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { useCallback, useState } from "react";
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 
@@ -111,7 +112,15 @@ export default function HomePage({
           </div>
           <div className="visual">
             <div className="mascot-solo">
-              <img src="/jfrog-mascot.svg" alt="Conan the barbarian frog mascot" />
+              <Image
+                src="/jfrog-mascot.svg"
+                alt="Conan the barbarian frog mascot"
+                width={520}
+                height={520}
+                sizes="(max-width: 640px) 260px, (max-width: 1024px) min(380px, 100vw), 520px"
+                priority
+                style={{ width: "100%", height: "auto" }}
+              />
             </div>
           </div>
         </section>
@@ -165,7 +174,9 @@ export default function HomePage({
               <p className="lead">A group of more than 70 expert users and contributors who helped define Conan 2.0 — the people writing the recipes, shipping the binaries, and keeping the ecosystem moving.</p>
               <Link className="btn btn-primary" href="/tribe">Learn more</Link>
             </div>
-            <div className="tribe-illo"><img src="/tribe-banner.svg" alt="The Conan barbarian tribe" /></div>
+            <div className="tribe-illo">
+              <Image src="/tribe-banner.svg" alt="The Conan barbarian tribe" width={620} height={340} />
+            </div>
           </div>
         </section>
         <section className="stories-section">
@@ -242,7 +253,7 @@ export default function HomePage({
           <div className="logo-grid">
             {USER_BRAND_LOGOS.map((brand) => (
               <div key={brand.src} className="logo-card">
-                <img src={brand.src} alt={brand.alt} decoding="async" />
+                <Image src={brand.src} alt={brand.alt} width={180} height={64} />
               </div>
             ))}
           </div>

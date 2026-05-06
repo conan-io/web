@@ -1,5 +1,6 @@
 /* eslint-disable react/no-unescaped-entities -- article body migrated from static HTML */
 import Link from "next/link";
+import Image from "next/image";
 import MainFooter from "@/components/MainFooter";
 import MainNav from "@/components/MainNav";
 import PageHead from "@/components/PageHead";
@@ -16,9 +17,15 @@ export default function UserStoryRtiPage() {
             <Link className="us-back" href="/user-stories">‹ Back to User Stories</Link>
             <h1>Speeding Multi-Platform Releases for Industrial IoT with Conan and Artifactory</h1>
             <div className="us-lockup">
-              <img src="/conan-cube.png?v=1777364053920" alt="Conan" className="us-lockup-conan" />
+              <Image src="/conan-cube.png" alt="Conan" className="us-lockup-conan" width={44} height={44} />
               <span className="us-lockup-plus">+</span>
-              <img src="/brands/company_rti.webp" alt="RTI" className="us-lockup-customer us-lockup-customer--rti" />
+              <Image
+                src="/brands/company_rti.webp"
+                alt="RTI"
+                className="us-lockup-customer us-lockup-customer--rti"
+                width={200}
+                height={64}
+              />
             </div>
           </div>
         </section>

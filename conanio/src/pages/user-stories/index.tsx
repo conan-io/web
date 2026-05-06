@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import MainFooter from "@/components/MainFooter";
 import MainNav from "@/components/MainNav";
 import PageHead from "@/components/PageHead";
@@ -22,7 +23,7 @@ export default function UserStoriesPage() {
           <div className="us-index-grid">
             <Link className="us-card" href="/user-stories/rti">
               <div className="us-card-logo us-card-logo--rti">
-                <img src="/brands/company_rti.webp" alt="RTI" />
+                <Image src="/brands/company_rti.webp" alt="RTI" width={220} height={80} />
               </div>
               <div className="us-card-tag">RTI Story</div>
               <div className="us-card-title">Speeding Multi-Platform Releases for Industrial IoT with Conan and Artifactory</div>
@@ -30,7 +31,7 @@ export default function UserStoriesPage() {
             </Link>
             <Link className="us-card" href="/user-stories/tomtom">
               <div className="us-card-logo us-card-logo--tomtom">
-                <img src="/brands/company_tomtom.webp" alt="TomTom" />
+                <Image src="/brands/company_tomtom.webp" alt="TomTom" width={220} height={80} />
               </div>
               <div className="us-card-tag">Customer Success Story: TomTom</div>
               <div className="us-card-title">TomTom fast tracks their delivery cycle with Conan</div>

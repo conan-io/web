@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 function gtmConanPush(description: string) {
   if (typeof window === "undefined") return;
@@ -36,7 +37,7 @@ export default function MainNav() {
   return (
     <nav className={`nav${isMenuOpen ? " open" : ""}${isScrolled ? " scrolled" : ""}`}>
       <a className="logo" aria-label="Conan — C/C++ Package Manager" href="/" onClick={() => handleNavClick("conan logo")}>
-        <img src="/conan-logo.png?v=1777364053920" alt="Conan — C/C++ Package Manager" />
+        <Image src="/conan-logo.png" alt="Conan — C/C++ Package Manager" width={170} height={44} priority />
       </a>
       <ul>
         <li><a href="/center" onClick={() => handleNavClick("conancenter")}>ConanCenter</a></li>
