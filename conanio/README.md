@@ -44,11 +44,15 @@ App runs on [http://localhost:3000](http://localhost:3000).
 - `yarn build` - production build
 - `yarn start` - run production server
 - `yarn lint` - run ESLint
+- `yarn test` - run baseline unit/integration tests once
+- `yarn test:watch` - run tests in watch mode
+- `yarn test:ci` - run tests with coverage
 
 ## Project structure (high-level)
 
 - `src/pages` - routes (`/`, `/center`, `/api/*`, `/llms.txt`, `/sitemap.xml`)
 - `src/components` - shared UI pieces
+- `tests` - Vitest suite (`*.test.ts`), kept outside `src`
 - `src/service` - API and URL composition helpers
 - `src/styles` - global and page-family styles
 - `public` - static assets
