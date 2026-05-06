@@ -9,6 +9,7 @@ This project uses **Yarn**.
 - Install dependencies with `yarn install`
 - Run scripts with `yarn <script>`
 - Do not use `npm`, `pnpm`, or `bun` in this folder
+- Dependencies must resolve from the public npm registry (`https://registry.npmjs.org/`)
 
 ## Requirements
 
