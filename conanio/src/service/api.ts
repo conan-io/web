@@ -93,7 +93,7 @@ export async function getJson<T>(url: string, api: string): Promise<ApiResponse<
     const data = (await response.json()) as T;
     return { data, status: response.status };
   } catch (error) {
-    console.error(`SSR request error for ${url}`, error);
+    console.error("SSR request error for %s", url, error);
     return { data: null as T, status: 500 };
   }
 }
