@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Conan.io web (`conanio`)
 
-## Getting Started
+Next.js pages-router app for `conan.io` and ConanCenter pages.
 
-First, run the development server:
+## Package manager policy
+
+This project uses **Yarn**.
+
+- Install dependencies with `yarn install`
+- Run scripts with `yarn <script>`
+- Do not use `npm`, `pnpm`, or `bun` in this folder
+
+## Requirements
+
+- Node.js 20+ (recommended: latest LTS)
+- Yarn classic (lockfile is `yarn.lock`)
+
+## Local development
+
+1. Install dependencies:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+yarn install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Configure local env in `.env.development` (example values):
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+NEXT_PUBLIC_CONAN_CONANIO_SERVICE=http://localhost:5000
+NEXT_PUBLIC_CONAN_VERSION=2.28.0
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Start dev server:
 
-## Learn More
+```bash
+yarn dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+App runs on [http://localhost:3000](http://localhost:3000).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Scripts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `yarn dev` - run dev server
+- `yarn build` - production build
+- `yarn start` - run production server
+- `yarn lint` - run ESLint
 
-## Deploy on Vercel
+## Project structure (high-level)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `src/pages` - routes (`/`, `/center`, `/api/*`, `/llms.txt`, `/sitemap.xml`)
+- `src/components` - shared UI pieces
+- `src/service` - API and URL composition helpers
+- `src/styles` - global and page-family styles
+- `public` - static assets
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## SEO and crawl surfaces
+
+- `public/robots.txt`
+- `src/pages/sitemap.xml.tsx` (served at `/sitemap.xml`)
+- `src/pages/llms.txt.tsx` (served at `/llms.txt`)
+- `src/pages/center/llms.txt.tsx` (served at `/center/llms.txt`)
+
+## API routing model
+
+- Browser-initiated requests should hit same-origin Next API routes (`/api/...`)
+- Server-side code can call backend private origin directly
+- Current public proxy routes:
+  - `GET /api/search/:pattern`
+  - `GET /api/package/:packageId/use_it`
+  - `GET /api/ping`
+
+## Build and container
+
+- Docker build uses `output: "standalone"` and runs `node server.js`
+- `NEXT_PUBLIC_SITE_ORIGIN` should point to canonical site origin in production
