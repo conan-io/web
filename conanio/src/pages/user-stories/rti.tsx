@@ -1,4 +1,4 @@
-/* eslint-disable react/no-unescaped-entities -- article body migrated from static HTML */
+/* eslint-disable react/no-unescaped-entities -- article body keeps intentional apostrophes/quotes */
 import Link from "next/link";
 import Image from "next/image";
 import MainFooter from "@/components/MainFooter";

@@ -2,7 +2,7 @@ import { recipeAbsoluteUrl } from "@/utils/recipeUrls";
 
 /**
  * Public site origin, no trailing slash (e.g. https://conan.io).
- * `next.config.ts` maps `NEXT_PUBLIC_SITE_ORIGIN` -> `process.env.siteOrigin` (same as prod `conanio`).
+ * `next.config.ts` maps `NEXT_PUBLIC_SITE_ORIGIN` -> `process.env.siteOrigin`.
  */
 export function getSiteOrigin(): string {
   const raw = process.env.siteOrigin || process.env.NEXT_PUBLIC_SITE_ORIGIN || "https://conan.io";

@@ -77,7 +77,7 @@ export const getServerSideProps: GetServerSideProps<RecipeDetailSsrProps> = asyn
       readme = await readmeRes.text();
     }
   } catch {
-    /* same as legacy: ignore fetch errors */
+    /* Ignore README fetch errors and keep rendering the page. */
   }
 
   return {

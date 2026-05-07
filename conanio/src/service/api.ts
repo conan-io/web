@@ -23,7 +23,7 @@ interface ApiUrls {
   search: {
     package: string;
   };
-  /** Present when `packageId` is passed (recipe detail). Matches conanio `getUrls`. */
+  /** Present when `packageId` is provided (recipe detail routes). */
   package?: {
     info: string;
     useIt: string;
@@ -38,7 +38,7 @@ interface GetUrlsParams {
   packageId?: string;
 }
 
-/** Base URL for the **private** API (`getUrls().api.private`). From `NEXT_PUBLIC_CONAN_CONANIO_SERVICE` → `next.config` `env.conanioServer`. */
+/** Base URL for the **private** API (`getUrls().api.private`). */
 const getApiBase = () => {
   const rawBase = process.env.conanioServer ?? "";
   const normalized = rawBase.trim().replace(/\/+$/, "");

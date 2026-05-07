@@ -35,10 +35,6 @@ function IconShield() {
   );
 }
 
-/**
- * Search result row — same layout as the static recipe cards on the recipes page,
- * fed by API/mock search payload (equivalent role to PackageInfo in legacy recipes).
- */
 export default function RecipeSearchCard({ recipe }: { recipe: SearchRecipeItem }) {
   const { info } = recipe;
   const licenseNames = Object.keys(info.licenses);

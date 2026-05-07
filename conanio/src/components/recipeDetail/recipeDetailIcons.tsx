@@ -5,7 +5,6 @@ export const clipboardCopyIconSvg = (
   </svg>
 );
 
-/** Same pin in Recipe info sidebar (`RecipeRevisionRow`) and Versions tab revision column. */
 export const recipeRevisionPinIconSvg = (
   <svg
     viewBox="0 0 24 24"

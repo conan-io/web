@@ -13,7 +13,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     const popularResponse = await getJsonList<RecipeBasic>(urls.popular, urls.api.private);
     popular = popularResponse.data;
   } catch {
-    /* omit Popular recipes block */
+    /* Keep rendering even if popular recipes cannot be fetched. */
   }
 
   const h = hostFromOrigin(origin);

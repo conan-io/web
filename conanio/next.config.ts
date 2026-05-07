@@ -8,7 +8,6 @@ const nextConfig: NextConfig = {
     siteOrigin: process.env.NEXT_PUBLIC_SITE_ORIGIN || "https://conan.io",
     gtmURL: process.env.GTM_URL,
     gtmID: process.env.GTM_ID,
-    /** Same idea as `conanioServer`: `NEXT_PUBLIC_CONAN_VERSION` → `conanVersion` in app code. */
     conanVersion: process.env.NEXT_PUBLIC_CONAN_VERSION?.trim() || "2.27.1",
   },
   async redirects() {
@@ -24,7 +23,7 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        // Exclude /center/llms.txt and avoid paths already containing "recipes".
+        // Redirect plain recipe slugs while excluding /center/llms.txt and existing /recipes paths.
         source: "/center/:recipe((?!.*recipes)(?!llms\\.txt$).*$)",
         destination: "/center/recipes/:recipe",
         permanent: true,

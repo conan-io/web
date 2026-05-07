@@ -9,7 +9,7 @@ type SignupPayload = {
 
 /**
  * Public proxy for `POST /conan-user/signup` (auth backend).
- * Mirrors legacy behavior while keeping explicit method handling.
+ * Keeps explicit method handling to enforce a POST-only endpoint.
  */
 export default async function handler(
   req: NextApiRequest,

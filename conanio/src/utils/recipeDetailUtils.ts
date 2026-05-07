@@ -7,7 +7,7 @@ import type {
   RecipeUseItContent,
 } from "@/types/recipeDetail";
 
-/** Same list as `conanio/pages/center/recipes/[recipeName].tsx` — links to choosealicense.com. */
+/** License slugs that have a choosealicense.com page. */
 export const VALID_CHOOSELICENSE_SLUGS = new Set([
   "0bsd",
   "afl-3.0",
@@ -63,7 +63,6 @@ export const DOC_LIBRARY_CMAKE = "https://docs.conan.io/2/tutorial/consuming_pac
 export const CCI_QUESTION_NEW_ISSUE =
   "https://github.com/conan-io/conan-center-index/issues/new?labels=question&template=question.yml&title=%5Bquestion%5D%20SHORT%20DESCRIPTION";
 
-/** Matches `conanio` `prettyProfileNames` + `prettyProfiles` (`components/utils.tsx`). */
 export const PROFILE_KEYS = ["Linux-x86_64", "Windows-x86_64", "Macos-x86_64", "Macos-armv8", "Windows-armv8"] as const;
 
 export const PROFILE_KEY_TO_FILTER: Record<(typeof PROFILE_KEYS)[number], PackageOsTabFilter> = {
@@ -86,7 +85,7 @@ export function urlify(rawUrl: string) {
   return rawUrl;
 }
 
-/** Display hostname/path without scheme (matches `conanio` `sanitizeURL`). */
+/** Display hostname/path without scheme. */
 export function sanitizeURL(url: string) {
   const withProto = urlify(url);
   try {
@@ -115,7 +114,7 @@ export function resolveSelectedRecipe(data: Record<string, RecipeInfo>, requeste
   return entries[0];
 }
 
-/** Matches prod `getSelectedTab`: readme tab first when GitHub README exists; else use_it if `ok`, else Versions. */
+/** Default tab selection: readme first when GitHub README exists; else use_it if `ok`, else Versions. */
 export function initialRecipeTab(
   packageInfo: Record<string, RecipeInfo>,
   requestedVersion: string | null,
@@ -148,7 +147,6 @@ export function profileSlotsFromPackages(packages: PackageInfo[]): {
   }));
 }
 
-/** Same rules as `conanio` `PackagesTab` filters (`recipeTabs.tsx`). */
 export function filterPackagesByPlatform(packages: PackageInfo[], filter: PackageOsFilterState): PackageInfo[] {
   if (filter == null) return packages;
   if (filter === "Linux") return packages.filter((p) => p.os === "Linux");
@@ -169,7 +167,6 @@ export function primaryProfileTagValues(p: PackageInfo): string[] {
   return out;
 }
 
-/** Compiler / toolchain settings as label + value pairs (same fields as legacy comma line). */
 export function packageCompilerSettingRows(p: PackageInfo): { name: string; value: string }[] {
   const rows: { name: string; value: string }[] = [];
   if (p.compiler) rows.push({ name: "compiler", value: String(p.compiler) });
@@ -180,7 +177,7 @@ export function packageCompilerSettingRows(p: PackageInfo): { name: string; valu
   return rows;
 }
 
-/** Legacy single-line form (e.g. logs); prefer `packageCompilerSettingRows` for UI. */
+/** Single-line formatter (e.g. logs); prefer `packageCompilerSettingRows` for UI. */
 export function formatPackageSettingsCompiler(p: PackageInfo): string {
   return packageCompilerSettingRows(p).map((r) => `${r.name}=${r.value}`).join(", ");
 }
@@ -193,7 +190,7 @@ export function packageOptionsValueLines(p: PackageInfo): string[] {
   return keys.map((k) => `${k}=${opts[k]}`);
 }
 
-/** Legacy single-line form; prefer `packageOptionsValueLines` for UI. */
+/** Single-line formatter; prefer `packageOptionsValueLines` for UI. */
 export function formatPackageOptionsLine(p: PackageInfo): string {
   const lines = packageOptionsValueLines(p);
   if (lines.length === 1 && lines[0] === "(none)") return "options=(none)";
@@ -302,7 +299,7 @@ export function buildUseItTargetsModel(
   };
 }
 
-/** Split `name/version` reference for recipe links (same idea as `conanio` DependenciesTab). */
+/** Split `name/version` into recipe name and version parts. */
 export function parseConanRef(ref: string): { name: string; version: string } {
   const normalized = ref.trim();
   const slash = normalized.indexOf("/");
@@ -315,7 +312,6 @@ export function parseConanRef(ref: string): { name: string; version: string } {
   };
 }
 
-/** Same strings as prod `conanio/components/recipeTabs.tsx` → `BadgesTab`. */
 export function badgeSnippetStrings(recipeName: string): Record<
   "markdown" | "rst" | "asciidoc" | "html",
   string

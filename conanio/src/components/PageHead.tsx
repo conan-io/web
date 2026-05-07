@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 
 import { getSiteOrigin } from "@/service/llms";
 
-/** Same default title suffix as prod `conanio/components/header.tsx` (`ConanHead`). */
 const DEFAULT_TITLE_SUFFIX = "Conan 2.0: C and C++ Open Source Package Manager";
 
 const META_TITLE = "Conan.io - the Open Source C and C++ Package Manager for Developers";
@@ -13,7 +12,7 @@ const GOOGLE_SITE_VERIFICATION = "v3n-2fbFdumhO916PmSTXMRwVAeXMeBiZ_SK_M6vjgs";
 
 type PageHeadProps = {
   /**
-   * Prepended to `DEFAULT_TITLE_SUFFIX` with " - " (same as prod `ConanHead` `titlePrefix`).
+   * Prepended to `DEFAULT_TITLE_SUFFIX` with " - ".
    * Omit for pages that should use only the default document title.
    */
   title?: string;

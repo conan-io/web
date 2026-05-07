@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-/** Aligned with conanio `service/dtos.ts` / Conan Center API (test-server/app.py). */
+/** Conan Center recipe package shape used by the UI. */
 export interface PackageInfo {
   arch: string;
   build_type: string;

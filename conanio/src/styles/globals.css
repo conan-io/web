@@ -152,7 +152,6 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .dark .sub-form button{padding:11px 18px;background:var(--accent);color:#fff;font-weight:600;font-size:var(--fs-13);border:0;cursor:pointer}
 .dark .sub-form button:hover{background:var(--blue-deep)}
 
-/* Footer Marketo #1479 — layout from prod `conanio/styles/stylev2.css` (section.sign-up form#mktoForm_1479); fields + flat subscribe button from v2 `.dark .sub-form` (not prod gradient pill) */
 .dark .mktoFormWrapper {
   max-width: 100%;
   margin: 0 auto;
@@ -547,10 +546,4 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .us-pdf-btn:hover{background:#349840;border-color:#349840}
 @media (max-width: 1024px){ .us-hero h1{font-size:var(--fs-30)} .us-body{grid-template-columns:1fr;gap:36px;padding:36px 24px 56px} .us-aside{position:static;display:flex;justify-content:center} .us-hero{padding:36px 24px 28px} }
 @media (max-width: 640px){ .us-hero{padding:28px 16px 22px} .us-hero h1{font-size:var(--fs-23);margin-bottom:20px} .us-lockup{gap:14px} .us-lockup-conan{height:44px} .us-lockup-customer--tomtom{height:32px} .us-lockup-customer--rti{height:50px;transform:translateY(-3px)} .us-body{padding:28px 16px 40px;gap:28px} .us-article{font-size:var(--fs-14)} .us-article h2{font-size:var(--fs-20);margin-top:28px} .us-lede{font-size:var(--fs-14-5)} .us-quote{padding:16px 18px;margin:24px 0} .us-quote p{font-size:var(--fs-14-5)} .us-meta{grid-template-columns:1fr;gap:18px;margin-top:28px;padding-top:22px} .us-pdf-thumb{width:200px;height:260px} }
-
-/* ConanCenter pages migrated to CSS Modules:
-   src/styles/centerPages.module.css */
-
-/* download/faq/terms/user-stories-index migrated to:
-   src/styles/contentPages.module.css */
 

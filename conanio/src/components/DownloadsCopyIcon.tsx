@@ -1,4 +1,3 @@
-/** Inline SVG used for copy-to-clipboard buttons on the downloads page. */
 export default function DownloadsCopyIcon() {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>

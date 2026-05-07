@@ -1,4 +1,3 @@
-/** Same asset filenames as prod `conanio/pages/downloads.tsx` (`https://conan.io/downloads/…`). */
 export const DL_ICON = {
   python: "/downloads/python-small-pack.svg",
   darwin: "/downloads/darwin-small-pack.svg",
@@ -14,7 +13,6 @@ export const DL_ICON = {
 
 export const ARTIFACTORY_RELEASE_VERSION = "7.63.12";
 
-/** Mirrors prod `conanio/pages/downloads.tsx` (RPM block — revise manually if needed). */
 export const rpmInstallCopy =
   "#Add artifactory.repo file to your yum repository listsudo vi /etc/yum.repos.d/artifactory.repo\n#Add the following content[Artifactory]name=Artifactorybaseurl=https://releases.jfrog.io/artifactory/artifactory-rpms/enabled=1gpgcheck=0\n#Optional - if you have GPG signing keys installed, use the below flags to verify the repository metadata signature:\n#gpgkey=https://releases.jfrog.io/artifactory/artifactory-rpms/<PATH_TO_REPODATA_FOLDER>/repomd.xml.key\n#repo_gpgcheck=1\n#Run the install commandyum update && yum install jfrog-artifactory-cpp-ce";
 

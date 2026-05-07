@@ -16,7 +16,7 @@ function ensureLanguagesRegistered(): void {
 export type ConanfileCodeTab = "conanfile.txt" | "conanfile.py";
 
 /**
- * Legacy parity: `language-ini` / `language-python` + `hljs` on the `<code>` node.
+ * Uses `language-ini` / `language-python` + `hljs` on the `<code>` node.
  * Returns HTML for `dangerouslySetInnerHTML` so React reconciliation does not strip hljs nodes.
  */
 export function getConanfileHljsMarkup(

@@ -40,7 +40,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
   const recipeUrls: string[] = [];
 
   try {
-    // Keep legacy behavior: include every known recipe URL, not only popular ones.
+    // Include every known recipe URL, not only popular ones.
     const urls = getUrls({ pattern: "all" });
     const allRecipesResponse = await getJsonList<RecipeBasic>(urls.search.package, urls.api.private);
     for (const recipe of allRecipesResponse.data) {

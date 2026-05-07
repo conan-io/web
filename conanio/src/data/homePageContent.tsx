@@ -1,9 +1,6 @@
 import type { ReactNode } from "react";
 
-/**
- * Home “trusted by” logos (`ConanHomeUsers` in legacy `conanio/components/home.tsx`).
- * WebP assets under `public/brands/` (`company_<slug>.webp`).
- */
+/** WebP assets under `public/brands/` (`company_<slug>.webp`). */
 export const USER_BRAND_LOGOS = [
   { src: "/brands/company_poco.webp", alt: "Poco" },
   { src: "/brands/company_pix4d.webp", alt: "Pix4D" },

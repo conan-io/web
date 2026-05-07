@@ -125,7 +125,7 @@
 .centerRecipe :global(.pkg-head h1) {margin:0 0 6px;font-size:var(--fs-28);font-weight:700;color:var(--accent);letter-spacing:-.01em;display:inline-flex;align-items:center;gap:8px}
 .centerRecipe :global(.pkg-head h1 .pkg-head-copy-ref) {flex-shrink:0}
 .centerRecipe :global(.pkg-head h1 .pkg-head-copy-ref svg) {width:17px;height:17px}
-/* Same as `.ver-row .status.warn` (versions table) — title warning next to recipe name */
+/* Title warning marker next to the recipe name. */
 .centerRecipe :global(.status-warn-mark) {
   display:inline-grid;
   place-items:center;
@@ -140,7 +140,7 @@
 }
 .centerRecipe :global(.pkg-head h1 .pkg-status-warn) {display:inline-flex;margin-left:6px;flex-shrink:0}
 .centerRecipe :global(.chip.chip-warn) {background:#E1B266;color:#5e3f12;display:inline-flex;align-items:center;gap:5px}
-/* Same footprint as former 12×12 SVG; dark square reads on amber chip (triangle used currentColor) */
+/* Keep a compact 12x12 footprint inside the warning chip. */
 .centerRecipe :global(.chip.chip-warn .status-warn-mark--sm) {
   width:12px;
   height:12px;
@@ -152,7 +152,7 @@
 .centerRecipe :global(.pkg-head .chips) {display:flex;gap:6px;flex-wrap:wrap}
 .centerRecipe :global(.chip) {display:inline-flex;align-items:center;padding:3px 10px;background:var(--accent);color:#fff;font-size:var(--fs-11);font-family:var(--mono)}
 .centerRecipe :global(.tabs-wrap) {max-width:1200px;margin:16px auto 0;padding:0 40px}
-/* One row for any tab count (6 or 7 with Readme): flex beats fixed repeat(6) grid */
+/* Keep one row regardless of tab count. */
 .centerRecipe :global(.tabs) {
   display:flex;
   flex-wrap:nowrap;
@@ -229,7 +229,7 @@
 .centerRecipe :global(.recipe-revision-row__copy:focus-visible) {outline:2px solid var(--accent);outline-offset:2px}
 .centerRecipe :global(.recipe-revision-row__copy svg) {width:14px;height:14px;color:var(--accent)}
 .centerRecipe :global(.side ul li .recipe-revision-row__copy svg) {width:14px;height:14px;color:var(--accent)}
-/* Match `v2/html/styles.css` `.side .plat-list span` — buttons must not use `font: inherit` (it overrides `font-size`). */
+/* Avoid `font: inherit` here; it overrides the intended `font-size`. */
 .centerRecipe :global(.side .plat-list) {display:flex;flex-direction:column;gap:5px}
 .centerRecipe :global(.side .plat-list .plat-btn) {box-sizing:border-box;display:inline-flex;align-items:center;margin:0;padding:3px 10px;width:max-content;max-width:100%;border:0;border-radius:0;cursor:pointer;text-align:left;-webkit-appearance:none;appearance:none;vertical-align:baseline;font-size:var(--fs-11);font-family:var(--mono);font-weight:400;line-height:normal;min-height:0}
 .centerRecipe :global(.side .plat-list .plat-btn--on) {background:var(--accent);color:#fff}

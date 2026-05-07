@@ -8,7 +8,6 @@ export default function MainFooter() {
     munchkinId: "256-FNZ-187",
     formId: "1479",
     callback: (form: any) => {
-      // Same hook shape as prod `conanio/components/footer.tsx`
       form.onSubmit((_values: unknown, _followUpUrl: unknown) => {
         trackConanEvent({
           event_name: "form_start",

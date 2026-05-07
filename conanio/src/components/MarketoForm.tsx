@@ -56,7 +56,6 @@ export default function MarketoForm(props: MarketoProps) {
   const { baseUrl, munchkinId, formId, callback } = props;
 
   useEffect(() => {
-    // Same as prod (`conanio/components/useMarketo.tsx`): always load Marketo.
     // Script `onerror` below avoids breaking the page if the CDN is blocked or unreachable.
     if (scriptLoaded) {
       try {
@@ -70,6 +69,5 @@ export default function MarketoForm(props: MarketoProps) {
     appendScript(baseUrl, () => setScriptLoaded(true));
   }, [scriptLoaded, baseUrl, munchkinId, formId, callback]);
 
-  /* Empty shell filled by MktoForms2.loadForm — same id pattern as prod `useMarketo.tsx` */
   return <form id={`mktoForm_${formId}`} />;
 }

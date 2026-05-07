@@ -40,7 +40,6 @@ function RecipeRevisionRow({ revisionFull }: { revisionFull: string }) {
   );
 }
 
-/** Lateral “Recipe info” block — same data order as `conanio/pages/center/recipes/[recipeName].tsx` (`RecipeAside`). */
 export default function RecipeInfoAside({
   recipe,
   onPlatformPick,

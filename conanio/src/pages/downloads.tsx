@@ -15,7 +15,6 @@ import {
 import { trackConanEvent } from "@/service/analytics";
 import styles from "@/styles/contentPages.module.css";
 
-/** Populated from `next.config` `env.conanVersion` (`NEXT_PUBLIC_CONAN_VERSION`). */
 function getConanReleaseVersion(): string {
   return process.env.conanVersion?.trim() ?? "";
 }

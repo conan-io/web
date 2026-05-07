@@ -1,8 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
 /**
- * Public proxy for `GET /package/{name}/use_it` — browser calls `getUrls().api.public`
- * (`conanio/pages/api/package/[packageId]/use_it.ts`).
+ * Public proxy for `GET /package/{name}/use_it`.
+ * Browser requests should use this route (`getUrls().api.public`).
  */
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "GET") {
