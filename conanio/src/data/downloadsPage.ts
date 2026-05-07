@@ -78,3 +78,404 @@ export function buildDownloadsArtifacts(conanReleaseVersion: string) {
     dockerPinned,
   };
 }
+
+export type DownloadsEventPayload = {
+  type: "download" | "copy" | "navigation";
+  product: string;
+  platforms: string;
+  purpose: string;
+  description: string;
+};
+
+export type DlRowConfig =
+  | {
+      kind: "cmd";
+      icon: keyof typeof DL_ICON;
+      alt: string;
+      commandText: string;
+      copyText: string;
+      copyAriaLabel?: string;
+      copyEvent: DownloadsEventPayload;
+    }
+  | {
+      kind: "download";
+      icon: keyof typeof DL_ICON;
+      alt: string;
+      label: string;
+      href: string;
+      ariaLabel?: string;
+      download?: boolean;
+      actionKind?: "download" | "external";
+      clickEvent: DownloadsEventPayload;
+    }
+  | {
+      kind: "download+copy";
+      icon: keyof typeof DL_ICON;
+      alt: string;
+      label: string;
+      href: string;
+      ariaLabel?: string;
+      download?: boolean;
+      downloadEvent: DownloadsEventPayload;
+      copyText: string;
+      copyAriaLabel?: string;
+      copyEvent: DownloadsEventPayload;
+    };
+
+export function buildDownloadsRows(a: ReturnType<typeof buildDownloadsArtifacts>) {
+  const conanRecommendedRows: DlRowConfig[] = [
+    {
+      kind: "cmd",
+      icon: "python",
+      alt: "Python",
+      commandText: "pip install conan",
+      copyText: "pip install conan",
+      copyEvent: {
+        type: "copy",
+        product: "conan",
+        platforms: "all",
+        purpose: "get conan",
+        description: "pip install conan",
+      },
+    },
+  ];
+
+  const conanOtherInstallerRows: DlRowConfig[] = [
+    {
+      kind: "cmd",
+      icon: "darwin",
+      alt: "macOS",
+      commandText: "brew install conan",
+      copyText: "brew install conan",
+      copyEvent: {
+        type: "copy",
+        product: "conan",
+        platforms: "macos",
+        purpose: "get conan",
+        description: "brew install conan",
+      },
+    },
+    {
+      kind: "download",
+      icon: "debian",
+      alt: "Debian",
+      label: "Ubuntu / Debian amd64 Installer",
+      href: a.conanDebAmd64,
+      clickEvent: {
+        type: "download",
+        product: "conan",
+        platforms: "linux amd64",
+        purpose: "get conan",
+        description: "ubuntu debian amd64 installer",
+      },
+    },
+    {
+      kind: "download",
+      icon: "debian",
+      alt: "Debian",
+      label: "Ubuntu / Debian arm64 Installer",
+      href: a.conanDebArm64,
+      clickEvent: {
+        type: "download",
+        product: "conan",
+        platforms: "linux arm64",
+        purpose: "get conan",
+        description: "ubuntu debian arm64 installer",
+      },
+    },
+    {
+      kind: "download",
+      icon: "windows",
+      alt: "Windows",
+      label: "Download x86_64 Installer",
+      href: a.conanWinX64Exe,
+      clickEvent: {
+        type: "download",
+        product: "conan",
+        platforms: "windows x86_64",
+        purpose: "get conan",
+        description: "windows x86_64 installer",
+      },
+    },
+    {
+      kind: "download",
+      icon: "windows",
+      alt: "Windows",
+      label: "Download i686 Installer",
+      href: a.conanWinI686Exe,
+      clickEvent: {
+        type: "download",
+        product: "conan",
+        platforms: "windows i686",
+        purpose: "get conan",
+        description: "windows i686 installer",
+      },
+    },
+    {
+      kind: "cmd",
+      icon: "archlinux",
+      alt: "Arch Linux",
+      commandText: "yay -S conan",
+      copyText: "yay -S conan",
+      copyEvent: {
+        type: "copy",
+        product: "conan",
+        platforms: "archlinux",
+        purpose: "get conan",
+        description: "yay -S conan",
+      },
+    },
+    {
+      kind: "download",
+      icon: "github",
+      alt: "GitHub",
+      label: "Any OS / From Source",
+      href: "https://github.com/conan-io/conan",
+      ariaLabel: "Go to Conan GitHub repository",
+      download: false,
+      actionKind: "external",
+      clickEvent: {
+        type: "navigation",
+        product: "conan",
+        platforms: "all",
+        purpose: "get conan",
+        description: "conan github repository",
+      },
+    },
+  ];
+
+  const conanSelfContainedRows: DlRowConfig[] = [
+    {
+      kind: "cmd",
+      icon: "darwin",
+      alt: "macOS",
+      commandText: "wget and tar -xvf conan arm64 executable",
+      copyText: a.macArmCopy,
+      copyEvent: {
+        type: "copy",
+        product: "conan",
+        platforms: "macos arm64",
+        purpose: "get conan",
+        description: "self contained macos arm64 command",
+      },
+    },
+    {
+      kind: "cmd",
+      icon: "darwin",
+      alt: "macOS",
+      commandText: "wget and tar -xvf conan x86_64 executable",
+      copyText: a.macX64Copy,
+      copyEvent: {
+        type: "copy",
+        product: "conan",
+        platforms: "macos x86_64",
+        purpose: "get conan",
+        description: "self contained macos x86_64 command",
+      },
+    },
+    {
+      kind: "download+copy",
+      icon: "windows",
+      alt: "Windows",
+      label: "Download x86_64 Conan Bundle",
+      href: a.conanWinX64Zip,
+      downloadEvent: {
+        type: "download",
+        product: "conan",
+        platforms: "windows x86_64",
+        purpose: "get conan",
+        description: "windows x86_64 bundle",
+      },
+      copyText: a.winX64Ps,
+      copyAriaLabel: "Copy PowerShell command",
+      copyEvent: {
+        type: "copy",
+        product: "conan",
+        platforms: "windows x86_64",
+        purpose: "get conan",
+        description: "powershell x86_64 bundle install",
+      },
+    },
+    {
+      kind: "download+copy",
+      icon: "windows",
+      alt: "Windows",
+      label: "Download i686 Conan Bundle",
+      href: a.conanWinI686Zip,
+      downloadEvent: {
+        type: "download",
+        product: "conan",
+        platforms: "windows i686",
+        purpose: "get conan",
+        description: "windows i686 bundle",
+      },
+      copyText: a.winI686Ps,
+      copyAriaLabel: "Copy PowerShell command",
+      copyEvent: {
+        type: "copy",
+        product: "conan",
+        platforms: "windows i686",
+        purpose: "get conan",
+        description: "powershell i686 bundle install",
+      },
+    },
+    {
+      kind: "cmd",
+      icon: "linux",
+      alt: "Linux",
+      commandText: "wget and tar -xvf x86_64 conan executable",
+      copyText: a.linuxX64Copy,
+      copyEvent: {
+        type: "copy",
+        product: "conan",
+        platforms: "linux x86_64",
+        purpose: "get conan",
+        description: "self contained linux x86_64 command",
+      },
+    },
+  ];
+
+  const artifactoryRecommendedRows: DlRowConfig[] = [
+    {
+      kind: "cmd",
+      icon: "docker",
+      alt: "Docker",
+      commandText: "docker run …",
+      copyText: a.dockerLatest,
+      copyEvent: {
+        type: "copy",
+        product: "artifactory",
+        platforms: "docker",
+        purpose: "get artifactory",
+        description: "docker run latest",
+      },
+    },
+  ];
+
+  const artifactoryOlderRows: DlRowConfig[] = [
+    {
+      kind: "download",
+      icon: "linux",
+      alt: "Linux",
+      label: "Linux .tgz",
+      href: a.afLinuxTgz,
+      clickEvent: {
+        type: "download",
+        product: "artifactory",
+        platforms: "linux",
+        purpose: "get artifactory",
+        description: "linux tgz installer",
+      },
+    },
+    {
+      kind: "download+copy",
+      icon: "rpm",
+      alt: "RPM",
+      label: "RPM Installer",
+      href: a.afRpm,
+      downloadEvent: {
+        type: "download",
+        product: "artifactory",
+        platforms: "rpm",
+        purpose: "get artifactory",
+        description: "rpm installer",
+      },
+      copyText: rpmInstallCopy,
+      copyAriaLabel: "Copy install command",
+      copyEvent: {
+        type: "copy",
+        product: "artifactory",
+        platforms: "rpm",
+        purpose: "get artifactory",
+        description: "rpm install command",
+      },
+    },
+    {
+      kind: "download+copy",
+      icon: "debian",
+      alt: "Debian",
+      label: "Debian Installer",
+      href: a.afDeb,
+      downloadEvent: {
+        type: "download",
+        product: "artifactory",
+        platforms: "debian",
+        purpose: "get artifactory",
+        description: "debian installer",
+      },
+      copyText: debianInstallCopy,
+      copyAriaLabel: "Copy install command",
+      copyEvent: {
+        type: "copy",
+        product: "artifactory",
+        platforms: "debian",
+        purpose: "get artifactory",
+        description: "debian install command",
+      },
+    },
+    {
+      kind: "download",
+      icon: "windows",
+      alt: "Windows",
+      label: "Windows .zip",
+      href: a.afWinZip,
+      clickEvent: {
+        type: "download",
+        product: "artifactory",
+        platforms: "windows",
+        purpose: "get artifactory",
+        description: "windows zip installer",
+      },
+    },
+    {
+      kind: "download",
+      icon: "compose",
+      alt: "Docker Compose",
+      label: "Docker Compose Installer",
+      href: a.afCompose,
+      clickEvent: {
+        type: "download",
+        product: "artifactory",
+        platforms: "docker compose",
+        purpose: "get artifactory",
+        description: "docker compose installer",
+      },
+    },
+    {
+      kind: "cmd",
+      icon: "docker",
+      alt: "Docker",
+      commandText: "docker run …",
+      copyText: a.dockerPinned,
+      copyEvent: {
+        type: "copy",
+        product: "artifactory",
+        platforms: "docker",
+        purpose: "get artifactory",
+        description: "docker run pinned",
+      },
+    },
+    {
+      kind: "download",
+      icon: "darwin",
+      alt: "macOS",
+      label: "Darwin Installer",
+      href: a.afDarwin,
+      clickEvent: {
+        type: "download",
+        product: "artifactory",
+        platforms: "darwin",
+        purpose: "get artifactory",
+        description: "darwin installer",
+      },
+    },
+  ];
+
+  return {
+    conanRecommendedRows,
+    conanOtherInstallerRows,
+    conanSelfContainedRows,
+    artifactoryRecommendedRows,
+    artifactoryOlderRows,
+  };
+}

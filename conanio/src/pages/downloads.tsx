@@ -7,9 +7,10 @@ import Image from "next/image";
 import {
   ARTIFACTORY_RELEASE_VERSION,
   buildDownloadsArtifacts,
-  debianInstallCopy,
+  buildDownloadsRows,
   DL_ICON,
-  rpmInstallCopy,
+  type DlRowConfig,
+  type DownloadsEventPayload,
 } from "@/data/downloadsPage";
 import { trackConanEvent } from "@/service/analytics";
 import styles from "@/styles/contentPages.module.css";
@@ -19,13 +20,7 @@ function getConanReleaseVersion(): string {
   return process.env.conanVersion?.trim() ?? "";
 }
 
-function pushDownloadsEvent(event: {
-  type: "download" | "copy" | "navigation";
-  product: string;
-  platforms: string;
-  purpose: string;
-  description: string;
-}) {
+function pushDownloadsEvent(event: DownloadsEventPayload) {
   trackConanEvent({
     type: event.type,
     product: event.product,
@@ -43,9 +38,107 @@ function DlRowIcon({ src, alt }: { src: string; alt: string }) {
   );
 }
 
+function DlRowActionIcon({ kind }: { kind: "download" | "external" }) {
+  if (kind === "external") {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+        <polyline points="15 3 21 3 21 9" />
+        <line x1="10" y1="14" x2="21" y2="3" />
+      </svg>
+    );
+  }
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 4v12M6 12l6 6 6-6M5 21h14" />
+    </svg>
+  );
+}
+
 export default function DownloadsPage() {
   const conanReleaseVersion = getConanReleaseVersion();
   const a = buildDownloadsArtifacts(conanReleaseVersion);
+
+  const renderDlRow = (row: DlRowConfig, idx: number) => {
+    if (row.kind === "cmd") {
+      return (
+        <li className="dl-row dl-row--cmd" key={`${row.kind}-${row.commandText}-${idx}`}>
+          <DlRowIcon src={DL_ICON[row.icon]} alt={row.alt} />
+          <code className="dl-cmd">
+            <span className="dl-prompt">$</span> {row.commandText}
+          </code>
+          <CopyToClipboardButton
+            copyText={row.copyText}
+            onCopy={() => pushDownloadsEvent(row.copyEvent)}
+            className="dl-btn dl-btn--copy"
+            copiedClassName="copied"
+            copiedResetMs={1100}
+            aria-label={row.copyAriaLabel ?? "Copy command"}
+          >
+            <DownloadsCopyIcon />
+          </CopyToClipboardButton>
+        </li>
+      );
+    }
+
+    if (row.kind === "download+copy") {
+      return (
+        <li className="dl-row dl-row--cmd" key={`${row.kind}-${row.label}-${idx}`}>
+          <DlRowIcon src={DL_ICON[row.icon]} alt={row.alt} />
+          <span className="dl-label">{row.label}</span>
+          <span className="dl-row-actions">
+            <a
+              className="dl-btn dl-btn--dl"
+              href={row.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={row.ariaLabel ?? "Download"}
+              download={row.download ?? true}
+              onClick={() => pushDownloadsEvent(row.downloadEvent)}
+            >
+              <DlRowActionIcon kind="download" />
+            </a>
+            <CopyToClipboardButton
+              copyText={row.copyText}
+              onCopy={() => pushDownloadsEvent(row.copyEvent)}
+              className="dl-btn dl-btn--copy"
+              copiedClassName="copied"
+              copiedResetMs={1100}
+              aria-label={row.copyAriaLabel ?? "Copy command"}
+            >
+              <DownloadsCopyIcon />
+            </CopyToClipboardButton>
+          </span>
+        </li>
+      );
+    }
+
+    return (
+      <li className="dl-row" key={`${row.kind}-${row.label}-${idx}`}>
+        <DlRowIcon src={DL_ICON[row.icon]} alt={row.alt} />
+        <span className="dl-label">{row.label}</span>
+        <a
+          className="dl-btn dl-btn--dl"
+          href={row.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={row.ariaLabel ?? "Download"}
+          download={row.download ?? true}
+          onClick={() => pushDownloadsEvent(row.clickEvent)}
+        >
+          <DlRowActionIcon kind={row.actionKind ?? "download"} />
+        </a>
+      </li>
+    );
+  };
+
+  const {
+    conanRecommendedRows,
+    conanOtherInstallerRows,
+    conanSelfContainedRows,
+    artifactoryRecommendedRows,
+    artifactoryOlderRows,
+  } = buildDownloadsRows(a);
 
   return (
     <>
@@ -83,207 +176,11 @@ export default function DownloadsPage() {
               Recommended install <span className="dl-hint">(needs Python in your system)</span>
             </div>
             <ul className="dl-list">
-              <li className="dl-row dl-row--cmd">
-                <DlRowIcon src={DL_ICON.python} alt="Python" />
-                <code className="dl-cmd">
-                  <span className="dl-prompt">$</span> pip install conan
-                </code>
-                <CopyToClipboardButton
-                  copyText="pip install conan"
-                  onCopy={() =>
-                    pushDownloadsEvent({
-                      type: "copy",
-                      product: "conan",
-                      platforms: "all",
-                      purpose: "get conan",
-                      description: "pip install conan",
-                    })
-                  }
-                  className="dl-btn dl-btn--copy"
-                  copiedClassName="copied"
-                  copiedResetMs={1100}
-                  aria-label="Copy command"
-                >
-                  <DownloadsCopyIcon />
-                </CopyToClipboardButton>
-              </li>
+              {conanRecommendedRows.map(renderDlRow)}
             </ul>
             <div className="dl-section-label">Other installers</div>
             <ul className="dl-list">
-              <li className="dl-row dl-row--cmd">
-                <DlRowIcon src={DL_ICON.darwin} alt="macOS" />
-                <code className="dl-cmd">
-                  <span className="dl-prompt">$</span> brew install conan
-                </code>
-                <CopyToClipboardButton
-                  copyText="brew install conan"
-                  onCopy={() =>
-                    pushDownloadsEvent({
-                      type: "copy",
-                      product: "conan",
-                      platforms: "macos",
-                      purpose: "get conan",
-                      description: "brew install conan",
-                    })
-                  }
-                  className="dl-btn dl-btn--copy"
-                  copiedClassName="copied"
-                  copiedResetMs={1100}
-                  aria-label="Copy command"
-                >
-                  <DownloadsCopyIcon />
-                </CopyToClipboardButton>
-              </li>
-              <li className="dl-row">
-                <DlRowIcon src={DL_ICON.debian} alt="Debian" />
-                <span className="dl-label">Ubuntu / Debian amd64 Installer</span>
-                <a
-                  className="dl-btn dl-btn--dl"
-                  href={a.conanDebAmd64}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Download"
-                  download
-                  onClick={() =>
-                    pushDownloadsEvent({
-                      type: "download",
-                      product: "conan",
-                      platforms: "linux amd64",
-                      purpose: "get conan",
-                      description: "ubuntu debian amd64 installer",
-                    })
-                  }
-                >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M12 4v12M6 12l6 6 6-6M5 21h14" />
-                  </svg>
-                </a>
-              </li>
-              <li className="dl-row">
-                <DlRowIcon src={DL_ICON.debian} alt="Debian" />
-                <span className="dl-label">Ubuntu / Debian arm64 Installer</span>
-                <a
-                  className="dl-btn dl-btn--dl"
-                  href={a.conanDebArm64}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Download"
-                  download
-                  onClick={() =>
-                    pushDownloadsEvent({
-                      type: "download",
-                      product: "conan",
-                      platforms: "linux arm64",
-                      purpose: "get conan",
-                      description: "ubuntu debian arm64 installer",
-                    })
-                  }
-                >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M12 4v12M6 12l6 6 6-6M5 21h14" />
-                  </svg>
-                </a>
-              </li>
-              <li className="dl-row">
-                <DlRowIcon src={DL_ICON.windows} alt="Windows" />
-                <span className="dl-label">Download x86_64 Installer</span>
-                <a
-                  className="dl-btn dl-btn--dl"
-                  href={a.conanWinX64Exe}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Download"
-                  download
-                  onClick={() =>
-                    pushDownloadsEvent({
-                      type: "download",
-                      product: "conan",
-                      platforms: "windows x86_64",
-                      purpose: "get conan",
-                      description: "windows x86_64 installer",
-                    })
-                  }
-                >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M12 4v12M6 12l6 6 6-6M5 21h14" />
-                  </svg>
-                </a>
-              </li>
-              <li className="dl-row">
-                <DlRowIcon src={DL_ICON.windows} alt="Windows" />
-                <span className="dl-label">Download i686 Installer</span>
-                <a
-                  className="dl-btn dl-btn--dl"
-                  href={a.conanWinI686Exe}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Download"
-                  download
-                  onClick={() =>
-                    pushDownloadsEvent({
-                      type: "download",
-                      product: "conan",
-                      platforms: "windows i686",
-                      purpose: "get conan",
-                      description: "windows i686 installer",
-                    })
-                  }
-                >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M12 4v12M6 12l6 6 6-6M5 21h14" />
-                  </svg>
-                </a>
-              </li>
-              <li className="dl-row dl-row--cmd">
-                <DlRowIcon src={DL_ICON.archlinux} alt="Arch Linux" />
-                <code className="dl-cmd">
-                  <span className="dl-prompt">$</span> yay -S conan
-                </code>
-                <CopyToClipboardButton
-                  copyText="yay -S conan"
-                  onCopy={() =>
-                    pushDownloadsEvent({
-                      type: "copy",
-                      product: "conan",
-                      platforms: "archlinux",
-                      purpose: "get conan",
-                      description: "yay -S conan",
-                    })
-                  }
-                  className="dl-btn dl-btn--copy"
-                  copiedClassName="copied"
-                  copiedResetMs={1100}
-                  aria-label="Copy command"
-                >
-                  <DownloadsCopyIcon />
-                </CopyToClipboardButton>
-              </li>
-              <li className="dl-row">
-                <DlRowIcon src={DL_ICON.github} alt="GitHub" />
-                <span className="dl-label">Any OS / From Source</span>
-                <a
-                  className="dl-btn dl-btn--dl"
-                  href="https://github.com/conan-io/conan"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Go to Conan GitHub repository"
-                  onClick={() =>
-                    pushDownloadsEvent({
-                      type: "navigation",
-                      product: "conan",
-                      platforms: "all",
-                      purpose: "get conan",
-                      description: "conan github repository",
-                    })
-                  }
-                >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                    <polyline points="15 3 21 3 21 9" />
-                    <line x1="10" y1="14" x2="21" y2="3" />
-                  </svg>
-                </a>
-              </li>
+              {conanOtherInstallerRows.map(renderDlRow)}
             </ul>
             <div className="dl-section-label">
               Self-contained <span className="dl-hint">(no Python needed)</span>{" "}
@@ -292,168 +189,7 @@ export default function DownloadsPage() {
               </span>
             </div>
             <ul className="dl-list">
-              <li className="dl-row dl-row--cmd">
-                <DlRowIcon src={DL_ICON.darwin} alt="macOS" />
-                <code className="dl-cmd">
-                  <span className="dl-prompt">$</span> wget and tar -xvf conan arm64 executable
-                </code>
-                <CopyToClipboardButton
-                  copyText={a.macArmCopy}
-                  onCopy={() =>
-                    pushDownloadsEvent({
-                      type: "copy",
-                      product: "conan",
-                      platforms: "macos arm64",
-                      purpose: "get conan",
-                      description: "self contained macos arm64 command",
-                    })
-                  }
-                  className="dl-btn dl-btn--copy"
-                  copiedClassName="copied"
-                  copiedResetMs={1100}
-                  aria-label="Copy command"
-                >
-                  <DownloadsCopyIcon />
-                </CopyToClipboardButton>
-              </li>
-              <li className="dl-row dl-row--cmd">
-                <DlRowIcon src={DL_ICON.darwin} alt="macOS" />
-                <code className="dl-cmd">
-                  <span className="dl-prompt">$</span> wget and tar -xvf conan x86_64 executable
-                </code>
-                <CopyToClipboardButton
-                  copyText={a.macX64Copy}
-                  onCopy={() =>
-                    pushDownloadsEvent({
-                      type: "copy",
-                      product: "conan",
-                      platforms: "macos x86_64",
-                      purpose: "get conan",
-                      description: "self contained macos x86_64 command",
-                    })
-                  }
-                  className="dl-btn dl-btn--copy"
-                  copiedClassName="copied"
-                  copiedResetMs={1100}
-                  aria-label="Copy command"
-                >
-                  <DownloadsCopyIcon />
-                </CopyToClipboardButton>
-              </li>
-              <li className="dl-row dl-row--cmd">
-                <DlRowIcon src={DL_ICON.windows} alt="Windows" />
-                <span className="dl-label">Download x86_64 Conan Bundle</span>
-                <span className="dl-row-actions">
-                  <a
-                    className="dl-btn dl-btn--dl"
-                    href={a.conanWinX64Zip}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Download"
-                    download
-                    onClick={() =>
-                      pushDownloadsEvent({
-                        type: "download",
-                        product: "conan",
-                        platforms: "windows x86_64",
-                        purpose: "get conan",
-                        description: "windows x86_64 bundle",
-                      })
-                    }
-                  >
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M12 4v12M6 12l6 6 6-6M5 21h14" />
-                    </svg>
-                  </a>
-                  <CopyToClipboardButton
-                    copyText={a.winX64Ps}
-                    onCopy={() =>
-                      pushDownloadsEvent({
-                        type: "copy",
-                        product: "conan",
-                        platforms: "windows x86_64",
-                        purpose: "get conan",
-                        description: "powershell x86_64 bundle install",
-                      })
-                    }
-                    className="dl-btn dl-btn--copy"
-                    copiedClassName="copied"
-                    copiedResetMs={1100}
-                    aria-label="Copy PowerShell command"
-                  >
-                    <DownloadsCopyIcon />
-                  </CopyToClipboardButton>
-                </span>
-              </li>
-              <li className="dl-row dl-row--cmd">
-                <DlRowIcon src={DL_ICON.windows} alt="Windows" />
-                <span className="dl-label">Download i686 Conan Bundle</span>
-                <span className="dl-row-actions">
-                  <a
-                    className="dl-btn dl-btn--dl"
-                    href={a.conanWinI686Zip}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Download"
-                    download
-                    onClick={() =>
-                      pushDownloadsEvent({
-                        type: "download",
-                        product: "conan",
-                        platforms: "windows i686",
-                        purpose: "get conan",
-                        description: "windows i686 bundle",
-                      })
-                    }
-                  >
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M12 4v12M6 12l6 6 6-6M5 21h14" />
-                    </svg>
-                  </a>
-                  <CopyToClipboardButton
-                    copyText={a.winI686Ps}
-                    onCopy={() =>
-                      pushDownloadsEvent({
-                        type: "copy",
-                        product: "conan",
-                        platforms: "windows i686",
-                        purpose: "get conan",
-                        description: "powershell i686 bundle install",
-                      })
-                    }
-                    className="dl-btn dl-btn--copy"
-                    copiedClassName="copied"
-                    copiedResetMs={1100}
-                    aria-label="Copy PowerShell command"
-                  >
-                    <DownloadsCopyIcon />
-                  </CopyToClipboardButton>
-                </span>
-              </li>
-              <li className="dl-row dl-row--cmd">
-                <DlRowIcon src={DL_ICON.linux} alt="Linux" />
-                <code className="dl-cmd">
-                  <span className="dl-prompt">$</span> wget and tar -xvf x86_64 conan executable
-                </code>
-                <CopyToClipboardButton
-                  copyText={a.linuxX64Copy}
-                  onCopy={() =>
-                    pushDownloadsEvent({
-                      type: "copy",
-                      product: "conan",
-                      platforms: "linux x86_64",
-                      purpose: "get conan",
-                      description: "self contained linux x86_64 command",
-                    })
-                  }
-                  className="dl-btn dl-btn--copy"
-                  copiedClassName="copied"
-                  copiedResetMs={1100}
-                  aria-label="Copy command"
-                >
-                  <DownloadsCopyIcon />
-                </CopyToClipboardButton>
-              </li>
+              {conanSelfContainedRows.map(renderDlRow)}
             </ul>
             <p className="dl-foot-note">
               Read more about Conan installation{" "}
@@ -502,249 +238,13 @@ export default function DownloadsPage() {
               Recommended install <span className="dl-hint">(latest)</span>
             </div>
             <ul className="dl-list">
-              <li className="dl-row dl-row--cmd">
-                <DlRowIcon src={DL_ICON.docker} alt="Docker" />
-                <code className="dl-cmd">
-                  <span className="dl-prompt">$</span> docker run …
-                </code>
-                <CopyToClipboardButton
-                  copyText={a.dockerLatest}
-                  onCopy={() =>
-                    pushDownloadsEvent({
-                      type: "copy",
-                      product: "artifactory",
-                      platforms: "docker",
-                      purpose: "get artifactory",
-                      description: "docker run latest",
-                    })
-                  }
-                  className="dl-btn dl-btn--copy"
-                  copiedClassName="copied"
-                  copiedResetMs={1100}
-                  aria-label="Copy command"
-                >
-                  <DownloadsCopyIcon />
-                </CopyToClipboardButton>
-              </li>
+              {artifactoryRecommendedRows.map(renderDlRow)}
             </ul>
             <div className="dl-section-label">
               Older installers <span className="dl-hint">({ARTIFACTORY_RELEASE_VERSION})</span>
             </div>
             <ul className="dl-list">
-              <li className="dl-row">
-                <DlRowIcon src={DL_ICON.linux} alt="Linux" />
-                <span className="dl-label">Linux .tgz</span>
-                <a
-                  className="dl-btn dl-btn--dl"
-                  href={a.afLinuxTgz}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Download"
-                  download
-                  onClick={() =>
-                    pushDownloadsEvent({
-                      type: "download",
-                      product: "artifactory",
-                      platforms: "linux",
-                      purpose: "get artifactory",
-                      description: "linux tgz installer",
-                    })
-                  }
-                >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M12 4v12M6 12l6 6 6-6M5 21h14" />
-                  </svg>
-                </a>
-              </li>
-              <li className="dl-row dl-row--cmd">
-                <DlRowIcon src={DL_ICON.rpm} alt="RPM" />
-                <span className="dl-label">RPM Installer</span>
-                <span className="dl-row-actions">
-                  <a
-                    className="dl-btn dl-btn--dl"
-                    href={a.afRpm}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Download"
-                    download
-                    onClick={() =>
-                      pushDownloadsEvent({
-                        type: "download",
-                        product: "artifactory",
-                        platforms: "rpm",
-                        purpose: "get artifactory",
-                        description: "rpm installer",
-                      })
-                    }
-                  >
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M12 4v12M6 12l6 6 6-6M5 21h14" />
-                    </svg>
-                  </a>
-                  <CopyToClipboardButton
-                    copyText={rpmInstallCopy}
-                    onCopy={() =>
-                      pushDownloadsEvent({
-                        type: "copy",
-                        product: "artifactory",
-                        platforms: "rpm",
-                        purpose: "get artifactory",
-                        description: "rpm install command",
-                      })
-                    }
-                    className="dl-btn dl-btn--copy"
-                    copiedClassName="copied"
-                    copiedResetMs={1100}
-                    aria-label="Copy install command"
-                  >
-                    <DownloadsCopyIcon />
-                  </CopyToClipboardButton>
-                </span>
-              </li>
-              <li className="dl-row dl-row--cmd">
-                <DlRowIcon src={DL_ICON.debian} alt="Debian" />
-                <span className="dl-label">Debian Installer</span>
-                <span className="dl-row-actions">
-                  <a
-                    className="dl-btn dl-btn--dl"
-                    href={a.afDeb}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Download"
-                    download
-                    onClick={() =>
-                      pushDownloadsEvent({
-                        type: "download",
-                        product: "artifactory",
-                        platforms: "debian",
-                        purpose: "get artifactory",
-                        description: "debian installer",
-                      })
-                    }
-                  >
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M12 4v12M6 12l6 6 6-6M5 21h14" />
-                    </svg>
-                  </a>
-                  <CopyToClipboardButton
-                    copyText={debianInstallCopy}
-                    onCopy={() =>
-                      pushDownloadsEvent({
-                        type: "copy",
-                        product: "artifactory",
-                        platforms: "debian",
-                        purpose: "get artifactory",
-                        description: "debian install command",
-                      })
-                    }
-                    className="dl-btn dl-btn--copy"
-                    copiedClassName="copied"
-                    copiedResetMs={1100}
-                    aria-label="Copy install command"
-                  >
-                    <DownloadsCopyIcon />
-                  </CopyToClipboardButton>
-                </span>
-              </li>
-              <li className="dl-row">
-                <DlRowIcon src={DL_ICON.windows} alt="Windows" />
-                <span className="dl-label">Windows .zip</span>
-                <a
-                  className="dl-btn dl-btn--dl"
-                  href={a.afWinZip}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Download"
-                  download
-                  onClick={() =>
-                    pushDownloadsEvent({
-                      type: "download",
-                      product: "artifactory",
-                      platforms: "windows",
-                      purpose: "get artifactory",
-                      description: "windows zip installer",
-                    })
-                  }
-                >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M12 4v12M6 12l6 6 6-6M5 21h14" />
-                  </svg>
-                </a>
-              </li>
-              <li className="dl-row">
-                <DlRowIcon src={DL_ICON.compose} alt="Docker Compose" />
-                <span className="dl-label">Docker Compose Installer</span>
-                <a
-                  className="dl-btn dl-btn--dl"
-                  href={a.afCompose}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Download"
-                  download
-                  onClick={() =>
-                    pushDownloadsEvent({
-                      type: "download",
-                      product: "artifactory",
-                      platforms: "docker compose",
-                      purpose: "get artifactory",
-                      description: "docker compose installer",
-                    })
-                  }
-                >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M12 4v12M6 12l6 6 6-6M5 21h14" />
-                  </svg>
-                </a>
-              </li>
-              <li className="dl-row dl-row--cmd">
-                <DlRowIcon src={DL_ICON.docker} alt="Docker" />
-                <code className="dl-cmd">
-                  <span className="dl-prompt">$</span> docker run …
-                </code>
-                <CopyToClipboardButton
-                  copyText={a.dockerPinned}
-                  onCopy={() =>
-                    pushDownloadsEvent({
-                      type: "copy",
-                      product: "artifactory",
-                      platforms: "docker",
-                      purpose: "get artifactory",
-                      description: "docker run pinned",
-                    })
-                  }
-                  className="dl-btn dl-btn--copy"
-                  copiedClassName="copied"
-                  copiedResetMs={1100}
-                  aria-label="Copy command"
-                >
-                  <DownloadsCopyIcon />
-                </CopyToClipboardButton>
-              </li>
-              <li className="dl-row">
-                <DlRowIcon src={DL_ICON.darwin} alt="macOS" />
-                <span className="dl-label">Darwin Installer</span>
-                <a
-                  className="dl-btn dl-btn--dl"
-                  href={a.afDarwin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Download"
-                  download
-                  onClick={() =>
-                    pushDownloadsEvent({
-                      type: "download",
-                      product: "artifactory",
-                      platforms: "darwin",
-                      purpose: "get artifactory",
-                      description: "darwin installer",
-                    })
-                  }
-                >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M12 4v12M6 12l6 6 6-6M5 21h14" />
-                  </svg>
-                </a>
-              </li>
+              {artifactoryOlderRows.map(renderDlRow)}
             </ul>
             <a
               className="btn btn-af dl-cta"
