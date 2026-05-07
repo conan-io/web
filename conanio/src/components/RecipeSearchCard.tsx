@@ -1,6 +1,19 @@
 import Link from "next/link";
 import type { SearchRecipeItem } from "@/types/searchRecipe";
 
+function pushCenterRecipeListEvent(description: string) {
+  if (typeof window === "undefined") return;
+  const dataLayer = (window as typeof window & { dataLayer?: unknown[] }).dataLayer;
+  if (!Array.isArray(dataLayer)) return;
+  dataLayer.push({
+    event: "fireEvent",
+    event_name: "element_click",
+    type: "ui",
+    purpose: "recipes search results",
+    description,
+  });
+}
+
 const PLATFORM_ORDER = [
   "Linux",
   "Windows",
@@ -100,7 +113,11 @@ export default function RecipeSearchCard({ recipe }: { recipe: SearchRecipeItem 
     <div className="card">
       <div className="main">
         <h3 className="name">
-          <Link href={href} className="name-link">
+          <Link
+            href={href}
+            className="name-link"
+            onClick={() => pushCenterRecipeListEvent(`${reference}/${info.version ?? ""}`)}
+          >
             {reference}/{info.version}
           </Link>
         </h3>

@@ -48,6 +48,8 @@ type RecipeQuerySearchFormBase = {
   placeholder?: string;
   /** Enter-key glyph after the field; hide on live search (e.g. `/center/recipes`). Default `true`. */
   showEnterHint?: boolean;
+  /** Optional analytics hook called on submit with the query text. */
+  onTrackSearchSubmit?: (term: string) => void;
 };
 
 type RecipeQuerySearchFormGetProps = RecipeQuerySearchFormBase & {
@@ -80,13 +82,20 @@ export default function RecipeQuerySearchForm(props: RecipeQuerySearchFormProps)
     placeholder = PLACEHOLDER,
     iconSize: iconSizeProp,
     showEnterHint = true,
+    onTrackSearchSubmit,
   } = props;
   const iconSize = iconSizeProp ?? (formClassName === "cc-search" ? 17 : 14);
 
   if (props.mode === "controlled") {
     const { value, onChange, onSubmit } = props;
     return (
-      <form className={formClassName} onSubmit={onSubmit}>
+      <form
+        className={formClassName}
+        onSubmit={(event) => {
+          onTrackSearchSubmit?.(value.trim());
+          onSubmit(event);
+        }}
+      >
         <RecipeQuerySearchIcon size={iconSize} />
         <input
           type="text"
@@ -118,6 +127,12 @@ export default function RecipeQuerySearchForm(props: RecipeQuerySearchFormProps)
       method={method}
       role={role}
       aria-label={ariaLabel}
+      onSubmit={(event) => {
+        const formData = new FormData(event.currentTarget);
+        const raw = formData.get("value");
+        const term = typeof raw === "string" ? raw.trim() : "";
+        onTrackSearchSubmit?.(term);
+      }}
     >
       <RecipeQuerySearchIcon size={iconSize} />
       <input

@@ -21,6 +21,20 @@ export type CenterRecipesInitialData = {
   sortBy: SortBy;
 };
 
+function pushCenterSearchEvent(term: string) {
+  if (typeof window === "undefined") return;
+  const dataLayer = (window as typeof window & { dataLayer?: unknown[] }).dataLayer;
+  if (!Array.isArray(dataLayer)) return;
+  dataLayer.push({
+    event: "fireEvent",
+    event_name: "search",
+    type: "ui",
+    purpose: "conancenter search",
+    description: "search recipes",
+    search_term: term,
+  });
+}
+
 export function useCenterRecipesSearch(data: CenterRecipesInitialData) {
   const [textSearchBar, setTextSearchBar] = useState<string>(data.value);
   const [value, setValue] = useState<string>(data.value);
@@ -226,6 +240,7 @@ export function useCenterRecipesSearch(data: CenterRecipesInitialData) {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    pushCenterSearchEvent(textSearchBar.trim());
     if (timer) {
       clearTimeout(timer);
       setTimer(null);

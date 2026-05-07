@@ -6,6 +6,8 @@ import { useCopyToClipboard } from "@/hooks/useCopyToClipboard";
 export type CopyToClipboardButtonProps = {
   copyText: string;
   children: ReactNode;
+  /** Optional callback fired after triggering copy. Useful for analytics events. */
+  onCopy?: () => void;
   /** Milliseconds before “Copied!” reverts to the idle tooltip (default 1500). */
   copiedResetMs?: number;
   /** Optional class applied while `isCopied` is true (e.g. downloads `.copied`). */
@@ -21,6 +23,7 @@ const TOOLTIP_COPIED = "Copied!";
 export default function CopyToClipboardButton({
   copyText,
   children,
+  onCopy,
   className,
   disabled,
   copiedResetMs = 1500,
@@ -48,6 +51,7 @@ export default function CopyToClipboardButton({
       data-tooltip-hidden={disabled ? true : undefined}
       onClick={() => {
         if (disabled || !copyText) return;
+        onCopy?.();
         void copy(copyText);
       }}
     >

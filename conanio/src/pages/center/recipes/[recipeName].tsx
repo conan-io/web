@@ -28,6 +28,42 @@ import type {
 import { getJson, getUrls } from "@/service/api";
 import { initialRecipeTab, resolveSelectedRecipe } from "@/utils/recipeDetailUtils";
 
+function pushCenterRecipePageEvent(event: {
+  type: string;
+  purpose: string;
+  description: string;
+  event_name?: string;
+  search_term?: string;
+}) {
+  if (typeof window === "undefined") return;
+  const dataLayer = (window as typeof window & { dataLayer?: unknown[] }).dataLayer;
+  if (!Array.isArray(dataLayer)) return;
+  dataLayer.push({
+    event: "fireEvent",
+    event_name: event.event_name ?? "element_click",
+    type: event.type,
+    purpose: event.purpose,
+    description: event.description,
+    ...(event.search_term ? { search_term: event.search_term } : {}),
+  });
+}
+
+function recipeDescriptionFallback(recipeName: string) {
+  return (
+    <>
+      It has not been possible to load this information. Please, check if{" "}
+      <a
+        href={`https://github.com/conan-io/conan-center-index/tree/master/recipes/${encodeURIComponent(recipeName)}`}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        this recipe version
+      </a>{" "}
+      is compatible with Conan v2.x.
+    </>
+  );
+}
+
 export const getServerSideProps: GetServerSideProps<RecipeDetailSsrProps> = async (context) => {
   const raw = context.params?.recipeName;
   const recipeName = typeof raw === "string" ? raw : null;
@@ -158,6 +194,15 @@ function RecipeDetailPage({
   const recipeStatus = recipe.info.status;
   const statusSummary = recipeStatus === "ok" ? "maintained version" : `${recipeStatus} version`;
   const recipeReference = `${recipe.name}/${recipe.info.version}`;
+  const trackCenterSearch = (term: string) => {
+    pushCenterRecipePageEvent({
+      event_name: "search",
+      type: "ui",
+      purpose: "conancenter search",
+      description: "search recipes",
+      search_term: term,
+    });
+  };
 
   return (
     <>
@@ -173,6 +218,7 @@ function RecipeDetailPage({
             aria-label="Search recipes"
             autoComplete="off"
             enterKeyHint="search"
+            onTrackSearchSubmit={trackCenterSearch}
           />
         </div>
         <div className="pkg-head">
@@ -192,7 +238,12 @@ function RecipeDetailPage({
                 {clipboardCopyIconSvg}
               </CopyToClipboardButton>
             </h1>
-            <p>{recipe.info.description}</p>
+            {recipe.info.description?.trim() ? <p>{recipe.info.description}</p> : null}
+            {!recipe.info.description?.trim() ? (
+              <p role="status" className="desc" style={{ marginTop: 8 }}>
+                {recipeDescriptionFallback(recipe.name)}
+              </p>
+            ) : null}
             <div className="chips">
               {labelChips.map((tag) => (
                 <span key={tag} className="chip">

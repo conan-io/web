@@ -6,9 +6,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 ## Conan backend: public API vs private API
 
-Production behavior lives in **`legacy/conanio`** (the previous Next.js app, kept as reference). See especially:
-
-- `legacy/conanio/service/service.tsx` — `getUrls()` defines **`api.private`** (backend origin from `NEXT_PUBLIC_CONAN_CONANIO_SERVICE` / `conanioServer`) and **`api.public`** (`/api`, same-origin routes on this Next app).
+In this app, `getUrls()` in **`src/service/api.ts`** defines **`api.private`** (backend origin from `NEXT_PUBLIC_CONAN_CONANIO_SERVICE` / `conanioServer`) and **`api.public`** (`/api`, same-origin routes on this Next app).
 
 ### Rules
 
@@ -19,12 +17,12 @@ Production behavior lives in **`legacy/conanio`** (the previous Next.js app, kep
 
 - **`private`** is never a substitute for auth boundaries by itself; it means “not meant to be called from the browser.” **`public`** is the deliberate, proxied surface for browser traffic.
 
-- When you add a **new** browser-initiated fetch to the backend, mirror prod: add or reuse a handler under **`src/pages/api/`** (same shape as `legacy/conanio/pages/api/`) and point the client at **`urls.api.public`** with the matching path (e.g. search → `/api/search/[pattern]`; package `use_it` → `/api/package/[packageId]/use_it` in prod).
+- When you add a **new** browser-initiated fetch to the backend, add or reuse a handler under **`src/pages/api/`** and point the client at **`urls.api.public`** with the matching path (e.g. search → `/api/search/[pattern]`; package `use_it` → `/api/package/[packageId]/use_it`).
 
-### Quick references in `legacy/conanio` (prod)
+### Quick references in this tree
 
-- Client search uses **`urls.api.public`**: `legacy/conanio/pages/center/recipes.tsx` (`getJsonList` for search).
-- Recipe detail hydrates **use_it** from the client with **`urls.api.public`**: `legacy/conanio/pages/center/recipes/[recipeName].tsx` (`useEffect` + `getJson`); initial package data stays **`urls.api.private`** in `getServerSideProps`.
+- Client recipes search uses **`urls.api.public`**: `src/hooks/useCenterRecipesSearch.ts` (`getJsonList` against `searchUrls.api.public`).
+- Recipe detail hydrates **use_it** from the client with **`urls.api.public`**: `src/pages/center/recipes/[recipeName].tsx` (`useEffect` + `getJson`); initial package data stays **`urls.api.private`** in `getServerSideProps`.
 
 In **this** tree, shared URL composition and fetch helpers live in **`src/service/api.ts`** — keep the same public/private split when wiring new calls.
 

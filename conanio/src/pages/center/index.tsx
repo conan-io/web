@@ -8,6 +8,26 @@ import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { getJson, getJsonList, getUrls } from "@/service/api";
 import type { RecipeBasic, RecipeReference } from "@/types/conanCenter";
 
+function pushCenterEvent(event: {
+  type: string;
+  purpose: string;
+  description: string;
+  event_name?: string;
+  search_term?: string;
+}) {
+  if (typeof window === "undefined") return;
+  const dataLayer = (window as typeof window & { dataLayer?: unknown[] }).dataLayer;
+  if (!Array.isArray(dataLayer)) return;
+  dataLayer.push({
+    event: "fireEvent",
+    event_name: event.event_name ?? "element_click",
+    type: event.type,
+    purpose: event.purpose,
+    description: event.description,
+    ...(event.search_term ? { search_term: event.search_term } : {}),
+  });
+}
+
 interface PageProps {
   data: {
     popular: RecipeBasic[];
@@ -45,21 +65,42 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
 export default function CenterPage({
   data,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const renderRecipeList = (items: RecipeBasic[], showVersion: boolean) =>
+  const trackCenterSearch = (term: string) => {
+    pushCenterEvent({
+      event_name: "search",
+      type: "ui",
+      purpose: "conancenter search",
+      description: "search recipes",
+      search_term: term,
+    });
+  };
+
+  const renderRecipeList = (items: RecipeBasic[], showVersion: boolean, listName: string) =>
     items.map((item, index) => {
       const href = item.version
         ? `/center/recipes/${encodeURIComponent(item.name)}?version=${encodeURIComponent(item.version)}`
         : `/center/recipes/${encodeURIComponent(item.name)}`;
+      const description = showVersion && item.version ? `${item.name}/${item.version}` : item.name;
 
       return (
         <li className="cc-item" key={`${item.name}-${item.version ?? index}`}>
-          <Link href={href} className="cc-item-link">
-          <span className="name">
-            <span className="dot" />
-            {item.name}
-          </span>
-          {showVersion && item.version && <span className="ver">{item.version}</span>}
-        </Link>
+          <Link
+            href={href}
+            className="cc-item-link"
+            onClick={() =>
+              pushCenterEvent({
+                type: "ui",
+                purpose: listName.toLowerCase(),
+                description,
+              })
+            }
+          >
+            <span className="name">
+              <span className="dot" />
+              {item.name}
+            </span>
+            {showVersion && item.version && <span className="ver">{item.version}</span>}
+          </Link>
         </li>
       );
     });
@@ -88,7 +129,11 @@ export default function CenterPage({
           </a>
           <h1>The Conan <span className="blue">libraries and tools</span><br />central repository.</h1>
           {/* Search */}
-          <RecipeQuerySearchForm mode="get" formClassName="cc-search" />
+          <RecipeQuerySearchForm
+            mode="get"
+            formClassName="cc-search"
+            onTrackSearchSubmit={trackCenterSearch}
+          />
           {/* Counts */}
           <div className="cc-counts">
             <a>
@@ -108,21 +153,21 @@ export default function CenterPage({
             <h2>Popular recipes</h2>
             <span className="colsub">Most-downloaded</span>
             <ul id="list-popular">
-              {renderRecipeList(data.popular, false)}
+              {renderRecipeList(data.popular, false, "popular recipes")}
             </ul>
           </div>
           <div className="cc-col updated">
             <h2>Just updated</h2>
             <span className="colsub">Newest revisions</span>
             <ul id="list-updated">
-              {renderRecipeList(data.updated, true)}
+              {renderRecipeList(data.updated, true, "just updated")}
             </ul>
           </div>
           <div className="cc-col newver">
             <h2>New version</h2>
             <span className="colsub">Fresh upstream releases</span>
             <ul id="list-new">
-              {renderRecipeList(data.new, true)}
+              {renderRecipeList(data.new, true, "new version")}
             </ul>
           </div>
         </section>

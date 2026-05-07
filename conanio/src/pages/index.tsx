@@ -16,6 +16,19 @@ import PageHead from "@/components/PageHead";
 import { getJson, getUrls } from "@/service/api";
 import type { RecipeReference } from "@/types/conanCenter";
 
+function pushHomeEvent(description: string, purpose: string, type = "ui") {
+  if (typeof window === "undefined") return;
+  const dataLayer = (window as typeof window & { dataLayer?: unknown[] }).dataLayer;
+  if (!Array.isArray(dataLayer)) return;
+  dataLayer.push({
+    event: "fireEvent",
+    event_name: "element_click",
+    type,
+    purpose,
+    description,
+  });
+}
+
 const PYPISTATS_CONAN_RECENT = "https://pypistats.org/api/packages/conan/recent";
 
 type PypistatsRecentResponse = {
@@ -97,9 +110,27 @@ export default function HomePage({
             <h1 style={{marginTop: 22}}>The package manager <span className="blue">C and C++</span> developers deserve.</h1>
             <p>Create, share and reuse native binaries across your teams. One tool that speaks MSVC, CMake, Meson, Ninja — and plays nicely with the compiler flags you already have.</p>
             <div className="cta">
-              <a className="btn btn-primary" href="https://docs.conan.io/2/tutorial.html" target="_blank" rel="noopener">Get started →</a>
-              <a className="btn btn-ghost" href="https://academy.jfrog.com/conan-2-essentials?utm_source=Conan+Web" target="_blank" rel="noopener">Watch video</a>
-              <a className="btn btn-ghost" href="/why-conan">Why use Conan?</a>
+              <a
+                className="btn btn-primary"
+                href="https://docs.conan.io/2/tutorial.html"
+                target="_blank"
+                rel="noopener"
+                onClick={() => pushHomeEvent("get started", "hero cta")}
+              >
+                Get started →
+              </a>
+              <a
+                className="btn btn-ghost"
+                href="https://academy.jfrog.com/conan-2-essentials?utm_source=Conan+Web"
+                target="_blank"
+                rel="noopener"
+                onClick={() => pushHomeEvent("watch video", "hero cta")}
+              >
+                Watch video
+              </a>
+              <Link className="btn btn-ghost" href="/why-conan" onClick={() => pushHomeEvent("why use conan", "hero cta")}>
+                Why use Conan?
+              </Link>
             </div>
             {/* <div className="hero-meta">
               {HOMEPAGE_KPIS.map((kpi) => (
@@ -155,13 +186,29 @@ export default function HomePage({
                 <div className="badge">◆ Artifactory CE</div>
                 <h3>Host private packages, your server.</h3>
                 <p>Artifactory CE for C/C++ is the recommended free server for development and hosting private packages. WebUI, advanced auth and permissions, great performance, generic CLI, generic repos — for any kind of source or binary artifact.</p>
-                <div><Link className="btn btn-primary" href="/downloads">Download Artifactory CE</Link></div>
+                <div>
+                  <Link
+                    className="btn btn-primary"
+                    href="/downloads"
+                    onClick={() => pushHomeEvent("download artifactory ce", "products")}
+                  >
+                    Download Artifactory CE
+                  </Link>
+                </div>
               </div>
               <div className="prod cc">
                 <div className="badge">◇ ConanCenter</div>
                 <h3>Discover and share.</h3>
                 <p>The central place to search every available open-source Conan package created by the community. Includes recipes, configuration info, and makes it easy to package debugging into the UI — thousands of popular libraries ready to go.</p>
-                <div><Link className="btn btn-ghost" href="/center">Explore Conan libraries and tools</Link></div>
+                <div>
+                  <Link
+                    className="btn btn-ghost"
+                    href="/center"
+                    onClick={() => pushHomeEvent("explore conan libraries and tools", "products")}
+                  >
+                    Explore Conan libraries and tools
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
@@ -172,7 +219,9 @@ export default function HomePage({
               <span className="pill">Community</span>
               <h2>Meet the Conan 2.0 tribe.</h2>
               <p className="lead">A group of more than 70 expert users and contributors who helped define Conan 2.0 — the people writing the recipes, shipping the binaries, and keeping the ecosystem moving.</p>
-              <Link className="btn btn-primary" href="/tribe">Learn more</Link>
+              <Link className="btn btn-primary" href="/tribe" onClick={() => pushHomeEvent("learn more tribe", "community")}>
+                Learn more
+              </Link>
             </div>
             <div className="tribe-illo">
               <Image src="/tribe-banner.svg" alt="The Conan barbarian tribe" width={620} height={340} />
@@ -189,7 +238,7 @@ export default function HomePage({
             <div className="meta">Case studies · PDF</div>
           </div>
           <div className="stories-grid">
-            <Link className="story" href="/user-stories/tomtom">
+            <Link className="story" href="/user-stories/tomtom" onClick={() => pushHomeEvent("tomtom case study", "customer stories")}>
               <div className="body">
                 <span className="company">TomTom Navigation</span>
                 <h3>TomTom fast tracks their delivery cycle with Conan.</h3>
@@ -214,7 +263,7 @@ export default function HomePage({
                 </div>
               </div>
             </Link>
-            <Link className="story" href="/user-stories/rti">
+            <Link className="story" href="/user-stories/rti" onClick={() => pushHomeEvent("rti case study", "customer stories")}>
               <div className="body">
                 <span className="company">Real-Time Innovations</span>
                 <h3>Speeding multi-platform releases for Industrial IoT with Conan and Artifactory.</h3>

@@ -46,10 +46,6 @@ Recipe pages: \`${origin}/center/recipes/{recipeName}\` (e.g. \`zlib\`, \`openss
 - Example: \`${origin}/center/recipes/zlib?version=1.3.1\`
 - Omit \`version\` for latest maintained.
 
-## Machine-readable data
-
-Pages include JSON-LD (\`<script type="application/ld+json">\`): version, license, dependencies, CMake/pkg-config targets, install commands, versions.
-
 ${popularBlock}`;
 
   res.setHeader("Content-Type", "text/plain; charset=utf-8");
