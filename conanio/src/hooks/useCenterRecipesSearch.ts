@@ -40,7 +40,7 @@ export function useCenterRecipesSearch(data: CenterRecipesInitialData) {
   const [sortBy, setSortBy] = useState<SortBy>(data.sortBy);
   const [selectedLicenseIds, setSelectedLicenseIds] = useState<number[]>(data.selectedLicenseIds);
   const [selectedTopicIds, setSelectedTopicIds] = useState<number[]>(data.selectedTopicIds);
-  const [timer, setTimer] = useState<ReturnType<typeof setTimeout> | null>(null);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [licensesOpen, setLicensesOpen] = useState(false);
   const [topicsOpen, setTopicsOpen] = useState(false);
   const [sortOpen, setSortOpen] = useState(false);
@@ -128,10 +128,10 @@ export function useCenterRecipesSearch(data: CenterRecipesInitialData) {
 
   const handleChange = (nextText: string) => {
     setTextSearchBar(nextText);
-    if (timer) {
-      clearTimeout(timer);
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
     }
-    const newTimer = setTimeout(() => {
+    debounceRef.current = setTimeout(() => {
       setValue(nextText);
       getData(
         nextText,
@@ -142,7 +142,6 @@ export function useCenterRecipesSearch(data: CenterRecipesInitialData) {
         "replace",
       );
     }, 500);
-    setTimer(newTimer);
   };
 
   const toggleSelection = (
@@ -239,9 +238,9 @@ export function useCenterRecipesSearch(data: CenterRecipesInitialData) {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     pushCenterSearchEvent(textSearchBar.trim());
-    if (timer) {
-      clearTimeout(timer);
-      setTimer(null);
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+      debounceRef.current = null;
     }
     setValue(textSearchBar);
     getData(
@@ -264,13 +263,15 @@ export function useCenterRecipesSearch(data: CenterRecipesInitialData) {
     };
   }, []);
 
-  useEffect(() => {
-    return () => {
-      if (timer) {
-        clearTimeout(timer);
+  useEffect(
+    () => () => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+        debounceRef.current = null;
       }
-    };
-  }, [timer]);
+    },
+    [],
+  );
 
   useEffect(() => {
     const handleDocumentMouseDown = (event: MouseEvent) => {
