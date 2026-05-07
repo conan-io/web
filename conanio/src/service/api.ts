@@ -87,7 +87,7 @@ interface ApiResponse<T> {
   status: number;
 }
 
-export async function getJson<T>(url: string, api: string): Promise<ApiResponse<T>> {
+async function requestJson<T>(url: string, api: string): Promise<ApiResponse<T>> {
   try {
     const response = await fetch(`${encodeURI(api)}/${encodeURI(url)}`);
     const data = (await response.json()) as T;
@@ -98,16 +98,22 @@ export async function getJson<T>(url: string, api: string): Promise<ApiResponse<
   }
 }
 
+export async function getJson<T>(url: string, api: string): Promise<ApiResponse<T>> {
+  return requestJson<T>(url, api);
+}
+
 interface ApiResponseList<T> {
   data: T[];
   status: number;
 }
 
 export async function getJsonList<T>(url: string, api: string): Promise<ApiResponseList<T>> {
-  const response = await getJson<Record<string, T> | T[] | null>(url, api);
+  const response = await requestJson<Record<string, T> | T[] | null>(url, api);
   if (!response.data || typeof response.data !== "object") {
     return { data: [], status: response.status };
   }
-  const data = Array.isArray(response.data) ? response.data : Object.values(response.data);
-  return { data, status: response.status };
+  return {
+    data: Array.isArray(response.data) ? response.data : Object.values(response.data),
+    status: response.status,
+  };
 }
