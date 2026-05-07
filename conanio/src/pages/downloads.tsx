@@ -11,6 +11,7 @@ import {
   DL_ICON,
   rpmInstallCopy,
 } from "@/data/downloadsPage";
+import { trackConanEvent } from "@/service/analytics";
 import styles from "@/styles/contentPages.module.css";
 
 /** Populated from `next.config` `env.conanVersion` (`NEXT_PUBLIC_CONAN_VERSION`). */
@@ -25,12 +26,7 @@ function pushDownloadsEvent(event: {
   purpose: string;
   description: string;
 }) {
-  if (typeof window === "undefined") return;
-  const dataLayer = (window as typeof window & { dataLayer?: unknown[] }).dataLayer;
-  if (!Array.isArray(dataLayer)) return;
-  dataLayer.push({
-    event: "fireEvent",
-    event_name: "element_click",
+  trackConanEvent({
     type: event.type,
     product: event.product,
     platforms: event.platforms,

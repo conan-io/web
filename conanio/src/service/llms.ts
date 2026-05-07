@@ -1,3 +1,5 @@
+import { recipeAbsoluteUrl } from "@/utils/recipeUrls";
+
 /**
  * Public site origin, no trailing slash (e.g. https://conan.io).
  * `next.config.ts` maps `NEXT_PUBLIC_SITE_ORIGIN` -> `process.env.siteOrigin` (same as prod `conanio`).
@@ -18,5 +20,5 @@ export function hostFromOrigin(origin: string): string {
 
 /** Canonical Conan Center recipe page URL (matches `/center/llms.txt` and JSON-LD). */
 export function recipeReferencePageUrl(origin: string, recipeName: string, version: string): string {
-  return `${origin}/center/recipes/${encodeURIComponent(recipeName)}?version=${encodeURIComponent(version)}`;
+  return recipeAbsoluteUrl(origin, recipeName, version);
 }

@@ -14,6 +14,40 @@ export const PLATFORM_OPTIONS = [
   "Windows ARM64",
 ] as const;
 
+export type UiPlatform = (typeof PLATFORM_OPTIONS)[number];
+
+const PLATFORM_BY_BINARY_KEY: Record<string, UiPlatform> = {
+  "linux-x86_64": "Linux",
+  "windows-x86_64": "Windows",
+  "macos-x86_64": "macOS",
+  "macos-armv8": "macOS Apple Silicon",
+  "windows-armv8": "Windows ARM64",
+};
+
+export function uiPlatformFromBinary(
+  os: string | null | undefined,
+  arch: string | null | undefined,
+): UiPlatform | null {
+  if (!os || !arch) {
+    return null;
+  }
+  const key = `${os.toLowerCase()}-${arch.toLowerCase()}`;
+  return PLATFORM_BY_BINARY_KEY[key] ?? null;
+}
+
+export function collectUiPlatformsFromBinaries(
+  bins: Array<{ os: string | null | undefined; arch: string | null | undefined }>,
+): Set<string> {
+  const out = new Set<string>();
+  for (const bin of bins) {
+    const platform = uiPlatformFromBinary(bin.os, bin.arch);
+    if (platform) {
+      out.add(platform);
+    }
+  }
+  return out;
+}
+
 export const SORT_OPTIONS: { value: SortBy; label: string }[] = [
   { value: SortBy.BestMatch, label: "sort by best match" },
   { value: SortBy.Name, label: "sort by name" },

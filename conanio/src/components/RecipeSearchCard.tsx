@@ -1,66 +1,16 @@
 import Link from "next/link";
+import { trackConanEvent } from "@/service/analytics";
 import type { SearchRecipeItem } from "@/types/searchRecipe";
-
-function pushCenterRecipeListEvent(description: string) {
-  if (typeof window === "undefined") return;
-  const dataLayer = (window as typeof window & { dataLayer?: unknown[] }).dataLayer;
-  if (!Array.isArray(dataLayer)) return;
-  dataLayer.push({
-    event: "fireEvent",
-    event_name: "element_click",
-    type: "ui",
-    purpose: "recipes search results",
-    description,
-  });
-}
-
-const PLATFORM_ORDER = [
-  "Linux",
-  "Windows",
-  "macOS",
-  "macOS Apple Silicon",
-  "Windows ARM64",
-] as const;
-
-function binToUiPlatform(os: string | null, arch: string | null): (typeof PLATFORM_ORDER)[number] | null {
-  if (!os || !arch) {
-    return null;
-  }
-  const o = os.toLowerCase();
-  const a = arch.toLowerCase();
-  if (o === "linux" && a === "x86_64") {
-    return "Linux";
-  }
-  if (o === "windows" && a === "x86_64") {
-    return "Windows";
-  }
-  if (o === "macos" && a === "x86_64") {
-    return "macOS";
-  }
-  if (o === "macos" && a === "armv8") {
-    return "macOS Apple Silicon";
-  }
-  if (o === "windows" && a === "armv8") {
-    return "Windows ARM64";
-  }
-  return null;
-}
+import { collectUiPlatformsFromBinaries, PLATFORM_OPTIONS } from "@/utils/centerRecipesConfig";
+import { recipePath, recipePathWithVersion } from "@/utils/recipeUrls";
 
 function platformStrip(recipe: SearchRecipeItem): { kind: "header-only" } | { kind: "grid"; supported: Set<string> } {
   const bins = Object.values(recipe.info.packages);
   if (bins.length === 0) {
     return { kind: "header-only" };
   }
-  const supported = new Set<string>();
-  let anyConcrete = false;
-  for (const bin of bins) {
-    const label = binToUiPlatform(bin.os, bin.arch);
-    if (label) {
-      supported.add(label);
-      anyConcrete = true;
-    }
-  }
-  if (!anyConcrete) {
+  const supported = collectUiPlatformsFromBinaries(bins);
+  if (supported.size === 0) {
     return { kind: "header-only" };
   }
   return { kind: "grid", supported };
@@ -104,10 +54,10 @@ export default function RecipeSearchCard({ recipe }: { recipe: SearchRecipeItem 
     deprecated !== "false" &&
     !deprecated.includes(" ");
   const deprecatedSubstituteHref = hasDeprecatedSubstitute
-    ? `/center/recipes/${encodeURIComponent(deprecated)}`
+    ? recipePath(deprecated)
     : null;
   const reference = recipe.name;
-  const href = `/center/recipes/${encodeURIComponent(reference)}?version=${encodeURIComponent(info.version ?? "")}`;
+  const href = recipePathWithVersion(reference, info.version ?? "");
 
   return (
     <div className="card">
@@ -116,7 +66,13 @@ export default function RecipeSearchCard({ recipe }: { recipe: SearchRecipeItem 
           <Link
             href={href}
             className="name-link"
-            onClick={() => pushCenterRecipeListEvent(`${reference}/${info.version ?? ""}`)}
+            onClick={() =>
+              trackConanEvent({
+                type: "ui",
+                purpose: "recipes search results",
+                description: `${reference}/${info.version ?? ""}`,
+              })
+            }
           >
             {reference}/{info.version}
           </Link>
@@ -151,7 +107,7 @@ export default function RecipeSearchCard({ recipe }: { recipe: SearchRecipeItem 
           {platforms.kind === "header-only" ? (
             <span className="plat hdr">Header Only</span>
           ) : (
-            PLATFORM_ORDER.map((label) => (
+            PLATFORM_OPTIONS.map((label) => (
               <span key={label} className={platforms.supported.has(label) ? "plat" : "plat muted"}>
                 {label}
               </span>

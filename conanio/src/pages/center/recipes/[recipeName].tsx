@@ -26,27 +26,9 @@ import type {
   RecipeUseIt,
 } from "@/types/recipeDetail";
 import { getJson, getUrls } from "@/service/api";
+import { trackConanEvent } from "@/service/analytics";
 import { initialRecipeTab, resolveSelectedRecipe } from "@/utils/recipeDetailUtils";
-
-function pushCenterRecipePageEvent(event: {
-  type: string;
-  purpose: string;
-  description: string;
-  event_name?: string;
-  search_term?: string;
-}) {
-  if (typeof window === "undefined") return;
-  const dataLayer = (window as typeof window & { dataLayer?: unknown[] }).dataLayer;
-  if (!Array.isArray(dataLayer)) return;
-  dataLayer.push({
-    event: "fireEvent",
-    event_name: event.event_name ?? "element_click",
-    type: event.type,
-    purpose: event.purpose,
-    description: event.description,
-    ...(event.search_term ? { search_term: event.search_term } : {}),
-  });
-}
+import { recipePathWithVersion } from "@/utils/recipeUrls";
 
 function recipeDescriptionFallback(recipeName: string) {
   return (
@@ -163,7 +145,7 @@ function RecipeDetailPage({
   };
 
   const selectRecipeVersion = (version: string) => {
-    const path = `/center/recipes/${encodeURIComponent(recipeName)}?version=${encodeURIComponent(version)}`;
+    const path = recipePathWithVersion(recipeName, version);
     void router.push(path);
     if (typeof window !== "undefined") {
       window.scrollTo(0, 0);
@@ -195,7 +177,7 @@ function RecipeDetailPage({
   const statusSummary = recipeStatus === "ok" ? "maintained version" : `${recipeStatus} version`;
   const recipeReference = `${recipe.name}/${recipe.info.version}`;
   const trackCenterSearch = (term: string) => {
-    pushCenterRecipePageEvent({
+    trackConanEvent({
       event_name: "search",
       type: "ui",
       purpose: "conancenter search",

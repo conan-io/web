@@ -14,20 +14,8 @@ import MainFooter from "@/components/MainFooter";
 import MainNav from "@/components/MainNav";
 import PageHead from "@/components/PageHead";
 import { getJson, getUrls } from "@/service/api";
+import { trackConanEvent } from "@/service/analytics";
 import type { RecipeReference } from "@/types/conanCenter";
-
-function pushHomeEvent(description: string, purpose: string, type = "ui") {
-  if (typeof window === "undefined") return;
-  const dataLayer = (window as typeof window & { dataLayer?: unknown[] }).dataLayer;
-  if (!Array.isArray(dataLayer)) return;
-  dataLayer.push({
-    event: "fireEvent",
-    event_name: "element_click",
-    type,
-    purpose,
-    description,
-  });
-}
 
 const PYPISTATS_CONAN_RECENT = "https://pypistats.org/api/packages/conan/recent";
 
@@ -115,7 +103,7 @@ export default function HomePage({
                 href="https://docs.conan.io/2/tutorial.html"
                 target="_blank"
                 rel="noopener"
-                onClick={() => pushHomeEvent("get started", "hero cta")}
+                onClick={() => trackConanEvent({ type: "ui", purpose: "hero cta", description: "get started" })}
               >
                 Get started →
               </a>
@@ -124,11 +112,11 @@ export default function HomePage({
                 href="https://academy.jfrog.com/conan-2-essentials?utm_source=Conan+Web"
                 target="_blank"
                 rel="noopener"
-                onClick={() => pushHomeEvent("watch video", "hero cta")}
+                onClick={() => trackConanEvent({ type: "ui", purpose: "hero cta", description: "watch video" })}
               >
                 Watch video
               </a>
-              <Link className="btn btn-ghost" href="/why-conan" onClick={() => pushHomeEvent("why use conan", "hero cta")}>
+              <Link className="btn btn-ghost" href="/why-conan" onClick={() => trackConanEvent({ type: "ui", purpose: "hero cta", description: "why use conan" })}>
                 Why use Conan?
               </Link>
             </div>
@@ -190,7 +178,7 @@ export default function HomePage({
                   <Link
                     className="btn btn-primary"
                     href="/downloads"
-                    onClick={() => pushHomeEvent("download artifactory ce", "products")}
+                    onClick={() => trackConanEvent({ type: "ui", purpose: "products", description: "download artifactory ce" })}
                   >
                     Download Artifactory CE
                   </Link>
@@ -204,7 +192,7 @@ export default function HomePage({
                   <Link
                     className="btn btn-ghost"
                     href="/center"
-                    onClick={() => pushHomeEvent("explore conan libraries and tools", "products")}
+                    onClick={() => trackConanEvent({ type: "ui", purpose: "products", description: "explore conan libraries and tools" })}
                   >
                     Explore Conan libraries and tools
                   </Link>
@@ -219,7 +207,7 @@ export default function HomePage({
               <span className="pill">Community</span>
               <h2>Meet the Conan 2.0 tribe.</h2>
               <p className="lead">A group of more than 70 expert users and contributors who helped define Conan 2.0 — the people writing the recipes, shipping the binaries, and keeping the ecosystem moving.</p>
-              <Link className="btn btn-primary" href="/tribe" onClick={() => pushHomeEvent("learn more tribe", "community")}>
+              <Link className="btn btn-primary" href="/tribe" onClick={() => trackConanEvent({ type: "ui", purpose: "community", description: "learn more tribe" })}>
                 Learn more
               </Link>
             </div>
@@ -238,7 +226,7 @@ export default function HomePage({
             <div className="meta">Case studies · PDF</div>
           </div>
           <div className="stories-grid">
-            <Link className="story" href="/user-stories/tomtom" onClick={() => pushHomeEvent("tomtom case study", "customer stories")}>
+            <Link className="story" href="/user-stories/tomtom" onClick={() => trackConanEvent({ type: "ui", purpose: "customer stories", description: "tomtom case study" })}>
               <div className="body">
                 <span className="company">TomTom Navigation</span>
                 <h3>TomTom fast tracks their delivery cycle with Conan.</h3>
@@ -263,7 +251,7 @@ export default function HomePage({
                 </div>
               </div>
             </Link>
-            <Link className="story" href="/user-stories/rti" onClick={() => pushHomeEvent("rti case study", "customer stories")}>
+            <Link className="story" href="/user-stories/rti" onClick={() => trackConanEvent({ type: "ui", purpose: "customer stories", description: "rti case study" })}>
               <div className="body">
                 <span className="company">Real-Time Innovations</span>
                 <h3>Speeding multi-platform releases for Industrial IoT with Conan and Artifactory.</h3>

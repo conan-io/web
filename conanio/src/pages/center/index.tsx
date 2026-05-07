@@ -6,27 +6,9 @@ import styles from "@/styles/centerPages.module.css";
 import Link from "next/link";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { getJson, getJsonList, getUrls } from "@/service/api";
+import { trackConanEvent } from "@/service/analytics";
 import type { RecipeBasic, RecipeReference } from "@/types/conanCenter";
-
-function pushCenterEvent(event: {
-  type: string;
-  purpose: string;
-  description: string;
-  event_name?: string;
-  search_term?: string;
-}) {
-  if (typeof window === "undefined") return;
-  const dataLayer = (window as typeof window & { dataLayer?: unknown[] }).dataLayer;
-  if (!Array.isArray(dataLayer)) return;
-  dataLayer.push({
-    event: "fireEvent",
-    event_name: event.event_name ?? "element_click",
-    type: event.type,
-    purpose: event.purpose,
-    description: event.description,
-    ...(event.search_term ? { search_term: event.search_term } : {}),
-  });
-}
+import { recipePathFromReference } from "@/utils/recipeUrls";
 
 interface PageProps {
   data: {
@@ -66,7 +48,7 @@ export default function CenterPage({
   data,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const trackCenterSearch = (term: string) => {
-    pushCenterEvent({
+    trackConanEvent({
       event_name: "search",
       type: "ui",
       purpose: "conancenter search",
@@ -77,9 +59,7 @@ export default function CenterPage({
 
   const renderRecipeList = (items: RecipeBasic[], showVersion: boolean, listName: string) =>
     items.map((item, index) => {
-      const href = item.version
-        ? `/center/recipes/${encodeURIComponent(item.name)}?version=${encodeURIComponent(item.version)}`
-        : `/center/recipes/${encodeURIComponent(item.name)}`;
+      const href = recipePathFromReference(item.name, item.version);
       const description = showVersion && item.version ? `${item.name}/${item.version}` : item.name;
 
       return (
@@ -88,7 +68,7 @@ export default function CenterPage({
             href={href}
             className="cc-item-link"
             onClick={() =>
-              pushCenterEvent({
+              trackConanEvent({
                 type: "ui",
                 purpose: listName.toLowerCase(),
                 description,

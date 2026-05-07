@@ -3,6 +3,7 @@ import type { GetServerSideProps } from "next";
 import { getJsonList, getUrls } from "@/service/api";
 import { getSiteOrigin, hostFromOrigin, recipeReferencePageUrl } from "@/service/llms";
 import type { RecipeBasic } from "@/types/conanCenter";
+import { recipeAbsoluteUrl } from "@/utils/recipeUrls";
 
 export const getServerSideProps: GetServerSideProps = async ({ res }) => {
   const origin = getSiteOrigin();
@@ -26,7 +27,7 @@ ${popular
   .map((r) => {
     const href = r.version
       ? recipeReferencePageUrl(origin, r.name, r.version)
-      : `${origin}/center/recipes/${encodeURIComponent(r.name)}`;
+      : recipeAbsoluteUrl(origin, r.name);
     return `- [${r.name}](${href})`;
   })
   .join("\n")}

@@ -1,20 +1,6 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
-
-function gtmConanPush(description: string) {
-  if (typeof window === "undefined") return;
-  const dataLayer = (window as typeof window & { dataLayer?: unknown[] }).dataLayer;
-  if (!Array.isArray(dataLayer)) return;
-
-  dataLayer.push({
-    event: "fireEvent",
-    event_name: "element_click",
-    type: "navigation",
-    purpose: "main menu",
-    description,
-    section: "header",
-  });
-}
+import { trackConanEvent } from "@/service/analytics";
 
 export default function MainNav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -30,7 +16,12 @@ export default function MainNav() {
   }, []);
 
   const handleNavClick = (description: string) => {
-    gtmConanPush(description);
+    trackConanEvent({
+      type: "navigation",
+      purpose: "main menu",
+      description,
+      section: "header",
+    });
     setIsMenuOpen(false);
   };
 

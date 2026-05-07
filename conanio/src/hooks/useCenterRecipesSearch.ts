@@ -3,7 +3,9 @@ import { type FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import type { FilterItem } from "@/types/conanCenter";
 import type { SearchRecipeItem } from "@/types/searchRecipe";
 import { getJsonList, getUrls } from "@/service/api";
+import { trackConanEvent } from "@/service/analytics";
 import {
+  collectUiPlatformsFromBinaries,
   MAX_PAGE_BUTTONS,
   PAGE_SIZE,
   PLATFORM_OPTIONS,
@@ -22,11 +24,7 @@ export type CenterRecipesInitialData = {
 };
 
 function pushCenterSearchEvent(term: string) {
-  if (typeof window === "undefined") return;
-  const dataLayer = (window as typeof window & { dataLayer?: unknown[] }).dataLayer;
-  if (!Array.isArray(dataLayer)) return;
-  dataLayer.push({
-    event: "fireEvent",
+  trackConanEvent({
     event_name: "search",
     type: "ui",
     purpose: "conancenter search",
@@ -305,17 +303,10 @@ export function useCenterRecipesSearch(data: CenterRecipesInitialData) {
     if (rawPackages.length === 0) {
       return false;
     }
-    const packagePlatforms = new Set<string>();
-    for (const pkg of rawPackages) {
-      if (pkg.os && pkg.arch) {
-        if (pkg.os === "Windows" && pkg.arch === "x86_64") packagePlatforms.add("Windows");
-        if (pkg.os === "Linux" && pkg.arch === "x86_64") packagePlatforms.add("Linux");
-        if (pkg.os === "Macos" && pkg.arch === "x86_64") packagePlatforms.add("macOS");
-        if (pkg.os === "Macos" && pkg.arch === "armv8") packagePlatforms.add("macOS Apple Silicon");
-        if (pkg.os === "Windows" && pkg.arch === "armv8") packagePlatforms.add("Windows ARM64");
-      }
-    }
-    return selectedPlatforms.some((platform) => packagePlatforms.has(platform));
+    const packagePlatforms = collectUiPlatformsFromBinaries(rawPackages);
+    return selectedPlatforms.some((platform) =>
+      packagePlatforms.has(platform as (typeof PLATFORM_OPTIONS)[number]),
+    );
   };
 
   const sortByName = (a: SearchRecipeItem, b: SearchRecipeItem): number =>

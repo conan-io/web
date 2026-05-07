@@ -3,6 +3,7 @@ import type { GetServerSideProps } from "next";
 import { getJsonList, getUrls } from "@/service/api";
 import { getSiteOrigin, recipeReferencePageUrl } from "@/service/llms";
 import type { RecipeBasic } from "@/types/conanCenter";
+import { recipeAbsoluteUrl } from "@/utils/recipeUrls";
 
 const STATIC_PATHS = [
   "/",
@@ -49,7 +50,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
       if (recipe.version) {
         recipeUrls.push(recipeReferencePageUrl(origin, recipe.name, recipe.version));
       } else {
-        recipeUrls.push(`${origin}/center/recipes/${encodeURIComponent(recipe.name)}`);
+        recipeUrls.push(recipeAbsoluteUrl(origin, recipe.name));
       }
     }
   } catch {
