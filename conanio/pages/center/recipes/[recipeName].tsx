@@ -45,6 +45,7 @@ import { HiOutlineDocumentText } from "react-icons/hi";
 import { Tooltip } from 'react-tooltip';
 import { useMediaQuery } from 'react-responsive';
 import { GetServerSideProps, GetServerSidePropsContext, GetServerSidePropsResult, NextPage } from 'next';
+import { parse as parseYaml } from 'yaml';
 import Alert from "react-bootstrap/Alert";
 
 interface PageProps  {
@@ -54,6 +55,8 @@ interface PageProps  {
     readme?: string,
     recipeName?: string,
     recipeVersion?: string,
+    /** Maps each recipe version string to its folder name in conan-center-index (from config.yml). */
+    versionFolderMap?: Record<string, string>,
     /** JSON-LD built on the server (includes use_it summary) without embedding full `use_it` in `data`. */
     initialJsonLdScript?: string | null,
 }
@@ -105,6 +108,7 @@ export const getServerSideProps: GetServerSideProps<PageProps, Params> = async (
       //downloads: downloadsResponse.data,
       recipeName: recipeName,
       recipeVersion: recipeVersion,
+      versionFolderMap: await fetchVersionFolderMap(recipeName),
       initialJsonLdScript,
     },
   };
@@ -119,6 +123,20 @@ const fetchReadme = async (recipeName: string) => {
     }
   } catch (error) { /* do nothing */ }
   return null;
+};
+
+const fetchVersionFolderMap = async (recipeName: string): Promise<Record<string, string>> => {
+  const url = `https://raw.githubusercontent.com/conan-io/conan-center-index/master/recipes/${recipeName}/config.yml`;
+  try {
+    const response = await fetch(url);
+    if (response.ok) {
+      const config = parseYaml(await response.text());
+      return Object.fromEntries(
+        Object.entries(config.versions).map(([version, info]: [string, any]) => [version, info.folder])
+      );
+    }
+  } catch (error) { /* do nothing */ }
+  return {};
 };
 
 const ConanPackage: NextPage<PageProps> = (props) => {
@@ -194,7 +212,10 @@ const ConanPackage: NextPage<PageProps> = (props) => {
   const recipeHomepage = recipeData.info.homepage;
   const recipeLabels = recipeData.info.labels;
   const recipeLicenses = Object.keys(recipeData.info.licenses);
-  const recipeConanCenterUrl = "https://github.com/conan-io/conan-center-index/tree/master/recipes/" + recipeData.name;
+  const githubFolder = props.versionFolderMap?.[selectedVersion];
+  const recipeConanCenterUrl = githubFolder
+    ? `https://github.com/conan-io/conan-center-index/blob/master/recipes/${recipeData.name}/${githubFolder}/conanfile.py`
+    : `https://github.com/conan-io/conan-center-index/tree/master/recipes/${recipeData.name}`;
   const recipeReadme = props.readme;
   const deprecated = recipeData.info.deprecated == undefined? 'false': recipeData.info.deprecated;
   const metadatsInfo = (recipeDescription && true)
