@@ -1,2 +1,14 @@
 export { getJson, getJsonList, getUrls } from './service';
-export type { RecipeBasic, PackageInfo, RecipeInfo, RecipeDownloadsResponse, RecipeReference, ConanResponse, ConanFilterResponse, RecipeUseIt } from './dtos';
+export { getSiteOrigin } from './siteOrigin';
+export { recipeReferencePageUrl } from './recipeUrls';
+export type {
+  RecipeBasic,
+  PackageInfo,
+  RecipeInfo,
+  RecipeDownloadsResponse,
+  RecipeReference,
+  ConanResponse,
+  ConanFilterResponse,
+  RecipeUseIt,
+  RecipeUseItContent,
+} from './dtos';

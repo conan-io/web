@@ -170,6 +170,15 @@ const DownloadConanPackageManager = () => {
                 gtmDownloadDescription="Ubuntu / Debian X64 Installer"
               />
               <DownloadInstaller
+                imageAlt="Debian"
+                imageSrc="/downloads/debian-small-pack.svg"
+                textToShow="Ubuntu / Debian arm64 Installer"
+                installerLink={"https://github.com/conan-io/conan/releases/download/"+ conanReleaseVersion +"/conan-"+ conanReleaseVersion +"-arm64.deb"}
+                gtmProduct={gtmProduct}
+                gtmPlatforms="debian"
+                gtmDownloadDescription="Ubuntu / Debian arm64 Installer"
+              />
+              <DownloadInstaller
                 imageAlt="Windows"
                 imageSrc="/downloads/windows-small-pack.svg"
                 textToShow="Download x86_64 Installer"
@@ -430,7 +439,7 @@ const DownloadsPage = () => (
                 <div className="d-flex justify-content-center mt-4"><a className="q-box d-block" href="https://docs.conan.io/">
                     <div className="q-top"><img alt="Docs" src="/docs.svg"></img></div>
                     <div className="q-title text-center mt-1">Docs</div>
-                  </a><a className="q-box d-block" href="https://cpplang.slack.com/?id=conan">
+                  </a><a className="q-box d-block" href="https://cppalliance.org/slack/#cpp-slack">
                     <div className="q-top"><img alt="Docs" src="/social/slack.svg"></img></div>
                     <div className="q-title text-center mt-1">Slack</div>
                   </a><a className="q-box d-block" href="https://github.com/conan-io/conan/issues" rel="nofollow">

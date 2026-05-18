@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Slider from "react-slick";
-import { LasoBanner } from "./banners";
 
 const ConanHomeHero = () => (
   <section id="hero" className="position-relative">
@@ -21,7 +20,7 @@ const ConanHomeHero = () => (
         <div className="col-6">
           <div className="hero-content py-3">
             <h1 className="black">
-              Conan, software package manager for C and C++ developers
+              Conan, software package manager <span style={{ whiteSpace: "nowrap" }}>for C and C++</span> developers
             </h1>
             <h2 className="homepage-hero-paragraph my-3 black">
               The open source, decentralized and multi-platform package{" "}
@@ -29,25 +28,36 @@ const ConanHomeHero = () => (
               manager to create and share all your native binaries.
             </h2>
             <div className="d-inline">
-              <Link href="/downloads">
+            <Link href="https://academy.jfrog.com/conan-2-essentials?utm_source=Conan+Web">
+              <div
+                className="btn conan-blue-gradient-bg position-relative"
+                id="training_btn_top"
+                title="Hands-On Video Course for Conan 2.0"
+              >
+                {/* Sello "New" */}
                 <div
-                  className="btn conan-blue-gradient-bg ms-0"
-                  id="download_btn_top"
+                  className="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger"
+                  style={{ transform: "translate(-50%, -50%)", fontSize: "0.9rem" }}
                 >
-                  <span>Downloads</span>
+                  New!
                 </div>
-              </Link>
+
+                <span>Free Video Course</span>
+              </div>
+            </Link>
+
               <Link href="https://docs.conan.io/2/tutorial.html">
                 <div
-                  className="btn conan-blue-border bg-white ms-lg-4"
+                  className="btn conan-blue-border bg-white ms-lg-2"
                   id="get_started_btn_top"
                 >
                   <span>Get Started</span>
                 </div>
               </Link>
+
               <Link href="/why-conan">
                 <div
-                  className="btn conan-blue-border bg-white ms-lg-4"
+                  className="btn conan-blue-border bg-white ms-lg-2"
                   id="why_use_conan"
                 >
                   <span>Why use Conan?</span>
@@ -65,8 +75,8 @@ const ConanHomeHero = () => (
 );
 
 const ConanHomeAdvantages = () => (
-  <section className="advantages py-0 pt-5" id="advantages">
-    <div className="container py-0 pt-5">
+  <section className="advantages py-0 pt-1" id="advantages">
+    <div className="container py-0 pt-1">
       <div className="row justify-content-center">
         <div className="col-lg-3 pb-3 pb-lg-0">
           <div className="advantage black conan-card">
@@ -835,7 +845,6 @@ const ConanHomeUsersVoices = () => (
 export const ConanHome = () => (
   <div>
     <ConanHomeHero />
-    <LasoBanner/>
     <ConanHomeAdvantages />
     <ConanHomePlaces />
     <ConanHomeTribe />

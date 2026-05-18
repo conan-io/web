@@ -1,5 +1,6 @@
 import React from 'react';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -29,6 +30,7 @@ import {
     Conan1xBanner
 } from '@/components';
 import { getJson, getUrls, ConanResponse, RecipeInfo, RecipeUseIt} from '@/service';
+import { buildRecipeReferenceJsonLd, resolveSelectedRecipe } from '@/components/recipeReferenceJsonLd';
 import { LiaBalanceScaleSolid, LiaGithub } from "react-icons/lia";
 import { IoMdHome } from "react-icons/io";
 import hljs from "highlight.js";
@@ -51,7 +53,9 @@ interface PageProps  {
     //downloads?: ConanResponse<PackageDownloadsDTO>,
     readme?: string,
     recipeName?: string,
-    recipeVersion?: string
+    recipeVersion?: string,
+    /** JSON-LD built on the server (includes use_it summary) without embedding full `use_it` in `data`. */
+    initialJsonLdScript?: string | null,
 }
 
 type Params = {
@@ -72,14 +76,36 @@ export const getServerSideProps: GetServerSideProps<PageProps, Params> = async (
       notFound: true,
     }
   }
+
+  const data = package_info_response.data as Record<string, RecipeInfo>;
+  const selectedRecipe = resolveSelectedRecipe(data, recipeVersion);
+
+  let initialJsonLdScript: string | null = null;
+  try {
+    const useItResp = await getJson<ConanResponse<RecipeUseIt>>(urls.package.useIt, urls.api.private);
+    const byVersion = useItResp.data as Record<string, RecipeUseIt>;
+    const entry = byVersion[selectedRecipe.info.version];
+    const recipeForLd: RecipeInfo = entry?.use_it
+      ? { ...selectedRecipe, use_it: entry.use_it }
+      : selectedRecipe;
+    initialJsonLdScript = JSON.stringify(
+      buildRecipeReferenceJsonLd(recipeForLd, recipeName!, data)
+    ).replace(/</g, '\\u003c');
+  } catch {
+    initialJsonLdScript = JSON.stringify(
+      buildRecipeReferenceJsonLd(selectedRecipe, recipeName!, data)
+    ).replace(/</g, '\\u003c');
+  }
+
   //let downloadsResponse = await getJson<ConanResponse<PackageDownloadsDTO>>(urls.package.downloads, urls.api.private)
   return {
     props: {
-      data: package_info_response.data,
+      data,
       readme: await fetchReadme(recipeName),
       //downloads: downloadsResponse.data,
       recipeName: recipeName,
-      recipeVersion: recipeVersion
+      recipeVersion: recipeVersion,
+      initialJsonLdScript,
     },
   };
 }
@@ -144,6 +170,20 @@ const ConanPackage: NextPage<PageProps> = (props) => {
     };
     fetchData();
   },[]);
+
+  const jsonLdScript = useMemo(() => {
+    if (!props.data || !props.recipeName) return null;
+    let idx = Object.keys(props.data).filter((index) => props.data![index].info.version === selectedVersion)[0];
+    if (idx == null) {
+      idx = '0';
+    }
+    const recipe = props.data[idx];
+    if (!recipe) return props.initialJsonLdScript ?? null;
+    if (recipe.use_it) {
+      return JSON.stringify(buildRecipeReferenceJsonLd(recipe, props.recipeName, props.data)).replace(/</g, '\\u003c');
+    }
+    return props.initialJsonLdScript ?? null;
+  }, [props.data, props.recipeName, selectedVersion, useItLoading, props.initialJsonLdScript]);
 
   if (!props.data) return (<div>Loading...</div>);
   const recipeData = props.data[indexSelectedVersion];
@@ -383,6 +423,14 @@ const ConanPackage: NextPage<PageProps> = (props) => {
 
   return (
     <React.StrictMode>
+      {jsonLdScript && (
+        <Head>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: jsonLdScript }}
+          />
+        </Head>
+      )}
 
       <div className="flex-wrapper bg-conan-blue">
         <ConanCenterHeader titlePrefix={recipeData.name}/>
@@ -399,8 +447,8 @@ const ConanPackage: NextPage<PageProps> = (props) => {
                     <Col>
                       <h1 className="mt-2 mb-2" style={{display: 'inline'}}>
                         {recipeData.name}/{selectedVersion}
-                      </h1><
-                        ClipboardCopy
+                      </h1>
+                      <ClipboardCopy
                           copyText={recipeData.name + "/" + selectedVersion}
                           buttonStyle={{cursor: 'pointer', display: 'inline'}}
                           tooltipStyle={{marginTop: "-14px", zIndex: 99}}

@@ -36,7 +36,7 @@ const FaqPage = () => {
       "answer": (<div className="pb-2"><Link href="https://docs.conan.io/2/introduction.html#all-platforms-all-build-systems-and-compilers">Conan is multi-platform</Link>. This means two things. First, it means that the Conan client can run on Linux, Windows, macOS, and anywhere else python can run. Second, it means that it can build and store packages for any platform. If you have a compiler or cross-compiler which can target a platform, Conan can store the binaries for it. Common examples include mobile platforms like Android and IOS, real- time hardware platforms, and embedded hardware platforms including bare-metal devices.</div>)
     }, {
       "question": "Is Conan Stable?",
-      "answer": (<div className="pb-2">Yes. Conan maintains a <Link href="https://docs.conan.io/2/introduction.html#stable">strong commitment to stability</Link>. Packages built with a major version such as Conan 1.x will continue to work for all future Conan 1.x versions. If there’s a breaking change to the package model, it won’t happen until the next major Conan version is released (such as 2.x for example).</div>)
+      "answer": (<div className="pb-2">Yes. Conan maintains a <Link href="https://docs.conan.io/2/introduction.html#stable">strong commitment to stability</Link>. Packages built with a major version such as Conan 2.x will continue to work for all future Conan 2.x versions. If there’s a breaking change to the package model, it won’t happen until the next major Conan version is released (such as 3.x for example).</div>)
     }, {
       "question": "How is Conan licensed?",
       "answer": (<div className="pb-2">The Conan project is published with the very permissive MIT license.</div>)
@@ -45,10 +45,10 @@ const FaqPage = () => {
       "answer": (<div className="pb-2"><Link href="https://jfrog.com">JFrog Inc.</Link> maintains Conan with a dedicated full-time development team. This team includes the Conan founders, and several additional developers. The Conan team also has a formal community engagement and feedback strategy known as the <Link href="/tribe">Conan Tribe</Link>. The tribe is composed of over 70 volunteers from the Conan user community who have committed to providing input on major road map decisions whenever the Conan team requests it.</div>)
     }, {
       "question": "How active is the Conan project?",
-      "answer": (<div className="pb-2">In addition to a team of full-time maintainers, Conan has a very active user community which submits dozens of pull requests each month. In 2020, Conan received over <Link href="https://github.com/conan-io/conan-io.github.io/pulls">3500 PRs</Link> in total. Also, the <Link href="https://cpplang.slack.com/#conan">Conan slack channel</Link> has 1200 members, and is one of the most active channels in the <Link href="https://cppalliance.org/slack/">C++ community</Link>.</div>)
+      "answer": (<div className="pb-2">In addition to a team of full-time maintainers, Conan has a very active user community which submits dozens of pull requests each month. In 2023, Conan received almost <Link href="https://github.com/conan-io/conan-center-index/pulls">6000 PRs</Link> in total. Also, the <Link href="https://cppalliance.org/slack/#cpp-slack">Conan slack channel</Link> has more than 2900 members, and is one of the most active channels in the <Link href="https://cppalliance.org/slack/">C++ community</Link>.</div>)
     }, {
       "question": "What resources exist to help me learn Conan?",
-      "answer": (<div className="pb-2">The Conan team has created multiple interactive, self-paced Conan training courses. These courses are all available completely free, courtesy of JFrog in the <Link href="https://academy.jfrog.com/series/conan/">JFrog academy</Link>.</div>)
+      "answer": (<div className="pb-2">The Conan team has created multiple interactive, self-paced Conan training courses. These courses are all available completely free, courtesy of JFrog in the <Link href="https://academy.jfrog.com/conan-2-essentials">JFrog academy</Link>.</div>)
     }
   ]
 

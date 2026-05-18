@@ -126,7 +126,8 @@ export function prettyProfileNames(){
     'Linux-x86_64': 'Linux',
     'Windows-x86_64': 'Windows',
     'Macos-x86_64': 'macOS',
-    'Macos-armv8': 'macOS Apple Silicon'
+    'Macos-armv8': 'macOS Apple Silicon',
+    'Windows-armv8': 'Windows ARM64'
   };
 }
 

@@ -4,8 +4,9 @@ const nextConfig = {
   output: 'standalone',
   env: {
     conanioServer: process.env.NEXT_PUBLIC_CONAN_CONANIO_SERVICE,
+    siteOrigin: process.env.NEXT_PUBLIC_SITE_ORIGIN || 'https://conan.io',
     gtmURL: process.env.GTM_URL,
-    gtmID: process.env.GTM_ID
+    gtmID: process.env.GTM_ID,
   },
   async redirects() {
     return [
@@ -15,7 +16,8 @@ const nextConfig = {
         permanent: true,
       },
       {
-        source: '/center/:recipe((?!.*recipes).*$)',
+        // Exclude /center/llms.txt (static llms route); same "no recipes substring" rule as before.
+        source: '/center/:recipe((?!.*recipes)(?!llms\\.txt$).*$)',
         destination: '/center/recipes/:recipe',
         permanent: true,
       },
