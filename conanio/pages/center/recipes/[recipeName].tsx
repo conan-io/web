@@ -35,7 +35,7 @@ import { LiaBalanceScaleSolid, LiaGithub } from "react-icons/lia";
 import { IoMdHome } from "react-icons/io";
 import hljs from "highlight.js";
 import { PiWarningBold } from "react-icons/pi";
-import { MdOutlineToday } from "react-icons/md";
+// import { MdOutlineToday } from "react-icons/md";
 import { AiOutlinePushpin } from "react-icons/ai";
 import { PiGraphDuotone, PiMedal } from "react-icons/pi";
 import { FaShieldAlt } from "react-icons/fa";
@@ -249,14 +249,14 @@ const ConanPackage: NextPage<PageProps> = (props) => {
           </Col>
         </Row>)}
 
-        {(recipeDescription && <Row>
+        {/* {(recipeDescription && <Row>
           <Col xs lg>
           <Tooltip style={{ zIndex: 99 }} id="package-info"/>
             <a data-tooltip-id='package-info' data-tooltip-html="Last updated date" data-tooltip-place="top">
               <MdOutlineToday className="conanIconBlue conanIcon22" style={{verticalAlign: "middle"}}/>
             </a> {recipeData.info.timestamp}
           </Col>
-        </Row>)}
+        </Row>)} */}
 
         {recipeDescription && (<Row>
           <Col xs lg>

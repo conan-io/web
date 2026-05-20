@@ -34,8 +34,8 @@ import { MdFilter1,
   MdFilter7,
   MdFilter8,
   MdFilter9,
-  MdFilter9Plus,
-  MdOutlineToday } from "react-icons/md";
+  MdFilter9Plus } from "react-icons/md";
+// MdOutlineToday } from "react-icons/md";
 import { GetServerSideProps, GetServerSidePropsResult, NextPage } from 'next';
 import {getJsonList, getUrls, getJson, ConanFilterResponse, ConanResponse, RecipeInfo } from '@/service';
 
@@ -95,7 +95,7 @@ const PackageInfo = (props: {package: RecipeInfo}) => {
           </Row>
         </Col>
         <Col xs="12" lg="6">
-          <Row className="mt-2">{props.package.info.timestamp && <Col xs="12" lg="auto"><MdOutlineToday className="conanIconBlue"/> {props.package.info.timestamp}</Col>}</Row>
+          {/*<Row className="mt-2">{props.package.info.timestamp && <Col xs="12" lg="auto"><MdOutlineToday className="conanIconBlue"/> {props.package.info.timestamp}</Col>}</Row>*/}
           <Row>{licenses && licenses.length > 0 && <Col xs="12" lg="auto"><LiaBalanceScaleSolid className="conanIconBlue"/> {licenses.join(", ")}</Col>}</Row>
             {(deprecated === 'true' || deprecated.includes(' ')) && (
               // Deprecated with true, or it has a reason that we're displaying in the recipe page

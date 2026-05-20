@@ -7,7 +7,8 @@ import Col from 'react-bootstrap/Col';
 import Badge from 'react-bootstrap/Badge';
 import Link from 'next/link';
 import { BiSolidInfoCircle } from "react-icons/bi";
-import { MdOutlineCheckCircleOutline, MdOutlineToday } from "react-icons/md";
+import { MdOutlineCheckCircleOutline } from "react-icons/md";
+// import { MdOutlineToday } from "react-icons/md";
 import { PiWarningBold } from "react-icons/pi";
 import { LiaBalanceScaleSolid } from "react-icons/lia";
 import {
@@ -609,14 +610,14 @@ export const VersionsTab = ({data, selector}: {data: ConanResponse<RecipeInfo>, 
             </a>
           </Col>
           <Col md="3">
-            <Row style={{padding:'0px 15px'}}>
+            {/* <Row style={{padding:'0px 15px'}}>
               <div className="d-inline">
                 <a data-tooltip-id='extra-info' data-tooltip-html="Last updated date" data-tooltip-place="top">
                   <MdOutlineToday className="conanIconBlue" style={{verticalAlign:'text-top',color: '#21AFFF',height: '21px', width: '21px'}}/>
                 </a> {recipe.info.timestamp}
               </div>
-            </Row>
-            {Object.keys(recipe.info.licenses).length > 0 && (<Row style={{padding:'0px 15px'}} className="mt-2">
+            </Row> */}
+            {Object.keys(recipe.info.licenses).length > 0 && (<Row style={{padding:'0px 15px'}}>{/* className="mt-2">*/}
                 <div className="d-inline">
                   <a data-tooltip-id='extra-info' data-tooltip-html="Licenses" data-tooltip-place="top">
                     <LiaBalanceScaleSolid style={{verticalAlign:'text-top',color: '#21AFFF',height: '21px', width: '21px'}}/>
