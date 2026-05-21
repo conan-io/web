@@ -18,11 +18,11 @@ export default function VersionsTab({
   const rows = useMemo(() => {
     const list = Object.values(packageInfo);
     return [...list].sort((a, b) => {
-      const ta = Date.parse(a.info.timestamp);
-      const tb = Date.parse(b.info.timestamp);
-      if (Number.isFinite(ta) && Number.isFinite(tb) && ta !== tb) {
-        return tb - ta;
-      }
+      // const ta = Date.parse(a.info.timestamp);
+      // const tb = Date.parse(b.info.timestamp);
+      // if (Number.isFinite(ta) && Number.isFinite(tb) && ta !== tb) {
+      //   return tb - ta;
+      // }
       return b.info.version.localeCompare(a.info.version, undefined, { numeric: true, sensitivity: "base" });
     });
   }, [packageInfo]);
@@ -53,7 +53,7 @@ export default function VersionsTab({
                   </button>
                 </span>
                 <span className="date">
-                  <span>{r.info.timestamp}</span>
+                  {/* <span>{r.info.timestamp}</span> */}
                   {licText ? <span className="lic">◈ {licText}</span> : null}
                 </span>
                 <span className="hash" title="Latest recipe revision">
