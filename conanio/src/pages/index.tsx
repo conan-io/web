@@ -76,7 +76,7 @@ export default function HomePage({
 
   const downloadsRibbon =
     pipMonthlyDownloads != null
-      ? `↓ ${new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 1 }).format(pipMonthlyDownloads)} monthly PyPI downloads`
+      ? `${new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 1 }).format(pipMonthlyDownloads)} monthly PyPI downloads`
       : RIBBON_DOWNLOADS_FALLBACK;
 
   const ribbonItems = [
