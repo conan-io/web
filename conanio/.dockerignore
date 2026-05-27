@@ -2,7 +2,10 @@ Dockerfile
 .dockerignore
 node_modules
 npm-debug.log
-README.md
+yarn-error.log
 .next
 .git
+.gitignore
+.DS_Store
+coverage
 .env.development

@@ -1,0 +1,15 @@
+---
+description: Enforce conanio AGENTS.md for the Next.js app subtree
+globs: conanio/**
+alwaysApply: false
+---
+
+# conanio — agent rules
+
+When editing or reviewing files under **`conanio/`**:
+
+1. **Read first**: Open and follow `conanio/AGENTS.md` before proposing architectural or framework-level changes.
+
+2. **Next.js version**: This subtree may use APIs or conventions that differ from generic Next.js docs. Prefer checking guidance shipped with the installed version under `node_modules/next/dist/docs/` when unsure, and respect deprecation notices.
+
+3. **Scope**: Do not assume patterns from other folders (for example `legacy/conanio/`) apply verbatim without verifying they match this app's constraints.
