@@ -4,6 +4,15 @@
 This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
 <!-- END:nextjs-agent-rules -->
 
+## npm registry (dependencies)
+
+- **Package manager**: Yarn classic (`yarn.lock`). Do not run `npm install` / `pnpm` / `bun` in this folder unless the user explicitly asks.
+- **Registry**: All dependency tarballs in lockfiles must resolve from the public npm registry: **`https://registry.npmjs.org/`**.
+- **Do not use** private mirrors (for example JFrog Artifactory npm virtual repos) when installing or updating dependencies. Lockfile `resolved` URLs must use `https://registry.npmjs.org/...`, not corporate registry hosts.
+- **Config in this tree**: `conanio/.yarnrc` and `conanio/.npmrc` both pin the registry to npmjs. After changing dependencies, run `yarn install` from `conanio/` and confirm every `resolved` line in `yarn.lock` starts with `https://registry.npmjs.org/` before committing.
+- If a local corporate npm proxy rewrites tarball URLs to a private mirror (for example `jfrogrepo24.jfrog.io`), do **not** commit those URLs—rewrite them to `registry.npmjs.org` (same package path and integrity hash) or reinstall from a clean environment that talks to npmjs directly.
+- See also **`README.md`** (package manager policy).
+
 ## Conan backend: public API vs private API
 
 In this app, `getUrls()` in **`src/service/api.ts`** defines **`api.private`** (backend origin from `NEXT_PUBLIC_CONAN_CONANIO_SERVICE` / `conanioServer`) and **`api.public`** (`/api`, same-origin routes on this Next app).
