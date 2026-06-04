@@ -43,9 +43,11 @@ function RecipeRevisionRow({ revisionFull }: { revisionFull: string }) {
 export default function RecipeInfoAside({
   recipe,
   onPlatformPick,
+  versionFolderMap,
 }: {
   recipe: RecipeInfo;
   onPlatformPick: (filter: PackageOsTabFilter) => void;
+  versionFolderMap: Record<string, string>;
 }) {
   const requiresLine = `${recipe.name}/${recipe.info.version}`;
   const installConanfileHljs = useMemo(() => {
@@ -56,7 +58,10 @@ export default function RecipeInfoAside({
   const recipeDescription = recipe.info.description?.trim() ?? "";
   const licenses = licenseNames(recipe.info.licenses);
   const homepageRaw = recipe.info.homepage?.trim() ?? "";
-  const recipeConanCenterUrl = `https://github.com/conan-io/conan-center-index/tree/master/recipes/${recipe.name}`;
+  const githubFolder = versionFolderMap[recipe.info.version];
+  const recipeConanCenterUrl = githubFolder
+    ? `https://github.com/conan-io/conan-center-index/blob/master/recipes/${recipe.name}/${githubFolder}/conanfile.py`
+    : `https://github.com/conan-io/conan-center-index/tree/master/recipes/${recipe.name}`;
 
   const packageRows = recipe.info.packages ? Object.values(recipe.info.packages) : [];
   const showRecipeInfoHeading = Boolean(recipeDescription) || licenses.length > 0;

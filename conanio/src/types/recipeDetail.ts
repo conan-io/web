@@ -61,6 +61,8 @@ export interface RecipeDetailSsrProps {
   packageInfo: Record<string, RecipeInfo>;
   /** Raw markdown from conan-center-index `recipes/<name>/README.md`, when present. */
   readme: string | null;
+  /** Maps each recipe version to its folder in conan-center-index (from config.yml). */
+  versionFolderMap: Record<string, string>;
 }
 
 export type RecipeTab = "readme" | "useit" | "packages" | "deps" | "versions" | "audit" | "badges";
@@ -86,6 +88,7 @@ export type RecipePageTabBase = {
 export type RecipeTabProps = RecipePageTabBase & {
   recipe: RecipeInfo;
   onPlatformPick: (filter: PackageOsTabFilter) => void;
+  versionFolderMap: Record<string, string>;
 };
 
 export type PackagesTabProps = RecipeTabProps & {

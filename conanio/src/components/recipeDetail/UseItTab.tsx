@@ -105,6 +105,7 @@ export default function UseItTab({
   recipeName,
   recipe,
   onPlatformPick,
+  versionFolderMap,
   useItLoading,
   activeCodeTab,
   onCodeTabChange,
@@ -270,7 +271,7 @@ export default function UseItTab({
   return (
     <div className={`panel${isActive ? " active" : ""}`} id="panel-useit" data-recipe={recipeName}>
       <div className="useit">
-        <RecipeInfoAside recipe={recipe} onPlatformPick={onPlatformPick} />
+        <RecipeInfoAside recipe={recipe} onPlatformPick={onPlatformPick} versionFolderMap={versionFolderMap} />
         <div className="main-col">
           <h2>{heading}</h2>
           {mainCol}

@@ -74,6 +74,7 @@ export default function PackagesTab({
   recipeVersion,
   recipe,
   onPlatformPick,
+  versionFolderMap,
   packageOsFilter,
   onClearPackageOsFilter,
 }: PackagesTabProps) {
@@ -92,7 +93,7 @@ export default function PackagesTab({
   return (
     <div className={`panel${isActive ? " active" : ""}`} id="panel-packages" data-recipe={recipeName}>
       <div className="useit">
-        <RecipeInfoAside recipe={recipe} onPlatformPick={onPlatformPick} />
+        <RecipeInfoAside recipe={recipe} onPlatformPick={onPlatformPick} versionFolderMap={versionFolderMap} />
         <div className="main-col">
           <h2>
             Packages

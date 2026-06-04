@@ -11,6 +11,7 @@ export default function DependenciesTab({
   recipeVersion,
   recipe,
   onPlatformPick,
+  versionFolderMap,
   useItLoading,
 }: DependenciesTabProps) {
   const ref = `${recipeName}/${recipeVersion}`;
@@ -68,7 +69,7 @@ export default function DependenciesTab({
   return (
     <div className={`panel${isActive ? " active" : ""}`} id="panel-deps" data-recipe={recipeName}>
       <div className="useit">
-        <RecipeInfoAside recipe={recipe} onPlatformPick={onPlatformPick} />
+        <RecipeInfoAside recipe={recipe} onPlatformPick={onPlatformPick} versionFolderMap={versionFolderMap} />
         <div className="main-col">
           <h2>Dependencies</h2>
           {content}
