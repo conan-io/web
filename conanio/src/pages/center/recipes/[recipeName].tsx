@@ -25,6 +25,7 @@ import type {
   RecipeTab,
   RecipeUseIt,
 } from "@/types/recipeDetail";
+import { parse as parseYaml } from "yaml";
 import { getJson, getUrls } from "@/service/api";
 import { trackConanEvent } from "@/service/analytics";
 import { initialRecipeTab, resolveSelectedRecipe } from "@/utils/recipeDetailUtils";
@@ -69,15 +70,25 @@ export const getServerSideProps: GetServerSideProps<RecipeDetailSsrProps> = asyn
 
   const packageInfo = packageRes.data as Record<string, RecipeInfo>;
 
-  const readmeUrl = `https://raw.githubusercontent.com/conan-io/conan-center-index/master/recipes/${encodeURIComponent(recipeName)}/README.md`;
+  const baseRawUrl = `https://raw.githubusercontent.com/conan-io/conan-center-index/master/recipes/${encodeURIComponent(recipeName)}`;
+  const [readmeResult, configResult] = await Promise.allSettled([
+    fetch(`${baseRawUrl}/README.md`),
+    fetch(`${baseRawUrl}/config.yml`),
+  ]);
+
   let readme: string | null = null;
-  try {
-    const readmeRes = await fetch(readmeUrl);
-    if (readmeRes.ok) {
-      readme = await readmeRes.text();
-    }
-  } catch {
-    /* Ignore README fetch errors and keep rendering the page. */
+  if (readmeResult.status === "fulfilled" && readmeResult.value.ok) {
+    try { readme = await readmeResult.value.text(); } catch { /* ignore */ }
+  }
+
+  let versionFolderMap: Record<string, string> = {};
+  if (configResult.status === "fulfilled" && configResult.value.ok) {
+    try {
+      const config = parseYaml(await configResult.value.text());
+      versionFolderMap = Object.fromEntries(
+        Object.entries(config.versions).map(([version, info]: [string, any]) => [version, info.folder])
+      );
+    } catch { /* fall back to the generic folder URL */ }
   }
 
   return {
@@ -86,6 +97,7 @@ export const getServerSideProps: GetServerSideProps<RecipeDetailSsrProps> = asyn
       recipeVersion,
       packageInfo,
       readme,
+      versionFolderMap,
     },
   };
 };
@@ -95,6 +107,7 @@ function RecipeDetailPage({
   recipeVersion: recipeVersionQuery,
   packageInfo,
   readme,
+  versionFolderMap,
 }: RecipeDetailSsrProps) {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<RecipeTab>(() =>
@@ -253,6 +266,7 @@ function RecipeDetailPage({
               recipe={recipe}
               recipeName={recipeName}
               onPlatformPick={pickPlatform}
+              versionFolderMap={versionFolderMap}
             />
           ) : null}
           <UseItTab
@@ -262,6 +276,7 @@ function RecipeDetailPage({
             recipeVersion={recipeVersion}
             recipe={recipe}
             onPlatformPick={pickPlatform}
+            versionFolderMap={versionFolderMap}
             useItLoading={useItLoading}
             activeCodeTab={activeCodeTab}
             onCodeTabChange={setActiveCodeTab}
@@ -272,6 +287,7 @@ function RecipeDetailPage({
             recipeVersion={recipeVersion}
             recipe={recipe}
             onPlatformPick={pickPlatform}
+            versionFolderMap={versionFolderMap}
             packageOsFilter={packageOsFilter}
             onClearPackageOsFilter={() => setPackageOsFilter(null)}
           />
@@ -281,6 +297,7 @@ function RecipeDetailPage({
             recipeVersion={recipeVersion}
             recipe={recipe}
             onPlatformPick={pickPlatform}
+            versionFolderMap={versionFolderMap}
             useItLoading={useItLoading}
           />
           <VersionsTab

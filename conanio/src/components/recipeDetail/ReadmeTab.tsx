@@ -11,12 +11,14 @@ export default function ReadmeTab({
   recipe,
   recipeName,
   onPlatformPick,
+  versionFolderMap,
 }: {
   isActive: boolean;
   readme: string;
   recipe: RecipeInfo;
   recipeName: string;
   onPlatformPick: (filter: PackageOsTabFilter) => void;
+  versionFolderMap: Record<string, string>;
 }) {
   useEffect(() => {
     if (!isActive) return;
@@ -32,7 +34,7 @@ export default function ReadmeTab({
   return (
     <div className={`panel${isActive ? " active" : ""}`} id="panel-readme" data-recipe={recipeName}>
       <div className="useit">
-        <RecipeInfoAside recipe={recipe} onPlatformPick={onPlatformPick} />
+        <RecipeInfoAside recipe={recipe} onPlatformPick={onPlatformPick} versionFolderMap={versionFolderMap} />
         <div className="main-col readme-prose">
           <h2>Readme</h2>
           <Markdown>{readme}</Markdown>
