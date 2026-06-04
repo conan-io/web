@@ -33,6 +33,15 @@ In this app, `getUrls()` in **`src/service/api.ts`** defines **`api.private`** (
 - Client recipes search uses **`urls.api.public`**: `src/hooks/useCenterRecipesSearch.ts` (`getJsonList` against `searchUrls.api.public`).
 - Recipe detail hydrates **use_it** from the client with **`urls.api.public`**: `src/pages/center/recipes/[recipeName].tsx` (`useEffect` + `getJson`); initial package data stays **`urls.api.private`** in `getServerSideProps`.
 
+### Conan Audit auth (register / validate / recover)
+
+- **Env**: `CONANIO_AUTH_SERVER` → `process.env.conanioAuthServer` (see `next.config.ts`). Same internal auth service as `conan-catalog-proxy` (`/user/signup`, `/user/recover`, `/user/validate/{code}`).
+- **Browser** → same-origin **`/api/audit/user/signup`** and **`/api/audit/user/recover`** (`src/pages/api/audit/user/` — literal port of catalog-proxy `pages/api/user/*`).
+- **Validate** (activation link): **`GET /user/validate/{code}`** from **`getServerSideProps`** on `/audit/validate/[token]` (same as catalog-proxy `pages/validate/[token].tsx`), not a public `/api` route.
+- **Pages**: `/audit/register`, `/audit/recover`, `/audit/validate/[token]` (SSR `GET /user/validate/{code}`), `/audit/content-unavailable`. Legacy `/recover`, `/content-unavailable`, and `/validate/:token` redirect into `/audit/…`.
+- **Shared UI**: `AuditPageFrame` (page shell + side rails), `AuditMarketingSideInfo`, `AuditFormAlert` under `src/components/audit/`. Validate-only UI (`AuditCodebox`, `getAuditValidateCliSteps`) lives in `src/pages/audit/validate/[token].tsx`. Page-specific styles in `src/styles/auditPages.module.css` (use global `--fs-*` / color tokens from `globals.css`).
+- Do not use **`/api/conan-user/signup`** for Audit; that proxy targets a different upstream contract (`full_name`, `gdpr_consent`).
+
 In **this** tree, shared URL composition and fetch helpers live in **`src/service/api.ts`** — keep the same public/private split when wiring new calls.
 
 ## External APIs and server cache
@@ -48,7 +57,7 @@ Slow-changing **Conan backend** (`api.private`) aggregates may use the same patt
 
 ## Typography
 
-Font sizes use CSS variables `--fs-*` on `:root` in **`src/styles/globals.css`**. A comment block at the top of that file maps **roles** (marketing hero, doc hero, section titles, ConanCenter, prose, UI) to the usual tokens and breakpoints. Prefer `var(--fs-…)` for new styles; page-specific rules live in **`src/styles/contentPages.module.css`** and **`src/styles/centerPages.module.css`**.
+Font sizes use CSS variables `--fs-*` on `:root` in **`src/styles/globals.css`**. A comment block at the top of that file maps **roles** (marketing hero, doc hero, section titles, ConanCenter, prose, UI) to the usual tokens and breakpoints. Prefer `var(--fs-…)` for new styles; page-specific rules live in **`src/styles/contentPages.module.css`**, **`src/styles/centerPages.module.css`**, and **`src/styles/auditPages.module.css`** (Conan Audit).
 
 ## Page style guide (new pages + restyling)
 

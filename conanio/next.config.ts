@@ -5,6 +5,8 @@ const nextConfig: NextConfig = {
   output: "standalone",
   env: {
     conanioServer: process.env.NEXT_PUBLIC_CONAN_CONANIO_SERVICE,
+    /** Conan Audit auth (catalog-proxy internal API): signup, recover, validate. */
+    conanioAuthServer: process.env.CONANIO_AUTH_SERVER,
     siteOrigin: process.env.NEXT_PUBLIC_SITE_ORIGIN || "https://conan.io",
     gtmURL: process.env.GTM_URL,
     gtmID: process.env.GTM_ID,
@@ -15,6 +17,26 @@ const nextConfig: NextConfig = {
       {
         source: "/download",
         destination: "/downloads",
+        permanent: true,
+      },
+      {
+        source: "/audit",
+        destination: "/audit/register",
+        permanent: true,
+      },
+      {
+        source: "/recover",
+        destination: "/audit/recover",
+        permanent: true,
+      },
+      {
+        source: "/content-unavailable",
+        destination: "/audit/content-unavailable",
+        permanent: true,
+      },
+      {
+        source: "/validate/:token",
+        destination: "/audit/validate/:token",
         permanent: true,
       },
       {

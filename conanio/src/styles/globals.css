@@ -17,7 +17,7 @@
  * - Nav, filters, tabs, form-ish controls: --fs-13 / --fs-14 (inputs).
  * - Eyebrows, mono labels, captions: --fs-11 / --fs-11-5 / --fs-12.
  *
- * Page-specific overrides: `src/styles/contentPages.module.css`, `src/styles/centerPages.module.css`.
+ * Page-specific overrides: `src/styles/contentPages.module.css`, `src/styles/centerPages.module.css`, `src/styles/auditPages.module.css` (Conan Audit).
  */
 
 /* ===== SHARED ===== */

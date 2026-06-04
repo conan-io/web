@@ -1,0 +1,1431 @@
+/* Shared audit page shell (register + validate) */
+.auditPage {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(180deg, #eff5fe 0%, #ffffff 360px);
+  color: var(--ink);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.auditPage :global(.rail) {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 120px;
+  pointer-events: none;
+  display: none;
+}
+
+.auditPage :global(.rail.left) {
+  left: -140px;
+}
+
+.auditPage :global(.rail.right) {
+  right: -140px;
+}
+
+.auditPage :global(.rail .grid) {
+  position: absolute;
+  inset: 40px 0 40px;
+  background-image:
+    linear-gradient(0deg, rgba(26, 115, 232, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26, 115, 232, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+  mask-image: linear-gradient(180deg, transparent, #000 18%, #000 82%, transparent);
+}
+
+.auditPage :global(.rail .dot) {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 99px !important;
+}
+
+.auditPage :global(.rail.left .dot.a) {
+  top: 20%;
+  left: 30px;
+}
+
+.auditPage :global(.rail.left .dot.b) {
+  top: 64%;
+  left: 80px;
+  background: #0e5a35;
+}
+
+.auditPage :global(.rail.right .dot.a) {
+  top: 32%;
+  right: 24px;
+  background: #0e5a35;
+}
+
+.auditPage :global(.rail.right .dot.b) {
+  top: 74%;
+  right: 70px;
+}
+
+.auditPage :global(.rail .cube) {
+  position: absolute;
+  border: 1px solid rgba(26, 115, 232, 0.35);
+  width: 36px;
+  height: 36px;
+}
+
+.auditPage :global(.rail.left .cube) {
+  top: 38%;
+  left: 54px;
+  transform: rotate(8deg);
+}
+
+.auditPage :global(.rail.right .cube) {
+  top: 14%;
+  right: 48px;
+  transform: rotate(-12deg);
+}
+
+@media (min-width: 1180px) {
+  .auditPage :global(.rail) {
+    display: block;
+  }
+}
+
+/* —— Register + Recover (shared card/form) —— */
+.auditRegisterPage :global(.audit-wrap),
+.auditRecoverPage :global(.audit-wrap) {
+  max-width: 1100px;
+  margin: 0 auto 80px;
+  padding: 56px 40px 0;
+  position: relative;
+}
+
+.auditRegisterPage :global(.audit-card),
+.auditRecoverPage :global(.audit-card) {
+  background: #fff;
+  border: 1px solid var(--line);
+  box-shadow:
+    0 30px 60px -34px rgba(10, 30, 70, 0.18),
+    0 8px 18px -12px rgba(10, 30, 70, 0.08);
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  overflow: hidden;
+}
+
+/* —— Recover page —— */
+.auditRecoverPage :global(.ac-form-recover) {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 280px;
+}
+
+.auditRegisterPage :global(.ac-info) {
+  padding: 44px 44px 40px;
+  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+  border-right: 1px solid var(--line);
+  position: relative;
+  overflow: hidden;
+}
+
+.auditRegisterPage :global(.ac-info::before) {
+  content: "";
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(26, 115, 232, 0.12), transparent 70%);
+  pointer-events: none;
+}
+
+.auditRegisterPage :global(.ac-info .badge) {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 11px;
+  background: #dbf4e5;
+  color: #0e5a35;
+  font-family: var(--mono);
+  font-size: var(--fs-11);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+.auditRegisterPage :global(.ac-info .badge .pulse) {
+  width: 6px;
+  height: 6px;
+  background: #1f8a5b;
+  border-radius: 99px !important;
+  box-shadow: 0 0 0 0 rgba(31, 138, 91, 0.6);
+  animation: auditPulse 2.4s infinite;
+}
+
+@keyframes auditPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(31, 138, 91, 0.55);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(31, 138, 91, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(31, 138, 91, 0);
+  }
+}
+
+.auditRegisterPage :global(.ac-info h1) {
+  font-size: var(--fs-34);
+  line-height: 1.06;
+  letter-spacing: -0.025em;
+  color: var(--blue-ink);
+  font-weight: 800;
+  margin: 0 0 10px;
+  position: relative;
+}
+
+.auditRegisterPage :global(.ac-info h1 .blue) {
+  color: var(--accent);
+}
+
+.auditRegisterPage :global(.ac-info h2) {
+  font-size: var(--fs-13);
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  font-weight: 600;
+  margin: 22px 0 10px;
+  position: relative;
+}
+
+.auditRegisterPage :global(.ac-info p) {
+  font-size: var(--fs-14-5);
+  line-height: 1.6;
+  color: var(--ink-2);
+  margin: 0 0 14px;
+  position: relative;
+}
+
+.auditRegisterPage :global(.ac-info p.small) {
+  font-size: var(--fs-13);
+  color: var(--ink-3);
+}
+
+.auditRegisterPage :global(.ac-info a.inline) {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(26, 115, 232, 0.4);
+}
+
+.auditRegisterPage :global(.ac-info a.inline:hover) {
+  text-decoration-color: var(--accent);
+}
+
+.auditRegisterPage :global(.ac-info ul) {
+  list-style: none;
+  margin: 18px 0 22px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+}
+
+.auditRegisterPage :global(.ac-info ul li) {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: var(--fs-14);
+  color: var(--ink-2);
+  line-height: 1.5;
+}
+
+.auditRegisterPage :global(.ac-info ul li .ico) {
+  flex: 0 0 28px;
+  height: 28px;
+  background: var(--blue-soft);
+  color: var(--blue-deep);
+  display: grid;
+  place-items: center;
+  border: 1px solid #c8defb;
+}
+
+.auditRegisterPage :global(.ac-info ul li .ico svg) {
+  width: 14px;
+  height: 14px;
+}
+
+.auditRegisterPage :global(.ac-info ul li b) {
+  color: var(--blue-ink);
+  font-weight: 600;
+}
+
+.auditRegisterPage :global(.ac-info .stats) {
+  display: flex;
+  gap: 22px;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  position: relative;
+}
+
+.auditRegisterPage :global(.ac-info .stats > div) {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.auditRegisterPage :global(.ac-info .stats b) {
+  font-size: var(--fs-18);
+  color: var(--blue-ink);
+  letter-spacing: -0.01em;
+  font-weight: 700;
+}
+
+.auditRegisterPage :global(.ac-info .stats span) {
+  font-size: var(--fs-11);
+  font-family: var(--mono);
+  color: var(--ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.auditRegisterPage :global(.ac-form-col) {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: #fff;
+}
+
+.auditRegisterPage :global(.audit-alert) {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 16px 20px 0;
+  padding: 12px 14px;
+  border-radius: 4px;
+  font-size: var(--fs-13);
+  line-height: 1.5;
+}
+
+.auditRegisterPage :global(.audit-alert p) {
+  margin: 0;
+  flex: 1;
+}
+
+.auditRegisterPage :global(.audit-alert-danger) {
+  background: #fdecea;
+  border: 1px solid #f5c6c2;
+  color: #611a15;
+}
+
+.auditRegisterPage :global(.audit-alert-success) {
+  background: #e8f5e9;
+  border: 1px solid #c8e6c9;
+  color: #1b5e20;
+}
+
+.auditRegisterPage :global(.audit-alert-close) {
+  flex: 0 0 auto;
+  border: 0;
+  background: transparent;
+  padding: 2px;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0.7;
+  line-height: 0;
+}
+
+.auditRegisterPage :global(.audit-alert-close:hover) {
+  opacity: 1;
+}
+
+.auditRegisterPage :global(.audit-alert-close svg) {
+  width: 18px;
+  height: 18px;
+}
+
+.auditRegisterPage :global(.ac-form) {
+  padding: 40px 44px 36px;
+  background: #fff;
+  flex: 1 1 auto;
+}
+
+.auditRegisterPage :global(.ac-form.ac-success) {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 320px;
+}
+
+.auditRegisterPage :global(.ac-form.ac-success h2) {
+  margin: 0 0 16px;
+  font-size: var(--fs-22);
+  color: var(--blue-ink);
+  font-weight: 700;
+}
+
+.auditRegisterPage :global(.ac-form.ac-success p) {
+  margin: 0;
+  font-size: var(--fs-14);
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+.auditRegisterPage :global(.ac-form .form-head) {
+  margin: 0 0 22px;
+}
+
+.auditRegisterPage :global(.ac-form .form-head .pill) {
+  margin-bottom: 10px;
+}
+
+.auditRegisterPage :global(.ac-form .form-head h2) {
+  font-size: var(--fs-22);
+  color: var(--blue-ink);
+  letter-spacing: -0.015em;
+  margin: 0 0 4px;
+  font-weight: 700;
+}
+
+.auditRegisterPage :global(.ac-form .form-head p) {
+  font-size: var(--fs-13);
+  color: var(--ink-3);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.auditRegisterPage :global(.ac-form .grid) {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.auditRegisterPage :global(.ac-form .field) {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.auditRegisterPage :global(.ac-form .field.full) {
+  grid-column: 1 / -1;
+}
+
+.auditRegisterPage :global(.ac-form label) {
+  font-size: var(--fs-12);
+  font-weight: 600;
+  color: var(--ink-2);
+  font-family: var(--sans);
+  letter-spacing: 0.01em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.auditRegisterPage :global(.ac-form label .hint) {
+  font-family: var(--mono);
+  font-size: var(--fs-10-5);
+  color: var(--ink-3);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.auditRegisterPage :global(.ac-form input[type="text"]),
+.auditRegisterPage :global(.ac-form input[type="email"]),
+.auditRegisterPage :global(.ac-form select) {
+  padding: 11px 13px;
+  border: 1px solid var(--line-2);
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  font-size: var(--fs-14);
+  transition: 0.15s;
+  width: 100%;
+}
+
+.auditRegisterPage :global(.ac-form input::placeholder) {
+  color: #94a0b8;
+}
+
+.auditRegisterPage :global(.ac-form input:focus),
+.auditRegisterPage :global(.ac-form select:focus) {
+  outline: 0;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.12);
+}
+
+.auditRegisterPage :global(.ac-form select) {
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235B657A' stroke-width='2'><polyline points='6 9 12 15 18 9'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 14px;
+  padding-right: 36px;
+  color: #94a0b8;
+}
+
+.auditRegisterPage :global(.ac-form select.has-value) {
+  color: var(--ink);
+}
+
+.auditRegisterPage :global(.ac-form input.is-invalid),
+.auditRegisterPage :global(.ac-form select.is-invalid) {
+  border-color: #c62828;
+  box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.12);
+}
+
+.auditRegisterPage :global(.ac-form input.is-invalid:focus),
+.auditRegisterPage :global(.ac-form select.is-invalid:focus) {
+  border-color: #c62828;
+  box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.12);
+}
+
+.auditRegisterPage :global(.ac-form input.has-value) {
+  color: var(--ink);
+}
+
+.auditRegisterPage :global(.ac-form .field-error) {
+  margin: 0;
+  font-size: var(--fs-12);
+  color: #c62828;
+  line-height: 1.4;
+}
+
+.auditRegisterPage :global(.ac-form .check) {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 8px 0 14px;
+  padding: 12px 14px;
+  background: var(--blue-ultra);
+  border: 1px solid var(--line);
+  font-size: var(--fs-12-5);
+  color: var(--ink-2);
+  line-height: 1.5;
+}
+
+.auditRegisterPage :global(.ac-form .check input) {
+  flex: 0 0 auto;
+  accent-color: var(--accent);
+  margin-top: 2px;
+}
+
+.auditRegisterPage :global(.ac-form .legal) {
+  font-size: var(--fs-11-5);
+  color: var(--ink-3);
+  line-height: 1.55;
+  margin: 0 0 18px;
+}
+
+.auditRegisterPage :global(.ac-form .legal a),
+.auditRegisterPage :global(.ac-form .legal-check a),
+.auditRegisterPage :global(.ac-form .legal-check button.terms-link) {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(26, 115, 232, 0.35);
+  cursor: pointer;
+}
+
+.auditRegisterPage :global(.ac-form .legal-check button.terms-link) {
+  display: inline;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  text-align: inherit;
+}
+
+.auditRegisterPage :global(.ac-form .legal-check button.terms-link:hover) {
+  text-decoration-color: var(--accent);
+}
+
+.auditRegisterPage :global(.ac-form .submit) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 13px 18px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+  font-size: var(--fs-14-5);
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  border: 0;
+  font-family: var(--sans);
+  transition: 0.15s;
+}
+
+.auditRegisterPage :global(.ac-form .submit:hover) {
+  background: var(--blue-deep);
+}
+
+.auditRegisterPage :global(.ac-form .submit:disabled) {
+  background: #b7c2d6;
+  cursor: not-allowed;
+  color: #fff;
+}
+
+.auditRegisterPage :global(.ac-form .submit:disabled:hover) {
+  background: #b7c2d6;
+}
+
+.auditRegisterPage :global(.ac-form .submit svg) {
+  width: 16px;
+  height: 16px;
+}
+
+.auditRegisterPage :global(.ac-form .recover) {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--line);
+  font-size: var(--fs-12-5);
+  color: var(--ink-3);
+  line-height: 1.5;
+  text-align: center;
+}
+
+.auditRegisterPage :global(.ac-form .recover a) {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* —— Validate —— */
+.auditValidatePage :global(.av-wrap) {
+  max-width: 1100px;
+  margin: 0 auto 80px;
+  padding: 56px 40px 0;
+  position: relative;
+}
+
+.auditValidatePage :global(.av-card) {
+  background: #fff;
+  border: 1px solid var(--line);
+  box-shadow:
+    0 30px 60px -34px rgba(10, 30, 70, 0.18),
+    0 8px 18px -12px rgba(10, 30, 70, 0.08);
+  overflow: hidden;
+}
+
+.auditValidatePage :global(.av-hero) {
+  padding: 36px 44px 28px;
+  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+  border-bottom: 1px solid var(--line);
+  position: relative;
+  overflow: hidden;
+}
+
+.auditValidatePage :global(.av-hero::before) {
+  content: "";
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(circle, rgba(26, 115, 232, 0.12), transparent 70%);
+  pointer-events: none;
+}
+
+.auditValidatePage :global(.av-hero::after) {
+  content: "";
+  position: absolute;
+  left: 44px;
+  right: 44px;
+  bottom: -1px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), #4ecdc4 60%, transparent);
+  opacity: 0.85;
+}
+
+.auditValidatePage :global(.av-hero .badge) {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 11px;
+  background: #dbf4e5;
+  color: #0e5a35;
+  font-family: var(--mono);
+  font-size: var(--fs-11);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  position: relative;
+}
+
+.auditValidatePage :global(.av-hero .badge .check) {
+  width: 13px;
+  height: 13px;
+  color: #1f8a5b;
+}
+
+.auditValidatePage :global(.av-hero h1) {
+  font-size: var(--fs-32);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  color: var(--blue-ink);
+  font-weight: 800;
+  margin: 0 0 6px;
+  position: relative;
+  max-width: 780px;
+}
+
+.auditValidatePage :global(.av-hero h1 .blue) {
+  color: var(--accent);
+}
+
+.auditValidatePage :global(.av-hero p.lead) {
+  font-size: var(--fs-14-5);
+  color: var(--ink-2);
+  margin: 8px 0 0;
+  line-height: 1.55;
+  position: relative;
+  max-width: 680px;
+}
+
+.auditValidatePage :global(.av-body) {
+  padding: 32px 44px 36px;
+}
+
+.auditValidatePage :global(.av-intro) {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: var(--fs-11-5);
+  color: var(--ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 18px;
+}
+
+.auditValidatePage :global(.av-intro::after) {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+  margin-left: 6px;
+}
+
+.auditValidatePage :global(.step) {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 18px;
+  padding: 20px 0 22px;
+  border-bottom: 1px dashed var(--line);
+}
+
+.auditValidatePage :global(.step:last-of-type) {
+  border-bottom: 0;
+  padding-bottom: 6px;
+}
+
+.auditValidatePage :global(.step .marker) {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  background: var(--blue-soft);
+  border: 1px solid #c8defb;
+  color: var(--blue-deep);
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: var(--fs-13);
+  letter-spacing: -0.01em;
+}
+
+.auditValidatePage :global(.step .body) {
+  min-width: 0;
+}
+
+.auditValidatePage :global(.step h2) {
+  margin: 4px 0 4px;
+  font-size: var(--fs-16);
+  font-weight: 700;
+  color: var(--blue-ink);
+  letter-spacing: -0.005em;
+}
+
+.auditValidatePage :global(.step p) {
+  margin: 0 0 12px;
+  font-size: var(--fs-14);
+  color: var(--ink-2);
+  line-height: 1.6;
+}
+
+.auditValidatePage :global(.step p:last-child) {
+  margin-bottom: 0;
+}
+
+.auditValidatePage :global(.step .sub) {
+  font-size: var(--fs-12-5);
+  color: var(--ink-3);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-family: var(--mono);
+  margin: 14px 0 8px;
+}
+
+.auditValidatePage :global(.step em) {
+  font-style: normal;
+  background: linear-gradient(180deg, transparent 65%, rgba(26, 115, 232, 0.14) 65%);
+  padding: 0 3px;
+  color: var(--blue-ink);
+  font-weight: 500;
+}
+
+.auditValidatePage :global(.codebox) {
+  background: #0b1220;
+  border: 1px solid #182136;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.auditValidatePage :global(.codebox .label) {
+  position: absolute;
+  top: 8px;
+  left: 14px;
+  font-family: var(--mono);
+  font-size: var(--fs-10);
+  color: #5a6b89;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  pointer-events: none;
+}
+
+.auditValidatePage :global(.codebox.token) {
+  padding-top: 26px;
+}
+
+.auditValidatePage :global(.codebox pre) {
+  margin: 0;
+  padding: 14px 14px 14px 16px;
+  font-family: var(--mono);
+  font-size: var(--fs-12-5);
+  line-height: 1.55;
+  color: #c9d6ef;
+  white-space: pre-wrap;
+  word-break: break-all;
+  overflow-x: auto;
+  min-width: 0;
+  flex: 1;
+}
+
+.auditValidatePage :global(.codebox.cmd pre) {
+  padding-left: 34px;
+}
+
+.auditValidatePage :global(.codebox.cmd::before) {
+  content: "$";
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  font-family: var(--mono);
+  font-size: var(--fs-12-5);
+  line-height: 1.55;
+  color: #4ecdc4;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+.auditValidatePage :global(.codebox pre .kw) {
+  color: #69a7ff;
+}
+
+.auditValidatePage :global(.codebox pre .str) {
+  color: #e9b177;
+}
+
+.auditValidatePage :global(.codebox pre .arg) {
+  color: #a6d58a;
+}
+
+.auditValidatePage :global(.codebox pre .punct) {
+  color: #6b7a95;
+}
+
+.auditValidatePage :global(.codebox .copy) {
+  flex: 0 0 auto;
+  align-self: stretch;
+  border-left: 1px solid #182136;
+  width: 42px;
+  display: grid;
+  place-items: center;
+  background: #0e1525;
+  color: #8fa8cc;
+  cursor: pointer;
+  transition: 0.15s;
+  font-family: inherit;
+  padding: 0;
+  border-top: 0;
+  border-right: 0;
+  border-bottom: 0;
+}
+
+.auditValidatePage :global(.codebox .copy:hover) {
+  background: #15203a;
+  color: #fff;
+}
+
+.auditValidatePage :global(.codebox .copy.copied) {
+  color: #50d58b;
+  background: rgba(80, 213, 139, 0.12);
+}
+
+.auditValidatePage :global(.codebox .copy svg) {
+  width: 14px;
+  height: 14px;
+}
+
+.auditValidatePage :global(.warn) {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 11px 14px;
+  background: #fff7e6;
+  border: 1px solid #f5d58a;
+  font-size: var(--fs-12-5);
+  color: #7a5a1c;
+  line-height: 1.55;
+  font-family: var(--mono);
+  letter-spacing: 0.005em;
+}
+
+.auditValidatePage :global(.warn svg) {
+  flex: 0 0 16px;
+  width: 16px;
+  height: 16px;
+  color: #b8862a;
+  margin-top: 1px;
+}
+
+.auditValidatePage :global(.warn b) {
+  color: #5c3e0c;
+  font-weight: 600;
+  font-family: var(--sans);
+  font-size: var(--fs-13);
+}
+
+.auditValidatePage :global(.inbox) {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 14px 16px;
+  background: var(--blue-ultra);
+  border: 1px solid var(--line);
+  position: relative;
+}
+
+.auditValidatePage :global(.inbox .icon) {
+  flex: 0 0 38px;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  background: #fff;
+  color: var(--accent);
+  border: 1px solid #c8defb;
+}
+
+.auditValidatePage :global(.inbox .icon svg) {
+  width: 16px;
+  height: 16px;
+}
+
+.auditValidatePage :global(.inbox .meta) {
+  font-size: var(--fs-13);
+  color: var(--ink-2);
+  line-height: 1.5;
+  min-width: 0;
+}
+
+.auditValidatePage :global(.inbox .meta .subj) {
+  font-family: var(--mono);
+  font-size: var(--fs-12);
+  color: var(--blue-ink);
+  background: #fff;
+  border: 1px solid var(--line);
+  padding: 2px 8px;
+  margin: 0 2px;
+  display: inline-block;
+  letter-spacing: -0.005em;
+}
+
+.auditValidatePage :global(.inbox .meta b) {
+  color: var(--blue-ink);
+  font-weight: 600;
+}
+
+.auditValidatePage :global(.step .group) {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 6px;
+}
+
+.auditValidatePage :global(.step .group > .item .sub) {
+  margin-top: 0;
+}
+
+.auditValidatePage :global(.av-foot) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  font-size: var(--fs-13);
+  color: var(--ink-2);
+  flex-wrap: wrap;
+}
+
+.auditValidatePage :global(.av-foot a) {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(26, 115, 232, 0.4);
+  font-weight: 500;
+}
+
+.auditValidatePage :global(.av-foot a:hover) {
+  text-decoration-color: var(--accent);
+}
+
+.auditValidatePage :global(.av-status),
+.auditContentUnavailablePage :global(.av-status) {
+  padding: 56px 44px 60px;
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.auditValidatePage :global(.av-status h2) {
+  margin: 0 0 16px;
+  font-size: var(--fs-22);
+  color: var(--blue-ink);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+.auditValidatePage :global(.av-status p),
+.auditContentUnavailablePage :global(.av-status p) {
+  margin: 0 0 14px;
+  font-size: var(--fs-14-5);
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+.auditValidatePage :global(.av-status p:last-child),
+.auditContentUnavailablePage :global(.av-status p:last-child) {
+  margin-bottom: 0;
+}
+
+.auditValidatePage :global(.av-status a),
+.auditContentUnavailablePage :global(.av-status a) {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(26, 115, 232, 0.4);
+  font-weight: 500;
+}
+
+.auditValidatePage :global(.av-status a:hover),
+.auditContentUnavailablePage :global(.av-status a:hover) {
+  text-decoration-color: var(--accent);
+}
+
+.auditContentUnavailablePage :global(.audit-status-card) {
+  display: block;
+  grid-template-columns: unset;
+}
+
+.auditContentUnavailablePage :global(.av-status h1) {
+  margin: 0 0 14px;
+  font-size: var(--fs-28);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--blue-ink);
+  font-weight: 800;
+}
+
+.auditContentUnavailablePage :global(.av-status-actions) {
+  margin-top: 22px;
+}
+
+/* —— Responsive —— */
+@media (max-width: 900px) {
+  .auditRegisterPage :global(.audit-card),
+  .auditRecoverPage :global(.audit-card) {
+    grid-template-columns: 1fr;
+  }
+
+  .auditRegisterPage :global(.ac-info),
+  .auditRecoverPage :global(.ac-info) {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .auditRegisterPage :global(.ac-form .grid) {
+    grid-template-columns: 1fr;
+  }
+
+  .auditRegisterPage :global(.audit-wrap),
+  .auditRecoverPage :global(.audit-wrap),
+  .auditValidatePage :global(.av-wrap) {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .auditRegisterPage :global(.ac-info),
+  .auditRegisterPage :global(.ac-form) {
+    padding: 32px 28px;
+  }
+
+  .auditValidatePage :global(.av-hero),
+  .auditValidatePage :global(.av-body) {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .auditValidatePage :global(.av-wrap) {
+    padding: 32px 24px 0;
+  }
+
+  .auditValidatePage :global(.step) {
+    grid-template-columns: 32px 1fr;
+    gap: 12px;
+  }
+
+  .auditValidatePage :global(.av-hero h1) {
+    font-size: var(--fs-26);
+  }
+
+  .auditValidatePage :global(.av-status),
+  .auditContentUnavailablePage :global(.av-status) {
+    padding: 40px 28px 48px;
+  }
+
+  .auditContentUnavailablePage :global(.av-status h1) {
+    font-size: var(--fs-24);
+  }
+}
+
+@media (max-width: 640px) {
+  .auditRegisterPage :global(.ac-info h1) {
+    font-size: var(--fs-28);
+  }
+}
+
+/* —— Conan Audit T&C modal (register) —— */
+.auditRegisterPage :global(.tc-backdrop) {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(8, 43, 107, 0.42);
+  backdrop-filter: blur(4px) saturate(140%);
+  -webkit-backdrop-filter: blur(4px) saturate(140%);
+  display: none;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 48px 24px;
+  overflow-y: auto;
+}
+
+.auditRegisterPage :global(.tc-backdrop.open) {
+  display: flex;
+  animation: tcFade 0.22s ease-out;
+}
+
+@keyframes tcFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.auditRegisterPage :global(.tc-modal) {
+  position: relative;
+  width: 100%;
+  max-width: 880px;
+  background: #fff;
+  border: 1px solid var(--line);
+  box-shadow:
+    0 40px 80px -28px rgba(8, 43, 107, 0.45),
+    0 18px 36px -18px rgba(8, 43, 107, 0.18);
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 96px);
+  animation: tcRise 0.26s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+@keyframes tcRise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.auditRegisterPage :global(.tc-head) {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 26px 32px 18px;
+  border-bottom: 1px solid var(--line);
+  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.auditRegisterPage :global(.tc-head::after) {
+  content: "";
+  position: absolute;
+  left: 32px;
+  right: 32px;
+  bottom: -1px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), #4ecdc4 60%, transparent);
+  opacity: 0.85;
+}
+
+.auditRegisterPage :global(.tc-head h1) {
+  margin: 2px 0 0;
+  font-size: var(--fs-22);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  color: var(--blue-ink);
+  font-weight: 700;
+}
+
+.auditRegisterPage :global(.tc-close) {
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line-2);
+  background: #fff;
+  color: var(--ink-2);
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.auditRegisterPage :global(.tc-close:hover) {
+  background: var(--soft);
+  color: var(--blue-ink);
+  border-color: var(--accent);
+}
+
+.auditRegisterPage :global(.tc-close svg) {
+  width: 14px;
+  height: 14px;
+}
+
+.auditRegisterPage :global(.tc-body) {
+  padding: 24px 32px 28px;
+  overflow-y: auto;
+  flex: 1 1 auto;
+  font-size: var(--fs-13-5);
+  line-height: 1.6;
+  color: var(--ink-2);
+  scroll-behavior: smooth;
+}
+
+.auditRegisterPage :global(.tc-body::-webkit-scrollbar) {
+  width: 10px;
+}
+
+.auditRegisterPage :global(.tc-body::-webkit-scrollbar-track) {
+  background: transparent;
+}
+
+.auditRegisterPage :global(.tc-body::-webkit-scrollbar-thumb) {
+  background: var(--line-2);
+  border: 2px solid #fff;
+}
+
+.auditRegisterPage :global(.tc-body::-webkit-scrollbar-thumb:hover) {
+  background: #b7c2d6;
+}
+
+.auditRegisterPage :global(.tc-intro) {
+  padding-bottom: 18px;
+  margin-bottom: 18px;
+  border-bottom: 1px dashed var(--line);
+}
+
+.auditRegisterPage :global(.tc-intro p) {
+  margin: 0 0 10px;
+  text-align: justify;
+}
+
+.auditRegisterPage :global(.tc-intro p:last-child) {
+  margin-bottom: 0;
+}
+
+.auditRegisterPage :global(.tc-section) {
+  display: grid;
+  grid-template-columns: 46px 1fr;
+  gap: 18px;
+  padding: 18px 0;
+  border-bottom: 1px dashed var(--line);
+}
+
+.auditRegisterPage :global(.tc-section:last-of-type) {
+  border-bottom: 0;
+}
+
+.auditRegisterPage :global(.tc-section .num) {
+  font-family: var(--mono);
+  font-size: var(--fs-13);
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+  padding-top: 1px;
+}
+
+.auditRegisterPage :global(.tc-section h2) {
+  margin: 0 0 8px;
+  font-size: var(--fs-13-5);
+  font-weight: 700;
+  color: var(--blue-ink);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-family: var(--sans);
+}
+
+.auditRegisterPage :global(.tc-section p) {
+  margin: 0 0 10px;
+}
+
+.auditRegisterPage :global(.tc-section p:last-child) {
+  margin-bottom: 0;
+}
+
+.auditRegisterPage :global(.tc-section ol) {
+  margin: 0;
+  padding-left: 1.25rem;
+  text-align: justify;
+}
+
+.auditRegisterPage :global(.tc-section ol li) {
+  margin-bottom: 10px;
+}
+
+.auditRegisterPage :global(.tc-section ol li:last-child) {
+  margin-bottom: 0;
+}
+
+.auditRegisterPage :global(.tc-section a.lnk) {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(26, 115, 232, 0.35);
+  word-break: break-all;
+}
+
+.auditRegisterPage :global(.tc-section b) {
+  color: var(--blue-ink);
+  font-weight: 600;
+}
+
+.auditRegisterPage :global(.tc-foot) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 18px 32px;
+  border-top: 1px solid var(--line);
+  background: #f8fbff;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+}
+
+.auditRegisterPage :global(.tc-foot .actions) {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.auditRegisterPage :global(.tc-foot .btn-close-tc) {
+  padding: 11px 22px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+  font-size: var(--fs-13-5);
+  cursor: pointer;
+  border: 0;
+  letter-spacing: 0.005em;
+  transition: 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--sans);
+}
+
+.auditRegisterPage :global(.tc-foot .btn-close-tc:hover) {
+  background: var(--blue-deep);
+}
+
+.auditRegisterPage :global(.tc-foot .btn-close-tc svg) {
+  width: 14px;
+  height: 14px;
+}
+
+@media (max-width: 720px) {
+  .auditRegisterPage :global(.tc-backdrop) {
+    padding: 0;
+  }
+
+  .auditRegisterPage :global(.tc-modal) {
+    max-height: 100vh;
+    border: 0;
+  }
+
+  .auditRegisterPage :global(.tc-head),
+  .auditRegisterPage :global(.tc-body),
+  .auditRegisterPage :global(.tc-foot) {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .auditRegisterPage :global(.tc-section) {
+    grid-template-columns: 32px 1fr;
+    gap: 12px;
+  }
+
+  .auditRegisterPage :global(.tc-foot) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .auditRegisterPage :global(.tc-foot .actions) {
+    justify-content: flex-end;
+  }
+}
+
+:global(body.tc-locked) {
+  overflow: hidden;
+}
