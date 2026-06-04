@@ -65,7 +65,7 @@ export default function TribePage() {
                 <h1 id="tribe-hero-title">The Conan 2.0 Tribe</h1>
               </div>
               <div className="tribe-hero-visual" aria-hidden>
-                <Image src="/tribe-banner.svg" alt="" width={620} height={340} loading="eager" />
+                <Image src="/tribe-frogs.png" alt="" width={620} height={340} loading="eager" />
               </div>
             </div>
           </div>

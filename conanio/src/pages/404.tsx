@@ -34,7 +34,7 @@ export default function NotFound() {
             }}
           >
             <img
-              src="/jfrog-mascot.svg"
+              src="/conan-frog.png"
               alt="Conan the barbarian frog mascot"
               style={{ width: "min(280px,72vw)", height: "auto", display: "block" }}
             />

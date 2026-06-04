@@ -36,7 +36,3 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-# temporary: large assets (re-enable in git when ready)
-/public/conan-frog.png
-/public/tribe-frogs.png
