@@ -5,7 +5,6 @@ import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 
 import {
   QUOTE_SVG,
-  RIBBON_DOWNLOADS_FALLBACK,
   RIBBON_LICENSE,
   TESTIMONIALS,
   USER_BRAND_LOGOS,
@@ -13,30 +12,10 @@ import {
 import MainFooter from "@/components/MainFooter";
 import MainNav from "@/components/MainNav";
 import PageHead from "@/components/PageHead";
+import { getConanPypiMonthlyDownloadsCached } from "@/service/pypiStats";
 import { getJson, getUrls } from "@/service/api";
 import { trackConanEvent } from "@/service/analytics";
 import type { RecipeReference } from "@/types/conanCenter";
-
-const PYPISTATS_CONAN_RECENT = "https://pypistats.org/api/packages/conan/recent";
-
-type PypistatsRecentResponse = {
-  data?: { last_month?: number };
-};
-
-async function fetchConanPypiMonthlyDownloads(): Promise<number | null> {
-  try {
-    const res = await fetch(PYPISTATS_CONAN_RECENT, {
-      headers: { Accept: "application/json" },
-      signal: AbortSignal.timeout(10_000),
-    });
-    if (!res.ok) return null;
-    const body = (await res.json()) as PypistatsRecentResponse;
-    const n = body.data?.last_month;
-    return typeof n === "number" && Number.isFinite(n) && n >= 0 ? Math.round(n) : null;
-  } catch {
-    return null;
-  }
-}
 
 interface HomePageProps {
   recipesNum: number;
@@ -48,7 +27,7 @@ export const getServerSideProps: GetServerSideProps<HomePageProps> = async () =>
   const urls = getUrls();
   const [refResponse, pipMonthlyDownloads] = await Promise.all([
     getJson<RecipeReference>(urls.reference.num, urls.api.private),
-    fetchConanPypiMonthlyDownloads(),
+    getConanPypiMonthlyDownloadsCached(),
   ]);
   const data = refResponse.data;
   return {
@@ -74,14 +53,13 @@ export default function HomePage({
     setTestimonialIndex((i) => (i + 1) % tCount);
   }, [tCount]);
 
-  const downloadsRibbon =
-    pipMonthlyDownloads != null
-      ? `${new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 1 }).format(pipMonthlyDownloads)} monthly PyPI downloads`
-      : RIBBON_DOWNLOADS_FALLBACK;
-
   const ribbonItems = [
     RIBBON_LICENSE,
-    downloadsRibbon,
+    ...(pipMonthlyDownloads != null
+      ? [
+          `${new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 1 }).format(pipMonthlyDownloads)} monthly PyPI downloads`,
+        ]
+      : []),
     `◆ ${recipesNum.toLocaleString("en-US")} recipes`,
     `◇ ${referenceNum.toLocaleString("en-US")} references`,
   ];
@@ -132,7 +110,7 @@ export default function HomePage({
           <div className="visual">
             <div className="mascot-solo">
               <Image
-                src="/jfrog-mascot.svg"
+                src="/conan-frog.png"
                 alt="Conan the barbarian frog mascot"
                 width={520}
                 height={520}
@@ -212,7 +190,7 @@ export default function HomePage({
               </Link>
             </div>
             <div className="tribe-illo">
-              <Image src="/tribe-banner.svg" alt="The Conan barbarian tribe" width={620} height={340} />
+              <Image src="/tribe-frogs.png" alt="The Conan barbarian tribe" width={620} height={340} />
             </div>
           </div>
         </section>

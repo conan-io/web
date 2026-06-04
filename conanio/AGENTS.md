@@ -35,6 +35,17 @@ In this app, `getUrls()` in **`src/service/api.ts`** defines **`api.private`** (
 
 In **this** tree, shared URL composition and fetch helpers live in **`src/service/api.ts`** — keep the same public/private split when wiring new calls.
 
+## External APIs and server cache
+
+When **`getServerSideProps`** (or other server-only code) calls a **third-party** API whose data changes slowly (daily aggregates, public stats, raw READMEs, etc.), **do not fetch on every page view**. Prefer a **server-side cache** (e.g. `unstable_cache` from `next/cache` in a small module under **`src/service/`**), with a TTL aligned to how often the upstream updates (often **hours to 24h**). Do **not** use **`src/lib/`** — the repo root `.gitignore` ignores any `lib/` directory.
+
+- Cache runs in the **Node process** (K8s pod); the browser never talks to the external API.
+- **Cache successful responses only**; on failure return `null` or a safe fallback and retry on the next request — do not lock in errors for the full TTL.
+- Respect upstream rate limits and etiquette (see provider docs); match TTL to their update cadence.
+- Reference: **`src/service/pypiStats.ts`** (pypistats.org, 24h revalidate).
+
+Slow-changing **Conan backend** (`api.private`) aggregates may use the same pattern when traffic or payload justify it; user-driven search and per-request data should stay uncached or use short TTLs.
+
 ## Typography
 
 Font sizes use CSS variables `--fs-*` on `:root` in **`src/styles/globals.css`**. A comment block at the top of that file maps **roles** (marketing hero, doc hero, section titles, ConanCenter, prose, UI) to the usual tokens and breakpoints. Prefer `var(--fs-…)` for new styles; page-specific rules live in **`src/styles/contentPages.module.css`** and **`src/styles/centerPages.module.css`**.

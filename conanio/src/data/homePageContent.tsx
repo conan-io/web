@@ -91,8 +91,6 @@ export const HOMEPAGE_KPIS = [
 
 /** Static homepage ribbon segments; recipe, reference, and PyPI download counts are filled in `getServerSideProps` when available. */
 export const RIBBON_LICENSE = "✦ MIT License" as const;
-/** Shown if the pypistats request fails (PyPI `conan` package, rolling last 30 days). */
-export const RIBBON_DOWNLOADS_FALLBACK = "10M+ monthly PyPI downloads" as const;
 
 export const QUOTE_SVG: ReactNode = (
   <svg width={18} height={18} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
