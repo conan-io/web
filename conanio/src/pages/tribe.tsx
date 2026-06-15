@@ -11,12 +11,21 @@ function normalizeExternalHref(url: string): string {
   return `https://${u.replace(/^\/+/, "")}`;
 }
 
+const TRIBE_DEFAULT_AVATAR = "/conan-frog-tribe.png";
+
 function TribeMemberCard({ member }: { member: TribeMember }) {
-  const imgSrc = member.image ?? "/conan-tribe/anonymous.png";
+  const isDefaultAvatar = !member.image;
+  const imgSrc = member.image ?? TRIBE_DEFAULT_AVATAR;
   return (
     <article className="tribe-card">
-      <div className="tribe-card-photo">
-        <Image src={imgSrc} alt={member.name} width={278} height={252} />
+      <div className={`tribe-card-photo${isDefaultAvatar ? " tribe-card-photo--default" : ""}`}>
+        <Image
+          src={imgSrc}
+          alt={member.name}
+          width={278}
+          height={252}
+          unoptimized={isDefaultAvatar}
+        />
       </div>
       <div className="tribe-card-body">
         <h3 className="tribe-card-name">{member.name}</h3>
