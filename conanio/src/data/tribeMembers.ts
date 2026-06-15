@@ -354,7 +354,6 @@ export const TRIBE_MEMBERS: TribeMember[] = [
     },
     {
         name: 'Nenad Miksa',
-        image: '/conan-tribe/trollface_med_-_Nenad_Miksa.png',
         description: 'Head of Tools and Software Infrastructure at Microblink Ltd.',
         linkedin: 'https://www.linkedin.com/in/nmiksa/',
         x: 'https://x.com/DodoMiksa/',

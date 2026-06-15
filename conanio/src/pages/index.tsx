@@ -184,7 +184,7 @@ export default function HomePage({
             <div>
               <span className="pill">Community</span>
               <h2>Meet the Conan 2.0 tribe.</h2>
-              <p className="lead">A group of more than 70 expert users and contributors who helped define Conan 2.0 — the people writing the recipes, shipping the binaries, and keeping the ecosystem moving.</p>
+              <p className="lead">A group of more than 70 expert users and contributors who helped define Conan 2.0.</p>
               <Link className="btn btn-primary" href="/tribe" onClick={() => trackConanEvent({ type: "ui", purpose: "community", description: "learn more tribe" })}>
                 Learn more
               </Link>
