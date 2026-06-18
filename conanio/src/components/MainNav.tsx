@@ -32,7 +32,7 @@ export default function MainNav() {
       </a>
       <ul>
         <li><a href="/center" onClick={() => handleNavClick("conancenter")}>ConanCenter</a></li>
-        <li><a href="https://audit.conan.io/" target="_blank" rel="noopener" onClick={() => handleNavClick("audit")}>Conan Audit</a></li>
+        <li><a href="/audit/register" onClick={() => handleNavClick("audit")}>Conan Audit</a></li>
         <li><a href="https://docs.conan.io/" target="_blank" rel="noopener" onClick={() => handleNavClick("docs")}>Docs</a></li>
         <li><a href="https://blog.conan.io/" target="_blank" rel="noopener" onClick={() => handleNavClick("blog")}>Blog</a></li>
         <li><a href="/faq" onClick={() => handleNavClick("faq")}>FAQ</a></li>

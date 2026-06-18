@@ -28,8 +28,11 @@ yarn install
 
 ```bash
 NEXT_PUBLIC_CONAN_CONANIO_SERVICE=http://localhost:5000
+CONANIO_AUTH_SERVER=http://localhost:4001
 NEXT_PUBLIC_CONAN_VERSION=2.28.0
 ```
+
+`CONANIO_AUTH_SERVER` is required for Conan Audit flows (register, recover, validate). Run the auth service locally on that origin before testing `/audit/*`.
 
 3. Start dev server:
 
@@ -51,11 +54,14 @@ App runs on [http://localhost:3000](http://localhost:3000).
 
 ## Project structure (high-level)
 
-- `src/pages` - routes (`/`, `/center`, `/api/*`, `/llms.txt`, `/sitemap.xml`)
+- `src/pages` - routes (`/`, `/center`, `/audit/*`, `/api/*`, `/llms.txt`, `/sitemap.xml`)
+- `src/pages/audit` - Conan Audit register, recover, validate, content-unavailable
+- `src/pages/api/audit` - same-origin proxies to the audit auth service
 - `src/components` - shared UI pieces
+- `src/components/audit` - audit page shell, forms, marketing column, terms modal
 - `tests` - Vitest suite (`*.test.ts`), kept outside `src`
 - `src/service` - API and URL composition helpers
-- `src/styles` - global and page-family styles
+- `src/styles` - global and page-family styles (`auditPages.module.css` for `/audit/*`)
 - `public` - static assets
 
 ## SEO and crawl surfaces
@@ -73,6 +79,21 @@ App runs on [http://localhost:3000](http://localhost:3000).
   - `GET /api/search/:pattern`
   - `GET /api/package/:packageId/use_it`
   - `GET /api/ping`
+  - `POST /api/audit/user/signup` → `{CONANIO_AUTH_SERVER}/user/signup`
+  - `POST /api/audit/user/recover` → `{CONANIO_AUTH_SERVER}/user/recover`
+
+Conan Audit **validate** (`/audit/validate/[token]`) calls `GET /user/validate/{code}` from `getServerSideProps` (server-only), not a public `/api` route.
+
+### Conan Audit routes and redirects
+
+| Route | Purpose |
+| --- | --- |
+| `/audit/register` | Sign up for Conan Audit |
+| `/audit/recover` | Request a new activation link |
+| `/audit/validate/[token]` | Activation link (SSR) |
+| `/audit/content-unavailable` | Region-blocked message |
+
+Legacy redirects (see `next.config.ts`): `/recover` → `/audit/recover`, `/content-unavailable` → `/audit/content-unavailable`, `/validate/:token` → `/audit/validate/:token`.
 
 ## Build and container
 
