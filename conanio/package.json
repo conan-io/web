@@ -32,9 +32,13 @@
     "vitest": "^4.1.5"
   },
   "resolutions": {
-    "postcss": "^8.5.10"
+    "@babel/core": "^7.29.6",
+    "postcss": "^8.5.10",
+    "vite": "^8.0.16"
   },
   "overrides": {
-    "postcss": "^8.5.10"
+    "@babel/core": "^7.29.6",
+    "postcss": "^8.5.10",
+    "vite": "^8.0.16"
   }
 }
