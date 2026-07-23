@@ -50,6 +50,21 @@ const nextConfig: NextConfig = {
         destination: "/center/recipes/:recipe",
         permanent: true,
       },
+      {
+        source: "/audit/limit",
+        destination: "https://jfrog.co/426jVm7",
+        permanent: true,
+      },
+      {
+        source: "/audit/missing-curation",
+        destination: "https://jfrog.co/426jVm7",
+        permanent: true,
+      },
+      {
+        source: "/audit/jfrogcuration",
+        destination: "https://jfrog.co/426jVm7",
+        permanent: true,
+      },
     ];
   },
 };
