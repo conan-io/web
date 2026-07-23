@@ -33,6 +33,7 @@
   },
   "resolutions": {
     "@babel/core": "^7.29.6",
+    "**/typescript-estree/minimatch/brace-expansion": "^5.0.7",
     "js-yaml": "^4.2.0",
     "postcss": "^8.5.10",
     "vite": "^8.0.16"
