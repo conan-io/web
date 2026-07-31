@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import type { RecipePageTabBase } from "@/types/recipeDetail";
 
 export default function AuditTab({ isActive, recipeName, recipeVersion }: RecipePageTabBase) {
@@ -8,7 +10,7 @@ export default function AuditTab({ isActive, recipeName, recipeVersion }: Recipe
         <h2>🔍 Ready to secure your dependencies in seconds?</h2>
         <ol>
           <li>
-            Register for free at <a>audit.conan.io/register</a>.
+            Register for free at <Link href="/audit/register">conan.io/audit/register</Link>.
           </li>
           <li>Save your token and activate it via the confirmation email you receive.</li>
           <li>

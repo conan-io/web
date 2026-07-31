@@ -337,18 +337,13 @@ export function useCenterRecipesSearch(data: CenterRecipesInitialData) {
       if (query.length > 0 && itemName === query) score += 9000;
       for (const token of tokens) {
         if (itemName === token) score += 8000;
-        if (itemName.includes(token)) score += 1000;
+        if (itemName.includes(token)) score += 4000;
         if (description.includes(token)) score += 1000;
         if (token.startsWith("#")) {
           const topicToken = token.slice(1);
-          labels.forEach((label) => {
-            if (label.toLowerCase().includes(topicToken)) score += 1000;
-          });
+          if (labels.some((label) => label.toLowerCase().includes(topicToken))) score += 1000;
         } else {
-          labels.forEach((label) => {
-            const lower = label.toLowerCase();
-            if (label === token || lower.includes(token)) score += 3000;
-          });
+          if (labels.some((label) => label === token || label.toLowerCase().includes(token))) score += 2000;
         }
       }
       return score;
