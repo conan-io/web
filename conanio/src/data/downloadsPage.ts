@@ -33,8 +33,8 @@ export function buildDownloadsArtifacts(conanReleaseVersion: string) {
   const conanWinI686Zip = `${ghRelease}/conan-${conanReleaseVersion}-windows-i686.zip`;
   const conanLinuxX64Tgz = `${ghRelease}/conan-${conanReleaseVersion}-linux-x86_64.tgz`;
 
-  const macArmCopy = `wget ${conanMacArmTgz}\ntar -xvf conan-${conanReleaseVersion}-macos-arm64.tgz`;
-  const macX64Copy = `wget ${conanMacX64Tgz}\ntar -xvf conan-${conanReleaseVersion}-macos-x86_64.tgz`;
+  const macArmCopy = `curl -L -O ${conanMacArmTgz}\ntar -xvf conan-${conanReleaseVersion}-macos-arm64.tgz`;
+  const macX64Copy = `curl -L -O ${conanMacX64Tgz}\ntar -xvf conan-${conanReleaseVersion}-macos-x86_64.tgz`;
   const linuxX64Copy = `wget ${conanLinuxX64Tgz}\ntar -xvf conan-${conanReleaseVersion}-linux-x86_64.tgz`;
   const winX64Ps = `Invoke-WebRequest -Uri "${conanWinX64Zip}" -OutFile conan-${conanReleaseVersion}-windows-x86_64.zip\nExpand-Archive .\\conan-${conanReleaseVersion}-windows-x86_64.zip -DestinationPath .`;
   const winI686Ps = `Invoke-WebRequest -Uri "${conanWinI686Zip}" -OutFile conan-${conanReleaseVersion}-windows-i686.zip\nExpand-Archive .\\conan-${conanReleaseVersion}-windows-i686.zip -DestinationPath .`;
@@ -247,7 +247,7 @@ export function buildDownloadsRows(a: ReturnType<typeof buildDownloadsArtifacts>
       kind: "cmd",
       icon: "darwin",
       alt: "macOS",
-      commandText: "wget and tar -xvf conan arm64 executable",
+      commandText: "curl -L -O and tar -xvf conan arm64 executable",
       copyText: a.macArmCopy,
       copyEvent: {
         type: "copy",
@@ -261,7 +261,7 @@ export function buildDownloadsRows(a: ReturnType<typeof buildDownloadsArtifacts>
       kind: "cmd",
       icon: "darwin",
       alt: "macOS",
-      commandText: "wget and tar -xvf conan x86_64 executable",
+      commandText: "curl -L -O and tar -xvf conan x86_64 executable",
       copyText: a.macX64Copy,
       copyEvent: {
         type: "copy",
