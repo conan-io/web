@@ -37,7 +37,7 @@
     "baseline-browser-mapping": "^2.11.20",
     "brace-expansion": "^1.1.16",
     "browserslist": "^4.28.7",
-    "js-yaml": "^4.3.1",
+    "js-yaml": "^4.3.2",
     "postcss": "^8.5.18",
     "sharp": "^0.35.4",
     "vite": "^8.0.16"
@@ -46,7 +46,7 @@
     "@babel/core": "^7.29.6",
     "baseline-browser-mapping": "^2.11.20",
     "browserslist": "^4.28.7",
-    "js-yaml": "^4.3.1",
+    "js-yaml": "^4.3.2",
     "postcss": "^8.5.18",
     "vite": "^8.0.16"
   }
