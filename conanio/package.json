@@ -25,22 +25,22 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@vitest/coverage-v8": "^4.1.11",
+    "@vitest/coverage-v8": "^4.1.12",
     "eslint": "^9",
     "eslint-config-next": "16.3.8",
     "typescript": "^5",
-    "vitest": "^4.1.11"
+    "vitest": "^4.1.12"
   },
   "resolutions": {
     "@babel/core": "^7.29.6",
     "**/typescript-estree/minimatch/brace-expansion": "^5.0.7",
     "baseline-browser-mapping": "^2.11.20",
-    "brace-expansion": "^1.1.16",
+    "brace-expansion": "^1.1.21",
     "browserslist": "^4.28.7",
     "js-yaml": "^4.3.2",
     "postcss": "^8.5.18",
     "sharp": "^0.35.4",
-    "vite": "^8.0.16"
+    "vite": "^8.1.6"
   },
   "overrides": {
     "@babel/core": "^7.29.6",
@@ -48,6 +48,6 @@
     "browserslist": "^4.28.7",
     "js-yaml": "^4.3.2",
     "postcss": "^8.5.18",
-    "vite": "^8.0.16"
+    "vite": "^8.1.6"
   }
 }
