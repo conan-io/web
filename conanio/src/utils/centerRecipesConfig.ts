@@ -77,7 +77,7 @@ export function normalizeFilterList(payload: unknown): FilterItem[] {
     (item): item is FilterItem =>
       !!item &&
       typeof item === "object" &&
-      typeof (item as FilterItem).id === "number" &&
+      typeof (item as FilterItem).id === "string" &&
       typeof (item as FilterItem).filter === "string",
   );
 }

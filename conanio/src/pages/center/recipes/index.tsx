@@ -22,8 +22,8 @@ interface PageProps {
     licenses: FilterItem[];
     topics: FilterItem[];
     value: string;
-    selectedTopicIds: number[];
-    selectedLicenseIds: number[];
+    selectedTopicIds: string[];
+    selectedLicenseIds: string[];
     selectedPlatforms: string[];
     sortBy: SortBy;
   };
@@ -33,12 +33,8 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (context)
   const urls = getUrls();
   const valueParam = context.query.value;
   const value = Array.isArray(valueParam) ? (valueParam[0] ?? "") : (valueParam ?? "");
-  const selectedTopicIds = queryParamToArray(context.query.topics)
-    .map((item) => parseInt(item, 10))
-    .filter((item) => Number.isFinite(item));
-  const selectedLicenseIds = queryParamToArray(context.query.licenses)
-    .map((item) => parseInt(item, 10))
-    .filter((item) => Number.isFinite(item));
+  const selectedTopicIds = queryParamToArray(context.query.topics);
+  const selectedLicenseIds = queryParamToArray(context.query.licenses);
   const selectedPlatformsRaw = queryParamToArray(context.query.platforms);
   const selectedPlatforms =
     selectedPlatformsRaw.length > 0

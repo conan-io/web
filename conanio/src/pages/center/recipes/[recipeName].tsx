@@ -177,12 +177,7 @@ function RecipeDetailPage({
 
   const recipeVersion = selected.info.version;
 
-  const labelChips = useMemo(() => {
-    const labels = selected.info.labels;
-    if (!labels) return [];
-    if (Array.isArray(labels)) return labels;
-    return Object.keys(labels);
-  }, [selected.info.labels]);
+  const labelChips = useMemo(() => selected.info.labels ?? [], [selected.info.labels]);
 
   const screenLabel = `ConanCenter — ${recipe.name}/${recipe.info.version} recipe`;
 

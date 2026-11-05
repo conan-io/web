@@ -37,9 +37,9 @@ function IconShield() {
 
 export default function RecipeSearchCard({ recipe }: { recipe: SearchRecipeItem }) {
   const { info } = recipe;
-  const licenseNames = Object.keys(info.licenses);
+  const licenseNames = info.licenses;
   const licenseLine = licenseNames.join(", ");
-  const topicKeys = Object.keys(info.labels);
+  const topicKeys = info.labels;
   const platforms = platformStrip(recipe);
   const deprecated = info.deprecated;
   const isDeprecatedWithReason =

@@ -12,6 +12,7 @@ export interface RecipeReference {
 }
 
 export interface FilterItem {
-  id: number;
+  /** Name of the license/topic: the backend filters by name. */
+  id: string;
   filter: string;
 }

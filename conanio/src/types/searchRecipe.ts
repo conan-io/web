@@ -12,8 +12,8 @@ export interface SearchRecipeInfo {
   timestamp: string;
   age: number;
   deprecated?: string;
-  licenses: Record<string, number>;
-  labels: Record<string, number>;
+  licenses: string[];
+  labels: string[];
   packages: Record<string, SearchPackageBin>;
 }
 
