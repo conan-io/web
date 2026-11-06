@@ -6,7 +6,7 @@ import styles from "@/styles/centerPages.module.css";
 import Link from "next/link";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { getJson, getJsonList, getUrls } from "@/service/api";
-import { trackConanEvent } from "@/service/analytics";
+import { trackCenterSearch, trackConanEvent } from "@/service/analytics";
 import type { RecipeBasic, RecipeReference } from "@/types/conanCenter";
 import { recipePathFromReference } from "@/utils/recipeUrls";
 
@@ -47,16 +47,6 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
 export default function CenterPage({
   data,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const trackCenterSearch = (term: string) => {
-    trackConanEvent({
-      event_name: "search",
-      type: "ui",
-      purpose: "conancenter search",
-      description: "search recipes",
-      search_term: term,
-    });
-  };
-
   const renderRecipeList = (items: RecipeBasic[], showVersion: boolean, listName: string) =>
     items.map((item, index) => {
       const href = recipePathFromReference(item.name, item.version);

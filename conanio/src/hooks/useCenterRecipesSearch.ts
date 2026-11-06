@@ -3,7 +3,7 @@ import { type FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import type { FilterItem } from "@/types/conanCenter";
 import type { SearchRecipeItem } from "@/types/searchRecipe";
 import { getJsonList, getUrls } from "@/service/api";
-import { trackConanEvent } from "@/service/analytics";
+import { trackCenterSearch } from "@/service/analytics";
 import {
   collectUiPlatformsFromBinaries,
   MAX_PAGE_BUTTONS,
@@ -22,16 +22,6 @@ export type CenterRecipesInitialData = {
   selectedPlatforms: string[];
   sortBy: SortBy;
 };
-
-function pushCenterSearchEvent(term: string) {
-  trackConanEvent({
-    event_name: "search",
-    type: "ui",
-    purpose: "conancenter search",
-    description: "search recipes",
-    search_term: term,
-  });
-}
 
 export function useCenterRecipesSearch(data: CenterRecipesInitialData) {
   const [textSearchBar, setTextSearchBar] = useState<string>(data.value);
@@ -229,7 +219,7 @@ export function useCenterRecipesSearch(data: CenterRecipesInitialData) {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    pushCenterSearchEvent(textSearchBar.trim());
+    trackCenterSearch(textSearchBar.trim());
     if (debounceRef.current) {
       clearTimeout(debounceRef.current);
       debounceRef.current = null;

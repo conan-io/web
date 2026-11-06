@@ -96,10 +96,6 @@ export function sanitizeURL(url: string) {
   }
 }
 
-export function licenseNames(licenses?: string[]): string[] {
-  return licenses ?? [];
-}
-
 export function resolveSelectedRecipe(data: Record<string, RecipeInfo>, requestedVersion: string | null): RecipeInfo {
   const entries = Object.values(data);
   if (!entries.length) {

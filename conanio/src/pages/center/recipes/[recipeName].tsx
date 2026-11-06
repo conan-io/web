@@ -27,7 +27,7 @@ import type {
 } from "@/types/recipeDetail";
 import { parse as parseYaml } from "yaml";
 import { getJson, getUrls } from "@/service/api";
-import { trackConanEvent } from "@/service/analytics";
+import { trackCenterSearch } from "@/service/analytics";
 import { initialRecipeTab, resolveSelectedRecipe } from "@/utils/recipeDetailUtils";
 import { recipePathWithVersion } from "@/utils/recipeUrls";
 
@@ -184,15 +184,6 @@ function RecipeDetailPage({
   const recipeStatus = recipe.info.status;
   const statusSummary = recipeStatus === "ok" ? "maintained version" : `${recipeStatus} version`;
   const recipeReference = `${recipe.name}/${recipe.info.version}`;
-  const trackCenterSearch = (term: string) => {
-    trackConanEvent({
-      event_name: "search",
-      type: "ui",
-      purpose: "conancenter search",
-      description: "search recipes",
-      search_term: term,
-    });
-  };
 
   return (
     <>

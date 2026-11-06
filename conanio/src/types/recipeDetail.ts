@@ -46,7 +46,7 @@ export interface RecipeInfo {
     status: string;
     timestamp: string;
     version: string;
-    deprecated?: string;
+    deprecated: string;
   };
 }
 

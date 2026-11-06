@@ -11,7 +11,8 @@ export interface SearchRecipeInfo {
   description: string;
   timestamp: string;
   age: number;
-  deprecated?: string;
+  /** "false" when not deprecated, "true" or a reason/substitute recipe name otherwise. */
+  deprecated: string;
   licenses: string[];
   labels: string[];
   packages: Record<string, SearchPackageBin>;
