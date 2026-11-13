@@ -1,6 +1,9 @@
+import datetime
 import os
+from urllib.parse import unquote
 
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 
 from data import *
 
@@ -20,34 +23,46 @@ if os.getenv("ENABLE_CORS", False):
 
 @app.get('/licenses')
 async def get_licenses():
-    return {
-        "0": {"id": 5, "filter": "AAFSDKPSL-2.0"},
-        "1": {"id": 55, "filter": "AFL-2.1"},
-        "2": {"id": 56, "filter": "(AFL-2.1 OR GPL-2.0-or-later) AND DocumentRef-COPYING"},
-        "3": {"id": 43, "filter": "AGPL-3.0"},
-        "4": {"id": 52, "filter": "AGPL-3.0-later"},
-        "5": {"id": 155, "filter": "AGPL-3.0-or-later"},
-        "6": {"id": 85, "filter": "Apache"},
-        "7": {"id": 16, "filter": "Apache 2.0"},
-        "8": {"id": 7, "filter": "Apache-2.0"},
-        "9": {"id": 121, "filter": "Apache-2.0 WITH LLVM-exception"}
-    }
+    names = [
+        "AAFSDKPSL-2.0",
+        "AFL-2.1",
+        "(AFL-2.1 OR GPL-2.0-or-later) AND DocumentRef-COPYING",
+        "AGPL-3.0",
+        "AGPL-3.0-later",
+        "AGPL-3.0-or-later",
+        "Apache",
+        "Apache 2.0",
+        "Apache-2.0",
+        "Apache-2.0 WITH LLVM-exception",
+        "BSD-3-Clause",
+        "LGPL-2.1-or-later",
+        "MIT",
+        "Unlicense",
+        "Unrar",
+    ]
+    return {str(i): {"id": name, "filter": name} for i, name in enumerate(names)}
 
 
 @app.get('/topics')
 async def get_topics():
-    return {
-        "0": {"id": 2663, "filter": "0mq"},
-        "1": {"id": 320, "filter": "2d"},
-        "2": {"id": 1116, "filter": "2d-geometric"},
-        "3": {"id": 293, "filter": "2d-graphics"},
-        "4": {"id": 1022, "filter": "2hdm"},
-        "5": {"id": 50, "filter": "3d"},
-        "6": {"id": 51, "filter": "3d"},
-        "7": {"id": 1073, "filter": "3D"},
-        "8": {"id": 1145, "filter": "3d-vector"},
-        "9": {"id": 162, "filter": "3mf"}
-    }
+    names = [
+        "0mq",
+        "2d",
+        "2d-geometric",
+        "2d-graphics",
+        "2hdm",
+        "3d",
+        "3d-vector",
+        "3mf",
+        "archive",
+        "compression",
+        "configuration",
+        "cpp17",
+        "header-only",
+        "multimedia",
+        "zip",
+    ]
+    return {str(i): {"id": name, "filter": name} for i, name in enumerate(names)}
 
 
 @app.get('/popular')
@@ -98,8 +113,37 @@ async def get_new():
     }
 
 
+def _split(names, lower=False):
+    names = [n.strip() for n in (names or "").split(",") if n.strip()]
+    return [n.lower() for n in names] if lower else names
+
+
+def _filter_results(query, topics, licenses):
+    """Same semantics as the backend: any selected license/topic matches; "all" means no text filter."""
+    wanted_topics = set(_split(unquote(topics), lower=True))
+    wanted_licenses = set(_split(unquote(licenses)))
+    tokens = [t for t in ("" if query == "all" else unquote(query)).strip().lower().split(" ") if t]
+    found = []
+    for item in _search_results().values():
+        info = item["info"]
+        if wanted_topics and not wanted_topics & set(info["labels"]):
+            continue
+        if wanted_licenses and not wanted_licenses & set(info["licenses"]):
+            continue
+        if tokens:
+            text = " ".join([item["name"], info["description"], " ".join(info["labels"])]).lower()
+            if not any(t.lstrip("#") in text for t in tokens):
+                continue
+        found.append(item)
+    return found
+
+
 @app.get('/search/{query}')
-async def get_search(query='', filters='', licenses=''):
+async def get_search(query='', topics='', licenses=''):
+    return {str(i): item for i, item in enumerate(_filter_results(query, topics, licenses))}
+
+
+def _search_results():
     return {
         "0": {
             "name": "7bitconf",
@@ -108,15 +152,9 @@ async def get_search(query='', filters='', licenses=''):
                 "description": "7bitConf is a simple C++17 centralized configuration provider library.",
                 "timestamp": "2024-02-24",
                 "age": 145,
-                "licenses": {
-                    "MIT": 4
-                },
-                "labels": {
-                    "configuration": 6,
-                    "configuration-files": 8,
-                    "cpp17": 5,
-                    "provider": 7
-                },
+                "deprecated": "false",
+                "licenses": ["MIT"],
+                "labels": ["configuration", "configuration-files", "cpp17", "provider"],
                 "packages": {
                     "929b2ad6edabe408b1175e4af36ae1144c2edf21": {"package_id": "929b2ad6edabe408b1175e4af36ae1144c2edf21", "os": "Windows", "arch": "x86_64"},
                     "9d083b2eb4523c6c48f48dd4bc477770f327aeca": {"package_id": "9d083b2eb4523c6c48f48dd4bc477770f327aeca", "os": "Macos", "arch": "armv8"},
@@ -139,15 +177,9 @@ async def get_search(query='', filters='', licenses=''):
                 "description": "a simple C++ dependency injection library.",
                 "timestamp": "2024-05-12",
                 "age": 67,
-                "licenses": {
-                    "MIT": 4
-                },
-                "labels": {
-                    "cpp17": 5,
-                    "dependency-injector": 9,
-                    "header-only": 11,
-                    "injector": 10
-                },
+                "deprecated": "false",
+                "licenses": ["MIT"],
+                "labels": ["cpp17", "dependency-injector", "header-only", "injector"],
                 "packages": {
                     "578fa3b966639c03968a1a94f83a6b0298a25f86": {"package_id": "578fa3b966639c03968a1a94f83a6b0298a25f86", "os": "Windows", "arch": "x86_64"},
                     "8a60e115e67b08b7f496f537ae6816289038523c": {"package_id": "8a60e115e67b08b7f496f537ae6816289038523c", "os": "Macos", "arch": "armv8"},
@@ -170,17 +202,9 @@ async def get_search(query='', filters='', licenses=''):
                 "description": "7-Zip is a file archiver with a high compression ratio",
                 "timestamp": "2023-10-18",
                 "age": 275,
-                "licenses": {
-                    "BSD-3-Clause": 2,
-                    "LGPL-2.1-or-later": 1,
-                    "Unrar": 3
-                },
-                "labels": {
-                    "archive": 1,
-                    "compression": 2,
-                    "decompression": 3,
-                    "zip": 4
-                },
+                "deprecated": "false",
+                "licenses": ["BSD-3-Clause", "LGPL-2.1-or-later", "Unrar"],
+                "labels": ["archive", "compression", "decompression", "zip"],
                 "packages": {
                     "522dcea5982a3f8a5b624c16477e47195da2f84f": {"package_id": "522dcea5982a3f8a5b624c16477e47195da2f84f", "os": "Windows", "arch": "x86_64"}
                 }
@@ -193,13 +217,9 @@ async def get_search(query='', filters='', licenses=''):
                 "description": "A cross-platform SDK for AAF. AAF is a metadata management system and file format for use in professional multimedia creation and authoring.",
                 "timestamp": "2023-07-15",
                 "age": 369,
-                "licenses": {
-                    "AAFSDKPSL-2.0": 6
-                },
-                "labels": {
-                    "crossplatform": 17,
-                    "multimedia": 16
-                },
+                "deprecated": "false",
+                "licenses": ["AAFSDKPSL-2.0"],
+                "labels": ["crossplatform", "multimedia"],
                 "packages": {
                     "a6f692d6fe4683b7fb168ebc617a94c7fba80f6d": {"package_id": "a6f692d6fe4683b7fb168ebc617a94c7fba80f6d", "os": "Windows", "arch": "x86_64"},
                     "67a91cff2c323a6a8b32382924a35569aca6faa4": {"package_id": "67a91cff2c323a6a8b32382924a35569aca6faa4", "os": "Macos", "arch": "armv8"},
@@ -221,15 +241,9 @@ async def get_search(query='', filters='', licenses=''):
                 "description": "AA+ is a C++ implementation for the algorithms as presented in the book \"Astronomical Algorithms\" by Jean Meeus",
                 "timestamp": "2023-12-26",
                 "age": 206,
-                "licenses": {
-                    "Unlicense": 5
-                },
-                "labels": {
-                    "aa+": 12,
-                    "astronomical-algorithms": 14,
-                    "astronomy": 13,
-                    "orbital-mechanics": 15
-                },
+                "deprecated": "false",
+                "licenses": ["Unlicense"],
+                "labels": ["aa+", "astronomical-algorithms", "astronomy", "orbital-mechanics"],
                 "packages": {
                     "e793beb630e09fb7da5ecef726f377462cd2ae0d": {"package_id": "e793beb630e09fb7da5ecef726f377462cd2ae0d", "os": "Macos", "arch": "armv8"},
                     "fc491156b442836722612d1aa8a8c57e406447b6": {"package_id": "fc491156b442836722612d1aa8a8c57e406447b6", "os": "Linux", "arch": "x86_64"},
@@ -260,8 +274,10 @@ async def get_package(name=''):
             "homepage": "https://github.com/abseil/abseil-cpp",
             "timestamp": "2024-07-04",
             "recipe_revision": "996c9b7c09f1f561bdf2e2f3c889a8cb",
-            "licenses": {"Apache-2.0": 7 },
-            "labels": {"algorithm": 18, "common": 21, "container": 19, "google": 20, "utility": 22},
+            "commit": "0000000000000000000000000000000000000000",
+            "deprecated": "false",
+            "licenses": ["Apache-2.0"],
+            "labels": ["algorithm", "common", "container", "google", "utility"],
             "packages": {
                 "e793beb630e09fb7da5ecef726f377462cd2ae0d": {
                 "package_id": "e793beb630e09fb7da5ecef726f377462cd2ae0d",
@@ -429,8 +445,10 @@ async def get_package(name=''):
             "homepage": "https://github.com/abseil/abseil-cpp",
             "timestamp": "2024-07-04",
             "recipe_revision": "751a57a9b9651051dbf2e147c8660aff",
-            "licenses": {"Apache-2.0": 7},
-            "labels": {"algorithm": 18, "common": 21, "container": 19, "google": 20, "utility": 22},
+            "commit": "0000000000000000000000000000000000000000",
+            "deprecated": "false",
+            "licenses": ["Apache-2.0"],
+            "labels": ["algorithm", "common", "container", "google", "utility"],
             "packages": {
                 "e793beb630e09fb7da5ecef726f377462cd2ae0d": {
                 "package_id": "e793beb630e09fb7da5ecef726f377462cd2ae0d",
@@ -598,8 +616,10 @@ async def get_package(name=''):
             "homepage": "https://github.com/abseil/abseil-cpp",
             "timestamp": "2024-01-23",
             "recipe_revision": "d88bebf75bb56cd9d09021b44d217d03",
-            "licenses": {"Apache-2.0": 7},
-            "labels": {"algorithm": 18, "common": 21, "container": 19, "google": 20, "utility": 22},
+            "commit": "0000000000000000000000000000000000000000",
+            "deprecated": "false",
+            "licenses": ["Apache-2.0"],
+            "labels": ["algorithm", "common", "container", "google", "utility"],
             "packages": {
                 "ec2a9de6feab3c0b86da78a55456ffb819b1912b": {
                 "package_id": "ec2a9de6feab3c0b86da78a55456ffb819b1912b",
@@ -4174,9 +4194,27 @@ async def get_md(name=''):
 }
 
 
+@app.get('/package/{name}/downloads')
+async def get_downloads(name=''):
+    today = datetime.date.today()
+    days = [today - datetime.timedelta(days=x) for x in range(30, 0, -1)]
+    versions = ["20240116.2", "20230802.1"]
+    result = {v: {"downloads": [{"date": d.isoformat(), "downloads": (i * (k + 1)) % 40} for i, d in enumerate(days)]}
+              for k, v in enumerate(versions)}
+    result["all"] = {
+        "versions": versions,
+        "downloads": [{"date": d.isoformat(), **{v: result[v]["downloads"][i]["downloads"] for v in versions}}
+                      for i, d in enumerate(days)],
+    }
+    return result
+
+
 @app.get('/reference/num')
-async def get_reference_num(query='', filters='', licenses=''):
-    return {"references":7879, "recipes":1748}
+async def get_reference_num(query='all', topics='', licenses=''):
+    if query == "all" and not topics and not licenses:
+        return {"references": 7879, "recipes": 1748}
+    found = len(_filter_results(query, topics, licenses))
+    return {"references": found, "recipes": found}
 
 
 @app.get("/status")

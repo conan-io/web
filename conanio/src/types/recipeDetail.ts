@@ -39,14 +39,14 @@ export interface RecipeInfo {
     description: string;
     downloads: number;
     homepage: string;
-    labels?: Record<string, number> | string[];
-    licenses?: Record<string, number> | string[];
+    labels?: string[];
+    licenses?: string[];
     packages?: Record<string, PackageInfo>;
     recipe_revision?: string;
     status: string;
     timestamp: string;
     version: string;
-    deprecated?: string;
+    deprecated: string;
   };
 }
 

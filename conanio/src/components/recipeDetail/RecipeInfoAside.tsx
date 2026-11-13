@@ -4,7 +4,6 @@ import CopyToClipboardButton from "@/components/CopyToClipboardButton";
 import { recipeRevisionPinIconSvg } from "@/components/recipeDetail/recipeDetailIcons";
 import type { PackageOsTabFilter, RecipeInfo } from "@/types/recipeDetail";
 import {
-  licenseNames,
   profileSlotsFromPackages,
   sanitizeURL,
   truncateText,
@@ -56,7 +55,7 @@ export default function RecipeInfoAside({
   }, [requiresLine]);
   const rev = recipe.info.recipe_revision ?? "";
   const recipeDescription = recipe.info.description?.trim() ?? "";
-  const licenses = licenseNames(recipe.info.licenses);
+  const licenses = recipe.info.licenses ?? [];
   const homepageRaw = recipe.info.homepage?.trim() ?? "";
   const githubFolder = versionFolderMap[recipe.info.version];
   const recipeConanCenterUrl = githubFolder

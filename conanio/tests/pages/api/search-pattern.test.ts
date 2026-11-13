@@ -71,7 +71,7 @@ describe("/api/search/[pattern]", () => {
 
     const req = {
       method: "GET",
-      query: { pattern: "zlib", topics: "1", licenses: "2" },
+      query: { pattern: "zlib", topics: "compression", licenses: "MIT" },
     } as unknown as Parameters<typeof handler>[0];
     const res = createRes() as unknown as Parameters<typeof handler>[1];
 

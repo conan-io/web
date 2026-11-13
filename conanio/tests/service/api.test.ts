@@ -12,14 +12,14 @@ describe("getUrls", () => {
     process.env.conanioServer = "http://internal-api:5000///";
     const urls = getUrls({
       pattern: "OpenSSL",
-      topics: [1, 2],
-      licenses: [5],
+      topics: ["compression", "zlib"],
+      licenses: ["MIT"],
       packageId: "OpenSSL",
     });
 
     expect(urls.api.private).toBe("http://internal-api:5000");
     expect(urls.api.public).toBe("/api");
-    expect(urls.search.package).toBe("search/openssl?topics=1%2C2&licenses=5");
+    expect(urls.search.package).toBe("search/openssl?topics=compression%2Czlib&licenses=MIT");
     expect(urls.package).toEqual({
       info: "package/openssl",
       useIt: "package/openssl/use_it",

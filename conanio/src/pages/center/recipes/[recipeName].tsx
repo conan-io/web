@@ -27,7 +27,7 @@ import type {
 } from "@/types/recipeDetail";
 import { parse as parseYaml } from "yaml";
 import { getJson, getUrls } from "@/service/api";
-import { trackConanEvent } from "@/service/analytics";
+import { trackCenterSearch } from "@/service/analytics";
 import { initialRecipeTab, resolveSelectedRecipe } from "@/utils/recipeDetailUtils";
 import { recipePathWithVersion } from "@/utils/recipeUrls";
 
@@ -177,27 +177,13 @@ function RecipeDetailPage({
 
   const recipeVersion = selected.info.version;
 
-  const labelChips = useMemo(() => {
-    const labels = selected.info.labels;
-    if (!labels) return [];
-    if (Array.isArray(labels)) return labels;
-    return Object.keys(labels);
-  }, [selected.info.labels]);
+  const labelChips = useMemo(() => selected.info.labels ?? [], [selected.info.labels]);
 
   const screenLabel = `ConanCenter — ${recipe.name}/${recipe.info.version} recipe`;
 
   const recipeStatus = recipe.info.status;
   const statusSummary = recipeStatus === "ok" ? "maintained version" : `${recipeStatus} version`;
   const recipeReference = `${recipe.name}/${recipe.info.version}`;
-  const trackCenterSearch = (term: string) => {
-    trackConanEvent({
-      event_name: "search",
-      type: "ui",
-      purpose: "conancenter search",
-      description: "search recipes",
-      search_term: term,
-    });
-  };
 
   return (
     <>

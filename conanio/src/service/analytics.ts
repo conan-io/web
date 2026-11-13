@@ -19,6 +19,16 @@ function getDataLayer(): unknown[] | null {
   return Array.isArray(dataLayer) ? dataLayer : null;
 }
 
+export function trackCenterSearch(term: string): void {
+  trackConanEvent({
+    event_name: "search",
+    type: "ui",
+    purpose: "conancenter search",
+    description: "search recipes",
+    search_term: term,
+  });
+}
+
 export function trackConanEvent(event: ConanAnalyticsEvent): void {
   const dataLayer = getDataLayer();
   if (!dataLayer) {

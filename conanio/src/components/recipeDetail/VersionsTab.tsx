@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 
 import type { RecipeInfo, RecipePageTabBase } from "@/types/recipeDetail";
-import { licenseNames } from "@/utils/recipeDetailUtils";
 
 import { recipeRevisionPinIconSvg, versionsTagIcon } from "@/components/recipeDetail/recipeDetailIcons";
 
@@ -36,7 +35,7 @@ export default function VersionsTab({
           rows.map((r, idx) => {
             const maintained = r.info.status === "ok";
             const rev = r.info.recipe_revision ?? "";
-            const licenses = licenseNames(r.info.licenses);
+            const licenses = r.info.licenses ?? [];
             const licText = licenses.length ? licenses.join(", ") : null;
             const isCurrent = r.info.version === recipeVersion;
             const statusTitle = maintained ? "maintained version" : `${r.info.status} version`;

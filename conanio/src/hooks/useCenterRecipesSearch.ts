@@ -3,7 +3,7 @@ import { type FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import type { FilterItem } from "@/types/conanCenter";
 import type { SearchRecipeItem } from "@/types/searchRecipe";
 import { getJsonList, getUrls } from "@/service/api";
-import { trackConanEvent } from "@/service/analytics";
+import { trackCenterSearch } from "@/service/analytics";
 import {
   collectUiPlatformsFromBinaries,
   MAX_PAGE_BUTTONS,
@@ -17,29 +17,19 @@ export type CenterRecipesInitialData = {
   licenses: FilterItem[];
   topics: FilterItem[];
   value: string;
-  selectedTopicIds: number[];
-  selectedLicenseIds: number[];
+  selectedTopicIds: string[];
+  selectedLicenseIds: string[];
   selectedPlatforms: string[];
   sortBy: SortBy;
 };
-
-function pushCenterSearchEvent(term: string) {
-  trackConanEvent({
-    event_name: "search",
-    type: "ui",
-    purpose: "conancenter search",
-    description: "search recipes",
-    search_term: term,
-  });
-}
 
 export function useCenterRecipesSearch(data: CenterRecipesInitialData) {
   const [textSearchBar, setTextSearchBar] = useState<string>(data.value);
   const [value, setValue] = useState<string>(data.value);
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>(data.selectedPlatforms);
   const [sortBy, setSortBy] = useState<SortBy>(data.sortBy);
-  const [selectedLicenseIds, setSelectedLicenseIds] = useState<number[]>(data.selectedLicenseIds);
-  const [selectedTopicIds, setSelectedTopicIds] = useState<number[]>(data.selectedTopicIds);
+  const [selectedLicenseIds, setSelectedLicenseIds] = useState<string[]>(data.selectedLicenseIds);
+  const [selectedTopicIds, setSelectedTopicIds] = useState<string[]>(data.selectedTopicIds);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [licensesOpen, setLicensesOpen] = useState(false);
   const [topicsOpen, setTopicsOpen] = useState(false);
@@ -59,16 +49,8 @@ export function useCenterRecipesSearch(data: CenterRecipesInitialData) {
     }
     const params = new URLSearchParams(window.location.search);
     const nextValue = params.get("value") ?? "";
-    const nextTopicIds = (params.get("topics") ?? "")
-      .split(",")
-      .filter(Boolean)
-      .map((item) => parseInt(item, 10))
-      .filter((item) => Number.isFinite(item));
-    const nextLicenseIds = (params.get("licenses") ?? "")
-      .split(",")
-      .filter(Boolean)
-      .map((item) => parseInt(item, 10))
-      .filter((item) => Number.isFinite(item));
+    const nextTopicIds = (params.get("topics") ?? "").split(",").filter(Boolean);
+    const nextLicenseIds = (params.get("licenses") ?? "").split(",").filter(Boolean);
     const nextPlatformsRaw = (params.get("platforms") ?? "").split(",").filter(Boolean);
     const nextPlatforms =
       nextPlatformsRaw.length > 0
@@ -90,8 +72,8 @@ export function useCenterRecipesSearch(data: CenterRecipesInitialData) {
 
   const getData = (
     nextValue: string,
-    topicIds: number[],
-    licenseIds: number[],
+    topicIds: string[],
+    licenseIds: string[],
     platforms: string[],
     sortByValue: SortBy,
     historyMode: "replace" | "push" = "replace",
@@ -145,10 +127,10 @@ export function useCenterRecipesSearch(data: CenterRecipesInitialData) {
   };
 
   const toggleSelection = (
-    id: number,
-    current: number[],
-    setCurrent: (next: number[]) => void,
-    otherIds: number[],
+    id: string,
+    current: string[],
+    setCurrent: (next: string[]) => void,
+    otherIds: string[],
     platforms: string[],
     isTopic: boolean,
   ) => {
@@ -237,7 +219,7 @@ export function useCenterRecipesSearch(data: CenterRecipesInitialData) {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    pushCenterSearchEvent(textSearchBar.trim());
+    trackCenterSearch(textSearchBar.trim());
     if (debounceRef.current) {
       clearTimeout(debounceRef.current);
       debounceRef.current = null;
@@ -333,7 +315,7 @@ export function useCenterRecipesSearch(data: CenterRecipesInitialData) {
       let score = 0;
       const itemName = item.name.toLowerCase();
       const description = item.info.description?.toLowerCase() ?? "";
-      const labels = Object.keys(item.info.labels);
+      const labels = item.info.labels;
       if (query.length > 0 && itemName === query) score += 9000;
       for (const token of tokens) {
         if (itemName === token) score += 8000;

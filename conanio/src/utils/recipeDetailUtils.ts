@@ -96,12 +96,6 @@ export function sanitizeURL(url: string) {
   }
 }
 
-export function licenseNames(licenses?: Record<string, number> | string[]): string[] {
-  if (!licenses) return [];
-  if (Array.isArray(licenses)) return licenses;
-  return Object.keys(licenses);
-}
-
 export function resolveSelectedRecipe(data: Record<string, RecipeInfo>, requestedVersion: string | null): RecipeInfo {
   const entries = Object.values(data);
   if (!entries.length) {

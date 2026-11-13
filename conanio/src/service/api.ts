@@ -32,8 +32,8 @@ interface ApiUrls {
 
 interface GetUrlsParams {
   pattern?: string;
-  topics?: number[];
-  licenses?: number[];
+  topics?: string[];
+  licenses?: string[];
   /** Recipe slug for GET /package/{name} and GET /package/{name}/use_it */
   packageId?: string;
 }
